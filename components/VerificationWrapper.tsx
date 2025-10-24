@@ -20,6 +20,14 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
       return
     }
 
+    // Verificar se está na rota /cupons - bypass verificação
+    const currentPath = window.location.pathname
+    if (currentPath.startsWith('/cupons')) {
+      setIsVerified(true)
+      setIsLoading(false)
+      return
+    }
+
     // Timeout de segurança para evitar loading infinito
     const safetyTimeout = setTimeout(() => {
       console.warn('[VerificationWrapper] Timeout de segurança ativado')
