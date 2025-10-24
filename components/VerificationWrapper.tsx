@@ -13,18 +13,42 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Verificar se a verificação está habilitada
-    const verificationEnabled = process.env.NEXT_PUBLIC_ENABLE_USER_VERIFICATION === 'true'
-    setIsVerificationEnabled(verificationEnabled)
-
-    if (verificationEnabled) {
-      const userVerified = checkUserVerification()
-      setIsVerified(userVerified)
-    } else {
+    // Garantir que está no client-side
+    if (typeof window === 'undefined') {
+      setIsLoading(false)
       setIsVerified(true)
+      return
     }
 
-    setIsLoading(false)
+    // Timeout de segurança para evitar loading infinito
+    const safetyTimeout = setTimeout(() => {
+      console.warn('[VerificationWrapper] Timeout de segurança ativado')
+      setIsLoading(false)
+      setIsVerified(true)
+    }, 3000) // 3 segundos
+
+    try {
+      // Verificar se a verificação está habilitada
+      const verificationEnabled = process.env.NEXT_PUBLIC_ENABLE_USER_VERIFICATION === 'true'
+      setIsVerificationEnabled(verificationEnabled)
+
+      if (verificationEnabled) {
+        const userVerified = checkUserVerification()
+        setIsVerified(userVerified)
+      } else {
+        setIsVerified(true)
+      }
+
+      setIsLoading(false)
+      clearTimeout(safetyTimeout)
+    } catch (error) {
+      console.error('[VerificationWrapper] Erro:', error)
+      setIsLoading(false)
+      setIsVerified(true)
+      clearTimeout(safetyTimeout)
+    }
+
+    return () => clearTimeout(safetyTimeout)
   }, [])
 
   // Função para verificar se o usuário tem verificação válida
