@@ -10,7 +10,7 @@ interface VerificationWrapperProps {
 export default function VerificationWrapper({ children }: VerificationWrapperProps) {
   const [isVerificationEnabled, setIsVerificationEnabled] = useState(false)
   const [isVerified, setIsVerified] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false) // Desativado - mostrar verificação direto
 
   useEffect(() => {
     // Garantir que está no client-side

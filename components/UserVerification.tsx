@@ -209,30 +209,82 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-gray-100" style={{
-      backgroundImage: `
-        radial-gradient(circle at 20% 30%, rgba(229, 231, 235, 0.8) 0%, transparent 50%),
-        radial-gradient(circle at 70% 20%, rgba(243, 244, 246, 0.6) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(229, 231, 235, 0.7) 0%, transparent 60%),
-        radial-gradient(circle at 30% 90%, rgba(243, 244, 246, 0.5) 0%, transparent 45%)
-      `
-    }}>
-      <div className="flex items-center justify-center min-h-screen p-4">
+    <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
+      {/* Animação de fundo - Partículas flutuantes */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-red-500/10"
+            style={{
+              width: `${Math.random() * 100 + 50}px`,
+              height: `${Math.random() * 100 + 50}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `float ${Math.random() * 10 + 10}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Animação de ondas subindo */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-red-500/30 to-transparent animate-wave" />
+        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-blue-500/20 to-transparent animate-wave-slow" />
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          25% { transform: translateY(-30px) translateX(20px); }
+          50% { transform: translateY(-60px) translateX(-20px); }
+          75% { transform: translateY(-30px) translateX(20px); }
+        }
+        @keyframes wave {
+          0% { transform: translateY(100%); }
+          100% { transform: translateY(-100%); }
+        }
+        @keyframes wave-slow {
+          0% { transform: translateY(100%); }
+          100% { transform: translateY(-150%); }
+        }
+        .animate-wave {
+          animation: wave 8s linear infinite;
+        }
+        .animate-wave-slow {
+          animation: wave-slow 12s linear infinite;
+        }
+      `}</style>
+
+      <div className="relative flex items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-md">
           
           {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-2xl">
+            <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-red-500/30 p-8 text-center shadow-2xl animate-fade-in-up">
+              {/* Ícone animado */}
+              <div className="mb-6 flex justify-center">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-red-500/20 rounded-full animate-ping" />
+                  <div className="relative bg-red-500/10 p-6 rounded-full border-2 border-red-500/50">
+                    <svg className="w-12 h-12 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-2 text-gray-900">Verificação de Segurança</h1>
-                <p className="text-gray-600 text-sm">
+                <h1 className="text-2xl font-bold mb-2 text-white">Verificação de Segurança</h1>
+                <p className="text-gray-400 text-sm">
                   Para sua proteção, precisamos verificar que você é um usuário real
                 </p>
               </div>
               
               <button
                 onClick={handleInitialCheck}
-                className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg"
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50 hover:scale-105"
               >
                 Iniciar Verificação
               </button>
