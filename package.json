@@ -10,6 +10,7 @@
     "dev:clean": "rm -rf .next && next dev",
     "lint": "next lint",
     "start": "next start",
+    "prod": "next build && next start",
     "clean": "rm -rf .next node_modules/.cache",
     "test:blackcat": "node scripts/test-blackcat.js",
     "test:antibot": "node scripts/test-antibot.js",

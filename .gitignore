@@ -49,14 +49,14 @@ vercel.json
 # Git
 .git/
 
-# Imagens temporárias e banners
-*.jpg
-*.png
-*.webp
-*.jpeg
+# Imagens temporárias na raiz (mas permitir public/images/)
+/*.jpg
+/*.png
+/*.webp
+/*.jpeg
 
 # Arquivos HTML temporários
-*.html
+/*.html
 
 # Scripts de preparação
 prepare-github.js

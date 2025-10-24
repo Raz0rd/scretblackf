@@ -1536,17 +1536,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Disclaimer de Independência */}
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4">
-          <div className="border border-blue-500/30 bg-blue-500/10 rounded-md p-3">
-            <p className="text-blue-200 text-xs leading-relaxed text-center">
-              <strong>ℹ️ Informação:</strong> Somos uma plataforma independente de recarga. 
-              Não temos vínculo com Garena, Free Fire, Delta Force, Haikyu ou outras empresas de jogos. 
-              Todas as marcas pertencem aos seus respectivos proprietários.
-            </p>
-          </div>
-        </div>
-
         {/* Valor de Recarga Section */}
         <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
           <div className="mb-2 sm:mb-3 flex items-center gap-2 text-lg sm:text-xl text-white md:text-2xl">
@@ -2361,7 +2350,7 @@ export default function HomePage() {
                 <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
                   <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
                   <div className="h-3 w-px bg-white/30"></div>
-                  <a href="https://www.recargajogo.eu/legal/tos?utm_source=organicjLj68e076949be15d3367c027e6&utm_campaign=&utm_medium=&utm_content=&utm_term=" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
+                  <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
                   <div className="h-3 w-px bg-white/30"></div>
                   <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
                 </div>
