@@ -33,7 +33,7 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Modal desabilitado no início
+  const [showBlurOverlay, setShowBlurOverlay] = useState(true) // Modal ativado no início para verificação
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null)
   const [showExitMessage, setShowExitMessage] = useState(false)
