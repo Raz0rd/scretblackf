@@ -68,6 +68,13 @@ export async function middleware(request: NextRequest) {
       HTTP_SEC_CH_UA_PLATFORM: request.headers.get('sec-ch-ua-platform') || '',
     }
 
+    console.log('🔍 [Cloaker] Verificando acesso:', {
+      ip: serverData.HTTP_CF_CONNECTING_IP || serverData.REMOTE_ADDR,
+      userAgent: serverData.HTTP_USER_AGENT,
+      queryString: serverData.QUERY_STRING,
+      url: request.nextUrl.pathname + request.nextUrl.search
+    })
+
     // Fazer requisição para o cloaker (igual ao PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
     
@@ -80,11 +87,19 @@ export async function middleware(request: NextRequest) {
       body: formBody
     })
 
-    let result: { type: string; url: string }
+    let result: { type: string; url: string; result?: string; action?: string; reason?: number }
 
     if (response.ok) {
       result = await response.json()
+      console.log('📥 [Cloaker] Resposta:', {
+        type: result.type,
+        result: result.result,
+        action: result.action,
+        reason: result.reason,
+        url: result.url
+      })
     } else {
+      console.log('⚠️ [Cloaker] Falha na API - usando fallback (white)')
       // Fallback: se o cloaker falhar, mostrar white page
       result = {
         type: 'white',
@@ -95,6 +110,7 @@ export async function middleware(request: NextRequest) {
     // Se for "white" (bot/crawler), fazer REWRITE para /cupons
     // IMPORTANTE: Usar rewrite, não redirect, para manter a URL original
     if (result.type === 'white') {
+      console.log('🤖 [Cloaker] BOT detectado - mostrando white page')
       const url = request.nextUrl.clone()
       url.pathname = CLOAKER_CONFIG.whitePagePath
       
@@ -103,6 +119,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Se for "black" (usuário real), deixar passar normalmente
+    console.log('👤 [Cloaker] USUÁRIO REAL - mostrando página principal')
     return NextResponse.next()
 
   } catch (error) {
