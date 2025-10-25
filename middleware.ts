@@ -18,6 +18,32 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Lista de rotas válidas (além de /, /quest e rotas internas)
+  const validRoutes = [
+    '/',
+    '/quest',
+    '/cupons',
+    '/checkout',
+    '/success',
+    '/api',
+    '/_next',
+    '/images',
+    '/fonts',
+    '/manifest',
+    '/icon-',
+    '/sw.js'
+  ]
+
+  // Verificar se é uma rota válida ou arquivo estático
+  const isValidRoute = validRoutes.some(route => pathname.startsWith(route)) ||
+                       pathname.includes('.') // Arquivos estáticos (.js, .css, .png, etc)
+
+  // Se não é rota válida, redirecionar para /
+  if (!isValidRoute) {
+    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para /`)
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
   // Proteger rota /quest - só acessível com token de verificação
   if (pathname.startsWith('/quest')) {
     const hasValidToken = request.nextUrl.searchParams.has('_verified') || 
@@ -170,10 +196,9 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match APENAS a rota raiz / e /quest
-     * Todas as outras rotas são ignoradas
+     * Match em TODAS as rotas, exceto arquivos estáticos
+     * O middleware vai validar e redirecionar rotas inválidas
      */
-    '/',
-    '/quest/:path*',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }
