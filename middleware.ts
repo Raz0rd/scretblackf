@@ -18,6 +18,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Proteger rota /quest - só acessível com token de verificação
+  if (pathname.startsWith('/quest')) {
+    const hasValidToken = request.nextUrl.searchParams.has('_verified') || 
+                          request.cookies.get('cloaker_verified')?.value === 'true'
+    
+    if (!hasValidToken) {
+      console.log('🚫 [Cloaker] Acesso direto a /quest bloqueado - redirecionando para /')
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    
+    // Se tem token válido, deixar passar
+    return NextResponse.next()
+  }
+
   // Não aplicar cloaker nas rotas internas e arquivos estáticos
   if (
     pathname.startsWith('/api') ||
@@ -26,7 +40,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/cupons') ||
     pathname.startsWith('/success') ||
     pathname.startsWith('/checkout') ||
-    pathname.startsWith('/quest') ||  // Não aplicar cloaker na página de oferta
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||
@@ -80,7 +93,7 @@ export async function middleware(request: NextRequest) {
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
     
-    const response = await fetch(CLOAKER_CONFIG.url, {
+    const cloakerResponse = await fetch(CLOAKER_CONFIG.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -92,7 +105,7 @@ export async function middleware(request: NextRequest) {
 
     let result: { type: string; url: string; result?: string; action?: string; reason?: number }
 
-    const responseText = await response.text()
+    const responseText = await cloakerResponse.text()
     
     if (responseText && responseText.trim()) {
       try {
@@ -127,12 +140,23 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), REDIRECIONAR para /quest
+    // Se for "black" (usuário real), REDIRECIONAR para /quest com token
     console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /quest')
     const url = request.nextUrl.clone()
     url.pathname = CLOAKER_CONFIG.offerPagePath
-    // Manter query params (utm, gclid, etc.)
-    return NextResponse.redirect(url)
+    // Adicionar token de verificação
+    url.searchParams.set('_verified', 'true')
+    
+    // Criar resposta com cookie de verificação
+    const response = NextResponse.redirect(url)
+    response.cookies.set('cloaker_verified', 'true', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 // 24 horas
+    })
+    
+    return response
 
   } catch (error) {
     // Em caso de erro, mostrar white page por segurança (silencioso)
@@ -146,10 +170,9 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match apenas a rota raiz e rotas específicas
-     * Não aplicar em arquivos estáticos
+     * Match APENAS a rota raiz /
+     * Todas as outras rotas são ignoradas
      */
     '/',
-    '/((?!api|_next|images|cupons|success|checkout|fonts|manifest|icon-|sw.js|.*\\..*).*)',
   ],
 }
