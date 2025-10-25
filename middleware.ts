@@ -170,9 +170,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match APENAS a rota raiz /
+     * Match APENAS a rota raiz / e /quest
      * Todas as outras rotas são ignoradas
      */
     '/',
+    '/quest/:path*',
   ],
 }
