@@ -13,11 +13,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { trackNewLead } from '@/lib/cloaker-tracking';
 
 export default function HomePage() {
-  // 🛡️ Verificar se foi redirecionado pelo cloaker (não renderizar se for bot)
-  if (typeof window !== 'undefined' && window.location.pathname === '/cupons') {
-    return null
-  }
-
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)
   const [showLeadMessage, setShowLeadMessage] = useState(false)
@@ -131,6 +126,15 @@ export default function HomePage() {
   
   // Evitar problemas de hidratação
   useEffect(() => {
+    // 🛡️ Verificar se o cloaker redirecionou para cupons (detectar pelo conteúdo)
+    if (typeof window !== 'undefined') {
+      const isCuponsPage = document.querySelector('meta[name="page-type"]')?.getAttribute('content') === 'cupons'
+      if (isCuponsPage) {
+        console.log('[HomePage] Página de cupons detectada - não renderizar')
+        return
+      }
+    }
+    
     setMounted(true)
     
     // 🎯 Cloaker: Rastrear novo lead ao acessar a página

@@ -4,6 +4,7 @@ export default function CuponsPage() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="page-type" content="cupons" />
         <title>Recarga Cupom — Cupons e Dicas Free Fire</title>
         <meta name="description" content="Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire. Consulte validade e condições antes de usar." />
         <meta name="robots" content="index,follow" />
