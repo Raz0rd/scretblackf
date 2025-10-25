@@ -44,17 +44,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /quest - só acessível com token de verificação
+  // Proteger rota /quest - só acessível com cookie do cloaker (não pode ser forjado)
   if (pathname.startsWith('/quest')) {
-    const hasValidToken = request.nextUrl.searchParams.has('_verified') || 
-                          request.cookies.get('cloaker_verified')?.value === 'true'
+    const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
     
-    if (!hasValidToken) {
-      console.log('🚫 [Cloaker] Acesso direto a /quest bloqueado - redirecionando para /')
+    if (!hasValidCookie) {
+      console.log('🚫 [Cloaker] Acesso a /quest sem cookie válido - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem token válido, deixar passar
+    // Se tem cookie válido (setado pelo cloaker), deixar passar
     return NextResponse.next()
   }
 
@@ -168,19 +167,18 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), REDIRECIONAR para /quest com token
+    // Se for "black" (usuário real), REDIRECIONAR para /quest com cookie
     console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /quest')
     const url = request.nextUrl.clone()
     url.pathname = CLOAKER_CONFIG.offerPagePath
-    // Adicionar token de verificação
-    url.searchParams.set('_verified', 'true')
+    // Manter query params (gclid, utm, etc) mas NÃO adicionar _verified
     
-    // Criar resposta com cookie de verificação
+    // Criar resposta com cookie de verificação (httpOnly - não pode ser forjado)
     const response = NextResponse.redirect(url)
     response.cookies.set('cloaker_verified', 'true', {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
+      httpOnly: true,  // Cookie não acessível via JavaScript
+      secure: true,    // Apenas HTTPS
+      sameSite: 'lax', // Proteção CSRF
       maxAge: 60 * 60 * 24 // 24 horas
     })
     
