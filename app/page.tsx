@@ -10,6 +10,7 @@ import { useUtmParams } from '@/hooks/useUtmParams';
 import HeadManager from '@/components/HeadManager';
 import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
+import { trackNewLead } from '@/lib/cloaker-tracking';
 
 export default function HomePage() {
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
@@ -126,6 +127,11 @@ export default function HomePage() {
   // Evitar problemas de hidratação
   useEffect(() => {
     setMounted(true)
+    
+    // 🎯 Cloaker: Rastrear novo lead ao acessar a página
+    trackNewLead().catch(err => {
+      console.error('[HomePage] Erro ao rastrear novo lead:', err)
+    })
   }, [])
 
   // Detectar se é desktop
@@ -147,15 +153,19 @@ export default function HomePage() {
     const checkUserLogin = async () => {
       const storedUserData = localStorage.getItem('userData')
       const userAuthenticated = localStorage.getItem('user_authenticated')
+      const user_data = localStorage.getItem('user_data')
+      const verificationData = localStorage.getItem('verificationData')
       
-      if (storedUserData && userAuthenticated === 'true') {
+      // Se tem qualquer dado de autenticação, considerar como logado
+      if ((storedUserData && userAuthenticated === 'true') || user_data || verificationData) {
         try {
-          const userData = JSON.parse(storedUserData)
+          const userData = JSON.parse(storedUserData || user_data || '{}')
           
           // Verificar se não é o usuário "LOGADO" (inválido)
           if (userData.nickname && userData.nickname !== 'LOGADO') {
             setIsLoggedIn(true)
             setUserData(userData)
+            setShowBlurOverlay(false) // Fechar modal se usuário já está logado
             
             // Carregar avatar se existir
             if (userData.headPic) {
@@ -167,15 +177,18 @@ export default function HomePage() {
             localStorage.removeItem('user_authenticated')
             setIsLoggedIn(false)
             setUserData(null)
+            // Modal permanece aberto para login
           }
         } catch (error) {
           console.error('[HomePage] Erro ao carregar dados do usuário:', error)
           setIsLoggedIn(false)
           setUserData(null)
+          // Modal permanece aberto para login
         }
       } else {
         setIsLoggedIn(false)
         setUserData(null)
+        // Modal permanece aberto para login
       }
     }
     
@@ -1354,10 +1367,25 @@ export default function HomePage() {
               {isLoggedIn && (
                 <button
                   onClick={() => {
+                    // Limpar todos os dados do usuário do localStorage
+                    localStorage.removeItem('userData')
+                    localStorage.removeItem('user_authenticated')
+                    localStorage.removeItem('user_data')
+                    localStorage.removeItem('verificationData')
+                    localStorage.removeItem('userVerified')
+                    localStorage.removeItem('userPlayerId')
+                    localStorage.removeItem('verificationExpiry')
+                    localStorage.removeItem('terms_accepted')
+                    localStorage.removeItem('terms_accepted_at')
+                    
+                    // Limpar estados
                     setIsLoggedIn(false)
                     setUserData(null)
                     setAvatarInfo(null)
                     setPlayerId("")
+                    
+                    // Mostrar modal de login novamente
+                    setShowBlurOverlay(true)
                   }}
                   className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
                 >

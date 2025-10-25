@@ -30,7 +30,6 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
 
     // Timeout de segurança para evitar loading infinito
     const safetyTimeout = setTimeout(() => {
-      console.warn('[VerificationWrapper] Timeout de segurança ativado')
       setIsLoading(false)
       setIsVerified(true)
     }, 3000) // 3 segundos
@@ -50,7 +49,6 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
       setIsLoading(false)
       clearTimeout(safetyTimeout)
     } catch (error) {
-      console.error('[VerificationWrapper] Erro:', error)
       setIsLoading(false)
       setIsVerified(true)
       clearTimeout(safetyTimeout)
@@ -62,60 +60,75 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
   // Função para verificar se o usuário tem verificação válida
   const checkUserVerification = (): boolean => {
     try {
-      const userVerified = localStorage.getItem('userVerified')
-      const userPlayerId = localStorage.getItem('userPlayerId')
-      const userData = localStorage.getItem('userData')
-      const verificationData = localStorage.getItem('verificationData')
-      const verificationExpiry = localStorage.getItem('verificationExpiry')
       const userAuthenticated = localStorage.getItem('user_authenticated')
+      const userData = localStorage.getItem('userData')
+      const user_data = localStorage.getItem('user_data')
+      const verificationData = localStorage.getItem('verificationData')
 
-      // Verificações obrigatórias
-      if (!userVerified || userVerified !== 'true') {
-        return false
+      // Verificação simplificada: se tem user_authenticated = true, está logado
+      if (userAuthenticated === 'true') {
+        return true
       }
 
-      if (!userPlayerId || !userData || !verificationData) {
-        return false
-      }
-
-      if (!userAuthenticated || userAuthenticated !== 'true') {
-        return false
-      }
-
-      // Verificar expiração
-      if (verificationExpiry) {
-        const expiryTime = parseInt(verificationExpiry)
-        if (Date.now() > expiryTime) {
-          clearVerificationData()
-          return false
+      // Verificação alternativa: se tem userData ou user_data, está logado
+      if (userData || user_data) {
+        try {
+          const data = JSON.parse(userData || user_data || '{}')
+          // Se tem dados válidos, considerar como logado
+          if (data && (data.nickname || data.name || data.playerId)) {
+            return true
+          }
+        } catch (e) {
+          // Se erro ao parsear, continuar verificação
         }
       }
 
-      // Validar dados de verificação
-      const verification = JSON.parse(verificationData)
-      if (!verification.verified || !verification.playerId || !verification.verifiedAt) {
+      // Verificação completa (para compatibilidade com sistema antigo)
+      const userVerified = localStorage.getItem('userVerified')
+      const userPlayerId = localStorage.getItem('userPlayerId')
+      const verificationExpiry = localStorage.getItem('verificationExpiry')
+
+      // Se não tem nenhum dado de autenticação, não está logado
+      if (!userVerified && !userAuthenticated && !userData && !user_data) {
         return false
       }
 
-      // Verificar idade da verificação
-      const timeSinceVerification = Date.now() - verification.verifiedAt
-      const maxAge = 24 * 60 * 60 * 1000 // 24h em milliseconds
-      
-      if (timeSinceVerification > maxAge) {
-        clearVerificationData()
-        return false
+      // Se tem userVerified, fazer verificações adicionais
+      if (userVerified === 'true') {
+        // Verificar expiração se existir
+        if (verificationExpiry) {
+          const expiryTime = parseInt(verificationExpiry)
+          if (Date.now() > expiryTime) {
+            clearVerificationData()
+            return false
+          }
+        }
+
+        // Validar dados de verificação se existirem
+        if (verificationData) {
+          try {
+            const verification = JSON.parse(verificationData)
+            if (verification.verified && verification.verifiedAt) {
+              // Verificar idade da verificação
+              const timeSinceVerification = Date.now() - verification.verifiedAt
+              const maxAge = 24 * 60 * 60 * 1000 // 24h em milliseconds
+              
+              if (timeSinceVerification > maxAge) {
+                clearVerificationData()
+                return false
+              }
+            }
+          } catch (e) {
+            // Se erro ao parsear, ignorar e continuar
+          }
+        }
+
+        return true
       }
 
-      // Validar dados do usuário
-      const gameData = JSON.parse(userData)
-      if (!gameData.nickname || gameData.nickname === 'LOGADO') {
-        return false
-      }
-
-      return true
+      return false
     } catch (error) {
-      console.error('[Verification] Erro na verificação:', error)
-      clearVerificationData()
+      // Em caso de erro, não limpar dados - apenas retornar false
       return false
     }
   }

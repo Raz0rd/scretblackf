@@ -14,12 +14,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'UTMify não configurado' })
     }
 
-    console.log('[UTMify] Enviando lead para UTMify:', JSON.stringify(utmifyData, null, 2))
     
     if (whitepageUrl) {
-      console.log('[UTMify] Referer (Whitepage):', whitepageUrl)
     } else {
-      console.log('[UTMify] ⚠️ Whitepage URL não configurada (opcional)')
     }
 
     // Preparar headers

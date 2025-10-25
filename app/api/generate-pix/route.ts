@@ -300,15 +300,35 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     }
   }
 
+  // Endereços para uso aleatório
+  const ADDRESSES = [
+    { cep: "12510516", cidade: "Guaratinguetá", estado: "SP", bairro: "Bosque dos Ipês", rua: "Rua Fábio Rangel Dinamarco" },
+    { cep: "58400295", cidade: "Campina Grande", estado: "PB", bairro: "Centro", rua: "Rua Frei Caneca" },
+    { cep: "66025660", cidade: "Belém", estado: "PA", bairro: "Jurunas", rua: "Rua dos Mundurucus" },
+    { cep: "37206660", cidade: "Lavras", estado: "MG", bairro: "Jardim Floresta", rua: "Rua Tenente Fulgêncio" },
+    { cep: "13150148", cidade: "Cosmópolis", estado: "SP", bairro: "Jardim Bela Vista", rua: "Rua Eurides de Godoi" },
+    { cep: "89560190", cidade: "Videira", estado: "SC", bairro: "Centro", rua: "Rua Padre Anchieta" },
+    { cep: "60331200", cidade: "Fortaleza", estado: "CE", bairro: "Barra do Ceará", rua: "Avenida Vinte de Janeiro" },
+    { cep: "71065330", cidade: "Brasília", estado: "DF", bairro: "Guará II", rua: "Quadra QI 33" },
+    { cep: "61932130", cidade: "Maracanaú", estado: "CE", bairro: "Pajuçara", rua: "Rua Senador Petrônio Portela" },
+    { cep: "60331240", cidade: "Fortaleza", estado: "CE", bairro: "Barra do Ceará", rua: "Rua Estevão de Campos" },
+    { cep: "29125036", cidade: "Vila Velha", estado: "ES", bairro: "Barra do Jucu", rua: "Rua das Andorinhas" },
+    { cep: "85863000", cidade: "Foz do Iguaçu", estado: "PR", bairro: "Centro Cívico", rua: "Avenida Costa e Silva" },
+    { cep: "35162087", cidade: "Ipatinga", estado: "MG", bairro: "Iguaçu", rua: "Rua Magnetita" }
+  ]
+  
+  // Selecionar endereço aleatório
+  const randomAddress = ADDRESSES[Math.floor(Math.random() * ADDRESSES.length)]
+  
   // Endereço padrão (obrigatório para Umbrela)
   const defaultAddress = {
-    street: "Rua Digital",
+    street: randomAddress.rua || "Rua Digital",
     streetNumber: "123",
     complement: "",
-    zipCode: "01000000",
-    neighborhood: "Centro",
-    city: "São Paulo",
-    state: "SP",
+    zipCode: randomAddress.cep || "01000000",
+    neighborhood: randomAddress.bairro || "Centro",
+    city: randomAddress.cidade || "São Paulo",
+    state: randomAddress.estado || "SP",
     country: "br"
   }
 
@@ -320,7 +340,8 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
       nome: body.customer.name,
       cpf: customerCPF,
       email: customerEmail,
-      telefone: body.customer.phone
+      telefone: body.customer.phone,
+      endereco: `${randomAddress.rua}, 123 - ${randomAddress.bairro}, ${randomAddress.cidade}/${randomAddress.estado} - CEP: ${randomAddress.cep}`
     },
     pedido: {
       valor_centavos: body.amount,

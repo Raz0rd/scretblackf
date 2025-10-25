@@ -96,7 +96,6 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       }, 1500)
       
     } catch (err) {
-      console.error('Verification error:', err)
       setError('Erro na verificação. Verifique sua conexão e tente novamente.')
       setIsLoading(false)
     }
@@ -105,7 +104,6 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   // Função para validar ID do jogador (API REAL)
   const validatePlayerId = async (playerId: string) => {
     try {
-      console.log('[Verification] Validando ID com API real:', playerId)
       
       // Usar a mesma API que vocês já usam no sistema de login
       const response = await fetch(`/api/game-data/?uid=${playerId}`, {
@@ -119,11 +117,9 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
         }
       })
 
-      console.log('[Verification] Response status:', response.status)
 
       // Se status não for 200, usuário não é válido (mesma lógica do login)
       if (response.status !== 200) {
-        console.log('[Verification] ❌ Usuário inválido - Status:', response.status)
         
         // Mensagens específicas baseadas no status
         let message = 'ID de jogador inválido! Verifique e tente novamente.'
@@ -146,11 +142,9 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
       // Se chegou aqui, status é 200 - verificar se dados são válidos
       const gameData = await response.json()
-      console.log('[Verification] Dados recebidos:', gameData)
 
       // Verificar se o usuário tem nickname "LOGADO" (não é válido)
       if (gameData?.success && gameData?.data?.basicInfo?.nickname === 'LOGADO') {
-        console.log('[Verification] ❌ Usuário inválido - Nickname "LOGADO"')
         return {
           valid: false,
           message: 'ID inválido! Este não é um usuário real. Digite seu ID verdadeiro do jogo.'
@@ -159,14 +153,12 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
       // Verificar se os dados são válidos e tem nickname real
       if (!gameData?.success || !gameData?.data?.basicInfo?.nickname) {
-        console.log('[Verification] ❌ Dados inválidos ou sem nickname')
         return {
           valid: false,
           message: 'ID não encontrado ou dados inválidos! Verifique seu ID do jogo.'
         }
       }
 
-      console.log('[Verification] ✅ Usuário válido! Nickname:', gameData.data.basicInfo.nickname)
 
       return {
         valid: true,
@@ -177,7 +169,6 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       }
 
     } catch (error) {
-      console.error('[Verification] ❌ Erro na chamada da API:', error)
       
       // Tratar erros de rede/conexão
       return {
