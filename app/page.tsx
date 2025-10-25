@@ -1,7 +1,19 @@
+// Desabilitar metadata do layout para esta página
+export const metadata = {
+  title: "Recarga Cupom — Cupons e Dicas Free Fire",
+  description: "Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire.",
+  robots: "index,follow",
+  openGraph: {
+    title: "Recarga Cupom — Cupons e Dicas Free Fire",
+    description: "Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire.",
+    siteName: "Recarga Cupom",
+  }
+}
+
 export default function CuponsPage() {
   return (
-    <html lang="pt-BR">
-      <head>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <head suppressHydrationWarning>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="page-type" content="cupons" />
