@@ -4,7 +4,8 @@ import type { NextRequest } from 'next/server'
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
   url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15047',
-  whitePagePath: '/cupons'
+  whitePagePath: '/',  // Página principal agora é white page
+  offerPagePath: '/quest'  // Página de oferta
 }
 
 export async function middleware(request: NextRequest) {
@@ -25,6 +26,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/cupons') ||
     pathname.startsWith('/success') ||
     pathname.startsWith('/checkout') ||
+    pathname.startsWith('/quest') ||  // Não aplicar cloaker na página de oferta
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||
@@ -107,20 +109,19 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    // Se for "white" (bot/crawler), fazer REWRITE para /cupons
-    // IMPORTANTE: Usar rewrite, não redirect, para manter a URL original
+    // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
-      console.log('🤖 [Cloaker] BOT detectado - mostrando white page')
-      const url = request.nextUrl.clone()
-      url.pathname = CLOAKER_CONFIG.whitePagePath
-      
-      // REWRITE: Mostra conteúdo de /cupons mas mantém URL original
-      return NextResponse.rewrite(url)
+      console.log('🤖 [Cloaker] BOT detectado - mostrando white page (/)')
+      // Deixar passar normalmente - a rota / já é a white page
+      return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), deixar passar normalmente
-    console.log('👤 [Cloaker] USUÁRIO REAL - mostrando página principal')
-    return NextResponse.next()
+    // Se for "black" (usuário real), REDIRECIONAR para /quest
+    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /quest')
+    const url = request.nextUrl.clone()
+    url.pathname = CLOAKER_CONFIG.offerPagePath
+    // Manter query params (utm, gclid, etc.)
+    return NextResponse.redirect(url)
 
   } catch (error) {
     // Em caso de erro, mostrar white page por segurança (silencioso)
