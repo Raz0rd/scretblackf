@@ -58,7 +58,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Não aplicar cloaker nas rotas internas e arquivos estáticos
+  // Não aplicar cloaker nas rotas internas e arquivos estáticos (deixar passar)
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next/') ||
@@ -82,9 +82,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Aplicar cloaker apenas na rota raiz
+  // Se não for rota raiz (/), redirecionar para / (white page)
+  // Isso captura TODAS as rotas inválidas
   if (pathname !== '/') {
-    return NextResponse.next()
+    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para / (white page)`)
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   try {
