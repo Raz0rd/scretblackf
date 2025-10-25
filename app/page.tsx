@@ -8,6 +8,18 @@ export default function CuponsPage() {
         <title>Recarga Cupom — Cupons e Dicas Free Fire</title>
         <meta name="description" content="Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire. Consulte validade e condições antes de usar." />
         <meta name="robots" content="index,follow" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Recarga Cupom — Cupons e Dicas Free Fire" />
+        <meta property="og:description" content="Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire. Consulte validade e condições antes de usar." />
+        <meta property="og:site_name" content="Recarga Cupom" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Recarga Cupom — Cupons e Dicas Free Fire" />
+        <meta name="twitter:description" content="Recarga Cupom — cupons válidos e dicas seguras para conseguir diamantes no Free Fire." />
+        
         <link rel="icon" href="data:,RC" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
