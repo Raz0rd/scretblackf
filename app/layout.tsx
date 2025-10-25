@@ -7,7 +7,6 @@ import ClickTracker from "@/components/ClickTracker"
 import PWAInstaller from "@/components/PWAInstaller"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
-import CloakerCheck from "@/components/CloakerCheck"
 
 export const metadata: Metadata = {
   title: "Recarga Free Fire, Delta Force, Haikyu - Site Oficial de Diamantes",
@@ -118,7 +117,6 @@ export default function RootLayout({
         <HeadManager />
         <DynamicTheme />
         <PWAInstaller />
-        <CloakerCheck />
         <VerificationWrapper>
           <ClickTracker>
             <Suspense fallback={null}>{children}</Suspense>
