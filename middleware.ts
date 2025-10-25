@@ -17,16 +17,32 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Não aplicar cloaker nas rotas internas
+  // Não aplicar cloaker nas rotas internas e arquivos estáticos
   if (
     pathname.startsWith('/api') ||
-    pathname.startsWith('/_next') ||
+    pathname.startsWith('/_next/') ||
     pathname.startsWith('/images') ||
     pathname.startsWith('/cupons') ||
     pathname.startsWith('/success') ||
     pathname.startsWith('/checkout') ||
-    pathname.includes('.')
+    pathname.startsWith('/fonts') ||
+    pathname.startsWith('/manifest') ||
+    pathname.startsWith('/icon-') ||
+    pathname.startsWith('/sw.js') ||
+    pathname.includes('.js') ||
+    pathname.includes('.css') ||
+    pathname.includes('.png') ||
+    pathname.includes('.jpg') ||
+    pathname.includes('.ico') ||
+    pathname.includes('.woff') ||
+    pathname.includes('.woff2') ||
+    pathname.includes('.json')
   ) {
+    return NextResponse.next()
+  }
+
+  // Aplicar cloaker apenas na rota raiz
+  if (pathname !== '/') {
     return NextResponse.next()
   }
 
@@ -90,9 +106,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
 
   } catch (error) {
-    console.error('[Cloaker Middleware] Erro:', error)
-    
-    // Em caso de erro, mostrar white page por segurança
+    // Em caso de erro, mostrar white page por segurança (silencioso)
     const url = request.nextUrl.clone()
     url.pathname = CLOAKER_CONFIG.whitePagePath
     return NextResponse.rewrite(url)
@@ -103,15 +117,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - images (public images)
-     * - cupons (white page)
-     * - success, checkout (páginas internas)
+     * Match apenas a rota raiz e rotas específicas
+     * Não aplicar em arquivos estáticos
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|images|cupons|success|checkout).*)',
+    '/',
+    '/((?!api|_next|images|cupons|success|checkout|fonts|manifest|icon-|sw.js|.*\\..*).*)',
   ],
 }
