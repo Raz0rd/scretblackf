@@ -12,16 +12,20 @@ export default function PWAInstaller() {
   useEffect(() => {
     if (!mounted) return
 
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then(() => {
-          // Service Worker registrado
-        })
-        .catch(() => {
-          // Erro ao registrar Service Worker
-        })
-    }
+    // SERVICE WORKER DESATIVADO
+    // Estava causando bloqueios no cloaker (reason: 13 - referer inválido)
+    // O SW fazia requisições com referer "sw.js" que eram bloqueadas pelo AlterCPA
+    
+    // if ("serviceWorker" in navigator) {
+    //   navigator.serviceWorker
+    //     .register("/sw.js")
+    //     .then(() => {
+    //       // Service Worker registrado
+    //     })
+    //     .catch(() => {
+    //       // Erro ao registrar Service Worker
+    //     })
+    // }
   }, [mounted])
 
   return null
