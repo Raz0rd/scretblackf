@@ -1089,11 +1089,6 @@ export default function CheckoutPage() {
                         )}
                       </div>
 
-                      {/* Informações da empresa */}
-                      <div className="text-center text-gray-500 text-sm mb-4">
-                        VENDAS ONLINE STORE LTDA<br/>
-                        CNPJ: 27.945.891/0001-05
-                      </div>
 
                       {/* Código PIX */}
                       <div className="mb-4 mt-3 select-all break-words rounded-md bg-gray-100 p-4 text-sm text-gray-800">
@@ -1156,8 +1151,7 @@ export default function CheckoutPage() {
                           <li>Utilize as informações acima para realizar o pagamento.</li>
                           <li>Revise as informações e pronto!</li>
                         </ol>
-                        <p>Seu pedido está sendo processado pela VENDAS ONLINE STORE LTDA.</p>
-                        <p>Você receberá seus {config.coinName.toLowerCase()} após recebermos a confirmação do pagamento. Isso ocorre geralmente em alguns minutos após a realização do pagamento na sua instituição financeira.</p>
+                                                <p>Você receberá seus {config.coinName.toLowerCase()} após recebermos a confirmação do pagamento. Isso ocorre geralmente em alguns minutos após a realização do pagamento na sua instituição financeira.</p>
                         <p>Em caso de dúvidas entre em contato com o suporte.</p>
                       </div>
                     </>
