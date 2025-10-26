@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
     '/cupons',
     '/checkout',
     '/success',
-    '/x9f2w8k5',
+    '/analytics',
     '/api',
     '/_next',
     '/images',
