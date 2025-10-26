@@ -174,14 +174,6 @@ export default function HeadManager() {
       const gtagFunctions = document.createElement('script');
       gtagFunctions.id = 'google-gtag-functions';
       gtagFunctions.innerHTML = `
-        // Função para conversão: Iniciar Checkout (QR Code gerado)
-        window.gtag_report_conversion_checkout = function() {
-          gtag('event', 'conversion', {
-            'send_to': 'AW-17554136774/8pfZCPegsKobEMa9u7JB'
-          });
-          return false;
-        };
-
         // Função para conversão: Compra (Pagamento confirmado)
         window.gtag_report_conversion_purchase = function(transactionId, value) {
           gtag('event', 'conversion', {

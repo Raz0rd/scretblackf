@@ -29,35 +29,6 @@ function isGoogleAdsEnabled(): boolean {
 }
 
 /**
- * Disparar conversão quando QR Code PIX é gerado
- * Evento: "Iniciar finalização de compra"
- */
-export function trackCheckoutInitiated() {
-  if (!isGoogleAdsEnabled()) {
-    console.log('[Google Ads] Tracking desabilitado ou gtag não disponível');
-    return;
-  }
-
-  try {
-    // Pegar ID de conversão do .env ou usar padrão
-    const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17554136774';
-    const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_INITCHECKOUT || '8pfZCPegsKobEMa9u7JB';
-    const conversionId = `${googleAdsId}/${conversionLabel}`;
-    
-    console.log('[Google Ads] 🎯 Disparando conversão: Iniciar Checkout');
-    console.log('[Google Ads] Conversion ID:', conversionId);
-    
-    window.gtag!('event', 'conversion', {
-      'send_to': conversionId
-    });
-    
-    console.log('[Google Ads] ✅ Conversão "Iniciar Checkout" enviada com sucesso');
-  } catch (error) {
-    console.error('[Google Ads] ❌ Erro ao disparar conversão de checkout:', error);
-  }
-}
-
-/**
  * Disparar conversão quando pagamento é confirmado (status PAID)
  * Evento: "Compra"
  * 

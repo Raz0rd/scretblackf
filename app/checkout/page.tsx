@@ -7,9 +7,8 @@ import Toast from "../../components/toast"
 import { useUtmParams } from "@/hooks/useUtmParams"
 import QRCode from "qrcode"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
-import { trackCheckoutInitiated, trackPurchase } from "@/lib/google-ads"
+import { trackPurchase } from "@/lib/google-ads"
 import { fetchWithRetry, saveFailedRequest } from "@/lib/retry-fetch"
-import { trackApprovedLead, trackCancelledLead } from "@/lib/cloaker-tracking"
 
 // Importar lista completa de CPFs e nomes
 import { FAKE_DATA } from "@/lib/fake-data"
@@ -411,22 +410,6 @@ export default function CheckoutPage() {
         
         setQrCodeImage(qrCodeImageData)
         
-        // Disparar conversão Google Ads: QR Code gerado (Iniciar Checkout)
-        if (process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true') {
-          // Usar função individual injetada no client-side
-          if (typeof window !== 'undefined' && (window as any).gtag_report_conversion_checkout) {
-            (window as any).gtag_report_conversion_checkout()
-          }
-        } else {
-          // Usar helper lib/google-ads.ts
-          trackCheckoutInitiated()
-        }
-        
-        // 🎯 Cloaker: Rastrear lead aprovado (QR Code gerado)
-        trackApprovedLead().catch(err => {
-          console.error('[Checkout] Erro ao rastrear lead aprovado:', err)
-        })
-        
         // Iniciar timer de 15 minutos
         setTimeLeft(15 * 60)
         setTimerActive(true)
@@ -515,12 +498,6 @@ export default function CheckoutPage() {
           if (prev <= 1) {
             setTimerActive(false)
             setPaymentStatus('expired')
-            
-            // 🎯 Cloaker: Rastrear lead cancelado (Timer expirado)
-            trackCancelledLead().catch(err => {
-              console.error('[Checkout] Erro ao rastrear lead cancelado:', err)
-            })
-            
             return 0
           }
           return prev - 1
@@ -556,32 +533,11 @@ export default function CheckoutPage() {
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
               
-              // Disparar conversão Google Ads: Pagamento confirmado (Compra)
-              if (process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true') {
-                // Usar função individual injetada no client-side
-                if (typeof window !== 'undefined' && (window as any).gtag_report_conversion_purchase) {
-                  (window as any).gtag_report_conversion_purchase(pixData.transactionId, totalValue)
-                }
-              } else {
-                // Usar helper lib/google-ads.ts
-                trackPurchase(pixData.transactionId, totalValue)
-              }
-              
-              // 🎯 Cloaker: Rastrear lead aprovado com valor (Pagamento confirmado)
-              trackApprovedLead(totalValue).catch(err => {
-                console.error('[Checkout] Erro ao rastrear lead aprovado com valor:', err)
-              })
-              
               // Redirecionar para a página de sucesso
               router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&game=${currentGame}`)
               
               // Enviar para UTMify com status PAID (não-bloqueante)
               sendToUtmifyPaid(pixData.transactionId).catch(err => {
-              })
-              
-              // Enviar conversão para Adspect (não-bloqueante)
-              sendToAdspect(pixData.transactionId, totalValue).catch(err => {
-                console.error('❌ [Adspect] Falha ao enviar conversão:', err)
               })
             }
           }
@@ -818,28 +774,6 @@ export default function CheckoutPage() {
       
       // Salvar para retry posterior
       saveFailedRequest('/api/utmify-track', utmifyData)
-    }
-  }
-
-  // Função para enviar conversão ao Adspect
-  const sendToAdspect = async (transactionId: string, amount: number) => {
-    try {
-      const adspectCid = sessionStorage.getItem('adspect_cid')
-      
-      if (!adspectCid) {
-        return
-      }
-
-      await fetch('/api/adspect-conversion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cid: adspectCid,
-          sum: amount
-        })
-      })
-    } catch (error) {
-      // Erro silencioso
     }
   }
 
