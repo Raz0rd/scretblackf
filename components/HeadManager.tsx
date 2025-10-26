@@ -18,9 +18,6 @@ export default function HeadManager() {
 
   useEffect(() => {
     setMounted(true);
-    if (isDevelopment) {
-      console.log('🔧 [DEV MODE] Todos os scripts de tracking estão DESABILITADOS no desenvolvimento');
-    }
   }, [isDevelopment]);
 
   useEffect(() => {
@@ -42,8 +39,6 @@ export default function HeadManager() {
           const ratoeiraEnabled = process.env.NEXT_PUBLIC_RATOEIRA_ENABLED === 'true';
           if (ratoeiraEnabled && !isDevelopment) {
             loadTrackingScripts();
-          } else if (isDevelopment) {
-            console.log('🔧 [DEV] Ratoeira ADS desabilitado no modo desenvolvimento');
           }
         }
       } catch (error) {
@@ -81,7 +76,6 @@ export default function HeadManager() {
     
     // Desabilitar no desenvolvimento
     if (isDevelopment) {
-      console.log('🔧 [DEV] UTMify desabilitado no modo desenvolvimento');
       return;
     }
     
@@ -145,7 +139,6 @@ export default function HeadManager() {
 
     // Desabilitar no desenvolvimento
     if (isDevelopment) {
-      console.log('🔧 [DEV] Google Ads desabilitado no modo desenvolvimento');
       return;
     }
 
@@ -183,31 +176,24 @@ export default function HeadManager() {
       gtagFunctions.innerHTML = `
         // Função para conversão: Iniciar Checkout (QR Code gerado)
         window.gtag_report_conversion_checkout = function() {
-          console.log('[Google Ads] 🎯 Disparando conversão: Iniciar Checkout');
           gtag('event', 'conversion', {
             'send_to': 'AW-17554136774/8pfZCPegsKobEMa9u7JB'
           });
-          console.log('[Google Ads] ✅ Conversão "Iniciar Checkout" enviada');
           return false;
         };
 
         // Função para conversão: Compra (Pagamento confirmado)
         window.gtag_report_conversion_purchase = function(transactionId, value) {
-          console.log('[Google Ads] 🎯 Disparando conversão: Compra');
-          console.log('[Google Ads] Transaction ID:', transactionId);
-          console.log('[Google Ads] Valor: R$', value);
           gtag('event', 'conversion', {
             'send_to': 'AW-17554136774/S9KKCL7Qo6obEMa9u7JB',
             'value': value || 1.0,
             'currency': 'BRL',
             'transaction_id': transactionId || ''
           });
-          console.log('[Google Ads] ✅ Conversão "Compra" enviada');
           return false;
         };
       `;
       document.head.appendChild(gtagFunctions);
-      console.log('[Google Ads] ✅ Funções gtag_report_conversion injetadas no client-side');
     }
 
     // Cleanup
@@ -249,8 +235,6 @@ export default function HeadManager() {
       meta.setAttribute('data-seo', 'true');
       document.head.appendChild(meta);
     });
-
-    console.log('✅ [SEO] Meta tags injetadas no DOM');
 
     // Cleanup
     return () => {
