@@ -165,6 +165,7 @@ export async function middleware(request: NextRequest) {
     console.log('🔍 [Cloaker] Verificando acesso:', {
       ip: serverData.HTTP_CF_CONNECTING_IP || serverData.REMOTE_ADDR,
       userAgent: serverData.HTTP_USER_AGENT,
+      referer: serverData.HTTP_REFERER || 'direct',
       queryString: serverData.QUERY_STRING,
       url: request.nextUrl.pathname + request.nextUrl.search
     })
@@ -194,7 +195,8 @@ export async function middleware(request: NextRequest) {
           result: result.result,
           action: result.action,
           reason: result.reason,
-          url: result.url
+          url: result.url,
+          referer: serverData.HTTP_REFERER || 'direct'
         })
       } catch (e) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
