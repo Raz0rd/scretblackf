@@ -65,15 +65,35 @@ export async function middleware(request: NextRequest) {
   
   if (refererCheckActive && pathname === '/') {
     const referer = request.headers.get('referer') || ''
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
+    const userAgent = request.headers.get('user-agent') || ''
     
     // Se não tem referer, mostrar white page (status 200)
     if (!referer) {
-      console.log('🚫 [Referer Check] Acesso sem referer - mostrando white page')
+      console.log('🚫 [Referer Check] BLOQUEADO - Sem referer:', {
+        ip,
+        userAgent: userAgent.slice(0, 50),
+        url: pathname + request.nextUrl.search,
+        acao: 'Mostrando white page (status 200)'
+      })
       // Deixa passar normalmente para a rota / (que já é white page)
       return NextResponse.next()
     }
     
-    console.log('✅ [Referer Check] Tem referer - prosseguindo para cloaker:', referer)
+    // Tem referer, verificar se é do Google/Facebook/etc
+    const refererLower = referer.toLowerCase()
+    const isFromAds = refererLower.includes('google') || 
+                      refererLower.includes('facebook') || 
+                      refererLower.includes('instagram') ||
+                      refererLower.includes('tiktok')
+    
+    console.log('✅ [Referer Check] LIBERADO - Com referer:', {
+      ip,
+      referer: referer.slice(0, 100),
+      isFromAds: isFromAds ? 'SIM (Google/FB/etc)' : 'NÃO',
+      url: pathname + request.nextUrl.search,
+      acao: 'Prosseguindo para cloaker'
+    })
   }
 
   // Lista de rotas válidas (além de /, /quest e rotas internas)
