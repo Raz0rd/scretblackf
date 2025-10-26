@@ -57,6 +57,32 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Proteger rota /success - mas permitir Google Ads Bot
+  if (pathname.startsWith('/success')) {
+    const userAgent = request.headers.get('user-agent') || ''
+    const url = request.nextUrl
+    const hasTransactionId = url.searchParams.has('transactionId')
+    const hasAmount = url.searchParams.has('amount')
+    
+    // Detectar bots do Google (Googlebot, AdsBot, etc)
+    const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
+    
+    // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
+    if (isGoogleBot) {
+      console.log('🤖 [Success] Google Bot detectado - permitindo acesso')
+      return NextResponse.next()
+    }
+    
+    // Se não é bot e não tem parâmetros, redirecionar para white page
+    if (!hasTransactionId || !hasAmount) {
+      console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    
+    // Se tem parâmetros válidos (usuário real vindo do checkout), deixar passar
+    return NextResponse.next()
+  }
+
   // Não aplicar cloaker nas rotas internas e arquivos estáticos (deixar passar)
   if (
     pathname.startsWith('/api') ||

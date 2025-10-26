@@ -39,15 +39,29 @@ export default function SuccessPage() {
   }, [])
   
   useEffect(() => {
-    // Se não tem transactionId, redireciona para a home
-    if (!transactionId) {
-      router.push('/')
-      return
+    // Enviar conversão para Google Ads se tiver dados válidos
+    // Google Bot pode acessar sem parâmetros, então tentamos enviar se existir
+    if (transactionId && amount) {
+      try {
+        const amountValue = parseFloat(amount)
+        if (amountValue > 0) {
+          trackPurchase(transactionId, amountValue / 100) // Converter de centavos para reais
+          console.log('[Success] ✅ Conversão Google Ads enviada:', { transactionId, amount: amountValue / 100 })
+        }
+      } catch (error) {
+        console.error('[Success] ❌ Erro ao enviar conversão:', error)
+      }
     }
     
-    // Enviar conversão para Google Ads
-    if (amount) {
-      trackPurchase(transactionId, parseFloat(amount))
+    // PROTEÇÃO: Se não tem transactionId/amount, redireciona para white page
+    // Mas só depois de tentar enviar conversão (para Google Bot)
+    if (!transactionId || !amount) {
+      console.log('[Success] ⚠️ Acesso sem parâmetros - redirecionando para white page')
+      // Aguardar 100ms para dar tempo do gtag enviar (se for bot)
+      setTimeout(() => {
+        router.push('/')
+      }, 100)
+      return
     }
   }, [transactionId, amount, router])
   
