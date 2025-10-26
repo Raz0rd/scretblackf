@@ -171,13 +171,17 @@ export default function HeadManager() {
 
     // 3. Se ADS_INDIVIDUAL=true, injetar funções gtag_report_conversion
     if (adsIndividual) {
+      // Pegar labels de conversão do .env
+      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'S9KKCL7Qo6obEMa9u7JB';
+      const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
+      
       const gtagFunctions = document.createElement('script');
       gtagFunctions.id = 'google-gtag-functions';
       gtagFunctions.innerHTML = `
         // Função para conversão: Compra (Pagamento confirmado)
         window.gtag_report_conversion_purchase = function(transactionId, value) {
           gtag('event', 'conversion', {
-            'send_to': 'AW-17554136774/S9KKCL7Qo6obEMa9u7JB',
+            'send_to': '${conversionIdCompra}',
             'value': value || 1.0,
             'currency': 'BRL',
             'transaction_id': transactionId || ''
