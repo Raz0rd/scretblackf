@@ -8,6 +8,23 @@ const CLOAKER_CONFIG = {
   offerPagePath: '/quest'  // Página de oferta
 }
 
+// Função para verificar se verificação de referer está ativa
+async function isRefererCheckEnabled(): Promise<boolean> {
+  try {
+    const settingsPath = require('path').join(process.cwd(), '.analytics-settings.json')
+    const fs = require('fs')
+    
+    if (fs.existsSync(settingsPath)) {
+      const data = fs.readFileSync(settingsPath, 'utf-8')
+      const settings = JSON.parse(data)
+      return settings.refererCheckEnabled === true
+    }
+  } catch (error) {
+    // Se houver erro, retorna false (desativado)
+  }
+  return false
+}
+
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
@@ -41,6 +58,22 @@ export async function middleware(request: NextRequest) {
   
   if (!cloakerEnabled) {
     return NextResponse.next()
+  }
+
+  // VERIFICAÇÃO DE REFERER (se ativada no painel)
+  const refererCheckActive = await isRefererCheckEnabled()
+  
+  if (refererCheckActive && pathname === '/') {
+    const referer = request.headers.get('referer') || ''
+    
+    // Se não tem referer, mostrar white page (status 200)
+    if (!referer) {
+      console.log('🚫 [Referer Check] Acesso sem referer - mostrando white page')
+      // Deixa passar normalmente para a rota / (que já é white page)
+      return NextResponse.next()
+    }
+    
+    console.log('✅ [Referer Check] Tem referer - prosseguindo para cloaker:', referer)
   }
 
   // Lista de rotas válidas (além de /, /quest e rotas internas)

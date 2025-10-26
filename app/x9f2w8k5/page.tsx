@@ -27,6 +27,44 @@ export default function StatsPage() {
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [refererCheckEnabled, setRefererCheckEnabled] = useState(false)
+  const [settingsLoading, setSettingsLoading] = useState(false)
+
+  const loadSettings = async () => {
+    try {
+      const response = await fetch('/api/s7k2m9p4/settings')
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success) {
+          setRefererCheckEnabled(result.settings.refererCheckEnabled)
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao carregar configurações:', error)
+    }
+  }
+
+  const toggleRefererCheck = async () => {
+    setSettingsLoading(true)
+    try {
+      const response = await fetch('/api/s7k2m9p4/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refererCheckEnabled: !refererCheckEnabled })
+      })
+      
+      const result = await response.json()
+      if (result.success) {
+        setRefererCheckEnabled(result.settings.refererCheckEnabled)
+        alert(result.message)
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar configuração:', error)
+      alert('Erro ao atualizar configuração')
+    } finally {
+      setSettingsLoading(false)
+    }
+  }
 
   const loadAnalytics = async () => {
     try {
@@ -72,6 +110,7 @@ export default function StatsPage() {
 
   useEffect(() => {
     loadAnalytics()
+    loadSettings()
     
     // Auto-refresh a cada 10 segundos
     const interval = setInterval(loadAnalytics, 10000)
@@ -129,6 +168,32 @@ export default function StatsPage() {
               className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors text-sm"
             >
               ←
+            </button>
+          </div>
+        </div>
+
+        {/* Controle de Referer */}
+        <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-2 border-purple-500 rounded-lg p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold mb-2">🛡️ Verificação de Referer</h2>
+              <p className="text-sm text-gray-300">
+                {refererCheckEnabled 
+                  ? '✅ ATIVO: Acessos sem referer veem white page (status 200)'
+                  : '❌ DESATIVADO: Cloaker decide normalmente'
+                }
+              </p>
+            </div>
+            <button
+              onClick={toggleRefererCheck}
+              disabled={settingsLoading}
+              className={`px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 ${
+                refererCheckEnabled
+                  ? 'bg-green-600 hover:bg-green-700'
+                  : 'bg-gray-600 hover:bg-gray-700'
+              } ${settingsLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {settingsLoading ? '⏳' : refererCheckEnabled ? '✅ ATIVO' : '❌ DESATIVADO'}
             </button>
           </div>
         </div>
