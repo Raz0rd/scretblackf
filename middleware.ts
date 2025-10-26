@@ -123,17 +123,33 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /quest - só acessível com cookie do cloaker (não pode ser forjado)
+  // Proteger rota /quest - só acessível com cookie do cloaker OU com parâmetros de tracking
   if (pathname.startsWith('/quest')) {
     const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+    const hasTrackingParams = request.nextUrl.search.includes('gclid') || 
+                              request.nextUrl.search.includes('fbclid') ||
+                              request.nextUrl.search.includes('utm_')
     
-    if (!hasValidCookie) {
-      console.log('🚫 [Cloaker] Acesso a /quest sem cookie válido - redirecionando para /')
+    // Se não tem cookie E não tem parâmetros de tracking, bloquear
+    if (!hasValidCookie && !hasTrackingParams) {
+      console.log('🚫 [Cloaker] Acesso a /quest sem cookie ou tracking - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem cookie válido (setado pelo cloaker), deixar passar
-    return NextResponse.next()
+    // Se tem cookie OU parâmetros de tracking, deixar passar e setar cookie
+    const response = NextResponse.next()
+    if (!hasValidCookie && hasTrackingParams) {
+      // Setar cookie para próximas requisições
+      response.cookies.set('cloaker_verified', 'true', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 // 24 horas
+      })
+      console.log('✅ [Cloaker] Cookie setado para /quest com tracking params')
+    }
+    
+    return response
   }
 
   // Proteger rota /success - mas permitir Google Ads Bot

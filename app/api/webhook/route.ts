@@ -181,7 +181,7 @@ export async function POST(request: NextRequest) {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: isPaid ? "paid" : "waiting_payment", // Status correto do UTMify
-        createdAt: getBrazilTimestamp(new Date(transaction.createdAt)),
+        createdAt: transaction.createdAt ? getBrazilTimestamp(new Date(transaction.createdAt)) : getBrazilTimestamp(new Date()),
         approvedDate: isPaid && transaction.paidAt ? getBrazilTimestamp(new Date(transaction.paidAt)) : null,
         refundedAt: null,
         customer: {
@@ -261,6 +261,7 @@ export async function POST(request: NextRequest) {
           console.log("[v0] Sending data to UTMify:", JSON.stringify(utmifyData, null, 2))
           
           const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {
+            method: 'POST', // CRÍTICO: sem isso, fetch usa GET por padrão!
             headers: {
               "Content-Type": "application/json",
               "x-api-token": utmifyToken,
@@ -269,10 +270,14 @@ export async function POST(request: NextRequest) {
           })
 
           if (utmifyResponse.ok) {
+            const utmifyResult = await utmifyResponse.json()
             console.log(`[v0] ✅ Successfully sent payment ${isPaid ? 'confirmation' : 'pending'} to UTMify`)
+            console.log('[v0] UTMify Response:', JSON.stringify(utmifyResult, null, 2))
           } else {
             const errorText = await utmifyResponse.text()
-            console.error("[v0] ❌ Failed to send to UTMify:", utmifyResponse.status, errorText)
+            console.error("[v0] ❌ Failed to send to UTMify")
+            console.error("   - Status:", utmifyResponse.status)
+            console.error("   - Error:", errorText)
           }
         } else {
           console.warn(`[v0] ⚠️ UTMify não enviado: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
