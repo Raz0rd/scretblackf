@@ -78,8 +78,49 @@ export async function POST(request: NextRequest) {
     })
 
     if (isPaid || isWaitingPayment) {
-      console.log(`[v0] Payment ${isPaid ? 'confirmed' : 'pending'} via BlackCat webhook:`, transactionId)
-      console.log(`[v0] 🚨 DEBUG: isPaid=${isPaid}, isWaitingPayment=${isWaitingPayment}, status=${status}`)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log(`💳 [WEBHOOK] Pagamento ${isPaid ? 'CONFIRMADO' : 'PENDENTE'}`)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📊 Dados da transação:')
+      console.log('   - Transaction ID:', transactionId)
+      console.log('   - Status:', status)
+      console.log('   - isPaid:', isPaid)
+      console.log('   - isWaitingPayment:', isWaitingPayment)
+      console.log('   - Valor: R$', (transaction.amount / 100).toFixed(2))
+      console.log('   - Cliente:', transaction.customer?.name)
+      
+      // ENVIAR POSTBACK PARA ALTERCPA QUANDO PAGAMENTO CONFIRMADO
+      if (isPaid) {
+        console.log('')
+        console.log('🎯 [WEBHOOK] Status PAID detectado - enviando postbacks...')
+        
+        try {
+          const payoutValue = transaction.amount / 100 // Converter de centavos para reais
+          
+          // Enviar para AlterCPA
+          const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15047&status=approve&payout=' + payoutValue.toFixed(2)
+          
+          console.log('📤 [AlterCPA] Enviando postback APPROVE...')
+          console.log('   - Payout: R$', payoutValue.toFixed(2))
+          
+          const altercpaResponse = await fetch(altercpaUrl, { method: 'GET' })
+          
+          if (altercpaResponse.ok) {
+            const result = await altercpaResponse.text()
+            console.log('✅ [AlterCPA] Postback enviado com sucesso!')
+            console.log('   - Response:', result)
+          } else {
+            console.error('❌ [AlterCPA] Erro ao enviar postback')
+            console.error('   - Status:', altercpaResponse.status)
+          }
+        } catch (error) {
+          console.error('❌ [AlterCPA] Erro ao enviar postback:', error)
+        }
+        
+        console.log('')
+        console.log('📝 [WEBHOOK] Próximo passo: Usuário será redirecionado para /success')
+        console.log('📝 [WEBHOOK] Na página /success, o Google Ads receberá a conversão')
+      }
       
       // Recuperar tracking parameters do metadata OU do order storage
       let trackingParameters: Record<string, string | null> = {
