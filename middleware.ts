@@ -117,6 +117,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/cupons') ||
     pathname.startsWith('/success') ||
     pathname.startsWith('/checkout') ||
+    pathname.startsWith('/x9f2w8k5') ||
+    pathname.startsWith('/analytics') ||
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||
