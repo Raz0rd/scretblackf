@@ -11,6 +11,31 @@ const CLOAKER_CONFIG = {
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
+  // Registrar acesso no analytics (não-bloqueante)
+  if (!pathname.startsWith('/_next') && !pathname.startsWith('/api/s7k2m9p4') && pathname !== '/x9f2w8k5') {
+    try {
+      const userAgent = request.headers.get('user-agent') || ''
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
+      const referer = request.headers.get('referer') || ''
+      const query = request.nextUrl.search
+      
+      // Fazer requisição assíncrona sem aguardar
+      fetch(`${request.nextUrl.origin}/api/s7k2m9p4`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: pathname,
+          userAgent,
+          ip,
+          referer,
+          query
+        })
+      }).catch(() => {}) // Ignorar erros silenciosamente
+    } catch (error) {
+      // Ignorar erros de analytics
+    }
+  }
+  
   // Verificar se o cloaker está habilitado
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
@@ -25,6 +50,7 @@ export async function middleware(request: NextRequest) {
     '/cupons',
     '/checkout',
     '/success',
+    '/x9f2w8k5',
     '/api',
     '/_next',
     '/images',
