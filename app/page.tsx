@@ -1,10 +1,28 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function CuponsPage() {
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<'privacy' | 'terms' | 'identify' | 'security' | 'events' | 'conditions' | null>(null)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [showTestButton, setShowTestButton] = useState(false)
+
+  // Verificar se tem parâmetro ?test=google para mostrar botão de teste
+  useEffect(() => {
+    const testParam = searchParams.get('test')
+    if (testParam === 'google') {
+      setShowTestButton(true)
+    }
+  }, [searchParams])
+
+  // Função para testar conversão do Google Ads
+  const handleTestConversion = () => {
+    // Redirecionar para /success com parâmetros de teste
+    router.push('/success?transactionId=test_google_ads_123&amount=5000&playerName=Teste&itemType=recharge&game=IPTV')
+  }
 
   useEffect(() => {
     // Adicionar meta tags SEO otimizadas
@@ -1663,6 +1681,21 @@ export default function CuponsPage() {
               </>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Botão de Teste Google Ads (só aparece com ?test=google) */}
+      {showTestButton && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            onClick={handleTestConversion}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Testar Conversão Google Ads
+          </button>
         </div>
       )}
     </div>
