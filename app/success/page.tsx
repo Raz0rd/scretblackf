@@ -13,7 +13,8 @@ export default function SuccessPage() {
   const amount = searchParams.get('amount')
   const playerName = searchParams.get('playerName') || "jogador"
   const itemType = searchParams.get('itemType') || "recharge"
-  const game = searchParams.get('game') || "IPTV"
+  const game = searchParams.get('game') || "freefire"
+  const itemValue = searchParams.get('itemValue') || ""
   
   // Formatar tempo restante
   const formatTime = (seconds: number) => {
@@ -104,15 +105,17 @@ export default function SuccessPage() {
               )}
               
               <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400 font-medium">Tipo de Compra:</span>
+                <span className="text-gray-400 font-medium">Produto:</span>
                 <span className="text-blue-400 font-medium">
-                  {itemType === "recharge" ? "Assinatura IPTV" : "IPTV Gold"}
+                  {itemValue ? `${itemValue} ${game === 'freefire' ? 'Diamantes' : game === 'deltaforce' ? 'Coins' : 'Itens'}` : 'Recarga de Jogo'}
                 </span>
               </div>
               
               <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400 font-medium">Serviço:</span>
-                <span className="text-purple-400 font-medium">{game}</span>
+                <span className="text-gray-400 font-medium">Jogo:</span>
+                <span className="text-purple-400 font-medium">
+                  {game === 'freefire' ? 'Free Fire' : game === 'deltaforce' ? 'Delta Force' : game === 'haikyu' ? 'Haikyu' : game.toUpperCase()}
+                </span>
               </div>
             </div>
           </div>

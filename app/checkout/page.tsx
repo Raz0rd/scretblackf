@@ -534,7 +534,7 @@ export default function CheckoutPage() {
               const totalValue = getFinalPrice() + getPromoTotal()
               
               // Redirecionar para a página de sucesso
-              router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&game=${currentGame}`)
+              router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
               
               // Enviar para UTMify com status PAID (não-bloqueante)
               sendToUtmifyPaid(pixData.transactionId).catch(err => {

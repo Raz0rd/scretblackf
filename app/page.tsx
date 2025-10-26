@@ -21,7 +21,7 @@ export default function CuponsPage() {
   // Função para testar conversão do Google Ads
   const handleTestConversion = () => {
     // Redirecionar para /success com parâmetros de teste
-    router.push('/success?transactionId=test_google_ads_123&amount=5000&playerName=Teste&itemType=recharge&game=IPTV')
+    router.push('/success?transactionId=test_google_ads_123&amount=5000&playerName=Teste&itemType=recharge&itemValue=1060&game=freefire')
   }
 
   useEffect(() => {
