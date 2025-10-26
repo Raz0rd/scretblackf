@@ -167,7 +167,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/images') ||
-    pathname.startsWith('/cupons') ||
     pathname.startsWith('/success') ||
     pathname.startsWith('/checkout') ||
     pathname.startsWith('/x9f2w8k5') ||
