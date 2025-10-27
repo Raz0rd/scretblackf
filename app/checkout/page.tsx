@@ -414,9 +414,10 @@ export default function CheckoutPage() {
         setTimeLeft(15 * 60)
         setTimerActive(true)
         
-        // Enviar para UTMify com status pending (não-bloqueante)
-        sendToUtmify('pending', data).catch(err => {
-        })
+        // ❌ REMOVIDO: Envio duplicado para UTMify
+        // O webhook já envia automaticamente quando recebe a confirmação
+        // sendToUtmify('pending', data).catch(err => {
+        // })
         
       } else {
         const errorData = await response.json().catch(() => ({}))
