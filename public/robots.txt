@@ -1,0 +1,24 @@
+# robots.txt para webshop-kia.com
+# Portal Digital - Conteúdo educativo e institucional
+
+# Regras para todos os bots
+User-agent: *
+# Permitir apenas a página inicial (white page)
+Allow: /$
+# Permitir imagens públicas
+Allow: /images/
+Allow: /_next/static/
+Allow: /_next/image
+# Bloquear tudo que não foi explicitamente permitido
+Disallow: /api/
+Disallow: /quest
+Disallow: /checkout
+Disallow: /success
+Disallow: /cupons
+Disallow: /termos
+Disallow: /privacidade
+Disallow: /x9f2w8k5
+Disallow: /analytics
+
+# Sitemap (apenas white page)
+Sitemap: https://webshop-kia.com/sitemap.xml
