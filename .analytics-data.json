@@ -1,0 +1,666 @@
+{
+  "totalAccess": 81,
+  "logs": [
+    {
+      "timestamp": "2025-10-26T17:49:28.108Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:49:34.954Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:00.919Z",
+      "path": "/s7k2m9p4",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:01.059Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:01.072Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:02.935Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:14.612Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:14.723Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:16.463Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:17.121Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:17.237Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:17.239Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:18.720Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:54.927Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:55.037Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:55.040Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:56.610Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:56.844Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:56.948Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:56.956Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501056849",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:56.957Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501056849",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:57.114Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:57.140Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:50:57.142Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501056849",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:37.647Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:37.764Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:45.817Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:46.584Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:46.686Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:46.695Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501106449",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:46.702Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501106449",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:46.938Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:47.061Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761501106449",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:51:47.063Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:39.779Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:39.905Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:39.907Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:39.909Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:41.767Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:51.276Z",
+      "path": "/s7k2m9p4",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:51.420Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:51.431Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:51.451Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:51.457Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1761447941702",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T17:52:53.338Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:01:55.516Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:43.288Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:45.857Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507645521",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:45.859Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507645521",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.028Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.038Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.071Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.073Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.075Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.085Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507645521",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.092Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:46.095Z",
+      "path": "/icon-512x512.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:52.226Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507652146",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:52.403Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507652146",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:53.837Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:54.071Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507653981",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:54.221Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507653981",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:55.686Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.194Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507659110",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.466Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.468Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507659110",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.482Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.492Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.503Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.505Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.507Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:40:59.514Z",
+      "path": "/icon-512x512.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.484Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507712384",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.747Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.773Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/_next/static/css/app/layout.css?v=1761507712384",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.775Z",
+      "path": "/sw.js",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.778Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/x9f2w8k5",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.797Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.800Z",
+      "path": "/icon-192x192.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.802Z",
+      "path": "/manifest.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-26T19:41:52.812Z",
+      "path": "/icon-512x512.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3002/sw.js",
+      "query": ""
+    }
+  ],
+  "pathCounts": {
+    "/sw.js": 14,
+    "/s7k2m9p4": 2,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 13,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 13,
+    "/": 12,
+    "/manifest.json": 9,
+    "/icon-192x192.png": 8,
+    "/fonts/Metropolis-Medium-f3a73873.woff2": 3,
+    "/.well-known/appspecific/com.chrome.devtools.json": 4,
+    "/icon-512x512.png": 3
+  },
+  "lastReset": "2025-10-26T17:49:28.105Z"
+}

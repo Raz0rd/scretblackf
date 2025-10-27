@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
-  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15047',
+  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15093',
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/quest'  // Página de oferta
 }

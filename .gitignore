@@ -16,9 +16,11 @@ build/
 .env.development
 .env.development.local
 .env.test.local
-.env.production.local
+.env.production
+.env.production.*
 .env.lead.example
 .env.venda.example
+ENV-CHECKLIST.md
 
 # Keep template files
 !.env.template
