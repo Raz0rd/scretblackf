@@ -53,7 +53,17 @@ export async function middleware(request: NextRequest) {
     }
   }
   
-  // Verificar se o cloaker está habilitado
+  // Verificar domínio - desativar cloaker apenas para webshop-kia.com
+  const hostname = request.headers.get('host') || ''
+  const isWebshopKia = hostname.includes('webshop-kia.com')
+  
+  // CLOAKER DESATIVADO apenas para webshop-kia.com
+  if (isWebshopKia) {
+    console.log('🔓 [Cloaker] Desativado para webshop-kia.com - mostrando página normal')
+    return NextResponse.next()
+  }
+  
+  // Verificar se o cloaker está habilitado para outros domínios
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
   if (!cloakerEnabled) {
