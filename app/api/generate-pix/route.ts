@@ -514,6 +514,31 @@ export async function POST(request: NextRequest) {
       result = await generatePixBlackCat(body, baseUrl)
     }
     
+    // SALVAR no order storage com tracking parameters
+    console.log("💾 [STORAGE] Salvando pedido no order storage...")
+    try {
+      const orderData = {
+        orderId: result.externalRef || result.transactionId,
+        transactionId: result.transactionId,
+        amount: body.amount,
+        customerData: {
+          name: body.customer?.name || '',
+          email: body.customer?.email || '',
+          phone: body.customer?.phone || '',
+          document: body.customer?.document?.number || ''
+        },
+        trackingParameters: body.trackingParams || {},
+        createdAt: new Date().toISOString(),
+        status: 'pending' as const
+      }
+      
+      orderStorageService.saveOrder(orderData)
+      console.log("✅ [STORAGE] Pedido salvo com sucesso!")
+      console.log("📋 [STORAGE] Dados salvos:", JSON.stringify(orderData, null, 2))
+    } catch (storageError) {
+      console.error("❌ [STORAGE] Erro ao salvar:", storageError)
+    }
+    
     // DEBUG: Verificar se dados foram salvos no storage
     console.log("🔍 [DEBUG] Verificando se dados foram salvos no storage...")
     const savedOrder = orderStorageService.getOrder(result.transactionId)
