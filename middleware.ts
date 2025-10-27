@@ -110,7 +110,9 @@ export async function middleware(request: NextRequest) {
     '/fonts',
     '/manifest',
     '/icon-',
-    '/sw.js'
+    '/sw.js',
+    '/robots.txt',
+    '/sitemap.xml'
   ]
 
   // Verificar se é uma rota válida ou arquivo estático
