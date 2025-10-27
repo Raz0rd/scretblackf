@@ -1,1703 +1,1411 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck, ChevronLeft, ChevronRight } from 'lucide-react'
+import QRCode from 'qrcode'
 
-export default function CuponsPage() {
-  const [showModal, setShowModal] = useState(false)
-  const [modalContent, setModalContent] = useState<'privacy' | 'terms' | 'identify' | 'security' | 'events' | 'conditions' | null>(null)
-  const searchParams = useSearchParams()
-  const router = useRouter()
+interface AddressData {
+  cep: string
+  logradouro: string
+  numero: string
+  complemento: string
+  bairro: string
+  cidade: string
+  estado: string
+}
+
+interface Product {
+  id: string
+  name: string
+  price: string
+  description: string
+  images: string[]
+  features: string[]
+  deliveryTime: string
+  stock: boolean
+}
+
+// Componente de Logo com Raio
+const LightningLogo = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
+  const sizeClasses = {
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12',
+    lg: 'w-16 h-16'
+  }
+  
+  return (
+    <div className={`${sizeClasses[size]} relative flex items-center justify-center`}>
+      {/* Círculo de fundo com gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full shadow-lg shadow-blue-500/50"></div>
+      
+      {/* Raio */}
+      <svg 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        className="relative z-10 w-3/4 h-3/4"
+      >
+        <path 
+          d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" 
+          fill="white"
+          className="drop-shadow-lg"
+        />
+      </svg>
+    </div>
+  )
+}
+
+export default function HomePage() {
+  const [showAddressModal, setShowAddressModal] = useState(false)
+  const [showProductModal, setShowProductModal] = useState(false)
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false)
+  const [showTermsModal, setShowTermsModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
+  const [selectedProductDetails, setSelectedProductDetails] = useState<Product | null>(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [addressData, setAddressData] = useState<AddressData>({
+    cep: '',
+    logradouro: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cidade: '',
+    estado: ''
+  })
+  const [loadingCep, setLoadingCep] = useState(false)
+  
+  // Estados para PIX
+  const [pixData, setPixData] = useState<{
+    qrCode: string
+    qrCodeImage: string
+    transactionId: string
+    amount: number
+  } | null>(null)
+  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'error'>('pending')
+  const [generatingPix, setGeneratingPix] = useState(false)
+  const [copiedPix, setCopiedPix] = useState(false)
   const [showTestButton, setShowTestButton] = useState(false)
 
-  // Verificar se tem parâmetro ?test=google para mostrar botão de teste
+  // Verificar parâmetro de teste
   useEffect(() => {
-    const testParam = searchParams.get('test')
-    if (testParam === 'google') {
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('testGoogleAdsConv') === 'true') {
       setShowTestButton(true)
-    }
-  }, [searchParams])
-
-  // Função para testar conversão do Google Ads
-  const handleTestConversion = () => {
-    // Redirecionar para /success com parâmetros de teste
-    router.push('/success?transactionId=test_google_ads_123&amount=5000&playerName=Teste&itemType=recharge&itemValue=1060&game=freefire')
-  }
-
-  useEffect(() => {
-    // Adicionar meta tags SEO otimizadas
-    const metaTags = [
-      { name: 'description', content: 'Plataforma independente de cupons verificados para jogos online. Free Fire, PUBG Mobile, Mobile Legends, Genshin Impact e mais. Cupons testados e seguros.' },
-      { name: 'keywords', content: 'cupons jogos online, free fire cupons, pubg mobile promoções, mobile legends desconto, genshin impact cupons, recarga jogos, diamantes free fire, coopersam gaming' },
-      { name: 'author', content: 'COOPERSAM - Cooperativa de Trabalho' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:locale', content: 'pt_BR' },
-      { property: 'og:title', content: 'Coopersam Gaming — Cupons Verificados para Jogos Online' },
-      { property: 'og:description', content: 'Cupons e promoções verificadas para Free Fire, PUBG, Mobile Legends, Genshin Impact e mais jogos. Plataforma independente e segura.' },
-      { property: 'og:site_name', content: 'Coopersam Gaming' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Coopersam Gaming — Cupons para Jogos Online' },
-      { name: 'twitter:description', content: 'Cupons verificados para Free Fire, PUBG, Mobile Legends e mais jogos.' },
-      { name: 'mobile-web-app-capable', content: 'yes' },
-      { name: 'apple-mobile-web-app-capable', content: 'yes' },
-      { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-      { name: 'theme-color', content: '#00ff41' },
-    ]
-
-    metaTags.forEach(tag => {
-      const meta = document.createElement('meta')
-      if (tag.name) meta.setAttribute('name', tag.name)
-      if (tag.property) meta.setAttribute('property', tag.property)
-      meta.setAttribute('content', tag.content)
-      document.head.appendChild(meta)
-    })
-
-    // Adicionar JSON-LD para SEO
-    const jsonLd = {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Coopersam Gaming",
-      "url": "https://verifiedbyffire.store",
-      "description": "Plataforma independente de cupons verificados para jogos online",
-      "publisher": {
-        "@type": "Organization",
-        "name": "COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM",
-        "legalName": "COOPERSAM",
-        "taxID": "03.396.056/0001-03",
-        "foundingDate": "1999-09-13",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Rua Lucio Bento Cardoso, 59",
-          "addressLocality": "Alagoinhas",
-          "addressRegion": "BA",
-          "postalCode": "48000-057",
-          "addressCountry": "BR"
-        },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "email": "contato@verifiedbyffire.store",
-          "contactType": "customer service"
-        }
-      }
-    }
-
-    const script = document.createElement('script')
-    script.type = 'application/ld+json'
-    script.text = JSON.stringify(jsonLd)
-    document.head.appendChild(script)
-
-    // Adicionar estilos globais
-    const style = document.createElement('style')
-    style.id = 'coopersam-styles'
-    style.innerHTML = `
-      :root {
-        --bg: #0a0e0a;
-        --card: #0d1410;
-        --accent: #00ff41;
-        --accent-glow: #39ff14;
-        --muted: #7a9d7a;
-        --glass: rgba(0, 255, 65, 0.05);
-        --maxw: 1100px;
-      }
-
-      * { 
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      
-      html { 
-        overflow-x: hidden;
-        width: 100%;
-      }
-
-      body { 
-        overflow-x: hidden;
-        width: 100%;
-        max-width: 100vw;
-        cursor: none;
-        margin: 0;
-        background: #050a05;
-        color: #e0ffe0;
-        font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial;
-        -webkit-font-smoothing: antialiased;
-        padding: 16px;
-        display: flex;
-        justify-content: center;
-        position: relative;
-        min-height: 100vh;
-      }
-
-      @media (min-width: 768px) {
-        body {
-          padding: 24px;
-        }
-      }
-      
-      /* Mostrar cursor padrão em inputs e áreas de texto */
-      input, textarea, select {
-        cursor: text !important;
-      }
-      
-      button, a, .btn {
-        cursor: pointer !important;
-      }
-
-      /* Background animado com grades */
-      body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-          linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-          linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-        background-size: 50px 50px;
-        animation: gridMove 20s linear infinite;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      body::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(0, 255, 65, 0.1) 0%, transparent 50%);
-        animation: pulse 4s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      @keyframes gridMove {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(50px, 50px); }
-      }
-
-      @keyframes pulse {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 0.6; }
-      }
-
-      /* Cursor de mira de sniper */
-      #sniper-cursor {
-        position: fixed;
-        width: 60px;
-        height: 60px;
-        pointer-events: none;
-        z-index: 10000;
-        transform: translate(-50%, -50%);
-        transition: transform 0.1s ease, opacity 0.2s ease;
-        opacity: 1;
-      }
-
-      #sniper-cursor::before,
-      #sniper-cursor::after {
-        content: '';
-        position: absolute;
-        background: var(--accent-glow);
-        box-shadow: 0 0 10px var(--accent-glow);
-      }
-
-      #sniper-cursor::before {
-        width: 2px;
-        height: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      #sniper-cursor::after {
-        width: 100%;
-        height: 2px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      .sniper-circle {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border: 2px solid var(--accent-glow);
-        border-radius: 50%;
-        box-shadow: 0 0 15px var(--accent-glow), inset 0 0 15px rgba(0, 255, 65, 0.2);
-      }
-
-      .sniper-dot {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: var(--accent-glow);
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 8px var(--accent-glow);
-      }
-
-      .wrap { 
-        width: 100%; 
-        max-width: min(var(--maxw), 100%);
-        position: relative;
-        z-index: 1;
-        overflow-x: hidden;
-      }
-      
-      a { 
-        color: var(--accent); 
-        text-decoration: none;
-        text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
-      }
-
-      .container {
-        background: linear-gradient(180deg, rgba(0, 255, 65, 0.05), rgba(0, 255, 65, 0.02));
-        border-radius: 12px;
-        padding: 12px;
-        box-shadow: 0 6px 40px rgba(0, 255, 65, 0.3), 0 0 20px rgba(0, 255, 65, 0.1);
-        border: 1px solid rgba(0, 255, 65, 0.2);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-      }
-
-      @media (min-width: 640px) {
-        .container {
-          padding: 20px;
-        }
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 16px;
-        flex-wrap: wrap;
-      }
-
-      @media (max-width: 640px) {
-        header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-      }
-
-      .brand { display: flex; align-items: center; gap: 12px }
-
-      .logo {
-        width: 56px;
-        height: 56px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--accent), #00cc33);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        color: #000;
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
-      }
-
-      h1 { 
-        margin: 0; 
-        font-size: 18px;
-        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
-      }
-
-      @media (min-width: 768px) {
-        h1 {
-          font-size: 20px;
-        }
-      }
-      
-      p.lead { 
-        margin: 0; 
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      @media (min-width: 768px) {
-        p.lead {
-          font-size: 14px;
-        }
-      }
-
-      .actions { 
-        display: flex; 
-        gap: 8px; 
-        align-items: center;
-        flex-wrap: wrap;
-      }
-
-      @media (max-width: 640px) {
-        .actions {
-          width: 100%;
-          justify-content: flex-start;
-        }
-      }
-
-      .btn {
-        background: var(--accent);
-        color: #000;
-        padding: 8px 12px;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-        transition: all 0.3s ease;
-        display: inline-block;
-        font-size: 13px;
-        white-space: nowrap;
-        text-align: center;
-      }
-
-      @media (min-width: 640px) {
-        .btn {
-          padding: 10px 14px;
-          font-size: 14px;
-        }
-      }
-
-      .btn:hover {
-        box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
-        transform: translateY(-2px);
-      }
-
-      .btn.ghost {
-        background: transparent;
-        color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
-      }
-
-      .btn.ghost:hover {
-        background: rgba(0, 255, 65, 0.1);
-        border-color: var(--accent);
-      }
-
-      .main-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      @media (min-width: 880px) {
-        .main-grid { 
-          grid-template-columns: 1fr 380px;
-          gap: 18px;
-        }
-      }
-
-      .card {
-        background: rgba(13, 20, 16, 0.8);
-        padding: 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(0, 255, 65, 0.2);
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
-        backdrop-filter: blur(5px);
-        width: 100%;
-        max-width: 100%;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-      }
-
-      .coupon-list { display: flex; flex-direction: column; gap: 10px }
-
-      .coupon {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 10px;
-        border-radius: 8px;
-        background: rgba(0, 255, 65, 0.05);
-        border: 1px solid rgba(0, 255, 65, 0.15);
-        transition: all 0.3s ease;
-        flex-wrap: wrap;
-        width: 100%;
-      }
-
-      @media (max-width: 640px) {
-        .coupon {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 12px;
-        }
-      }
-
-      .coupon:hover {
-        background: rgba(0, 255, 65, 0.1);
-        border-color: rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-      }
-
-      .coupon .left { 
-        display: flex; 
-        gap: 12px; 
-        align-items: center;
-        flex-wrap: wrap;
-        flex: 1;
-        min-width: 0;
-      }
-
-      .chip {
-        background: rgba(0, 255, 65, 0.15);
-        padding: 6px 8px;
-        border-radius: 8px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
-        font-size: 11px;
-        white-space: nowrap;
-      }
-
-      @media (min-width: 640px) {
-        .chip {
-          padding: 8px 10px;
-          font-size: 13px;
-        }
-      }
-
-      .coupon-code {
-        font-family: monospace;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 6px 8px;
-        border-radius: 6px;
-        color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.2);
-        text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
-        font-size: 13px;
-        word-break: break-all;
-      }
-
-      @media (min-width: 640px) {
-        .coupon-code {
-          font-size: 14px;
-        }
-      }
-
-      .coupon .meta { 
-        color: var(--muted); 
-        font-size: 12px;
-        word-break: break-word;
-      }
-
-      @media (min-width: 640px) {
-        .coupon .meta {
-          font-size: 13px;
-        }
-      }
-      
-      .search {
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        color: var(--accent);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
-        font-size: 16px; /* Evita zoom no iOS */
-        -webkit-appearance: none;
-      }
-
-      .search:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-      }
-
-      .search::placeholder {
-        color: var(--muted);
-        opacity: 0.6;
-      }
-
-      .small { font-size: 13px; color: var(--muted) }
-      .muted { color: var(--muted) }
-
-      footer {
-        margin-top: 18px;
-        text-align: center;
-        color: var(--muted);
-        font-size: 13px;
-        width: 100%;
-        max-width: 100%;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-      }
-
-      .links {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        margin-top: 12px;
-        flex-wrap: wrap;
-      }
-
-      /* Partículas flutuantes */
-      .particle {
-        position: fixed;
-        width: 2px;
-        height: 2px;
-        background: var(--accent-glow);
-        border-radius: 50%;
-        pointer-events: none;
-        opacity: 0;
-        box-shadow: 0 0 4px var(--accent-glow);
-        animation: float 15s infinite ease-in-out;
-      }
-
-      @keyframes float {
-        0% {
-          transform: translateY(100vh) translateX(0);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(-100vh) translateX(100px);
-          opacity: 0;
-        }
-      }
-
-      /* Modal */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: fadeIn 0.3s ease;
-        cursor: default !important;
-      }
-
-      .modal-content {
-        background: linear-gradient(180deg, #0d1410, #0a0e0a);
-        border: 2px solid var(--accent);
-        border-radius: 16px;
-        padding: 20px;
-        max-width: 90vw;
-        max-height: 85vh;
-        overflow-y: auto;
-        box-shadow: 0 0 50px rgba(0, 255, 65, 0.5);
-        position: relative;
-        animation: slideIn 0.4s ease;
-        width: 100%;
-      }
-
-      @media (min-width: 768px) {
-        .modal-content {
-          padding: 30px;
-          max-width: 800px;
-          max-height: 80vh;
-        }
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: var(--accent);
-        color: #000;
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
-        transition: all 0.3s ease;
-      }
-
-      .modal-close:hover {
-        transform: rotate(90deg) scale(1.1);
-        box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
-      }
-
-      .modal-content h2 {
-        color: var(--accent);
-        text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
-        margin-top: 0;
-      }
-
-      .modal-content h3 {
-        color: var(--accent);
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-size: 18px;
-      }
-
-      .modal-content p, .modal-content ul {
-        color: #e0ffe0;
-        line-height: 1.8;
-        font-size: 14px;
-      }
-
-      .modal-content p strong {
-        color: #fff;
-      }
-
-      .modal-content ul {
-        margin-left: 20px;
-        background: rgba(0, 255, 65, 0.05);
-        padding: 12px 12px 12px 32px;
-        border-radius: 8px;
-        border-left: 3px solid var(--accent);
-      }
-
-      .modal-content li {
-        margin-bottom: 8px;
-        color: #d0ffd0;
-      }
-
-      .modal-content::-webkit-scrollbar {
-        width: 10px;
-      }
-
-      .modal-content::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-      }
-
-      .modal-content::-webkit-scrollbar-thumb {
-        background: var(--accent);
-        border-radius: 10px;
-        box-shadow: 0 0 10px var(--accent-glow);
-      }
-
-      .modal-content::-webkit-scrollbar-thumb:hover {
-        background: var(--accent-glow);
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateY(-50px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      /* Bullet effect - Balas de jogo */
-      .bullet {
-        position: fixed;
-        width: 3px;
-        height: 15px;
-        background: linear-gradient(180deg, #fff, var(--accent-glow), var(--accent));
-        pointer-events: none;
-        z-index: 10000;
-        box-shadow: 
-          0 0 15px var(--accent-glow),
-          0 0 30px var(--accent),
-          0 0 5px #fff;
-        border-radius: 50% 50% 0 0;
-      }
-
-      @keyframes bulletFly {
-        0% {
-          transform: translate(0, 0) scale(1);
-          opacity: 1;
-        }
-        20% {
-          opacity: 1;
-        }
-        100% {
-          transform: translate(var(--tx), var(--ty)) scale(0.3);
-          opacity: 0;
-        }
-      }
-
-      /* Muzzle flash - Flash do tiro */
-      .muzzle-flash {
-        position: fixed;
-        width: 40px;
-        height: 40px;
-        background: radial-gradient(circle, #fff, var(--accent-glow), transparent);
-        pointer-events: none;
-        z-index: 9999;
-        border-radius: 50%;
-        animation: flashFade 0.15s ease-out forwards;
-        box-shadow: 0 0 30px var(--accent-glow);
-      }
-
-      @keyframes flashFade {
-        0% {
-          transform: scale(0.5);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(2);
-          opacity: 0;
-        }
-      }
-
-      /* Bullet trail - Rastro da bala */
-      .bullet-trail {
-        position: fixed;
-        width: 2px;
-        height: 30px;
-        background: linear-gradient(180deg, transparent, var(--accent-glow));
-        pointer-events: none;
-        z-index: 9998;
-        opacity: 0.6;
-        animation: trailFade 0.3s ease-out forwards;
-      }
-
-      @keyframes trailFade {
-        0% {
-          opacity: 0.8;
-        }
-        100% {
-          opacity: 0;
-        }
-      }
-    `
-    
-    document.head.appendChild(style)
-
-    // Inicializar cursor de mira
-    function initSniperCursor() {
-      const existingCursor = document.getElementById('sniper-cursor')
-      if (existingCursor) {
-        existingCursor.remove()
-      }
-
-      const sniperCursor = document.createElement('div')
-      sniperCursor.id = 'sniper-cursor'
-      sniperCursor.innerHTML = '<div class="sniper-circle"></div><div class="sniper-dot"></div>'
-      
-      document.body.appendChild(sniperCursor)
-      
-      sniperCursor.style.position = 'fixed'
-      sniperCursor.style.width = '60px'
-      sniperCursor.style.height = '60px'
-      sniperCursor.style.pointerEvents = 'none'
-      sniperCursor.style.zIndex = '99999'
-      sniperCursor.style.opacity = '1'
-      sniperCursor.style.display = 'block'
-
-      const handleMouseMove = (e: MouseEvent) => {
-        if (sniperCursor && sniperCursor.parentElement) {
-          sniperCursor.style.left = e.clientX + 'px'
-          sniperCursor.style.top = e.clientY + 'px'
-          sniperCursor.style.transform = 'translate(-50%, -50%)'
-        }
-      }
-
-      document.addEventListener('mousemove', handleMouseMove)
-
-      document.addEventListener('mouseenter', (e) => {
-        const target = e.target as HTMLElement
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
-          if (sniperCursor) sniperCursor.style.opacity = '0'
-          document.body.style.cursor = 'text'
-        }
-      }, true)
-
-      document.addEventListener('mouseleave', (e) => {
-        const target = e.target as HTMLElement
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
-          if (sniperCursor) sniperCursor.style.opacity = '1'
-          document.body.style.cursor = 'none'
-        }
-      }, true)
-
-      document.addEventListener('mousedown', () => {
-        if (sniperCursor) sniperCursor.style.transform = 'translate(-50%, -50%) scale(0.9)'
-      })
-
-      document.addEventListener('mouseup', () => {
-        if (sniperCursor) sniperCursor.style.transform = 'translate(-50%, -50%) scale(1)'
-      })
-    }
-
-    // Criar partículas
-    function createParticles() {
-      for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('div')
-        particle.className = 'particle'
-        particle.style.left = Math.random() * 100 + '%'
-        particle.style.animationDelay = Math.random() * 15 + 's'
-        particle.style.animationDuration = (10 + Math.random() * 10) + 's'
-        document.body.appendChild(particle)
-      }
-    }
-
-    // Função copiar cupom com efeito de balas
-    function copyCoupon(btn: HTMLElement) {
-      const el = btn.closest('.coupon')
-      const code = el?.getAttribute('data-code')
-      if (!code) return
-      
-      // Verificar se já está processando
-      if (btn.classList.contains('copying')) return
-      btn.classList.add('copying')
-      
-      // Som de cópia (mais suave)
-      try {
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-        const oscillator = audioContext.createOscillator()
-        const gainNode = audioContext.createGain()
-        oscillator.connect(gainNode)
-        gainNode.connect(audioContext.destination)
-        oscillator.frequency.value = 800
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1)
-        oscillator.start(audioContext.currentTime)
-        oscillator.stop(audioContext.currentTime + 0.1)
-      } catch (e) {
-        // Ignorar erro de áudio
-      }
-      
-      // Criar efeito de balas
-      const rect = btn.getBoundingClientRect()
-      const x = rect.left + rect.width / 2
-      const y = rect.top + rect.height / 2
-      
-      // Criar balas em padrão de dispersão
-      const bulletCount = 8
-      for (let i = 0; i < bulletCount; i++) {
-        const angle = (Math.PI * 2 * i) / bulletCount
-        const distance = 150 + Math.random() * 100
-        const tx = Math.cos(angle) * distance
-        const ty = Math.sin(angle) * distance
-        
-        const bullet = document.createElement('div')
-        bullet.className = 'bullet'
-        bullet.style.left = x + 'px'
-        bullet.style.top = y + 'px'
-        bullet.style.setProperty('--tx', tx + 'px')
-        bullet.style.setProperty('--ty', ty + 'px')
-        bullet.style.transform = `rotate(${angle}rad)`
-        bullet.style.animation = `bulletFly ${0.5 + Math.random() * 0.2}s ease-out forwards`
-        bullet.style.animationDelay = (i * 0.02) + 's'
-        document.body.appendChild(bullet)
-        setTimeout(() => bullet.remove(), 800)
-      }
-      
-      // Copiar para clipboard (sem feedback visual de texto)
-      navigator.clipboard?.writeText(code).then(() => {
-        // Remover classe após 1 segundo
-        setTimeout(() => {
-          btn.classList.remove('copying')
-        }, 1000)
-      }).catch(() => {
-        btn.classList.remove('copying')
-      })
-    }
-
-    // Função filtrar cupons
-    function filterCoupons() {
-      const searchInput = document.getElementById('search') as HTMLInputElement
-      const q = searchInput?.value.toLowerCase().trim() || ''
-      document.querySelectorAll('#couponList .coupon').forEach(c => {
-        const store = (c.getAttribute('data-store') || '').toLowerCase()
-        const text = (c.textContent || '').toLowerCase()
-        const tags = (c.getAttribute('data-tags') || '').toLowerCase()
-        ;(c as HTMLElement).style.display = !q || store.includes(q) || text.includes(q) || tags.includes(q) ? '' : 'none'
-      })
-    }
-
-    // Inicializar tudo
-    initSniperCursor()
-    createParticles()
-
-    // Event listeners
-    document.getElementById('search')?.addEventListener('input', filterCoupons)
-    
-    document.querySelectorAll('.btn').forEach(btn => {
-      if (btn.textContent?.includes('Copiar')) {
-        btn.addEventListener('click', function(this: HTMLElement) { 
-          copyCoupon(this) 
-        })
-      }
-    })
-
-    return () => {
-      style.remove()
-      const cursor = document.getElementById('sniper-cursor')
-      if (cursor) cursor.remove()
     }
   }, [])
 
-  // Função para criar efeito de balas realistas
-  const createBulletEffect = (x: number, y: number) => {
-    // Muzzle flash (flash do tiro)
-    const flash = document.createElement('div')
-    flash.className = 'muzzle-flash'
-    flash.style.left = x + 'px'
-    flash.style.top = y + 'px'
-    flash.style.transform = 'translate(-50%, -50%)'
-    document.body.appendChild(flash)
-    setTimeout(() => flash.remove(), 200)
+  // Função para gerar CPF aleatório
+  const generateRandomCPF = () => {
+    const randomDigits = () => Math.floor(Math.random() * 10)
+    const cpf = Array.from({ length: 11 }, randomDigits).join('')
+    return cpf
+  }
 
-    // Criar balas em padrão de dispersão
-    const bulletCount = 12
-    for (let i = 0; i < bulletCount; i++) {
-      const angle = (Math.PI * 2 * i) / bulletCount
-      const distance = 400 + Math.random() * 200
-      const tx = Math.cos(angle) * distance
-      const ty = Math.sin(angle) * distance
-      
-      // Bala principal
-      const bullet = document.createElement('div')
-      bullet.className = 'bullet'
-      bullet.style.left = x + 'px'
-      bullet.style.top = y + 'px'
-      bullet.style.setProperty('--tx', tx + 'px')
-      bullet.style.setProperty('--ty', ty + 'px')
-      bullet.style.transform = `rotate(${angle}rad)`
-      bullet.style.animation = `bulletFly ${0.6 + Math.random() * 0.3}s ease-out forwards`
-      bullet.style.animationDelay = (i * 0.02) + 's'
-      document.body.appendChild(bullet)
-      setTimeout(() => bullet.remove(), 1000)
+  // Função de teste de conversão
+  const testGoogleAdsConversion = () => {
+    const randomValue = (Math.random() * 100 + 10).toFixed(2)
+    const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || ''
+    const awId = process.env.NEXT_PUBLIC_GOOGLE_ADS_AW_ID || ''
+    
+    console.log('🧪 [TEST] Testando conversão Google Ads')
+    console.log('   - Valor aleatório:', randomValue)
+    console.log('   - AW ID:', awId)
+    console.log('   - Label:', conversionLabel)
+    
+    // Redirecionar para /success com parâmetros de teste
+    window.location.href = `/success?test=true&value=${randomValue}&aw=${awId}&label=${conversionLabel}`
+  }
 
-      // Rastro da bala
-      const trail = document.createElement('div')
-      trail.className = 'bullet-trail'
-      trail.style.left = x + 'px'
-      trail.style.top = y + 'px'
-      trail.style.transform = `rotate(${angle}rad)`
-      trail.style.animationDelay = (i * 0.02) + 's'
-      document.body.appendChild(trail)
-      setTimeout(() => trail.remove(), 400)
+  // Dados dos produtos
+  const products: Product[] = [
+    {
+      id: 'kit-6-acessorios',
+      name: 'Kit 6 Luvas Gamer Premium',
+      price: 'R$ 13,29',
+      description: 'Kit composto por 6 unidades de luvas gamer para jogar no celular e aumentar a sensibilidade dos jogos. Tecnologia têxtil 2022 com fibras de prata superfinas e filamentos de nylon. Com 50% de alto teor de fibra de prata para máxima precisão e zero toque quebrado.',
+      images: [
+        '/images/kit6_dedeira1.avif',
+        '/images/kit6_dedeira1-1.avif',
+        '/images/kit6_dedeira1-2.avif',
+        '/images/kit6_dedeira1-3.avif'
+      ],
+      features: [
+        '6 luvas gamer de alta performance',
+        '50% fibra de prata + 25% fibra de carbono',
+        'Tecnologia têxtil 2022 - tecelagem densa',
+        'Compatível: Free Fire, PUBG, COD Mobile, Fortnite',
+        'Tamanho único (5,5 a 8,3 polegadas)',
+        'Pressão ideal: 2-3 Newtons (justo mas confortável)',
+        'Contato duplo para atrito estável',
+        '3x mais sensível que luvas comuns',
+        'Testado: 5000 cliques sem falhas',
+        'Anti-suor e respirável',
+        'Compatível: Android e iOS',
+        'Cor: Preto com borda azul',
+        'Dimensões: 5x1.5x0.1cm',
+        'Garantia: 30 dias'
+      ],
+      deliveryTime: '5-10 dias úteis',
+      stock: true
+    },
+    {
+      id: 'fone-premium',
+      name: 'HyperX Cloud Earbuds II',
+      price: 'R$ 178,20',
+      description: 'Fones de ouvido gamer otimizados para áudio móvel. Com drivers de 14mm, proporcionam som imersivo para jogos, streaming e audiolivros. Design discreto com plugue 90° para evitar esbarrões e cabo resistente a emaranhamentos. Perfeito para quem exige qualidade de áudio e portabilidade.',
+      images: [
+        '/images/fone1.webp',
+        '/images/fone1-1.webp',
+        '/images/fone1-2.webp',
+        '/images/fone1-3.webp'
+      ],
+      features: [
+        'Drivers de 14mm otimizados para jogos móveis',
+        'Som imersivo de alta qualidade',
+        'Plugue 90° discreto anti-esbarrão',
+        'Cabo resistente a torções e emaranhamentos',
+        'Microfone integrado cristalino',
+        'Botão multifuncional para chamadas e mídia',
+        '4 conjuntos de pontas auriculares',
+        'Ajuste perfeito para diferentes orelhas',
+        'Estojo de transporte rígido incluso',
+        'Compatível: PC, Nintendo Switch, Steam Deck',
+        'Compatível: Dispositivos móveis Android e iOS',
+        'Conexão: 3,5mm universal',
+        'Ideal para jogos, streaming e podcasts',
+        'Cor: Preto',
+        'Marca: HyperX | Modelo: 70N24AA'
+      ],
+      deliveryTime: '3-7 dias úteis',
+      stock: true
+    },
+    {
+      id: 'gamesir-gatilho',
+      name: 'GameSir F4 Falcon Gatilho',
+      price: 'R$ 169,95',
+      description: 'Controlador universal para jogos de tiro mobile. Equipado com seletor de modos como o M4A1 real, permite escolher entre 4 modos de disparo. Plug and Play - sem Bluetooth ou apps necessários. Compatível com PUBG, COD Mobile, Free Fire, Knives Out, Rules of Survival e mais.',
+      images: [
+        '/images/Gamesir1.webp',
+        '/images/gamesir1-1.webp',
+        '/images/gamesir1-2.webp',
+        '/images/gamesir-1-3.webp'
+      ],
+      features: [
+        '4 modos de disparo ajustáveis',
+        'Modo Padrão: 1 clique = 1 tiro',
+        'Modo 3 Burst: 1 clique = 3 tiros',
+        'Modo 6 Burst: 1 clique = 6 tiros',
+        'Modo 9 Burst: 1 clique = 9 tiros',
+        'Seletor inspirado no M4A1 real',
+        'Plug and Play - sem Bluetooth',
+        'Não precisa de aplicativos',
+        'Compatível: PUBG, COD Mobile, Free Fire',
+        'Compatível: Knives Out, Rules of Survival',
+        'Universal para telefones de até 5 polegadas',
+        'Resposta ultra-rápida',
+        'Design ergonômico profissional',
+        'Dimensões: 9cm',
+        'Peso: 100 gramas',
+        'Garantia: 1 mês',
+        'Código: gdgg7g9b74'
+      ],
+      deliveryTime: '5-10 dias úteis (Envio de SP)',
+      stock: true
+    }
+  ]
+
+  // Abrir modal de produto
+  const openProductModal = (product: Product) => {
+    setSelectedProductDetails(product)
+    setCurrentImageIndex(0)
+    setShowProductModal(true)
+  }
+
+  // Navegar entre imagens
+  const nextImage = () => {
+    if (selectedProductDetails) {
+      setCurrentImageIndex((prev) => 
+        prev === selectedProductDetails.images.length - 1 ? 0 : prev + 1
+      )
     }
   }
 
-  // Função para tocar som de tiro realista
-  const playGunSound = () => {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-    
-    // Som principal do tiro (baixa frequência)
-    const oscillator1 = audioContext.createOscillator()
-    const gainNode1 = audioContext.createGain()
-    oscillator1.connect(gainNode1)
-    gainNode1.connect(audioContext.destination)
-    oscillator1.frequency.value = 80
-    gainNode1.gain.setValueAtTime(0.4, audioContext.currentTime)
-    gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08)
-    oscillator1.start(audioContext.currentTime)
-    oscillator1.stop(audioContext.currentTime + 0.08)
-    
-    // Som do impacto (média frequência)
-    const oscillator2 = audioContext.createOscillator()
-    const gainNode2 = audioContext.createGain()
-    oscillator2.connect(gainNode2)
-    gainNode2.connect(audioContext.destination)
-    oscillator2.frequency.value = 200
-    gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime)
-    gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05)
-    oscillator2.start(audioContext.currentTime)
-    oscillator2.stop(audioContext.currentTime + 0.05)
-    
-    // Som do eco/reverb (alta frequência)
-    const oscillator3 = audioContext.createOscillator()
-    const gainNode3 = audioContext.createGain()
-    oscillator3.connect(gainNode3)
-    gainNode3.connect(audioContext.destination)
-    oscillator3.frequency.value = 400
-    gainNode3.gain.setValueAtTime(0.15, audioContext.currentTime + 0.02)
-    gainNode3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15)
-    oscillator3.start(audioContext.currentTime + 0.02)
-    oscillator3.stop(audioContext.currentTime + 0.15)
+  const prevImage = () => {
+    if (selectedProductDetails) {
+      setCurrentImageIndex((prev) => 
+        prev === 0 ? selectedProductDetails.images.length - 1 : prev - 1
+      )
+    }
   }
 
-  // Abrir modal com efeitos
-  const openModal = (type: 'privacy' | 'terms' | 'identify' | 'security' | 'events' | 'conditions', event: React.MouseEvent) => {
-    event.preventDefault()
-    playGunSound()
-    createBulletEffect(event.clientX, event.clientY)
-    setTimeout(() => {
-      setModalContent(type)
-      setShowModal(true)
-    }, 200)
+  // Buscar endereço pelo CEP
+  const handleCepSearch = async (cep: string) => {
+    const cleanCep = cep.replace(/\D/g, '')
+    if (cleanCep.length !== 8) return
+
+    setLoadingCep(true)
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
+      const data = await response.json()
+      
+      if (!data.erro) {
+        setAddressData(prev => ({
+          ...prev,
+          cep: cleanCep,
+          logradouro: data.logradouro || '',
+          bairro: data.bairro || '',
+          cidade: data.localidade || '',
+          estado: data.uf || ''
+        }))
+        setCurrentStep(2)
+      } else {
+        alert('CEP não encontrado')
+      }
+    } catch (error) {
+      alert('Erro ao buscar CEP')
+    } finally {
+      setLoadingCep(false)
+    }
   }
 
-  // Fechar modal
-  const closeModal = () => {
-    setShowModal(false)
-    setModalContent(null)
+  // Abrir modal de endereço
+  const openAddressModal = (productName: string, productDetails?: Product) => {
+    setSelectedProduct(productName)
+    // Se productDetails foi passado, usar ele. Senão, buscar pelo nome
+    if (productDetails) {
+      setSelectedProductDetails(productDetails)
+    } else {
+      const product = products.find(p => p.name === productName)
+      if (product) {
+        setSelectedProductDetails(product)
+      }
+    }
+    setShowAddressModal(true)
+    setCurrentStep(1)
+    setAddressData({
+      cep: '',
+      logradouro: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      cidade: '',
+      estado: ''
+    })
   }
 
-  return (
-    <div className="wrap">
-      <div className="container" role="main" aria-labelledby="site-title">
-        <header>
-          <div className="brand">
-            <div className="logo" aria-hidden="true">CG</div>
-            <div>
-              <h1 id="site-title">Coopersam Gaming</h1>
-              <p className="lead">Cupons verificados • dicas seguras para conseguir diamantes no Free Fire</p>
-            </div>
-          </div>
-          <div className="actions">
-            <a className="btn" href="mailto:contato@verifiedbyffire.store">Contato</a>
-            <a className="btn ghost" href="#guide">Guia</a>
-          </div>
-        </header>
-
-        <div className="main-grid">
-          <div>
-            <section className="card" aria-labelledby="coupons-title">
-              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
-                <div>
-                  <h2 id="coupons-title" style={{margin:'0 0 4px 0'}}>Cupons Disponíveis</h2>
-                  <div className="small">Clique em copiar para usar o código no site parceiro — confira condições abaixo.</div>
-                </div>
-                <input id="search" className="search" placeholder="Buscar por cupom, loja ou tag" aria-label="Buscar cupons" style={{maxWidth:'320px'}} />
-              </div>
-
-              <div className="coupon-list" id="couponList">
-                <article className="coupon" data-code="COOPERSAM10" data-valid="Até 2025-12-31" data-store="Coopersam" data-tags="cooperativa,bonus">
-                  <div className="left">
-                    <div className="chip">Coopersam</div>
-                    <div>
-                      <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">COOPERSAM10</strong>
-                        <span className="muted"> — 10% bônus</span>
-                      </div>
-                      <div className="meta small">Validade: <span className="muted">Até 31 Dez 2025</span></div>
-                    </div>
-                  </div>
-                  <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                    <button className="btn">Copiar</button>
-                  </div>
-                </article>
-
-                <article className="coupon" data-code="GAMING2025" data-valid="Até 2025-11-30" data-store="Coopersam" data-tags="gaming,promo">
-                  <div className="left">
-                    <div className="chip">Exclusivo</div>
-                    <div>
-                      <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">GAMING2025</strong>
-                        <span className="muted"> — bônus especial</span>
-                      </div>
-                      <div className="meta small">Validade: <span className="muted">30 Nov 2025</span></div>
-                    </div>
-                  </div>
-                  <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                    <button className="btn">Copiar</button>
-                  </div>
-                </article>
-
-                <article className="coupon" data-code="FREEFIRE15" data-valid="Até 2025-12-15" data-store="Coopersam" data-tags="freefire,diamantes">
-                  <div className="left">
-                    <div className="chip">Free Fire</div>
-                    <div>
-                      <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">FREEFIRE15</strong>
-                        <span className="muted"> — 15% de desconto</span>
-                      </div>
-                      <div className="meta small">Validade: <span className="muted">15 Dez 2025</span></div>
-                    </div>
-                  </div>
-                  <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                    <button className="btn">Copiar</button>
-                  </div>
-                </article>
-              </div>
-
-              <div style={{marginTop:'12px', fontSize:'13px'}} className="small muted">
-                Atenção: os cupons são fornecidos por parceiros e podem expirar a qualquer momento.
-                Verifique as condições no site do parceiro antes de validar o pagamento.
-              </div>
-            </section>
-
-            <section className="card" style={{marginTop:'16px'}}>
-              <h2 style={{margin:'0 0 12px 0'}}>Sobre Nossos Serviços</h2>
-              <p className="small" style={{lineHeight:'1.8'}}>
-                A <strong>Coopersam Gaming</strong> é uma plataforma independente especializada em <strong>cupons e promoções para jogos online</strong>. 
-                Trabalhamos de forma autônoma, sem vínculo direto com desenvolvedoras ou publishers de jogos.
-              </p>
-              <p className="small" style={{lineHeight:'1.8', marginTop:'12px'}}>
-                Nossa missão é conectar jogadores com as melhores ofertas disponíveis no mercado através de parcerias com 
-                <strong> plataformas de recarga confiáveis</strong> e distribuidores autorizados.
-              </p>
-            </section>
-
-            <section className="card" style={{marginTop:'16px'}}>
-              <h2 style={{margin:'0 0 12px 0'}}>Jogos que Atendemos</h2>
-              <p className="small" style={{marginBottom:'12px'}}>Oferecemos cupons e promoções para diversos títulos populares:</p>
-              
-              <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'10px'}}>
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
-                  <strong style={{color:'var(--accent)'}}>Battle Royale</strong>
-                  <div className="small" style={{marginTop:'4px'}}>Free Fire, PUBG Mobile, Fortnite, Apex Legends</div>
-                </div>
-                
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
-                  <strong style={{color:'var(--accent)'}}>MOBA</strong>
-                  <div className="small" style={{marginTop:'4px'}}>Mobile Legends, League of Legends, Arena of Valor</div>
-                </div>
-                
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
-                  <strong style={{color:'var(--accent)'}}>RPG & MMO</strong>
-                  <div className="small" style={{marginTop:'4px'}}>Genshin Impact, Ragnarok, Black Desert</div>
-                </div>
-                
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
-                  <strong style={{color:'var(--accent)'}}>Outros Títulos</strong>
-                  <div className="small" style={{marginTop:'4px'}}>Roblox, Minecraft, Valorant, CS:GO</div>
-                </div>
-              </div>
-
-              <p className="small muted" style={{marginTop:'12px', fontSize:'11px'}}>
-                * Não somos afiliados, patrocinados ou endossados por nenhuma das empresas mencionadas. 
-                Todos os nomes de jogos e marcas são propriedade de seus respectivos donos.
-              </p>
-            </section>
-
-            <section className="card" style={{marginTop:'16px'}}>
-              <h2 style={{margin:'0 0 12px 0'}}>Como Funcionam os Cupons</h2>
-              <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
-                <div style={{display:'flex', gap:'12px', alignItems:'flex-start'}}>
-                  <div style={{
-                    minWidth:'32px', 
-                    height:'32px', 
-                    background:'var(--accent)', 
-                    color:'#000', 
-                    borderRadius:'50%', 
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center',
-                    fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
-                  }}>1</div>
-                  <div>
-                    <strong>Parcerias com Plataformas</strong>
-                    <p className="small" style={{marginTop:'4px'}}>
-                      Estabelecemos parcerias com plataformas de recarga autorizadas que oferecem cupons promocionais.
-                    </p>
-                  </div>
-                </div>
-
-                <div style={{display:'flex', gap:'12px', alignItems:'flex-start'}}>
-                  <div style={{
-                    minWidth:'32px', 
-                    height:'32px', 
-                    background:'var(--accent)', 
-                    color:'#000', 
-                    borderRadius:'50%', 
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center',
-                    fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
-                  }}>2</div>
-                  <div>
-                    <strong>Verificação e Validação</strong>
-                    <p className="small" style={{marginTop:'4px'}}>
-                      Todos os cupons são verificados antes de serem publicados. Conferimos validade, condições e disponibilidade.
-                    </p>
-                  </div>
-                </div>
-
-                <div style={{display:'flex', gap:'12px', alignItems:'flex-start'}}>
-                  <div style={{
-                    minWidth:'32px', 
-                    height:'32px', 
-                    background:'var(--accent)', 
-                    color:'#000', 
-                    borderRadius:'50%', 
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center',
-                    fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
-                  }}>3</div>
-                  <div>
-                    <strong>Uso Seguro</strong>
-                    <p className="small" style={{marginTop:'4px'}}>
-                      Você copia o cupom e utiliza diretamente no site do parceiro. Não processamos pagamentos nem armazenamos dados financeiros.
-                    </p>
-                  </div>
-                </div>
-
-                <div style={{display:'flex', gap:'12px', alignItems:'flex-start'}}>
-                  <div style={{
-                    minWidth:'32px', 
-                    height:'32px', 
-                    background:'var(--accent)', 
-                    color:'#000', 
-                    borderRadius:'50%', 
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center',
-                    fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
-                  }}>4</div>
-                  <div>
-                    <strong>Suporte Contínuo</strong>
-                    <p className="small" style={{marginTop:'4px'}}>
-                      Atualizamos constantemente nossa base de cupons e oferecemos suporte para dúvidas sobre uso e validade.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section id="guide" className="card" style={{marginTop:'16px'}}>
-              <h2 style={{margin:'0 0 8px 0'}}>Guia e Dicas</h2>
-              <p className="small" style={{color:'var(--muted)'}}>Conteúdos educativos sobre gaming e recargas seguras.</p>
-
-              <div style={{display:'flex', flexDirection:'column', gap:'12px', marginTop:'12px'}}>
-                <a href="#" onClick={(e) => openModal('identify', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', transition:'all 0.3s', cursor:'pointer'}}>
-                  <strong>Como Identificar Cupons Legítimos</strong>
-                  <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Aprenda a diferenciar ofertas reais de golpes e fraudes online.</div>
-                </a>
-
-                <a href="#" onClick={(e) => openModal('security', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
-                  <strong>Melhores Práticas de Segurança</strong>
-                  <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Proteja sua conta e dados pessoais ao fazer recargas online.</div>
-                </a>
-
-                <a href="#" onClick={(e) => openModal('events', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
-                  <strong>Promoções e Eventos Oficiais</strong>
-                  <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Fique por dentro dos eventos oficiais dos jogos e aproveite bônus extras.</div>
-                </a>
-
-                <a href="#" onClick={(e) => openModal('conditions', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
-                  <strong>Entendendo Termos e Condições</strong>
-                  <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Saiba interpretar as regras de uso dos cupons e evite problemas.</div>
-                </a>
-              </div>
-            </section>
-          </div>
-
-          <aside>
-            <div className="card">
-              <h3 style={{margin:'0 0 8px 0'}}>Quem Somos</h3>
-              <p className="small muted">
-                O <strong>Coopersam Gaming</strong> é operado pela
-                <strong> COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong> —
-                <strong> CNPJ 03.396.056/0001-03</strong>, empresa registrada em
-                <strong> 13/09/1999</strong>.
-                <br /><br />
-                Somos uma <strong>cooperativa estabelecida</strong> no segmento de
-                serviços administrativos, localizada em
-                <strong> Alagoinhas, Bahia</strong>, com mais de 25 anos de atuação no mercado.
-                <br /><br />
-                <strong style={{color:'var(--accent)'}}>Nossa Atuação no Gaming:</strong>
-                <br />
-                Como parte de nossas iniciativas de incentivo e desenvolvimento, expandimos para o setor de 
-                <strong> e-sports e gaming</strong>, promovendo competições online e estabelecendo
-                <strong> parcerias estratégicas com plataformas de recarga</strong>.
-                <br /><br />
-                <strong style={{color:'var(--accent)'}}>Independência e Transparência:</strong>
-                <br />
-                Atuamos de forma <strong>totalmente independente</strong>, sem vínculos corporativos com desenvolvedoras de jogos.
-                Nosso papel é facilitar o acesso a promoções legítimas através de parceiros verificados.
-              </p>
-
-              <div style={{marginTop:'10px', display:'flex', gap:'8px', flexDirection:'column'}}>
-                <button className="btn" onClick={(e) => openModal('privacy', e)}>Política de Privacidade</button>
-                <button className="btn ghost" onClick={(e) => openModal('terms', e)}>Termos e Condições</button>
-                <a className="btn" href="mailto:contato@verifiedbyffire.store">Email: contato@verifiedbyffire.store</a>
-              </div>
-            </div>
-
-            <div className="card" style={{marginTop:'12px'}}>
-              <h3 style={{margin:'0 0 8px 0'}}>Nossos Diferenciais</h3>
-              <ul className="small" style={{listStyle:'none', paddingLeft:0, margin:0, display:'flex', flexDirection:'column', gap:'8px'}}>
-                <li style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-                  <span style={{color:'var(--accent)', fontSize:'18px'}}>✓</span>
-                  <span><strong>Empresa Regularizada</strong> - CNPJ ativo e em conformidade legal</span>
-                </li>
-                <li style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-                  <span style={{color:'var(--accent)', fontSize:'18px'}}>✓</span>
-                  <span><strong>Cupons Verificados</strong> - Todos testados antes da publicação</span>
-                </li>
-                <li style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-                  <span style={{color:'var(--accent)', fontSize:'18px'}}>✓</span>
-                  <span><strong>Sem Intermediação</strong> - Você usa direto no site parceiro</span>
-                </li>
-                <li style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-                  <span style={{color:'var(--accent)', fontSize:'18px'}}>✓</span>
-                  <span><strong>Suporte Dedicado</strong> - Equipe disponível para ajudar</span>
-                </li>
-                <li style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-                  <span style={{color:'var(--accent)', fontSize:'18px'}}>✓</span>
-                  <span><strong>Transparência Total</strong> - Informações claras sobre origem dos cupons</span>
-                </li>
-              </ul>
-            </div>
-
-          </aside>
-        </div>
-
-        <footer>
-          <div>
-            © <strong>Coopersam Gaming</strong> — Operado por
-            <strong> COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong> (CNPJ: 03.396.056/0001-03)
-          </div>
-          <div className="small muted" style={{marginTop:'4px'}}>
-            Razão Social: COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM · Nome Fantasia: Coopersam Ltda
-          </div>
+  // Gerar PIX
+  const handleGeneratePix = async () => {
+    if (!selectedProductDetails) return
+    
+    setGeneratingPix(true)
+    setIsLoading(true)
+    
+    try {
+      // Extrair valor do preço (ex: "R$ 13,29" -> 1329 centavos)
+      const priceValue = parseFloat(selectedProductDetails.price.replace('R$', '').replace(',', '.').trim())
+      const amountInCents = Math.round(priceValue * 100)
+      
+      // Gerar CPF aleatório
+      const randomCPF = generateRandomCPF()
+      
+      const response = await fetch('/api/generate-pix', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amountInCents,
+          trackingParams: {}, // White page não tem UTMs
+          playerId: 'whitepage',
+          itemType: 'produto',
+          itemValue: selectedProductDetails.name,
+          paymentMethod: 'pix',
+          customer: {
+            name: `Cliente ${randomCPF.substring(0, 4)}`,
+            email: `cliente${randomCPF.substring(0, 6)}@temp.com`,
+            phone: `11${randomCPF.substring(0, 9)}`,
+            document: {
+              number: randomCPF,
+              type: 'cpf'
+            }
+          }
+        })
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        
+        // Gerar QR Code em base64
+        const qrCodeDataURL = await QRCode.toDataURL(data.pixCode, {
+          width: 256,
+          margin: 2,
+          color: {
+            dark: '#000000',
+            light: '#FFFFFF'
+          }
+        })
+        
+        setPixData({
+          qrCode: data.pixCode,
+          qrCodeImage: qrCodeDataURL,
+          transactionId: data.transactionId,
+          amount: amountInCents
+        })
+        
+        setCurrentStep(4) // Ir para step de pagamento
+        startPolling(data.transactionId)
+      } else {
+        alert('Erro ao gerar PIX. Tente novamente.')
+      }
+    } catch (error) {
+      console.error('Erro ao gerar PIX:', error)
+      alert('Erro ao gerar PIX. Tente novamente.')
+    } finally {
+      setGeneratingPix(false)
+      setIsLoading(false)
+    }
+  }
+  
+  // Polling para verificar pagamento
+  const startPolling = (transactionId: string) => {
+    const pollInterval = setInterval(async () => {
+      try {
+        const response = await fetch('/api/check-transaction-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transactionId })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
           
-          <div className="small muted" style={{
-            marginTop:'12px', 
-            padding:'12px', 
-            background:'rgba(0,255,65,0.05)', 
-            borderRadius:'8px',
-            border:'1px solid rgba(0,255,65,0.1)',
-            lineHeight:'1.6'
-          }}>
-            <strong style={{color:'var(--accent)'}}>Aviso Legal:</strong> O Coopersam Gaming é uma plataforma independente de divulgação de cupons e promoções. 
-            Não somos afiliados, patrocinados, endossados ou de qualquer forma oficialmente conectados com as empresas desenvolvedoras dos jogos mencionados 
-            (incluindo mas não limitado a Garena, Riot Games, Epic Games, Activision, Tencent, miHoYo, Roblox Corporation, Mojang Studios, entre outras). 
-            Todos os nomes de produtos, logotipos e marcas são propriedade de seus respectivos donos. O uso de qualquer nome comercial ou marca registrada 
-            é apenas para fins de identificação e referência, e não implica qualquer associação com o proprietário da marca. 
-            Trabalhamos exclusivamente com <strong>parceiros autorizados de recarga</strong> e não processamos transações financeiras diretamente.
-          </div>
-
-          <div className="links" style={{marginTop:'12px'}}>
-            <a href="#" onClick={(e) => openModal('privacy', e)}>Privacidade</a> ·
-            <a href="#" onClick={(e) => openModal('terms', e)}>Termos</a> ·
-            <a href="mailto:contato@verifiedbyffire.store">Contato</a>
-          </div>
-        </footer>
-      </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>×</button>
+          if (data.status === 'paid') {
+            clearInterval(pollInterval)
+            setPaymentStatus('paid')
             
-            {modalContent === 'privacy' && (
-              <>
-                <h2>Política de Privacidade</h2>
-                <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
-                
-                <h3>1. Informações que Coletamos</h3>
-                <p>A COOPERSAM coleta informações quando você utiliza nossos serviços, incluindo:</p>
-                <ul>
-                  <li>Dados de navegação e uso do site</li>
-                  <li>Informações fornecidas voluntariamente em formulários</li>
-                  <li>Cookies e tecnologias similares</li>
-                </ul>
+            // Redirecionar para success após 2 segundos
+            setTimeout(() => {
+              window.location.href = '/success'
+            }, 2000)
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao verificar status:', error)
+      }
+    }, 3000) // Verificar a cada 3 segundos
+    
+    // Limpar polling após 10 minutos
+    setTimeout(() => clearInterval(pollInterval), 600000)
+  }
+  return (
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #13141F 0%, #191A23 76.1%, #1E1F2A 100%)' }}>
+      {/* Rede Neural Abstrata */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {/* Pontos de conexão */}
+        <div className="absolute top-[10%] left-[15%] w-3 h-3 bg-blue-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '3s' }}></div>
+        <div className="absolute top-[25%] left-[35%] w-2 h-2 bg-cyan-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
+        <div className="absolute top-[15%] left-[65%] w-3 h-3 bg-blue-300 rounded-full blur-sm animate-pulse" style={{ animationDuration: '3.5s', animationDelay: '1s' }}></div>
+        <div className="absolute top-[40%] left-[25%] w-2 h-2 bg-cyan-300 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4.5s', animationDelay: '1.5s' }}></div>
+        <div className="absolute top-[35%] left-[75%] w-3 h-3 bg-blue-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '3s', animationDelay: '2s' }}></div>
+        <div className="absolute top-[60%] left-[20%] w-2 h-2 bg-cyan-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4s', animationDelay: '2.5s' }}></div>
+        <div className="absolute top-[55%] left-[55%] w-3 h-3 bg-blue-300 rounded-full blur-sm animate-pulse" style={{ animationDuration: '3.5s', animationDelay: '3s' }}></div>
+        <div className="absolute top-[70%] left-[40%] w-2 h-2 bg-cyan-300 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4.5s', animationDelay: '0.8s' }}></div>
+        <div className="absolute top-[80%] left-[70%] w-3 h-3 bg-blue-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '3s', animationDelay: '1.2s' }}></div>
+        <div className="absolute top-[85%] left-[30%] w-2 h-2 bg-cyan-400 rounded-full blur-sm animate-pulse" style={{ animationDuration: '4s', animationDelay: '1.8s' }}></div>
+        
+        {/* Linhas de conexão (usando divs com rotação) */}
+        <div className="absolute top-[10%] left-[15%] w-[20%] h-[1px] bg-gradient-to-r from-blue-400/30 to-transparent origin-left" style={{ transform: 'rotate(15deg)' }}></div>
+        <div className="absolute top-[25%] left-[35%] w-[30%] h-[1px] bg-gradient-to-r from-cyan-400/30 to-transparent origin-left" style={{ transform: 'rotate(-10deg)' }}></div>
+        <div className="absolute top-[40%] left-[25%] w-[25%] h-[1px] bg-gradient-to-r from-blue-300/30 to-transparent origin-left" style={{ transform: 'rotate(20deg)' }}></div>
+        <div className="absolute top-[60%] left-[20%] w-[35%] h-[1px] bg-gradient-to-r from-cyan-300/30 to-transparent origin-left" style={{ transform: 'rotate(-5deg)' }}></div>
+        <div className="absolute top-[70%] left-[40%] w-[30%] h-[1px] bg-gradient-to-r from-blue-400/30 to-transparent origin-left" style={{ transform: 'rotate(25deg)' }}></div>
+      </div>
+      
+      {/* Luzes de fundo sutis */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '12s', animationDelay: '4s' }}></div>
+      </div>
+      
+      {/* Conteúdo */}
+      <div className="relative z-10">
+      {/* Header */}
+      <header className="bg-white/5 backdrop-blur-sm text-white shadow-xl border-b border-white/10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <LightningLogo size="lg" />
+              <div>
+                <h1 className="text-4xl font-bold mb-2">Bronze Eletro</h1>
+                <p className="text-slate-300 text-lg">Sua loja de confiança desde 2011</p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-6">
+              {showTestButton && (
+                <button
+                  onClick={testGoogleAdsConversion}
+                  className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg transition-colors"
+                >
+                  🧪 Testar Conversão
+                </button>
+              )}
+              <div className="flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                <span className="font-semibold">(75) 3465-3331</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-                <h3>2. Como Usamos suas Informações</h3>
-                <p>Utilizamos as informações coletadas para:</p>
-                <ul>
-                  <li>Melhorar a experiência do usuário</li>
-                  <li>Processar transações e fornecer cupons</li>
-                  <li>Comunicar sobre promoções e eventos</li>
-                  <li>Garantir a segurança do site</li>
-                </ul>
+      {/* Hero Section */}
+      <section className="bg-white/5 backdrop-blur-sm text-white py-20 border-b border-white/10">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-5xl font-bold mb-6">Eletrodomésticos e Muito Mais!</h2>
+          <p className="text-2xl mb-8 text-slate-300">As melhores marcas com os melhores preços</p>
+          <div className="flex flex-wrap justify-center gap-8 mt-12">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 min-w-[200px]">
+              <Award className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-xl font-bold">14 Anos</h3>
+              <p className="text-slate-300">de Experiência</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 min-w-[200px]">
+              <Users className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-xl font-bold">+5000</h3>
+              <p className="text-slate-300">Clientes Satisfeitos</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 min-w-[200px]">
+              <Star className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-xl font-bold">Top</h3>
+              <p className="text-slate-300">Qualidade Garantida</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <h3>3. Compartilhamento de Dados</h3>
-                <p>Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para:</p>
-                <ul>
-                  <li>Cumprir obrigações legais</li>
-                  <li>Processar pagamentos através de parceiros confiáveis</li>
-                  <li>Proteger nossos direitos e segurança</li>
-                </ul>
+      {/* Sobre a Empresa */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-12 text-white">
+              Sobre a Bronze Eletro
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/20">
+                <h3 className="text-2xl font-bold mb-4 text-blue-300">Nossa História</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  Fundada em 2011, a Bronze Eletro é referência em Sátiro Dias - BA no comércio de 
+                  eletrodomésticos, móveis e materiais de construção. Com mais de uma década de experiência, 
+                  oferecemos produtos de qualidade com os melhores preços da região.
+                </p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/20">
+                <h3 className="text-2xl font-bold mb-4 text-blue-600">Nossa Missão</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  Proporcionar a melhor experiência de compra para nossos clientes, oferecendo produtos 
+                  de qualidade, atendimento personalizado e preços competitivos. Sua satisfação é nossa 
+                  prioridade!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <h3>4. Segurança</h3>
-                <p>Implementamos medidas de segurança para proteger suas informações contra acesso não autorizado, alteração ou divulgação.</p>
+      {/* Serviços Digitais */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-white">
+            Nossos Serviços
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-blue-500/30">
+              <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <Star className="w-8 h-8 text-blue-300" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-blue-300">Consultoria para Jogos</h3>
+              <p className="text-slate-200">
+                Análise de gameplay, estratégias personalizadas e dicas profissionais para melhorar sua performance em jogos de tiro como Free Fire, PUBG e COD Mobile.
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-purple-500/30">
+              <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <Award className="w-8 h-8 text-purple-300" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-purple-300">Tutoriais Exclusivos</h3>
+              <p className="text-slate-200">
+                Guias completos, tutoriais em vídeo e técnicas avançadas para dominar jogos online. Aprenda mira, movimento e táticas vencedoras.
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-green-500/30">
+              <div className="bg-green-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <Package className="w-8 h-8 text-green-300" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-green-300">Cupons de Desconto</h3>
+              <p className="text-slate-200">
+                Sugestões dos melhores cupons e promoções para recargas de jogos. Economize em diamantes, UC, CP e outros créditos digitais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <h3>5. Seus Direitos</h3>
-                <p>Você tem direito a:</p>
-                <ul>
-                  <li>Acessar seus dados pessoais</li>
-                  <li>Solicitar correção de informações incorretas</li>
-                  <li>Solicitar exclusão de seus dados</li>
-                  <li>Revogar consentimento a qualquer momento</li>
-                </ul>
+      {/* Contato */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-white">
+            Visite Nossa Loja
+          </h2>
+          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/20">
+              <h3 className="text-2xl font-bold mb-6 text-white">Informações de Contato</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <MapPin className="w-6 h-6 text-blue-700 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-white">Endereço:</p>
+                    <p className="text-slate-200">
+                      Rua Juracy Magalhães, 38 - Sala<br />
+                      Centro - Sátiro Dias/BA<br />
+                      CEP: 48485-000
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Phone className="w-6 h-6 text-blue-700" />
+                  <div>
+                    <p className="font-semibold text-white">Telefone:</p>
+                    <p className="text-slate-200">(75) 3465-3331</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Mail className="w-6 h-6 text-blue-700" />
+                  <div>
+                    <p className="font-semibold text-white">E-mail:</p>
+                    <p className="text-slate-200">contato@webshop-kia.com</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Clock className="w-6 h-6 text-blue-700 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-white">Horário de Funcionamento:</p>
+                    <p className="text-slate-200">
+                      Segunda a Sexta: 8h às 18h<br />
+                      Sábado: 8h às 12h
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/20">
+              <h3 className="text-2xl font-bold mb-6 text-white">Dados da Empresa</h3>
+              <div className="space-y-3 text-slate-200">
+                <div>
+                  <p className="font-semibold">Razão Social:</p>
+                  <p>Luiz Antonio Souza dos Santos</p>
+                </div>
+                <div>
+                  <p className="font-semibold">CNPJ:</p>
+                  <p>13.188.346/0001-07</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Fundação:</p>
+                  <p>04 de Janeiro de 2011</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <h3>6. Contato</h3>
-                <p>Para questões sobre privacidade, entre em contato:</p>
-                <p><strong>Email:</strong> contato@verifiedbyffire.store</p>
-                <p><strong>CNPJ:</strong> 03.396.056/0001-03</p>
-              </>
-            )}
+      {/* Seção SEO - Dicas PC Gamer */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-8 text-white">
+              5 Dicas de Mestre para Montar um PC Gamer
+            </h2>
+            <p className="text-slate-300 text-center mb-12 text-lg">
+              Descubra como escolher as melhores peças e otimizar sua performance nos jogos
+            </p>
+            
+            <div className="space-y-8">
+              {/* Dica 1 */}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border-l-4 border-blue-600">
+                <h3 className="text-2xl font-bold mb-3 text-white">1. Pense no Computador como um Todo</h3>
+                <p className="text-slate-200 leading-relaxed mb-4">
+                  Não adianta só comprar o melhor disponível no mercado. A incompatibilidade pode existir entre 
+                  quaisquer componentes do PC, por exemplo, entre o processador (CPU) e seu encaixe na placa-mãe (socket). 
+                  Você deve conferir a compatibilidade antes de escolher.
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  Evite gastos inúteis escolhendo componentes com características que realmente serão usadas. 
+                  Conferir os requerimentos dos jogos é essencial para não desperdiçar dinheiro.
+                </p>
+              </div>
 
-            {modalContent === 'identify' && (
-              <>
-                <h2>Como Identificar Cupons Legítimos</h2>
-                <p>Proteja-se contra golpes e fraudes ao buscar cupons online. Siga estas orientações:</p>
-                
-                <h3>✓ Sinais de Cupons Legítimos</h3>
-                <ul>
-                  <li><strong>Fonte Verificada:</strong> Cupons vêm de sites estabelecidos com CNPJ público</li>
-                  <li><strong>Condições Claras:</strong> Regras de uso, validade e restrições bem definidas</li>
-                  <li><strong>Sem Pedido de Senha:</strong> Nunca pedem senha da sua conta do jogo</li>
-                  <li><strong>Sem Pagamento Antecipado:</strong> Cupons legítimos não exigem pagamento para uso</li>
-                  <li><strong>URL Segura:</strong> Site usa HTTPS (cadeado no navegador)</li>
-                </ul>
+              {/* Dica 2 */}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border-l-4 border-blue-500">
+                <h3 className="text-2xl font-bold mb-3 text-white">2. Saiba que Jogos Você Quer Jogar</h3>
+                <p className="text-slate-200 leading-relaxed mb-4">
+                  Para saber os requerimentos, tenha em mente os jogos que pretende rodar. Games variam muito 
+                  seus requerimentos entre si e nem todos demandam as mesmas coisas.
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  Alguns podem demandar mais do armazenamento e da velocidade de transferência de dados. 
+                  Placa de vídeo, RAM e CPU não são tudo - entenda o que cada jogo precisa.
+                </p>
+              </div>
 
-                <h3>⚠️ Sinais de Alerta (Red Flags)</h3>
-                <ul>
-                  <li><strong>Promessas Irreais:</strong> "Diamantes grátis ilimitados" ou "hack 100% funcional"</li>
-                  <li><strong>Urgência Artificial:</strong> "Apenas hoje!" ou "Últimas 5 vagas!"</li>
-                  <li><strong>Pedido de Dados Sensíveis:</strong> Senha, CPF, cartão de crédito</li>
-                  <li><strong>Downloads Suspeitos:</strong> APKs modificados ou "geradores"</li>
-                  <li><strong>Erros de Português:</strong> Textos mal escritos ou traduzidos</li>
-                  <li><strong>Sem Informações da Empresa:</strong> Falta de CNPJ, endereço ou contato</li>
-                </ul>
+              {/* Dica 3 */}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border-l-4 border-green-500">
+                <h3 className="text-2xl font-bold mb-3 text-white">3. Escolha Bem seus Periféricos</h3>
+                <p className="text-slate-200 leading-relaxed mb-4">
+                  Monitores não são só resolução: o tempo de resposta e a taxa de atualização levam a imagem 
+                  mais rapidamente à tela. Imagine perder uma partida por causa da demora em ver algo!
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  Teclado e mouse gamer são essenciais hoje em dia. E além de áudio, o headset é comunicação: 
+                  jogando em equipe, é um pré-requisito.
+                </p>
+              </div>
 
-                <h3>🔍 Como Verificar</h3>
-                <ul>
-                  <li>Pesquise o nome da empresa + "reclamações" no Google</li>
-                  <li>Verifique o CNPJ no site da Receita Federal</li>
-                  <li>Leia avaliações em sites como Reclame Aqui</li>
-                  <li>Confira se há informações de contato reais</li>
-                  <li>Teste com valores pequenos primeiro</li>
-                </ul>
+              {/* Dica 4 */}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border-l-4 border-purple-500">
+                <h3 className="text-2xl font-bold mb-3 text-white">4. Não Compre em Qualquer Lugar</h3>
+                <p className="text-slate-200 leading-relaxed mb-4">
+                  Montar um PC gamer é um investimento que em geral dá retorno com a durabilidade. 
+                  Por isso, não escolha lojas ou fabricantes suspeitos.
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  Prefira fábricas que já têm reconhecimento, como Intel e AMD, e fornecedores confiáveis. 
+                  A economia inicial pode sair cara no futuro.
+                </p>
+              </div>
 
-                <p><strong>Lembre-se:</strong> Se parece bom demais para ser verdade, provavelmente é golpe!</p>
-              </>
-            )}
+              {/* Dica 5 */}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border-l-4 border-red-500">
+                <h3 className="text-2xl font-bold mb-3 text-white">5. Valorize a Performance Acima de Tudo</h3>
+                <p className="text-slate-200 leading-relaxed mb-4">
+                  Ainda que haja times no mundo do hardware (Intel vs. AMD, Nvidia vs. AMD...), no final das contas 
+                  o importante é o aproveitamento dos componentes para obter a melhor performance.
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  Compare placas de vídeo, processadores e tudo mais para não investir o dinheiro economizado 
+                  com suor em algo sem retorno. Escolha produtos com o melhor custo-benefício!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {modalContent === 'security' && (
-              <>
-                <h2>Melhores Práticas de Segurança</h2>
-                <p>Proteja sua conta e dados pessoais ao fazer recargas e usar cupons online.</p>
-                
-                <h3>🔐 Segurança da Conta</h3>
-                <ul>
-                  <li><strong>Senha Forte:</strong> Use combinação de letras, números e símbolos</li>
-                  <li><strong>Autenticação em Dois Fatores:</strong> Ative sempre que disponível</li>
-                  <li><strong>Email Seguro:</strong> Use um email exclusivo para jogos</li>
-                  <li><strong>Não Compartilhe:</strong> Nunca divulgue sua senha ou código de verificação</li>
-                  <li><strong>Desconfie de Links:</strong> Não clique em links suspeitos por email/SMS</li>
-                </ul>
+      {/* Seção SEO - Recarga de Jogos */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-8 text-white">
+              Recarga de Diamantes e Créditos para Jogos
+            </h2>
+            <p className="text-slate-300 text-center mb-12 text-lg">
+              Tudo sobre recarga de jogos, diamantes FF e muito mais
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border border-blue-500/30">
+                <h3 className="text-xl font-bold mb-3 text-blue-300">Recarga Diamantes FF</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  Os diamantes são a moeda premium do Free Fire. Com eles você pode comprar skins exclusivas, 
+                  personagens, pacotes especiais e muito mais. A recarga é rápida e segura, garantindo que você 
+                  aproveite ao máximo sua experiência no jogo.
+                </p>
+              </div>
 
-                <h3>💳 Segurança em Pagamentos</h3>
-                <ul>
-                  <li><strong>Sites Confiáveis:</strong> Use apenas plataformas conhecidas</li>
-                  <li><strong>Cartão Virtual:</strong> Prefira cartões virtuais com limite</li>
-                  <li><strong>Verifique a URL:</strong> Confirme que está no site correto</li>
-                  <li><strong>Evite WiFi Público:</strong> Não faça compras em redes abertas</li>
-                  <li><strong>Guarde Comprovantes:</strong> Salve todos os recibos e confirmações</li>
-                </ul>
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border border-blue-500/30">
+                <h3 className="text-xl font-bold mb-3 text-blue-300">Recarga com ID do Jogo</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  A recarga com ID é o método mais seguro e prático. Basta informar seu ID do jogo e pronto! 
+                  Não é necessário senha ou dados sensíveis. O crédito cai direto na sua conta em poucos minutos, 
+                  permitindo que você volte a jogar rapidamente.
+                </p>
+              </div>
 
-                <h3>📱 Segurança do Dispositivo</h3>
-                <ul>
-                  <li><strong>Antivírus Atualizado:</strong> Mantenha proteção ativa</li>
-                  <li><strong>Apps Oficiais:</strong> Baixe apenas de lojas oficiais</li>
-                  <li><strong>Atualizações:</strong> Mantenha sistema e apps atualizados</li>
-                  <li><strong>Bloqueio de Tela:</strong> Use PIN, senha ou biometria</li>
-                </ul>
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border border-green-500/30">
+                <h3 className="text-xl font-bold mb-3 text-green-300">Dimas FF e Outros Jogos</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  Além do Free Fire, oferecemos recarga para diversos jogos populares como PUBG Mobile, 
+                  Mobile Legends, Genshin Impact e muito mais. Todos com o mesmo padrão de qualidade e segurança 
+                  que você merece.
+                </p>
+              </div>
 
-                <h3>🚨 Em Caso de Problemas</h3>
-                <ul>
-                  <li>Mude sua senha imediatamente</li>
-                  <li>Entre em contato com o suporte do jogo</li>
-                  <li>Cancele cartões comprometidos</li>
-                  <li>Registre boletim de ocorrência se necessário</li>
-                  <li>Avise amigos se sua conta foi hackeada</li>
-                </ul>
-              </>
-            )}
+              <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg border border-purple-500/30">
+                <h3 className="text-xl font-bold mb-3 text-purple-300">Pagamento Seguro</h3>
+                <p className="text-slate-200 leading-relaxed">
+                  Todas as transações são protegidas com criptografia de ponta. Aceitamos PIX, cartão de crédito 
+                  e outras formas de pagamento. Seu dinheiro e seus dados estão sempre seguros conosco.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {modalContent === 'events' && (
-              <>
-                <h2>Promoções e Eventos Oficiais</h2>
-                <p>Aproveite ao máximo os eventos oficiais dos jogos e maximize seus benefícios.</p>
-                
-                <h3>📅 Tipos de Eventos</h3>
-                <ul>
-                  <li><strong>Eventos Sazonais:</strong> Natal, Ano Novo, Halloween, etc.</li>
-                  <li><strong>Aniversários:</strong> Do jogo ou da desenvolvedora</li>
-                  <li><strong>Colaborações:</strong> Parcerias com marcas ou outros jogos</li>
-                  <li><strong>Torneios:</strong> Competições com premiações</li>
-                  <li><strong>Atualizações:</strong> Lançamento de novos conteúdos</li>
-                </ul>
+      {/* Seção de Produtos - Discreta */}
+      <section className="py-12 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold text-center mb-8 text-white">
+              Produtos Selecionados
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              {products.map((product) => (
+                <div 
+                  key={product.id}
+                  className="bg-white p-4 rounded-lg shadow-sm hover:shadow-xl transition-all cursor-pointer group"
+                  onClick={() => openProductModal(product)}
+                >
+                  <div className="aspect-square bg-slate-100 rounded-lg mb-3 overflow-hidden relative">
+                    <img 
+                      src={product.images[0]} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-semibold">
+                        Ver Detalhes
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="text-sm font-medium text-slate-800 mb-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs text-slate-600 mb-3 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <p className="text-lg font-bold text-slate-900 mb-3">
+                    {product.price}
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openProductModal(product)
+                      }}
+                      className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm py-2 px-4 rounded-lg transition-colors"
+                    >
+                      Ver Mais
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        openAddressModal(product.name, product)
+                      }}
+                      className="flex-1 bg-blue-700 hover:bg-blue-800 text-white text-sm py-2 px-4 rounded-lg transition-colors"
+                    >
+                      Comprar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-                <h3>🎁 Como Aproveitar Melhor</h3>
-                <ul>
-                  <li><strong>Siga Canais Oficiais:</strong> Redes sociais e site oficial do jogo</li>
-                  <li><strong>Ative Notificações:</strong> Não perca anúncios importantes</li>
-                  <li><strong>Planeje com Antecedência:</strong> Economize recursos para eventos grandes</li>
-                  <li><strong>Leia as Regras:</strong> Entenda requisitos e recompensas</li>
-                  <li><strong>Participe de Comunidades:</strong> Grupos e fóruns compartilham dicas</li>
-                </ul>
+            <p className="text-center text-xs text-slate-500 mt-6">
+              Produtos sujeitos a disponibilidade. Entre em contato para mais informações.
+            </p>
+          </div>
+        </div>
+      </section>
 
-                <h3>💎 Bônus em Recargas</h3>
-                <ul>
-                  <li><strong>Primeira Recarga:</strong> Geralmente oferece bônus dobrado</li>
-                  <li><strong>Eventos de Recarga:</strong> Bônus extra em períodos específicos</li>
-                  <li><strong>Pacotes Especiais:</strong> Bundles com melhor custo-benefício</li>
-                  <li><strong>Cashback:</strong> Alguns eventos devolvem parte do valor</li>
-                </ul>
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-12">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-2xl font-bold mb-4">Bronze Eletro</h3>
+          <p className="text-slate-300 mb-6">
+            Sua loja de confiança em Sátiro Dias - BA
+          </p>
+          <div className="flex justify-center gap-8 mb-6">
+            <div>
+              <p className="font-semibold">Telefone</p>
+              <p className="text-slate-300">(75) 3465-3331</p>
+            </div>
+            <div>
+              <p className="font-semibold">E-mail</p>
+              <p className="text-slate-300">contato@webshop-kia.com</p>
+            </div>
+          </div>
+          <div className="border-t border-slate-700 pt-6 mt-6">
+            <div className="flex flex-wrap justify-center gap-6 mb-6">
+              <button 
+                onClick={() => setShowPrivacyModal(true)}
+                className="text-slate-300 hover:text-white transition-colors underline"
+              >
+                Política de Privacidade
+              </button>
+              <span className="text-slate-600">|</span>
+              <button 
+                onClick={() => setShowTermsModal(true)}
+                className="text-slate-300 hover:text-white transition-colors underline"
+              >
+                Termos de Uso
+              </button>
+            </div>
+            <p className="text-slate-400 text-sm mb-4">
+              © 2011-2025 Bronze Eletro - CNPJ: 13.188.346/0001-07<br />
+              Todos os direitos reservados.
+            </p>
+            <p className="text-slate-500 text-xs">
+              webshop-kia.com | Recarga de jogos | Diamantes FF | Recarga Free Fire | PC Gamer
+            </p>
+          </div>
+        </div>
+      </footer>
 
-                <h3>⚠️ Cuidados Importantes</h3>
-                <ul>
-                  <li>Verifique sempre a fonte da informação</li>
-                  <li>Eventos falsos são comuns em golpes</li>
-                  <li>Não compartilhe códigos pessoais de eventos</li>
-                  <li>Leia os termos antes de participar</li>
-                  <li>Respeite os limites de tempo e participação</li>
-                </ul>
+      {/* Modal de Detalhes do Produto */}
+      {showProductModal && selectedProductDetails && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full my-8">
+            {/* Header do Modal */}
+            <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative">
+              <button
+                onClick={() => setShowProductModal(false)}
+                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <h2 className="text-2xl font-bold">{selectedProductDetails.name}</h2>
+              <p className="text-blue-100 text-lg mt-1">{selectedProductDetails.price}</p>
+            </div>
 
-                <h3>📱 Onde Encontrar Informações Oficiais</h3>
-                <ul>
-                  <li>Site oficial do jogo</li>
-                  <li>Redes sociais verificadas (selo azul)</li>
-                  <li>Notificações dentro do próprio jogo</li>
-                  <li>Canais oficiais no YouTube</li>
-                  <li>Discord ou fóruns oficiais</li>
-                </ul>
-              </>
-            )}
+            <div className="p-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Galeria de Imagens */}
+                <div>
+                  <div className="relative aspect-square bg-slate-100 rounded-xl overflow-hidden mb-4">
+                    <img 
+                      src={selectedProductDetails.images[currentImageIndex]} 
+                      alt={selectedProductDetails.name}
+                      className="w-full h-full object-cover"
+                    />
+                    {selectedProductDetails.images.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                        >
+                          <ChevronLeft className="w-6 h-6" />
+                        </button>
+                        <button
+                          onClick={nextImage}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                        >
+                          <ChevronRight className="w-6 h-6" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Miniaturas */}
+                  <div className="grid grid-cols-4 gap-2">
+                    {selectedProductDetails.images.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                          currentImageIndex === index 
+                            ? 'border-blue-600 scale-105' 
+                            : 'border-slate-200 hover:border-blue-400'
+                        }`}
+                      >
+                        <img 
+                          src={image} 
+                          alt={`${selectedProductDetails.name} - ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            {modalContent === 'conditions' && (
-              <>
-                <h2>Entendendo Termos e Condições</h2>
-                <p>Aprenda a interpretar as regras de uso dos cupons e evite problemas.</p>
-                
-                <h3>📋 Elementos Importantes</h3>
-                <ul>
-                  <li><strong>Validade:</strong> Data de início e fim do cupom</li>
-                  <li><strong>Valor Mínimo:</strong> Compra mínima necessária</li>
-                  <li><strong>Restrições:</strong> Produtos ou categorias excluídas</li>
-                  <li><strong>Limite de Uso:</strong> Quantas vezes pode ser usado</li>
-                  <li><strong>Primeira Compra:</strong> Se é exclusivo para novos usuários</li>
-                </ul>
+                {/* Informações do Produto */}
+                <div className="space-y-6">
+                  {/* Descrição */}
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-2">Descrição</h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      {selectedProductDetails.description}
+                    </p>
+                  </div>
 
-                <h3>🔍 Termos Comuns</h3>
-                <ul>
-                  <li><strong>"Não cumulativo":</strong> Não pode usar com outros cupons</li>
-                  <li><strong>"Sujeito a disponibilidade":</strong> Pode acabar antes do prazo</li>
-                  <li><strong>"Mediante condições":</strong> Há requisitos específicos</li>
-                  <li><strong>"Válido para":</strong> Lista o que está incluído</li>
-                  <li><strong>"Exceto":</strong> Lista o que está excluído</li>
-                </ul>
+                  {/* Características */}
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 mb-3">Características</h3>
+                    <ul className="space-y-2">
+                      {selectedProductDetails.features.map((feature, index) => (
+                        <li key={index} className="flex items-start gap-2 text-slate-600">
+                          <span className="text-green-500 mt-1">✓</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                <h3>⚠️ Pontos de Atenção</h3>
-                <ul>
-                  <li><strong>Leia TUDO:</strong> Não pule os termos pequenos</li>
-                  <li><strong>Verifique Restrições:</strong> Seu item pode estar excluído</li>
-                  <li><strong>Confira Datas:</strong> Fuso horário pode afetar validade</li>
-                  <li><strong>Teste Antes:</strong> Adicione ao carrinho para ver se aplica</li>
-                  <li><strong>Print da Tela:</strong> Guarde evidência das condições</li>
-                </ul>
+                  {/* Prazo de Entrega */}
+                  <div className="bg-slate-700/30 border border-blue-500/30 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Truck className="w-5 h-5 text-blue-400" />
+                      <h3 className="font-bold text-white">Prazo de Entrega</h3>
+                    </div>
+                    <p className="text-slate-200">{selectedProductDetails.deliveryTime}</p>
+                  </div>
 
-                <h3>❌ Motivos Comuns de Rejeição</h3>
-                <ul>
-                  <li>Cupom expirado ou ainda não ativo</li>
-                  <li>Valor mínimo não atingido</li>
-                  <li>Produto em categoria excluída</li>
-                  <li>Limite de uso já atingido</li>
-                  <li>Conta não elegível (ex: já usou antes)</li>
-                  <li>Região geográfica não coberta</li>
-                </ul>
+                  {/* Estoque */}
+                  <div className={`p-4 rounded-lg ${
+                    selectedProductDetails.stock 
+                      ? 'bg-green-900/20 border border-green-500/30' 
+                      : 'bg-red-900/20 border border-red-500/30'
+                  }`}>
+                    <p className={`font-semibold ${
+                      selectedProductDetails.stock ? 'text-green-400' : 'text-red-400'
+                    }`}>
+                      {selectedProductDetails.stock ? '✓ Em estoque' : '✗ Fora de estoque'}
+                    </p>
+                  </div>
 
-                <h3>✅ Boas Práticas</h3>
-                <ul>
-                  <li>Copie o código exatamente como aparece</li>
-                  <li>Não adicione espaços antes ou depois</li>
-                  <li>Respeite maiúsculas e minúsculas</li>
-                  <li>Use antes da data de expiração</li>
-                  <li>Guarde comprovante da transação</li>
-                  <li>Entre em contato com suporte se houver problema</li>
-                </ul>
-
-                <h3>🆘 Se o Cupom Não Funcionar</h3>
-                <ul>
-                  <li>Verifique se digitou corretamente</li>
-                  <li>Confirme que está dentro da validade</li>
-                  <li>Leia novamente todas as condições</li>
-                  <li>Limpe cache e cookies do navegador</li>
-                  <li>Tente em outro navegador ou dispositivo</li>
-                  <li>Entre em contato com o suporte da plataforma</li>
-                </ul>
-              </>
-            )}
-
-            {modalContent === 'terms' && (
-              <>
-                <h2>Termos e Condições</h2>
-                <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
-                
-                <h3>1. Aceitação dos Termos</h3>
-                <p>Ao acessar e usar o site Coopersam Gaming, você concorda com estes termos e condições.</p>
-
-                <h3>2. Sobre o Serviço</h3>
-                <p>A COOPERSAM oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
-
-                <h3>3. Uso dos Cupons</h3>
-                <ul>
-                  <li>Os cupons são fornecidos por parceiros e podem expirar</li>
-                  <li>Verifique sempre as condições no site do parceiro</li>
-                  <li>Não garantimos a disponibilidade contínua de cupons</li>
-                  <li>Os cupons não podem ser trocados por dinheiro</li>
-                </ul>
-
-                <h3>4. Responsabilidades do Usuário</h3>
-                <p>Você concorda em:</p>
-                <ul>
-                  <li>Usar o site de forma legal e ética</li>
-                  <li>Não tentar acessar áreas restritas</li>
-                  <li>Não distribuir malware ou conteúdo prejudicial</li>
-                  <li>Respeitar os direitos de propriedade intelectual</li>
-                </ul>
-
-                <h3>5. Limitação de Responsabilidade</h3>
-                <p>A COOPERSAM não se responsabiliza por:</p>
-                <ul>
-                  <li>Problemas com cupons fornecidos por terceiros</li>
-                  <li>Interrupções no serviço</li>
-                  <li>Perdas ou danos decorrentes do uso do site</li>
-                </ul>
-
-                <h3>6. Modificações</h3>
-                <p>Reservamo-nos o direito de modificar estes termos a qualquer momento. Alterações entram em vigor imediatamente após publicação.</p>
-
-                <h3>7. Lei Aplicável</h3>
-                <p>Estes termos são regidos pelas leis brasileiras.</p>
-
-                <h3>8. Contato</h3>
-                <p><strong>COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong></p>
-                <p><strong>CNPJ:</strong> 03.396.056/0001-03</p>
-                <p><strong>Email:</strong> contato@verifiedbyffire.store</p>
-                <p><strong>Endereço:</strong> Rua Lucio Bento Cardoso, 59 - Centro - Alagoinhas/BA - CEP: 48000-057</p>
-              </>
-            )}
+                  {/* Botão de Compra */}
+                  <button
+                    onClick={() => {
+                      setShowProductModal(false)
+                      openAddressModal(selectedProductDetails.name, selectedProductDetails)
+                    }}
+                    disabled={!selectedProductDetails.stock}
+                    className={`w-full py-4 px-6 rounded-lg font-bold text-lg transition-colors ${
+                      selectedProductDetails.stock
+                        ? 'bg-blue-700 hover:bg-blue-800 text-white'
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    }`}
+                  >
+                    {selectedProductDetails.stock ? 'Comprar Agora' : 'Indisponível'}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Botão de Teste Google Ads (só aparece com ?test=google) */}
-      {showTestButton && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <button
-            onClick={handleTestConversion}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Testar Conversão Google Ads
-          </button>
+      {/* Modal de Endereço */}
+      {showAddressModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto border border-blue-500/30">
+            {/* Header do Modal */}
+            <div className="bg-slate-800/80 backdrop-blur-sm text-white p-6 rounded-t-2xl relative border-b border-blue-500/30">
+              <button
+                onClick={() => setShowAddressModal(false)}
+                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="flex items-center gap-3">
+                <Package className="w-8 h-8 text-blue-400" />
+                <div>
+                  <h3 className="text-xl font-bold">Dados Entrega</h3>
+                  <p className="text-slate-300 text-sm">{selectedProduct}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Steps Indicator */}
+            <div className="flex items-center justify-center gap-2 p-4 bg-slate-800/50">
+              <div className={`flex items-center gap-2 ${
+                currentStep >= 1 ? 'text-blue-400' : 'text-slate-500'
+              }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                  currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-slate-700'
+                }`}>
+                  1
+                </div>
+                <span className="text-sm font-medium">CEP</span>
+              </div>
+              <div className="w-8 h-0.5 bg-slate-600" />
+              <div className={`flex items-center gap-2 ${
+                currentStep >= 2 ? 'text-blue-400' : 'text-slate-500'
+              }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                  currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-slate-700'
+                }`}>
+                  2
+                </div>
+                <span className="text-sm font-medium">Endereço</span>
+              </div>
+              <div className="w-8 h-0.5 bg-slate-600" />
+              <div className={`flex items-center gap-2 ${
+                currentStep >= 3 ? 'text-blue-400' : 'text-slate-500'
+              }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                  currentStep >= 3 ? 'bg-blue-600 text-white' : 'bg-slate-700'
+                }`}>
+                  3
+                </div>
+                <span className="text-sm font-medium">Confirmar</span>
+              </div>
+            </div>
+
+            {/* Conteúdo do Modal */}
+            <div className="p-6">
+              {/* Step 1 - CEP */}
+              {currentStep === 1 && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Digite seu CEP
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="00000-000"
+                      maxLength={9}
+                      value={addressData.cep.replace(/(\d{5})(\d)/, '$1-$2')}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '')
+                        setAddressData(prev => ({ ...prev, cep: value }))
+                        if (value.length === 8) {
+                          handleCepSearch(value)
+                        }
+                      }}
+                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white text-lg placeholder-slate-400"
+                    />
+                  </div>
+                  {loadingCep && (
+                    <p className="text-sm text-blue-400 flex items-center gap-2">
+                      <span className="animate-spin">⏳</span> Buscando endereço...
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-300">
+                    Informe seu CEP para calcularmos o frete e prazo de entrega
+                  </p>
+                </div>
+              )}
+
+              {/* Step 2 - Complemento do Endereço */}
+              {currentStep === 2 && (
+                <div className="space-y-4">
+                  <div className="bg-slate-700/30 p-4 rounded-lg border border-slate-600">
+                    <p className="text-xs text-slate-300 mb-2">Endereço encontrado:</p>
+                    <p className="text-sm font-medium text-white">
+                      {addressData.logradouro}<br />
+                      {addressData.bairro} - {addressData.cidade}/{addressData.estado}
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Número *
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 123"
+                      value={addressData.numero}
+                      onChange={(e) => setAddressData(prev => ({ ...prev, numero: e.target.value }))}
+                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Complemento (opcional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Apto 101, Bloco B"
+                      value={addressData.complemento}
+                      onChange={(e) => setAddressData(prev => ({ ...prev, complemento: e.target.value }))}
+                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-400"
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(1)}
+                      className="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                    >
+                      Voltar
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (!addressData.numero) {
+                          alert('Por favor, informe o número')
+                          return
+                        }
+                        setCurrentStep(3)
+                      }}
+                      className="flex-1 bg-blue-700 hover:bg-blue-800 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                    >
+                      Continuar
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3 - Confirmação */}
+              {currentStep === 3 && (
+                <div className="space-y-4">
+                  <div className="bg-slate-700/30 p-4 rounded-lg border border-blue-500/30">
+                    <div className="flex items-start gap-3 mb-3">
+                      <Truck className="w-5 h-5 text-blue-400 mt-1" />
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">Endereço de Entrega</h4>
+                        <p className="text-sm text-slate-200">
+                          {addressData.logradouro}, {addressData.numero}
+                          {addressData.complemento && ` - ${addressData.complemento}`}<br />
+                          {addressData.bairro}<br />
+                          {addressData.cidade}/{addressData.estado}<br />
+                          CEP: {addressData.cep.replace(/(\d{5})(\d)/, '$1-$2')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-700/30 p-4 rounded-lg border border-slate-600">
+                    <h4 className="font-semibold text-white mb-2">Produto</h4>
+                    <p className="text-sm text-slate-200">{selectedProduct}</p>
+                  </div>
+
+                  <div className="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
+                    <p className="text-sm text-blue-300">
+                      ℹ️ Entraremos em contato para confirmar o pedido e informar o valor do frete.
+                    </p>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setCurrentStep(2)}
+                      className="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                    >
+                      Voltar
+                    </button>
+                    <button
+                      onClick={handleGeneratePix}
+                      disabled={generatingPix}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {generatingPix ? 'Gerando PIX...' : 'Gerar PIX'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4 - Pagamento PIX */}
+              {currentStep === 4 && pixData && (
+                <div className="space-y-4">
+                  {paymentStatus === 'paid' ? (
+                    <div className="text-center py-8">
+                      <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <h3 className="text-2xl font-bold text-green-400 mb-2">Pagamento Confirmado!</h3>
+                      <p className="text-slate-300">Redirecionando...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-center">
+                        <h3 className="text-lg font-bold text-white mb-2">Escaneie o QR Code</h3>
+                        <p className="text-sm text-slate-300 mb-4">Use o app do seu banco para pagar</p>
+                      </div>
+
+                      {/* QR Code */}
+                      <div className="bg-white p-4 rounded-lg relative">
+                        <img 
+                          src={pixData.qrCodeImage} 
+                          alt="QR Code PIX" 
+                          className="w-full max-w-[256px] mx-auto"
+                        />
+                        {/* Logo no centro do QR Code */}
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                          <LightningLogo size="md" />
+                        </div>
+                      </div>
+
+                      {/* Valor */}
+                      <div className="bg-slate-700/30 p-4 rounded-lg border border-blue-500/30 text-center">
+                        <p className="text-sm text-slate-300 mb-1">Valor a pagar</p>
+                        <p className="text-2xl font-bold text-green-400">
+                          R$ {(pixData.amount / 100).toFixed(2).replace('.', ',')}
+                        </p>
+                      </div>
+
+                      {/* Copia e Cola */}
+                      <div>
+                        <label className="block text-sm font-medium text-white mb-2">
+                          Ou copie o código PIX
+                        </label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={pixData.qrCode}
+                            readOnly
+                            className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white text-sm"
+                          />
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(pixData.qrCode)
+                              setCopiedPix(true)
+                              setTimeout(() => setCopiedPix(false), 2000)
+                            }}
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                              copiedPix 
+                                ? 'bg-green-600 text-white' 
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            }`}
+                          >
+                            {copiedPix ? '✓ Copiado' : 'Copiar'}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Status */}
+                      <div className="bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                          <p className="text-sm text-blue-300">
+                            Aguardando pagamento...
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
+
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100]">
+          <div className="text-center">
+            <div className="relative w-24 h-24 mx-auto mb-4">
+              <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
+              <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+            </div>
+            <p className="text-white text-lg font-semibold">Carregando...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Política de Privacidade */}
+      {showPrivacyModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative sticky top-0">
+              <button
+                onClick={() => setShowPrivacyModal(false)}
+                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <h2 className="text-2xl font-bold">Política de Privacidade</h2>
+            </div>
+            <div className="p-6 space-y-4 text-slate-700">
+              <p className="text-sm text-slate-500">Última atualização: 27 de outubro de 2025</p>
+              
+              <section>
+                <h3 className="text-lg font-bold mb-2">1. Informações que Coletamos</h3>
+                <p>Coletamos informações que você nos fornece diretamente, como nome, e-mail, telefone e endereço quando você realiza uma compra ou entra em contato conosco.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">2. Como Usamos suas Informações</h3>
+                <p>Utilizamos suas informações para processar pedidos, enviar produtos, melhorar nossos serviços e comunicar sobre promoções e novidades.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">3. Compartilhamento de Informações</h3>
+                <p>Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para processar seu pedido (transportadoras, processadores de pagamento).</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">4. Segurança</h3>
+                <p>Implementamos medidas de segurança para proteger suas informações pessoais contra acesso não autorizado, alteração ou destruição.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">5. Seus Direitos</h3>
+                <p>Você tem o direito de acessar, corrigir ou excluir suas informações pessoais. Entre em contato conosco para exercer esses direitos.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">6. Contato</h3>
+                <p>Para questões sobre esta política, entre em contato: contato@webshop-kia.com ou (75) 3465-3331.</p>
+              </section>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Termos de Uso */}
+      {showTermsModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
+            <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative sticky top-0">
+              <button
+                onClick={() => setShowTermsModal(false)}
+                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <h2 className="text-2xl font-bold">Termos de Uso</h2>
+            </div>
+            <div className="p-6 space-y-4 text-slate-700">
+              <p className="text-sm text-slate-500">Última atualização: 27 de outubro de 2025</p>
+              
+              <section>
+                <h3 className="text-lg font-bold mb-2">1. Aceitação dos Termos</h3>
+                <p>Ao acessar e usar este site, você aceita e concorda em cumprir estes termos e condições de uso.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">2. Uso do Site</h3>
+                <p>Você concorda em usar o site apenas para fins legais e de maneira que não infrinja os direitos de terceiros.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">3. Produtos e Preços</h3>
+                <p>Todos os produtos estão sujeitos a disponibilidade. Reservamo-nos o direito de limitar quantidades e descontinuar produtos. Os preços podem mudar sem aviso prévio.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">4. Pedidos e Pagamentos</h3>
+                <p>Ao fazer um pedido, você garante que todas as informações fornecidas são verdadeiras e precisas. Reservamo-nos o direito de recusar ou cancelar qualquer pedido.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">5. Entrega</h3>
+                <p>Os prazos de entrega são estimativas e podem variar. Não nos responsabilizamos por atrasos causados por transportadoras.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">6. Propriedade Intelectual</h3>
+                <p>Todo o conteúdo deste site é protegido por direitos autorais e não pode ser reproduzido sem permissão.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">7. Limitação de Responsabilidade</h3>
+                <p>Não nos responsabilizamos por danos indiretos, incidentais ou consequenciais resultantes do uso deste site ou produtos.</p>
+              </section>
+
+              <section>
+                <h3 className="text-lg font-bold mb-2">8. Contato</h3>
+                <p>Para questões sobre estes termos, entre em contato: contato@webshop-kia.com ou (75) 3465-3331.</p>
+              </section>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
     </div>
   )
 }
