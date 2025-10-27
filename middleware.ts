@@ -105,7 +105,8 @@ export async function middleware(request: NextRequest) {
     '/success',
     '/analytics',
     '/robots.txt',
-    '/sitemap.xml'
+    '/sitemap.xml',
+    '/oferta=kisses'
   ]
 
   // Rotas que devem ser sempre permitidas (iniciando com)
