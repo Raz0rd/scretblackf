@@ -20,5 +20,5 @@ Disallow: /privacidade
 Disallow: /x9f2w8k5
 Disallow: /analytics
 
-# Sitemap (apenas white page)
+# Sitemap
 Sitemap: https://webshop-kia.com/sitemap.xml
