@@ -1,5 +1,5 @@
 {
-  "totalAccess": 491,
+  "totalAccess": 517,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -3928,18 +3928,226 @@
       "ip": "::1",
       "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761604639824",
       "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:35.201Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:35.965Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:36.072Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605255859",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:36.086Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605255859",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:42.648Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:43.158Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:43.278Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605263062",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:47:43.284Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605263062",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:14.778Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:15.637Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605295356",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:23.105Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:23.454Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:23.561Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605295356",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:23.579Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605303305",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:32.028Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:36.741Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605312405",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:36.848Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605312405",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:37.465Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:38.245Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:38.359Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605318115",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:38.374Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605318115",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:40.450Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:40.732Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605320649",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:40.839Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605320649",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:40.863Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605320649",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-27T22:48:40.870Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761605320649",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 14,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 57,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 55,
-    "/": 80,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 65,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 62,
+    "/": 87,
     "/manifest.json": 10,
     "/icon-192x192.png": 8,
     "/fonts/Metropolis-Medium-f3a73873.woff2": 35,
-    "/.well-known/appspecific/com.chrome.devtools.json": 26,
+    "/.well-known/appspecific/com.chrome.devtools.json": 30,
     "/icon-512x512.png": 3,
     "/images/kit6_dedeira1.avif": 17,
     "/images/fone1.webp": 17,

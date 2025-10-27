@@ -8,6 +8,7 @@ import PWAInstaller from "@/components/PWAInstaller"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
+import GoogleAds from "@/components/GoogleAds"
 
 export const metadata: Metadata = {
   title: "BlueShift Games - Plataforma Gaming | Dicas, Cupons e Jogos",
@@ -124,28 +125,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="dark">
-      <head>
-        {/* Google Ads (gtag.js) */}
-        {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
-                `,
-              }}
-            />
-          </>
-        )}
-      </head>
       <body className="font-sans">
+        <GoogleAds />
         <HeadManager />
         <DynamicTheme />
         <PWAInstaller />
