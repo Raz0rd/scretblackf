@@ -10,18 +10,19 @@ import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
 
 export const metadata: Metadata = {
-  title: "Portal Digital - Soluções e Serviços Online",
-  description: "Portal digital com informações sobre tecnologia, jogos e produtos selecionados. Conteúdo informativo e dicas úteis.",
+  title: "BlueShift Games - Plataforma Gaming | Dicas, Cupons e Jogos",
+  description: "BlueShift Games: sua plataforma gaming completa. Dicas exclusivas, cupons para jogos, informações sobre recarga de diamantes FF, dimas FF e muito mais. Operado por EASYCOM.",
   keywords: [
     // Free Fire - Principal
-    "recarga diamantes ff",
     "diamantes ff",
     "dimas ff",
+    "recarga diamantes ff",
     "recarga free fire",
     "comprar diamantes free fire",
     "diamantes free fire barato",
     "recarga ff com id",
     "site recarga free fire",
+    "diamantes free fire pix",
     
     // Recarga de Jogos
     "recarga de jogos",
@@ -30,24 +31,26 @@ export const metadata: Metadata = {
     "recarga pubg mobile",
     "recarga mobile legends",
     "recarga genshin impact",
+    "recarga cod mobile",
     "site de recarga",
     "recarga segura jogos",
     
-    // PC Gamer
-    "pc gamer",
-    "montar pc gamer",
-    "como montar pc gamer",
-    "peças pc gamer",
-    "placa de video gamer",
-    "processador gamer",
-    "periféricos gamer",
-    "teclado gamer",
-    "mouse gamer",
-    "headset gamer",
-    "monitor gamer",
+    // Gaming e Cupons
+    "cupons jogos",
+    "cupons free fire",
+    "cupons pubg",
+    "cupons mobile legends",
+    "dicas jogos mobile",
+    "dicas free fire",
+    "dicas gamer",
+    "melhorar mira jogos",
     
-    // Geral
-    "webshop kia",
+    // Empresa
+    "blueshift games",
+    "easycom",
+    "plataforma gaming",
+    "portal gaming",
+    "jogos online",
     "loja de jogos",
     "recarga rápida",
     "pagamento pix",
@@ -107,7 +110,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "WebShop KIA - Recarga de Jogos"
+    title: "BlueShift Games - Sua Plataforma Gaming Completa"
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
@@ -121,6 +124,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="dark">
+      <head>
+        {/* Google Ads (gtag.js) */}
+        {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className="font-sans">
         <HeadManager />
         <DynamicTheme />

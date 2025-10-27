@@ -1,5 +1,5 @@
-# robots.txt para webshop-kia.com
-# Portal Digital - Conteúdo educativo e institucional
+# robots.txt para blueshiftgames.com
+# BlueShift Games - Plataforma Gaming
 
 # Regras para todos os bots
 User-agent: *
