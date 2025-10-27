@@ -493,39 +493,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Produtos Disponíveis */}
+      {/* Nossos Serviços */}
       <section className="py-16 bg-white/5 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-white">Produtos Disponíveis</h2>
+          <h2 className="text-4xl font-bold text-center mb-12 text-white">Nossos Serviços</h2>
           <p className="text-center text-slate-300 mb-8 max-w-2xl mx-auto">
-            Confira alguns produtos selecionados que podem ser úteis para você.
+            Conheça os serviços que oferecemos para ajudar você no mundo digital.
           </p>
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-blue-500/30">
               <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
                 <Star className="w-8 h-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-blue-300">Consultoria para Jogos</h3>
+              <h3 className="text-xl font-bold mb-3 text-blue-300">Informações sobre Tecnologia</h3>
               <p className="text-slate-200">
-                Análise de gameplay, estratégias personalizadas e dicas profissionais para melhorar sua performance em jogos de tiro como Free Fire, PUBG e COD Mobile.
+                Artigos e guias sobre tecnologia, dispositivos móveis e aplicativos. Conteúdo educativo para quem busca aprender mais sobre o mundo digital.
               </p>
             </div>
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-purple-500/30">
               <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
                 <Award className="w-8 h-8 text-purple-300" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-purple-300">Tutoriais Exclusivos</h3>
+              <h3 className="text-xl font-bold mb-3 text-purple-300">Conteúdo Educativo</h3>
               <p className="text-slate-200">
-                Guias completos, tutoriais em vídeo e técnicas avançadas para dominar jogos online. Aprenda mira, movimento e táticas vencedoras.
+                Tutoriais e materiais educativos sobre tecnologia e ferramentas digitais. Aprenda a usar melhor seus dispositivos e aplicativos.
               </p>
             </div>
             <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1 border border-green-500/30">
               <div className="bg-green-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-4">
                 <Package className="w-8 h-8 text-green-300" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-green-300">Cupons de Desconto</h3>
+              <h3 className="text-xl font-bold mb-3 text-green-300">Dicas e Recomendações</h3>
               <p className="text-slate-200">
-                Sugestões dos melhores cupons e promoções para recargas de jogos. Economize em diamantes, UC, CP e outros créditos digitais.
+                Informações úteis sobre produtos e serviços digitais. Análises e comparativos para ajudar você a fazer melhores escolhas.
               </p>
             </div>
           </div>
