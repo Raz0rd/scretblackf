@@ -315,6 +315,18 @@ export async function POST(request: NextRequest) {
       const utmifyToken = process.env.UTMIFY_API_TOKEN
       console.log(`[v0] 🔍 DEBUG UTMify: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
       
+      // VERIFICAR SE JÁ FOI ENVIADO COMO PAID
+      const storedOrderCheck = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
+      if (isPaid && storedOrderCheck?.utmifyPaidSent) {
+        console.log(`⚠️ [WEBHOOK] UTMify PAID já foi enviado anteriormente - IGNORANDO`)
+        console.log(`   - Transaction ID: ${transactionId}`)
+        console.log(`   - Order ID: ${orderId}`)
+        return NextResponse.json({ 
+          received: true, 
+          message: 'UTMify PAID já enviado - ignorado'
+        })
+      }
+      
       try {
         if (utmifyToken && utmifyEnabled) {
           console.log(`[v0] 🎯FINAL UTMs being sent to UTMify (${isPaid ? 'PAID' : 'PENDING'}):`, JSON.stringify(trackingParameters, null, 2))
