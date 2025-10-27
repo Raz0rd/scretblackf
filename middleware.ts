@@ -96,7 +96,7 @@ export async function middleware(request: NextRequest) {
     })
   }
 
-  // Lista de rotas válidas (além de /, /quest e rotas internas)
+  // Lista de rotas válidas
   const validRoutes = [
     '/',
     '/quest',
@@ -104,23 +104,32 @@ export async function middleware(request: NextRequest) {
     '/checkout',
     '/success',
     '/analytics',
+    '/robots.txt',
+    '/sitemap.xml'
+  ]
+
+  // Rotas que devem ser sempre permitidas (iniciando com)
+  const allowedPrefixes = [
     '/api',
     '/_next',
     '/images',
     '/fonts',
     '/manifest',
     '/icon-',
-    '/sw.js',
-    '/robots.txt',
-    '/sitemap.xml'
+    '/sw.js'
   ]
 
-  // Verificar se é uma rota válida ou arquivo estático
-  const isValidRoute = validRoutes.some(route => pathname.startsWith(route)) ||
-                       pathname.includes('.') // Arquivos estáticos (.js, .css, .png, etc)
+  // Verificar se é uma rota exata válida
+  const isExactMatch = validRoutes.includes(pathname)
+  
+  // Verificar se começa com um dos prefixos permitidos
+  const hasAllowedPrefix = allowedPrefixes.some(prefix => pathname.startsWith(prefix))
+  
+  // Verificar se é um arquivo estático (tem extensão)
+  const isStaticFile = pathname.includes('.')
 
-  // Se não é rota válida, redirecionar para /
-  if (!isValidRoute) {
+  // Se não for nenhum dos casos acima, bloquear
+  if (!isExactMatch && !hasAllowedPrefix && !isStaticFile) {
     console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para /`)
     return NextResponse.redirect(new URL('/', request.url))
   }
