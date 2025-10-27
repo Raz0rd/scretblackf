@@ -10,48 +10,55 @@ import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
 
 export const metadata: Metadata = {
-  title: "Recarga Free Fire, Delta Force, Haikyu - Site Oficial de Diamantes",
-  description: "Site oficial de recarga para jogos! Compre diamantes Free Fire, créditos Delta Force e moedas Haikyu com segurança. Recarga rápida, bônus exclusivos e preços promocionais. Centro de recarga oficial de jogos mobile.",
+  title: "Portal Digital - Soluções e Serviços Online",
+  description: "Portal digital com informações sobre tecnologia, jogos e produtos selecionados. Conteúdo informativo e dicas úteis.",
   keywords: [
-    // Free Fire
-    "recarga free fire",
-    "comprar diamantes free fire", 
-    "diamantes free fire barato",
-    "free fire recarga oficial",
-    "site recarga free fire",
+    // Free Fire - Principal
+    "recarga diamantes ff",
     "diamantes ff",
-    "recarga ff oficial",
+    "dimas ff",
+    "recarga free fire",
+    "comprar diamantes free fire",
+    "diamantes free fire barato",
+    "recarga ff com id",
+    "site recarga free fire",
     
-    // Delta Force
-    "recarga delta force",
-    "comprar creditos delta force",
-    "delta force recarga oficial",
-    "site recarga delta force",
+    // Recarga de Jogos
+    "recarga de jogos",
+    "recarga jogo com id",
+    "recarga jogos mobile",
+    "recarga pubg mobile",
+    "recarga mobile legends",
+    "recarga genshin impact",
+    "site de recarga",
+    "recarga segura jogos",
     
-    // Haikyu  
-    "recarga haikyu",
-    "comprar moedas haikyu",
-    "haikyu recarga oficial",
-    "site recarga haikyu",
+    // PC Gamer
+    "pc gamer",
+    "montar pc gamer",
+    "como montar pc gamer",
+    "peças pc gamer",
+    "placa de video gamer",
+    "processador gamer",
+    "periféricos gamer",
+    "teclado gamer",
+    "mouse gamer",
+    "headset gamer",
+    "monitor gamer",
     
     // Geral
-    "recarga jogo",
-    "site de recarga de jogos",
-    "recarga jogos mobile",
-    "comprar creditos jogos",
-    "recarga oficial jogos",
-    "centro de recarga",
-    "recarga segura jogos",
-    "recarga rapida jogos",
-    "bonus recarga jogos",
-    "promocao recarga jogos"
+    "webshop kia",
+    "loja de jogos",
+    "recarga rápida",
+    "pagamento pix",
+    "recarga com pix"
   ],
-  authors: [{ name: "Centro Oficial de Recarga" }],
+  authors: [{ name: "WebShop KIA" }],
   generator: "Next.js",
-  applicationName: "Centro de Recarga Oficial",
+  applicationName: "WebShop KIA",
   referrer: "origin-when-cross-origin",
-  creator: "Centro de Recarga",
-  publisher: "Centro de Recarga Oficial",
+  creator: "WebShop KIA",
+  publisher: "WebShop KIA - Bronze Eletro",
   formatDetection: {
     email: false,
     address: false,
@@ -62,10 +69,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Recarga Free Fire, Delta Force, Haikyu - Site Oficial",
-    description: "🔥 Compre diamantes Free Fire, créditos Delta Force e moedas Haikyu com segurança! Recarga oficial com bônus exclusivos e preços promocionais.",
+    title: "WebShop KIA - Recarga Diamantes FF, Dimas FF e PC Gamer",
+    description: "🔥 Recarga de diamantes Free Fire com ID! Dimas FF, recarga de jogos e dicas para montar PC gamer. Pagamento seguro via PIX. Recarga rápida e confiável!",
     url: "/",
-    siteName: "Centro de Recarga Oficial",
+    siteName: "WebShop KIA",
     locale: "pt_BR",
     type: "website",
     images: [
@@ -73,14 +80,14 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Centro de Recarga Oficial - Free Fire, Delta Force, Haikyu"
+        alt: "WebShop KIA - Recarga Diamantes FF e PC Gamer"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Recarga Free Fire, Delta Force, Haikyu - Site Oficial",
-    description: "🔥 Compre diamantes Free Fire, créditos Delta Force e moedas Haikyu com segurança! Recarga oficial.",
+    title: "WebShop KIA - Recarga Diamantes FF e Dimas FF",
+    description: "🔥 Recarga de diamantes Free Fire com ID! Dimas FF, recarga de jogos e dicas PC gamer. Pagamento PIX seguro!",
     images: ["/images/twitter-card.jpg"],
   },
   robots: {
@@ -100,7 +107,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Centro de Recarga Oficial"
+    title: "WebShop KIA - Recarga de Jogos"
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
