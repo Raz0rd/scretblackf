@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
 
+// Cache para evitar processamento duplicado (em memória)
+const processedConversions = new Map<string, number>()
+const DEBOUNCE_TIME = 10000 // 10 segundos
+
 // Função para consultar status no BlackCat
 async function checkStatusBlackCat(transactionId: string) {
   const blackcatUrl = `https://api.blackcatpagamentos.com/v1/transactions/${transactionId}`
@@ -151,6 +155,35 @@ export async function POST(request: NextRequest) {
     // Se status é paid, verificar se já foi processado pelo webhook
     if (isNowPaid) {
       console.log(`[CHECK-STATUS] Status é PAID!`)
+      
+      // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar cache em memória
+      const conversionKey = `${transactionId}-paid`
+      const lastProcessed = processedConversions.get(conversionKey)
+      const now = Date.now()
+      
+      if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
+        const timeDiff = ((now - lastProcessed) / 1000).toFixed(2)
+        console.log(`⚠️ [CHECK-STATUS] CONVERSÃO DUPLICADA detectada - IGNORANDO`)
+        console.log(`   - Transaction ID: ${transactionId}`)
+        console.log(`   - Último processamento: ${timeDiff}s atrás`)
+        return NextResponse.json({
+          success: true,
+          status: 'paid',
+          message: 'Conversão duplicada - ignorada',
+          alreadyProcessed: true,
+          timeDiff: `${timeDiff}s`
+        })
+      }
+      
+      // Marcar como processado IMEDIATAMENTE
+      processedConversions.set(conversionKey, now)
+      
+      // Limpar cache antigo (mais de 1 hora)
+      for (const [key, timestamp] of processedConversions.entries()) {
+        if (now - timestamp > 3600000) { // 1 hora
+          processedConversions.delete(key)
+        }
+      }
       
       // IMPORTANTE: Verificar se já foi enviado para UTMify pelo webhook
       // Evita duplicação de conversões
