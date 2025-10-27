@@ -210,13 +210,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // IMPORTANTE: Se usuário tem cookie válido, deixar passar sem consultar cloaker
-  // Permite navegação livre após primeira verificação
+  // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /quest
+  // Usuário real NUNCA deve ver white page novamente
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
   
   if (hasValidCookie) {
-    console.log('✅ [Cloaker] Usuário com cookie válido - permitindo acesso à white page')
-    return NextResponse.next()
+    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /quest')
+    return NextResponse.redirect(new URL('/quest', request.url))
   }
 
   try {
