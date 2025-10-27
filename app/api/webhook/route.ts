@@ -89,15 +89,16 @@ export async function POST(request: NextRequest) {
       console.log('   - Valor: R$', (transaction.amount / 100).toFixed(2))
       console.log('   - Cliente:', transaction.customer?.name)
       
-      // ENVIAR POSTBACK PARA ALTERCPA QUANDO PAGAMENTO CONFIRMADO
+      // ENVIAR POSTBACK PARA ALTERCPA APENAS QUANDO PAID
       if (isPaid) {
+        // PAID: Enviar status=approve com payout
         console.log('')
-        console.log('🎯 [WEBHOOK] Status PAID detectado - enviando postbacks...')
+        console.log('🎯 [WEBHOOK] Status PAID detectado - enviando postback APPROVE...')
         
         try {
           const payoutValue = transaction.amount / 100 // Converter de centavos para reais
           
-          // Enviar para AlterCPA
+          // Enviar para AlterCPA - APPROVE
           const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15047&status=approve&payout=' + payoutValue.toFixed(2)
           
           console.log('📤 [AlterCPA] Enviando postback APPROVE...')
@@ -107,20 +108,22 @@ export async function POST(request: NextRequest) {
           
           if (altercpaResponse.ok) {
             const result = await altercpaResponse.text()
-            console.log('✅ [AlterCPA] Postback enviado com sucesso!')
+            console.log('✅ [AlterCPA] Postback APPROVE enviado com sucesso!')
             console.log('   - Response:', result)
           } else {
-            console.error('❌ [AlterCPA] Erro ao enviar postback')
+            console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE')
             console.error('   - Status:', altercpaResponse.status)
           }
         } catch (error) {
-          console.error('❌ [AlterCPA] Erro ao enviar postback:', error)
+          console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE:', error)
         }
         
         console.log('')
         console.log('📝 [WEBHOOK] Próximo passo: Usuário será redirecionado para /success')
         console.log('📝 [WEBHOOK] Na página /success, o Google Ads receberá a conversão')
       }
+      // NOTA: status=new JÁ é enviado pela página /quest ao carregar
+      // Não enviar novamente aqui para evitar duplicação
       
       // Recuperar tracking parameters do metadata OU do order storage
       let trackingParameters: Record<string, string | null> = {
@@ -273,6 +276,19 @@ export async function POST(request: NextRequest) {
             const utmifyResult = await utmifyResponse.json()
             console.log(`[v0] ✅ Successfully sent payment ${isPaid ? 'confirmation' : 'pending'} to UTMify`)
             console.log('[v0] UTMify Response:', JSON.stringify(utmifyResult, null, 2))
+            
+            // Marcar como enviado no storage para evitar duplicação
+            const storedOrder = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
+            if (storedOrder) {
+              orderStorageService.saveOrder({
+                ...storedOrder,
+                utmifySent: true,
+                utmifyPaidSent: isPaid,
+                status: isPaid ? 'paid' : storedOrder.status,
+                paidAt: isPaid ? (transaction.paidAt || new Date().toISOString()) : storedOrder.paidAt
+              })
+              console.log(`[v0] 🔒 Marcado como enviado para UTMify no storage (evita duplicação)`)
+            }
           } else {
             const errorText = await utmifyResponse.text()
             console.error("[v0] ❌ Failed to send to UTMify")

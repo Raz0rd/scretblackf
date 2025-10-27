@@ -148,9 +148,25 @@ export async function POST(request: NextRequest) {
     const isNowPaid = currentStatus === 'paid' || currentStatus === 'PAID' // Umbrela usa PAID (maiúsculo)
     const isWaitingPayment = currentStatus === 'waiting_payment' || currentStatus === 'WAITING_PAYMENT'
 
-    // Se status é paid, sempre processar e enviar para UTMify
+    // Se status é paid, verificar se já foi processado pelo webhook
     if (isNowPaid) {
-      console.log(`[CHECK-STATUS] Status é PAID! Processando e enviando para UTMify...`)
+      console.log(`[CHECK-STATUS] Status é PAID!`)
+      
+      // IMPORTANTE: Verificar se já foi enviado para UTMify pelo webhook
+      // Evita duplicação de conversões
+      if (storedOrder && storedOrder.utmifySent) {
+        console.log(`[CHECK-STATUS] ⚠️ Conversão JÁ foi enviada para UTMify pelo webhook`)
+        console.log(`[CHECK-STATUS] ✅ Retornando sem reenviar (evitando duplicação)`)
+        return NextResponse.json({
+          success: true,
+          status: 'paid',
+          message: 'Pagamento já processado e enviado para UTMify',
+          alreadyProcessed: true,
+          utmifySent: true
+        })
+      }
+
+      console.log(`[CHECK-STATUS] Primeira vez processando PAID - enviando para UTMify...`)
 
       // Recuperar UTMs do storage ou usar fallback
       let trackingParameters = {}
@@ -180,6 +196,10 @@ export async function POST(request: NextRequest) {
         try {
           console.log(`[CHECK-STATUS] Enviando status PAID para UTMify`)
 
+          // Extrair dados do cliente com fallback
+          const customerData = transactionData.customer || {}
+          const documentNumber = customerData.document?.number || customerData.document || 'N/A'
+          
           const utmifyData = {
             orderId: transactionId.toString(),
             platform: "RecarGames",
@@ -189,10 +209,10 @@ export async function POST(request: NextRequest) {
             approvedDate: getBrazilTimestamp(new Date(transactionData.paidAt)),
             refundedAt: null,
             customer: {
-              name: transactionData.customer.name,
-              email: transactionData.customer.email,
-              phone: transactionData.customer.phone,
-              document: transactionData.customer.document?.number || transactionData.customer.document,
+              name: customerData.name || 'Cliente',
+              email: customerData.email || 'nao-informado@email.com',
+              phone: customerData.phone || null,
+              document: documentNumber,
               country: "BR",
               ip: transactionData.ip || "unknown"
             },
@@ -206,7 +226,22 @@ export async function POST(request: NextRequest) {
                 priceInCents: transactionData.amount
               }
             ],
-            trackingParameters: trackingParameters as any,
+            trackingParameters: {
+              src: (trackingParameters as any)?.src || null,
+              sck: (trackingParameters as any)?.sck || null,
+              utm_source: (trackingParameters as any)?.utm_source || null,
+              utm_campaign: (trackingParameters as any)?.utm_campaign || null,
+              utm_medium: (trackingParameters as any)?.utm_medium || null,
+              utm_content: (trackingParameters as any)?.utm_content || null,
+              utm_term: (trackingParameters as any)?.utm_term || null,
+              gclid: (trackingParameters as any)?.gclid || null,
+              xcod: (trackingParameters as any)?.xcod || null,
+              keyword: (trackingParameters as any)?.keyword || null,
+              device: (trackingParameters as any)?.device || null,
+              network: (trackingParameters as any)?.network || null,
+              gad_source: (trackingParameters as any)?.gad_source || null,
+              gbraid: (trackingParameters as any)?.gbraid || null
+            },
             commission: {
               totalPriceInCents: transactionData.amount,
               gatewayFeeInCents: transactionData.amount,
@@ -214,6 +249,8 @@ export async function POST(request: NextRequest) {
             },
             isTest: process.env.UTMIFY_TEST_MODE === 'true'
           }
+
+          console.log(`[CHECK-STATUS] 📤 Dados sendo enviados para UTMify:`, JSON.stringify(utmifyData, null, 2))
 
           // Detectar URL base automaticamente
           const protocol = request.headers.get('x-forwarded-proto') || 'https'
@@ -230,10 +267,26 @@ export async function POST(request: NextRequest) {
           })
 
           if (utmifyResponse.ok) {
+            const utmifyResult = await utmifyResponse.json()
             console.log(`[CHECK-STATUS] ✅ UTMify notificado com sucesso (PAID)`)
+            console.log(`[CHECK-STATUS] 📊 Resposta UTMify:`, JSON.stringify(utmifyResult, null, 2))
             utmifySuccess = true
+            
+            // Marcar como enviado no storage para evitar duplicação futura
+            if (storedOrder) {
+              orderStorageService.saveOrder({
+                ...storedOrder,
+                utmifySent: true,
+                utmifyPaidSent: true,
+                status: 'paid',
+                paidAt: transactionData.paidAt || new Date().toISOString()
+              })
+              console.log(`[CHECK-STATUS] 🔒 Marcado como enviado para UTMify no storage`)
+            }
           } else {
+            const errorText = await utmifyResponse.text()
             console.error(`[CHECK-STATUS] ❌ Erro ao notificar UTMify:`, utmifyResponse.status)
+            console.error(`[CHECK-STATUS] 📄 Detalhes do erro:`, errorText)
           }
         } catch (error) {
           console.error(`[CHECK-STATUS] Erro ao enviar para UTMify:`, error)

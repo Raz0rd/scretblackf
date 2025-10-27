@@ -8,6 +8,7 @@ export default function SuccessPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [timeLeft, setTimeLeft] = useState(12 * 60 * 60) // 12 horas em segundos
+  const [isLoaded, setIsLoaded] = useState(false)
   
   const transactionId = searchParams.get('transactionId')
   const amount = searchParams.get('amount')
@@ -24,8 +25,42 @@ export default function SuccessPage() {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
   }
   
-  // Timer de 12 horas
+  // Carregar timer do localStorage na montagem
   useEffect(() => {
+    if (!transactionId) return
+    
+    const storageKey = `timer_${transactionId}`
+    const stored = localStorage.getItem(storageKey)
+    
+    if (stored) {
+      const { startTime, duration } = JSON.parse(stored)
+      const elapsed = Math.floor((Date.now() - startTime) / 1000)
+      const remaining = Math.max(0, duration - elapsed)
+      
+      console.log('[Success] ⏱️ Timer recuperado do localStorage:', {
+        elapsed: `${Math.floor(elapsed / 3600)}h ${Math.floor((elapsed % 3600) / 60)}m`,
+        remaining: `${Math.floor(remaining / 3600)}h ${Math.floor((remaining % 3600) / 60)}m`
+      })
+      
+      setTimeLeft(remaining)
+    } else {
+      // Primeira vez - salvar no localStorage
+      const startTime = Date.now()
+      const duration = 12 * 60 * 60 // 12 horas
+      
+      localStorage.setItem(storageKey, JSON.stringify({ startTime, duration }))
+      console.log('[Success] 🆕 Timer iniciado e salvo no localStorage')
+      
+      setTimeLeft(duration)
+    }
+    
+    setIsLoaded(true)
+  }, [transactionId])
+  
+  // Timer de 12 horas (atualiza a cada segundo)
+  useEffect(() => {
+    if (!isLoaded) return
+    
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
@@ -37,20 +72,27 @@ export default function SuccessPage() {
     }, 1000)
     
     return () => clearInterval(timer)
-  }, [])
+  }, [isLoaded])
   
   useEffect(() => {
-    // Enviar conversão para Google Ads se tiver dados válidos
-    // Google Bot pode acessar sem parâmetros, então tentamos enviar se existir
+    // Enviar conversão para Google Ads APENAS 1 VEZ
     if (transactionId && amount) {
-      try {
-        const amountValue = parseFloat(amount)
-        if (amountValue > 0) {
-          trackPurchase(transactionId, amountValue / 100) // Converter de centavos para reais
-          console.log('[Success] ✅ Conversão Google Ads enviada:', { transactionId, amount: amountValue / 100 })
+      const conversionKey = `conversion_sent_${transactionId}`
+      const alreadySent = localStorage.getItem(conversionKey)
+      
+      if (!alreadySent) {
+        try {
+          const amountValue = parseFloat(amount)
+          if (amountValue > 0) {
+            trackPurchase(transactionId, amountValue / 100) // Converter de centavos para reais
+            localStorage.setItem(conversionKey, 'true')
+            console.log('[Success] ✅ Conversão Google Ads enviada (primeira vez):', { transactionId, amount: amountValue / 100 })
+          }
+        } catch (error) {
+          console.error('[Success] ❌ Erro ao enviar conversão:', error)
         }
-      } catch (error) {
-        console.error('[Success] ❌ Erro ao enviar conversão:', error)
+      } else {
+        console.log('[Success] ℹ️ Conversão já foi enviada anteriormente (não reenviando)')
       }
     }
     

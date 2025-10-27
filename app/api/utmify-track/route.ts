@@ -63,13 +63,19 @@ export async function POST(request: NextRequest) {
       console.log('   - Response:', JSON.stringify(result, null, 2))
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       
-      // Log especial para Google Ads
-      if (utmifyData.trackingParameters?.gclid) {
-        console.log('🎯 [GOOGLE ADS] Conversão com gclid detectada!')
+      // Log especial para Google Ads - APENAS para status PAID
+      if (utmifyData.trackingParameters?.gclid && utmifyData.status === 'paid') {
+        console.log('🎯 [GOOGLE ADS] Conversão PAID com gclid detectada!')
         console.log('   - gclid:', utmifyData.trackingParameters.gclid)
         console.log('   - Valor:', utmifyData.products?.[0]?.priceInCents / 100, 'BRL')
         console.log('   - Order ID:', utmifyData.orderId)
+        console.log('   - Status:', utmifyData.status)
         console.log('   ⏳ Aguarde 24-48h para aparecer no Google Ads')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      } else if (utmifyData.trackingParameters?.gclid && utmifyData.status !== 'paid') {
+        console.log('ℹ️ [GOOGLE ADS] gclid detectado mas status não é PAID')
+        console.log('   - Status atual:', utmifyData.status)
+        console.log('   - Conversão será enviada ao Google Ads quando status = paid')
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       }
       

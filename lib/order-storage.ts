@@ -17,6 +17,8 @@ interface OrderData {
   createdAt: string
   status: 'pending' | 'paid' | 'cancelled' | 'failed'
   paidAt?: string
+  utmifySent?: boolean // Flag para evitar duplicação de conversões
+  utmifyPaidSent?: boolean // Flag específica para status paid
 }
 
 // Armazenamento em memória (temporário)

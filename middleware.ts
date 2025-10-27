@@ -210,6 +210,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  // IMPORTANTE: Se usuário tem cookie válido, deixar passar sem consultar cloaker
+  // Permite navegação livre após primeira verificação
+  const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+  
+  if (hasValidCookie) {
+    console.log('✅ [Cloaker] Usuário com cookie válido - permitindo acesso à white page')
+    return NextResponse.next()
+  }
+
   try {
     // Preparar dados do servidor EXATAMENTE como o PHP faz
     const serverData = {
