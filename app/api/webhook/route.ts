@@ -47,6 +47,10 @@ interface BlackCatWebhookPayload {
   data: BlackCatTransaction
 }
 
+// Cache para evitar processamento duplicado (em memória)
+const processedWebhooks = new Map<string, number>()
+const DEBOUNCE_TIME = 5000 // 5 segundos
+
 export async function POST(request: NextRequest) {
   try {
     console.log("🚨🚨🚨 [WEBHOOK DEBUG] BlackCat webhook received! 🚨🚨🚨")
@@ -64,6 +68,59 @@ export async function POST(request: NextRequest) {
     const transaction = body.data
     const transactionId = transaction.id.toString()
     const status = transaction.status
+
+    // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar se já processamos este webhook recentemente
+    const webhookKey = `${transactionId}-${status}`
+    const lastProcessed = processedWebhooks.get(webhookKey)
+    const now = Date.now()
+    
+    if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
+      const timeDiff = ((now - lastProcessed) / 1000).toFixed(2)
+      console.log(`⚠️ [WEBHOOK] DUPLICADO detectado - IGNORANDO`)
+      console.log(`   - Transaction ID: ${transactionId}`)
+      console.log(`   - Status: ${status}`)
+      console.log(`   - Último processamento: ${timeDiff}s atrás`)
+      console.log('')
+      return NextResponse.json({ 
+        received: true, 
+        message: 'Webhook duplicado - ignorado',
+        timeDiff: `${timeDiff}s`
+      })
+    }
+    
+    // Marcar como processado
+    processedWebhooks.set(webhookKey, now)
+    
+    // Limpar cache antigo (mais de 1 hora)
+    for (const [key, timestamp] of processedWebhooks.entries()) {
+      if (now - timestamp > 3600000) { // 1 hora
+        processedWebhooks.delete(key)
+      }
+    }
+
+    // VALIDAÇÃO: Verificar se o webhook é do nosso projeto
+    const whitePageUrl = process.env.UTMIFY_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL || ''
+    const ourDomain = whitePageUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') // Remove https:// e /
+    const webhookUrl = body.data?.postbackUrl || ''
+    
+    console.log('🔍 [WEBHOOK] Validando domínio...')
+    console.log('   - ENV UTMIFY_WHITEPAGE_URL:', whitePageUrl || 'NÃO DEFINIDO')
+    console.log('   - Nosso domínio extraído:', ourDomain || 'VAZIO')
+    console.log('   - Webhook URL recebido:', webhookUrl || 'VAZIO')
+    
+    if (ourDomain && !webhookUrl.includes(ourDomain)) {
+      console.log('⚠️ [WEBHOOK] Transação de OUTRO projeto - IGNORANDO')
+      console.log('   - Produto:', body.data?.metadata || 'N/A')
+      console.log('')
+      return NextResponse.json({ 
+        received: true, 
+        message: 'Webhook de outro projeto - ignorado' 
+      })
+    }
+    
+    console.log('✅ [WEBHOOK] Validação OK - É do nosso projeto!')
+    console.log('')
+
     const isPaid = status === 'paid' || status === 'approved' || status === 'PAID' // Umbrela usa PAID
     const isWaitingPayment = status === 'waiting_payment' || status === 'WAITING_PAYMENT'
 
