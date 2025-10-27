@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
           const payoutValue = transaction.amount / 100 // Converter de centavos para reais
           
           // Enviar para AlterCPA - APPROVE
-          const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15047&status=approve&payout=' + payoutValue.toFixed(2)
+          const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15093&status=approve&payout=' + payoutValue.toFixed(2)
           
           console.log('📤 [AlterCPA] Enviando postback APPROVE...')
           console.log('   - Payout: R$', payoutValue.toFixed(2))

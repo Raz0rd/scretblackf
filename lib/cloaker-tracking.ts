@@ -18,7 +18,7 @@ interface CloakerPostbackOptions {
 const CLOAKER_CONFIG = {
   apiUrl: 'https://www.altercpa.one/api/filter/postback.json',
   campaignId: '969-8f076e082dbcb1d080037ec2c216d589',
-  uid: '15047'
+  uid: '15093'
 }
 
 /**
