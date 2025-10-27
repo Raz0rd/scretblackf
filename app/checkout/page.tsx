@@ -361,7 +361,7 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: Math.round(totalPrice * 100),
-          utmParams: utmParameters,
+          trackingParams: utmParameters,
           playerId: playerId,
           itemType: itemType,
           itemValue: itemValue,
