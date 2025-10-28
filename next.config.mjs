@@ -34,7 +34,7 @@ const nextConfig = {
           // HSTS - Force HTTPS
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
           // XSS Protection
           {
@@ -54,12 +54,7 @@ const nextConfig = {
           // Cross-Origin-Opener-Policy (COOP)
           {
             key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
-          },
-          // Cross-Origin-Embedder-Policy (COEP)
-          {
-            key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
+            value: 'same-origin-allow-popups',
           },
           // Content Security Policy
           {
