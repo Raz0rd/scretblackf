@@ -318,9 +318,14 @@ export async function POST(request: NextRequest) {
       // VERIFICAR SE JÁ FOI ENVIADO COMO PAID
       const storedOrderCheck = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
       if (isPaid && storedOrderCheck?.utmifyPaidSent) {
-        console.log(`⚠️ [WEBHOOK] UTMify PAID já foi enviado anteriormente - IGNORANDO`)
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+        console.log(`⚠️ [WEBHOOK] UTMify PAID DUPLICADO - BLOQUEADO`)
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
         console.log(`   - Transaction ID: ${transactionId}`)
         console.log(`   - Order ID: ${orderId}`)
+        console.log(`   - Motivo: UTMify PAID já foi enviado anteriormente`)
+        console.log(`   - Ação: NENHUM envio será feito`)
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
         return NextResponse.json({ 
           received: true, 
           message: 'UTMify PAID já enviado - ignorado'
@@ -329,6 +334,9 @@ export async function POST(request: NextRequest) {
       
       try {
         if (utmifyToken && utmifyEnabled) {
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+          console.log(`📤 [WEBHOOK → UTMify] Enviando status ${isPaid ? 'PAID' : 'PENDING'}`)
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
           console.log(`[v0] 🎯FINAL UTMs being sent to UTMify (${isPaid ? 'PAID' : 'PENDING'}):`, JSON.stringify(trackingParameters, null, 2))
           console.log("[v0] Sending data to UTMify:", JSON.stringify(utmifyData, null, 2))
           
@@ -357,7 +365,9 @@ export async function POST(request: NextRequest) {
                 paidAt: isPaid ? (transaction.paidAt || new Date().toISOString()) : storedOrder.paidAt
               })
               console.log(`[v0] 🔒 Marcado como enviado para UTMify no storage (evita duplicação)`)
+              console.log(`[v0] 🔒 Flag utmifyPaidSent = ${isPaid}`)
             }
+            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
           } else {
             const errorText = await utmifyResponse.text()
             console.error("[v0] ❌ Failed to send to UTMify")
