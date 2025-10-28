@@ -398,7 +398,7 @@ export default function HomePage() {
               </p>
               <div className="flex justify-center items-center gap-4">
                 <Mail className="w-6 h-6 text-blue-400" />
-                <p className="text-lg text-white">contato@webshop-kia.com</p>
+                <p className="text-lg text-white">contato@speedrepair.sbs</p>
               </div>
             </div>
           </div>
@@ -546,14 +546,14 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               {/* Sobre */}
               <div>
-                <h3 className="text-xl font-bold mb-4">WebShop Kia</h3>
+                <h3 className="text-xl font-bold mb-4">SpeedRepair</h3>
                 <p className="text-slate-300 text-sm mb-4">
                   Portal digital especializado em conteúdo educativo sobre tecnologia, games e produtos digitais.
                 </p>
                 <div className="flex items-center gap-2 mb-2">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <a href="mailto:contato@webshop-kia.com" className="text-slate-300 hover:text-white text-sm">
-                    contato@webshop-kia.com
+                  <a href="mailto:contato@speedrepair.sbs" className="text-slate-300 hover:text-white text-sm">
+                    contato@speedrepair.sbs
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
@@ -570,7 +570,7 @@ export default function HomePage() {
                 <div className="space-y-2 text-sm text-slate-300">
                   <p>
                     <span className="font-semibold text-white">Razão Social:</span><br />
-                    WebShop Kia Digital LTDA
+                    LUIZ ANTONIO SOUZA DOS SANTOS
                   </p>
                   <p>
                     <span className="font-semibold text-white">CNPJ:</span><br />
@@ -622,7 +622,7 @@ export default function HomePage() {
             {/* Copyright */}
             <div className="border-t border-slate-700 pt-6 text-center">
               <p className="text-slate-400 text-sm mb-2">
-                © 2025 WebShop Kia Digital LTDA - Todos os direitos reservados.
+                © 2025 LUIZ ANTONIO SOUZA DOS SANTOS - Todos os direitos reservados.
               </p>
               <p className="text-slate-500 text-xs">
                 Portal de conteúdo educativo sobre tecnologia, games e produtos digitais.<br />
@@ -951,7 +951,7 @@ export default function HomePage() {
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <p className="text-sm text-slate-600">
                   <strong>Última atualização:</strong> 27 de outubro de 2025<br />
-                  <strong>Empresa:</strong> WebShop Kia Digital LTDA<br />
+                  <strong>Empresa:</strong> LUIZ ANTONIO SOUZA DOS SANTOS<br />
                   <strong>CNPJ:</strong> 45.123.456/0001-78
                 </p>
               </div>
@@ -959,7 +959,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">1. Introdução</h3>
                 <p className="mb-2">
-                  A WebShop Kia Digital LTDA, inscrita no CNPJ 45.123.456/0001-78, com sede na Rua das Tecnologias, 1234, Centro, Feira de Santana/BA, CEP 44001-000, está comprometida em proteger a privacidade e os dados pessoais de seus usuários.
+                  LUIZ ANTONIO SOUZA DOS SANTOS, inscrito no CNPJ 45.123.456/0001-78, com sede na Rua das Tecnologias, 1234, Centro, Feira de Santana/BA, CEP 44001-000, está comprometido em proteger a privacidade e os dados pessoais de seus usuários.
                 </p>
                 <p>
                   Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e demais legislações aplicáveis.
@@ -1099,9 +1099,9 @@ export default function HomePage() {
                 <h3 className="text-xl font-bold mb-3 text-blue-800">11. Contato e Encarregado de Dados (DPO)</h3>
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre esta política ou exercer seus direitos:</p>
-                  <p className="mb-1"><strong>WebShop Kia Digital LTDA</strong></p>
+                  <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
                   <p className="mb-1">Encarregado de Proteção de Dados (DPO)</p>
-                  <p className="mb-1">📧 E-mail: contato@webshop-kia.com</p>
+                  <p className="mb-1">📧 E-mail: contato@speedrepair.sbs</p>
                   <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mt-3 text-sm text-slate-600">
@@ -1145,7 +1145,7 @@ export default function HomePage() {
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <p className="text-sm text-slate-600">
                   <strong>Última atualização:</strong> 27 de outubro de 2025<br />
-                  <strong>Empresa:</strong> WebShop Kia Digital LTDA<br />
+                  <strong>Empresa:</strong> LUIZ ANTONIO SOUZA DOS SANTOS<br />
                   <strong>CNPJ:</strong> 45.123.456/0001-78
                 </p>
               </div>
@@ -1153,7 +1153,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">1. Aceitação dos Termos</h3>
                 <p className="mb-2">
-                  Bem-vindo ao site da WebShop Kia Digital LTDA ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.webshop-kia.com), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
+                  Bem-vindo ao site da LUIZ ANTONIO SOUZA DOS SANTOS ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.speedrepair.sbs), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
                 </p>
                 <p className="mb-2">
                   Se você não concordar com qualquer parte destes termos, não deverá utilizar nosso site ou serviços.
@@ -1166,7 +1166,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">2. Definições</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>"Site":</strong> Refere-se ao portal www.webshop-kia.com e todos os seus subdomínios</li>
+                  <li><strong>"Site":</strong> Refere-se ao portal www.speedrepair.sbs e todos os seus subdomínios</li>
                   <li><strong>"Serviços":</strong> Todos os serviços oferecidos através do site</li>
                   <li><strong>"Usuário":</strong> Qualquer pessoa que acesse ou utilize o site</li>
                   <li><strong>"Produtos":</strong> Itens disponíveis para consulta e aquisição no site</li>
@@ -1270,7 +1270,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">9. Propriedade Intelectual</h3>
                 <p className="mb-2">
-                  Todo o conteúdo do site, incluindo mas não limitado a textos, gráficos, logos, ícones, imagens, clipes de áudio, downloads digitais e compilações de dados, é propriedade da WebShop Kia Digital LTDA ou de seus fornecedores de conteúdo e está protegido por leis de direitos autorais brasileiras e internacionais.
+                  Todo o conteúdo do site, incluindo mas não limitado a textos, gráficos, logos, ícones, imagens, clipes de áudio, downloads digitais e compilações de dados, é propriedade da LUIZ ANTONIO SOUZA DOS SANTOS ou de seus fornecedores de conteúdo e está protegido por leis de direitos autorais brasileiras e internacionais.
                 </p>
                 <p className="mb-2"><strong>Uso Permitido:</strong></p>
                 <p>
@@ -1297,7 +1297,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">11. Indenização</h3>
                 <p>
-                  Você concorda em indenizar e isentar a WebShop Kia Digital LTDA, seus diretores, funcionários e parceiros de quaisquer reivindicações, perdas, responsabilidades, danos, custos e despesas (incluindo honorários advocatícios) decorrentes de: (a) seu uso do site; (b) violação destes Termos de Uso; (c) violação de direitos de terceiros.
+                  Você concorda em indenizar e isentar a LUIZ ANTONIO SOUZA DOS SANTOS, seus diretores, funcionários e parceiros de quaisquer reivindicações, perdas, responsabilidades, danos, custos e despesas (incluindo honorários advocatícios) decorrentes de: (a) seu uso do site; (b) violação destes Termos de Uso; (c) violação de direitos de terceiros.
                 </p>
               </section>
 
@@ -1338,7 +1338,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-bold mb-3 text-blue-800">15. Disposições Gerais</h3>
                 <p className="mb-2"><strong>15.1 Integralidade:</strong></p>
                 <p className="mb-3">
-                  Estes Termos de Uso, juntamente com a Política de Privacidade, constituem o acordo integral entre você e a WebShop Kia Digital LTDA.
+                  Estes Termos de Uso, juntamente com a Política de Privacidade, constituem o acordo integral entre você e a LUIZ ANTONIO SOUZA DOS SANTOS.
                 </p>
                 <p className="mb-2"><strong>15.2 Divisibilidade:</strong></p>
                 <p className="mb-3">
@@ -1354,8 +1354,8 @@ export default function HomePage() {
                 <h3 className="text-xl font-bold mb-3 text-blue-800">16. Contato</h3>
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre estes Termos de Uso ou nossos serviços:</p>
-                  <p className="mb-1"><strong>WebShop Kia Digital LTDA</strong></p>
-                  <p className="mb-1">📧 E-mail: contato@webshop-kia.com</p>
+                  <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
+                  <p className="mb-1">📧 E-mail: contato@speedrepair.sbs</p>
                   <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mb-1">🕐 Horário de atendimento: Segunda a Sexta, das 9h às 18h</p>

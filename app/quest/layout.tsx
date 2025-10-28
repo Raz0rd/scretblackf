@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "pc gamer",
     "montar pc gamer",
     "periféricos gamer",
-    "webshop kia",
+    "speedrepair",
   ],
   openGraph: {
     title: "Centro de Recarga Oficial - Free Fire, Delta Force, Haikyu",

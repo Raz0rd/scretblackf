@@ -40,16 +40,16 @@ export const metadata: Metadata = {
     "site de recarga",
     "recarga rapida ff",
     "recarga instantanea ff",
-    "webshop kia",
+    "speedrepair",
     "pagamento pix",
     "recarga com pix"
   ],
-  authors: [{ name: "WebShop KIA" }],
+  authors: [{ name: "SpeedRepair" }],
   generator: "Next.js",
-  applicationName: "WebShop KIA",
+  applicationName: "SpeedRepair",
   referrer: "origin-when-cross-origin",
-  creator: "WebShop KIA",
-  publisher: "WebShop KIA - Bronze Eletro",
+  creator: "SpeedRepair",
+  publisher: "SpeedRepair - LUIZ ANTONIO SOUZA DOS SANTOS",
   formatDetection: {
     email: false,
     address: false,
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Recarga FF - Diamantes Free Fire | Site Confiável desde 2015",
     description: "🔥 Recarga de diamantes Free Fire com segurança! Site confiável desde 2015. Recarga FF rápida, diamantes FF baratos e entrega imediata. Pagamento PIX!",
     url: "/",
-    siteName: "WebShop KIA",
+    siteName: "SpeedRepair",
     locale: "pt_BR",
     type: "website",
     images: [
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "WebShop KIA - Recarga de Jogos"
+    title: "SpeedRepair - Recarga de Jogos"
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
