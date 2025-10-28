@@ -5,7 +5,6 @@ import Script from "next/script"
 import "./globals.css"
 import HeadManager from "@/components/HeadManager"
 import ClickTracker from "@/components/ClickTracker"
-import PWAInstaller from "@/components/PWAInstaller"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
@@ -76,12 +75,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "SpeedRepair - Recarga de Jogos"
-  },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   }
@@ -119,7 +112,6 @@ export default function RootLayout({
       <body className="font-sans">
         <HeadManager />
         <DynamicTheme />
-        <PWAInstaller />
         <DevToolsBlocker />
         <VerificationWrapper>
           <ClickTracker>
