@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck } from 'lucide-react'
 import QRCode from 'qrcode'
+import { trackPurchase } from '@/lib/google-ads'
 
 interface AddressData {
   cep: string
@@ -76,7 +77,7 @@ export default function HomePage() {
   // Verificar parâmetro de teste
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('testGoogleAdsConv') === 'true') {
+    if (urlParams.get('adsgoogleTestNow') === 'true') {
       setShowTestButton(true)
     }
   }, [])
@@ -90,17 +91,20 @@ export default function HomePage() {
 
   // Função de teste de conversão
   const testGoogleAdsConversion = () => {
-    const randomValue = (Math.random() * 100 + 10).toFixed(2)
-    const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || ''
-    const awId = process.env.NEXT_PUBLIC_GOOGLE_ADS_AW_ID || ''
+    // Gerar ID de transação aleatório
+    const transactionId = `TEST_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    const randomValue = parseFloat((Math.random() * 100 + 10).toFixed(2))
     
     console.log('🧪 [TEST] Testando conversão Google Ads')
-    console.log('   - Valor aleatório:', randomValue)
-    console.log('   - AW ID:', awId)
-    console.log('   - Label:', conversionLabel)
+    console.log('   - Transaction ID:', transactionId)
+    console.log('   - Valor:', randomValue, 'BRL')
+    console.log('   - AW ID:', process.env.NEXT_PUBLIC_GOOGLE_ADS_ID)
+    console.log('   - Label:', process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA)
     
-    // Redirecionar para /success com parâmetros de teste
-    window.location.href = `/success?test=true&value=${randomValue}&aw=${awId}&label=${conversionLabel}`
+    // Disparar conversão diretamente
+    trackPurchase(transactionId, randomValue)
+    
+    alert(`✅ Conversão de teste enviada!\n\nTransaction ID: ${transactionId}\nValor: R$ ${randomValue.toFixed(2)}`)
   }
 
 
