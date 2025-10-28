@@ -10,46 +10,37 @@ import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
 
 export const metadata: Metadata = {
-  title: "Portal Digital - Soluções e Serviços Online",
-  description: "Portal digital com informações sobre tecnologia, jogos e produtos selecionados. Conteúdo informativo e dicas úteis.",
+  title: "Recarga FF - Diamantes Free Fire | Site Confiável desde 2015",
+  description: "Recarga de diamantes Free Fire com segurança! Site confiável desde 2015. Recarga FF rápida, diamantes FF baratos e entrega imediata. Pagamento via PIX.",
   keywords: [
-    // Free Fire - Principal
-    "recarga diamantes ff",
+    // Free Fire - Termos Principais
+    "recarga ff",
     "diamantes ff",
-    "dimas ff",
+    "recarga de diamantes ff",
     "recarga free fire",
-    "comprar diamantes free fire",
-    "diamantes free fire barato",
+    "diamantes free fire",
+    "recarga diamantes free fire",
+    "site confiavel recarga ff",
+    "recarga jogo",
+    "recarga de jogo",
+    
+    // Variações de busca
+    "comprar diamantes ff",
+    "diamantes ff barato",
     "recarga ff com id",
     "site recarga free fire",
+    "recarga ff segura",
+    "recarga ff confiavel",
+    "diamantes free fire barato",
+    "recarga free fire id",
     
-    // Recarga de Jogos
+    // Termos relacionados
     "recarga de jogos",
-    "recarga jogo com id",
-    "recarga jogos mobile",
-    "recarga pubg mobile",
-    "recarga mobile legends",
-    "recarga genshin impact",
+    "recarga jogo mobile",
     "site de recarga",
-    "recarga segura jogos",
-    
-    // PC Gamer
-    "pc gamer",
-    "montar pc gamer",
-    "como montar pc gamer",
-    "peças pc gamer",
-    "placa de video gamer",
-    "processador gamer",
-    "periféricos gamer",
-    "teclado gamer",
-    "mouse gamer",
-    "headset gamer",
-    "monitor gamer",
-    
-    // Geral
+    "recarga rapida ff",
+    "recarga instantanea ff",
     "webshop kia",
-    "loja de jogos",
-    "recarga rápida",
     "pagamento pix",
     "recarga com pix"
   ],
@@ -69,8 +60,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "WebShop KIA - Recarga Diamantes FF, Dimas FF e PC Gamer",
-    description: "🔥 Recarga de diamantes Free Fire com ID! Dimas FF, recarga de jogos e dicas para montar PC gamer. Pagamento seguro via PIX. Recarga rápida e confiável!",
+    title: "Recarga FF - Diamantes Free Fire | Site Confiável desde 2015",
+    description: "🔥 Recarga de diamantes Free Fire com segurança! Site confiável desde 2015. Recarga FF rápida, diamantes FF baratos e entrega imediata. Pagamento PIX!",
     url: "/",
     siteName: "WebShop KIA",
     locale: "pt_BR",
@@ -80,14 +71,14 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "WebShop KIA - Recarga Diamantes FF e PC Gamer"
+        alt: "Recarga FF - Diamantes Free Fire - Site Confiável"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "WebShop KIA - Recarga Diamantes FF e Dimas FF",
-    description: "🔥 Recarga de diamantes Free Fire com ID! Dimas FF, recarga de jogos e dicas PC gamer. Pagamento PIX seguro!",
+    title: "Recarga FF - Diamantes Free Fire | Site Confiável desde 2015",
+    description: "🔥 Recarga de diamantes Free Fire com segurança! Site confiável desde 2015. Recarga FF rápida e diamantes FF baratos. Pagamento PIX!",
     images: ["/images/twitter-card.jpg"],
   },
   robots: {
