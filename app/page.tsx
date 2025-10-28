@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck } from 'lucide-react'
 import QRCode from 'qrcode'
 
 interface AddressData {
@@ -12,17 +12,6 @@ interface AddressData {
   bairro: string
   cidade: string
   estado: string
-}
-
-interface Product {
-  id: string
-  name: string
-  price: string
-  description: string
-  images: string[]
-  features: string[]
-  deliveryTime: string
-  stock: boolean
 }
 
 // Componente de Logo com Raio
@@ -56,14 +45,11 @@ const LightningLogo = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
 
 export default function HomePage() {
   const [showAddressModal, setShowAddressModal] = useState(false)
-  const [showProductModal, setShowProductModal] = useState(false)
   const [showPrivacyModal, setShowPrivacyModal] = useState(false)
   const [showTermsModal, setShowTermsModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
-  const [selectedProductDetails, setSelectedProductDetails] = useState<Product | null>(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [addressData, setAddressData] = useState<AddressData>({
     cep: '',
     logradouro: '',
@@ -117,127 +103,6 @@ export default function HomePage() {
     window.location.href = `/success?test=true&value=${randomValue}&aw=${awId}&label=${conversionLabel}`
   }
 
-  // Dados dos produtos
-  const products: Product[] = [
-    {
-      id: 'kit-6-acessorios',
-      name: 'Kit 6 Luvas Gamer Premium',
-      price: 'R$ 13,29',
-      description: 'Kit composto por 6 unidades de luvas gamer para jogar no celular e aumentar a sensibilidade dos jogos. Tecnologia têxtil 2022 com fibras de prata superfinas e filamentos de nylon. Com 50% de alto teor de fibra de prata para máxima precisão e zero toque quebrado.',
-      images: [
-        '/images/kit6_dedeira1.avif',
-        '/images/kit6_dedeira1-1.avif',
-        '/images/kit6_dedeira1-2.avif',
-        '/images/kit6_dedeira1-3.avif'
-      ],
-      features: [
-        '6 luvas gamer de alta performance',
-        '50% fibra de prata + 25% fibra de carbono',
-        'Tecnologia têxtil 2022 - tecelagem densa',
-        'Compatível: Free Fire, PUBG, COD Mobile, Fortnite',
-        'Tamanho único (5,5 a 8,3 polegadas)',
-        'Pressão ideal: 2-3 Newtons (justo mas confortável)',
-        'Contato duplo para atrito estável',
-        '3x mais sensível que luvas comuns',
-        'Testado: 5000 cliques sem falhas',
-        'Anti-suor e respirável',
-        'Compatível: Android e iOS',
-        'Cor: Preto com borda azul',
-        'Dimensões: 5x1.5x0.1cm',
-        'Garantia: 30 dias'
-      ],
-      deliveryTime: '5-10 dias úteis',
-      stock: true
-    },
-    {
-      id: 'fone-premium',
-      name: 'HyperX Cloud Earbuds II',
-      price: 'R$ 178,20',
-      description: 'Fones de ouvido gamer otimizados para áudio móvel. Com drivers de 14mm, proporcionam som imersivo para jogos, streaming e audiolivros. Design discreto com plugue 90° para evitar esbarrões e cabo resistente a emaranhamentos. Perfeito para quem exige qualidade de áudio e portabilidade.',
-      images: [
-        '/images/fone1.webp',
-        '/images/fone1-1.webp',
-        '/images/fone1-2.webp',
-        '/images/fone1-3.webp'
-      ],
-      features: [
-        'Drivers de 14mm otimizados para jogos móveis',
-        'Som imersivo de alta qualidade',
-        'Plugue 90° discreto anti-esbarrão',
-        'Cabo resistente a torções e emaranhamentos',
-        'Microfone integrado cristalino',
-        'Botão multifuncional para chamadas e mídia',
-        '4 conjuntos de pontas auriculares',
-        'Ajuste perfeito para diferentes orelhas',
-        'Estojo de transporte rígido incluso',
-        'Compatível: PC, Nintendo Switch, Steam Deck',
-        'Compatível: Dispositivos móveis Android e iOS',
-        'Conexão: 3,5mm universal',
-        'Ideal para jogos, streaming e podcasts',
-        'Cor: Preto',
-        'Marca: HyperX | Modelo: 70N24AA'
-      ],
-      deliveryTime: '3-7 dias úteis',
-      stock: true
-    },
-    {
-      id: 'gamesir-gatilho',
-      name: 'GameSir F4 Falcon Gatilho',
-      price: 'R$ 169,95',
-      description: 'Controlador universal para jogos de tiro mobile. Equipado com seletor de modos como o M4A1 real, permite escolher entre 4 modos de disparo. Plug and Play - sem Bluetooth ou apps necessários. Compatível com PUBG, COD Mobile, Free Fire, Knives Out, Rules of Survival e mais.',
-      images: [
-        '/images/Gamesir1.webp',
-        '/images/gamesir1-1.webp',
-        '/images/gamesir1-2.webp',
-        '/images/gamesir-1-3.webp'
-      ],
-      features: [
-        '4 modos de disparo ajustáveis',
-        'Modo Padrão: 1 clique = 1 tiro',
-        'Modo 3 Burst: 1 clique = 3 tiros',
-        'Modo 6 Burst: 1 clique = 6 tiros',
-        'Modo 9 Burst: 1 clique = 9 tiros',
-        'Seletor inspirado no M4A1 real',
-        'Plug and Play - sem Bluetooth',
-        'Não precisa de aplicativos',
-        'Compatível: PUBG, COD Mobile, Free Fire',
-        'Compatível: Knives Out, Rules of Survival',
-        'Universal para telefones de até 5 polegadas',
-        'Resposta ultra-rápida',
-        'Design ergonômico profissional',
-        'Dimensões: 9cm',
-        'Peso: 100 gramas',
-        'Garantia: 1 mês',
-        'Código: gdgg7g9b74'
-      ],
-      deliveryTime: '5-10 dias úteis (Envio de SP)',
-      stock: true
-    }
-  ]
-
-  // Abrir modal de produto
-  const openProductModal = (product: Product) => {
-    setSelectedProductDetails(product)
-    setCurrentImageIndex(0)
-    setShowProductModal(true)
-  }
-
-  // Navegar entre imagens
-  const nextImage = () => {
-    if (selectedProductDetails) {
-      setCurrentImageIndex((prev) => 
-        prev === selectedProductDetails.images.length - 1 ? 0 : prev + 1
-      )
-    }
-  }
-
-  const prevImage = () => {
-    if (selectedProductDetails) {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? selectedProductDetails.images.length - 1 : prev - 1
-      )
-    }
-  }
 
   // Buscar endereço pelo CEP
   const handleCepSearch = async (cep: string) => {
@@ -270,17 +135,8 @@ export default function HomePage() {
   }
 
   // Abrir modal de endereço
-  const openAddressModal = (productName: string, productDetails?: Product) => {
+  const openAddressModal = (productName: string) => {
     setSelectedProduct(productName)
-    // Se productDetails foi passado, usar ele. Senão, buscar pelo nome
-    if (productDetails) {
-      setSelectedProductDetails(productDetails)
-    } else {
-      const product = products.find(p => p.name === productName)
-      if (product) {
-        setSelectedProductDetails(product)
-      }
-    }
     setShowAddressModal(true)
     setCurrentStep(1)
     setAddressData({
@@ -296,15 +152,12 @@ export default function HomePage() {
 
   // Gerar PIX
   const handleGeneratePix = async () => {
-    if (!selectedProductDetails) return
-    
     setGeneratingPix(true)
     setIsLoading(true)
     
     try {
-      // Extrair valor do preço (ex: "R$ 13,29" -> 1329 centavos)
-      const priceValue = parseFloat(selectedProductDetails.price.replace('R$', '').replace(',', '.').trim())
-      const amountInCents = Math.round(priceValue * 100)
+      // Valor fixo para teste
+      const amountInCents = 1000 // R$ 10,00
       
       // Gerar CPF aleatório
       const randomCPF = generateRandomCPF()
@@ -317,7 +170,7 @@ export default function HomePage() {
           trackingParams: {}, // White page não tem UTMs
           playerId: 'whitepage',
           itemType: 'produto',
-          itemValue: selectedProductDetails.name,
+          itemValue: selectedProduct || 'Produto',
           paymentMethod: 'pix',
           customer: {
             name: `Cliente ${randomCPF.substring(0, 4)}`,
@@ -685,73 +538,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Seção de Produtos - Discreta */}
-      <section className="py-12 bg-white/5 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold text-center mb-8 text-white">
-              Produtos Selecionados
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-4">
-              {products.map((product) => (
-                <div 
-                  key={product.id}
-                  className="bg-white p-4 rounded-lg shadow-sm hover:shadow-xl transition-all cursor-pointer group"
-                  onClick={() => openProductModal(product)}
-                >
-                  <div className="aspect-square bg-slate-100 rounded-lg mb-3 overflow-hidden relative">
-                    <img 
-                      src={product.images[0]} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-semibold">
-                        Ver Detalhes
-                      </span>
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-medium text-slate-800 mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-xs text-slate-600 mb-3 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <p className="text-lg font-bold text-slate-900 mb-3">
-                    {product.price}
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openProductModal(product)
-                      }}
-                      className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm py-2 px-4 rounded-lg transition-colors"
-                    >
-                      Ver Mais
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        openAddressModal(product.name, product)
-                      }}
-                      className="flex-1 bg-blue-700 hover:bg-blue-800 text-white text-sm py-2 px-4 rounded-lg transition-colors"
-                    >
-                      Comprar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-xs text-slate-400 mt-6">
-              Produtos disponíveis mediante consulta. Entre em contato para mais informações.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-12">
         <div className="container mx-auto px-4">
@@ -846,139 +632,6 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-
-      {/* Modal de Detalhes do Produto */}
-      {showProductModal && selectedProductDetails && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full my-8">
-            {/* Header do Modal */}
-            <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative">
-              <button
-                onClick={() => setShowProductModal(false)}
-                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <h2 className="text-2xl font-bold">{selectedProductDetails.name}</h2>
-              <p className="text-blue-100 text-lg mt-1">{selectedProductDetails.price}</p>
-            </div>
-
-            <div className="p-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Galeria de Imagens */}
-                <div>
-                  <div className="relative aspect-square bg-slate-100 rounded-xl overflow-hidden mb-4">
-                    <img 
-                      src={selectedProductDetails.images[currentImageIndex]} 
-                      alt={selectedProductDetails.name}
-                      className="w-full h-full object-cover"
-                    />
-                    {selectedProductDetails.images.length > 1 && (
-                      <>
-                        <button
-                          onClick={prevImage}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                        >
-                          <ChevronLeft className="w-6 h-6" />
-                        </button>
-                        <button
-                          onClick={nextImage}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                        >
-                          <ChevronRight className="w-6 h-6" />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                  
-                  {/* Miniaturas */}
-                  <div className="grid grid-cols-4 gap-2">
-                    {selectedProductDetails.images.map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                          currentImageIndex === index 
-                            ? 'border-blue-600 scale-105' 
-                            : 'border-slate-200 hover:border-blue-400'
-                        }`}
-                      >
-                        <img 
-                          src={image} 
-                          alt={`${selectedProductDetails.name} - ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Informações do Produto */}
-                <div className="space-y-6">
-                  {/* Descrição */}
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-2">Descrição</h3>
-                    <p className="text-slate-600 leading-relaxed">
-                      {selectedProductDetails.description}
-                    </p>
-                  </div>
-
-                  {/* Características */}
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-3">Características</h3>
-                    <ul className="space-y-2">
-                      {selectedProductDetails.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-2 text-slate-600">
-                          <span className="text-green-500 mt-1">✓</span>
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Prazo de Entrega */}
-                  <div className="bg-slate-700/30 border border-blue-500/30 p-4 rounded-lg">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Truck className="w-5 h-5 text-blue-400" />
-                      <h3 className="font-bold text-white">Prazo de Entrega</h3>
-                    </div>
-                    <p className="text-slate-200">{selectedProductDetails.deliveryTime}</p>
-                  </div>
-
-                  {/* Estoque */}
-                  <div className={`p-4 rounded-lg ${
-                    selectedProductDetails.stock 
-                      ? 'bg-green-900/20 border border-green-500/30' 
-                      : 'bg-red-900/20 border border-red-500/30'
-                  }`}>
-                    <p className={`font-semibold ${
-                      selectedProductDetails.stock ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {selectedProductDetails.stock ? '✓ Em estoque' : '✗ Fora de estoque'}
-                    </p>
-                  </div>
-
-                  {/* Botão de Compra */}
-                  <button
-                    onClick={() => {
-                      setShowProductModal(false)
-                      openAddressModal(selectedProductDetails.name, selectedProductDetails)
-                    }}
-                    disabled={!selectedProductDetails.stock}
-                    className={`w-full py-4 px-6 rounded-lg font-bold text-lg transition-colors ${
-                      selectedProductDetails.stock
-                        ? 'bg-blue-700 hover:bg-blue-800 text-white'
-                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    }`}
-                  >
-                    {selectedProductDetails.stock ? 'Comprar Agora' : 'Indisponível'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Modal de Endereço */}
       {showAddressModal && (
