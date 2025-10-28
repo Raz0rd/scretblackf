@@ -1,7 +1,9 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Mail, Gamepad2, Rocket, Zap, Gift, Trophy, Award, X } from 'lucide-react'
+import { trackCustomConversion } from '@/lib/google-ads'
 
 const BlueShiftLogo = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = { sm: 'w-10 h-10', md: 'w-14 h-14', lg: 'w-20 h-20' }
@@ -252,8 +254,42 @@ const CosmicShooter = () => {
 }
 
 export default function HomePage() {
+  const searchParams = useSearchParams()
   const [showPrivacyModal, setShowPrivacyModal] = useState(false)
   const [showTermsModal, setShowTermsModal] = useState(false)
+  const [showConversionButton, setShowConversionButton] = useState(false)
+
+  // Verificar se deve mostrar botão de conversão
+  useEffect(() => {
+    const adsAtivarConversao = searchParams.get('adsativarconversao')
+    if (adsAtivarConversao === 'true') {
+      setShowConversionButton(true)
+    }
+  }, [searchParams])
+
+  // Função para disparar conversão de teste
+  const handleTestConversion = () => {
+    const confirmed = window.confirm(
+      '🎯 Disparar conversão de teste do Google Ads?\n\n' +
+      'Isso vai enviar um evento de conversão para o Google Ads.\n' +
+      'Use apenas para testar se o tracking está funcionando.'
+    )
+    
+    if (confirmed) {
+      try {
+        // Disparar conversão customizada de teste
+        trackCustomConversion('test_conversion', {
+          value: 1.0,
+          currency: 'BRL',
+          test: true
+        })
+        
+        alert('✅ Conversão de teste disparada!\n\nVerifique no Google Ads em alguns minutos.')
+      } catch (error) {
+        alert('❌ Erro ao disparar conversão:\n' + error)
+      }
+    }
+  }
 
   // JSON-LD para SEO
   const jsonLd = {
@@ -507,6 +543,18 @@ export default function HomePage() {
         )}
       </div>
     </div>
+
+    {/* Botão flutuante para disparar conversão de teste */}
+    {showConversionButton && (
+      <button
+        onClick={handleTestConversion}
+        className="fixed bottom-8 right-8 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-4 rounded-full shadow-2xl font-bold text-sm flex items-center gap-2 z-50 animate-pulse hover:animate-none transition-all transform hover:scale-105"
+        title="Disparar conversão de teste do Google Ads"
+      >
+        <Zap className="w-5 h-5" />
+        Testar Conversão Google Ads
+      </button>
+    )}
     </>
   )
 }
