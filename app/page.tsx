@@ -277,15 +277,34 @@ export default function HomePage() {
     
     if (confirmed) {
       try {
-        // Disparar conversão customizada de teste
-        trackCustomConversion('test_conversion', {
-          value: 1.0,
-          currency: 'BRL',
-          test: true
+        // Gerar transaction_id aleatório para teste
+        const randomTransactionId = 'TEST-' + Math.random().toString(36).substring(2, 15)
+        
+        // Verificar se gtag está disponível
+        if (typeof window.gtag !== 'function') {
+          alert('❌ Google Ads não está carregado!\n\nVerifique se NEXT_PUBLIC_GOOGLE_ADS_ENABLED=true')
+          return
+        }
+        
+        // Disparar conversão no formato correto do Google Ads
+        const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17683862692'
+        const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'wKeVCK6GirUbEKSpqfBB'
+        const sendTo = `${googleAdsId}/${conversionLabel}`
+        
+        console.log('🎯 Disparando conversão de teste')
+        console.log('Send To:', sendTo)
+        console.log('Transaction ID:', randomTransactionId)
+        
+        window.gtag('event', 'conversion', {
+          'send_to': sendTo,
+          'value': 1.0,
+          'currency': 'BRL',
+          'transaction_id': randomTransactionId
         })
         
-        alert('✅ Conversão de teste disparada!\n\nVerifique no Google Ads em alguns minutos.')
+        alert(`✅ Conversão de teste disparada!\n\nTransaction ID: ${randomTransactionId}\n\nVerifique no Google Ads em alguns minutos.`)
       } catch (error) {
+        console.error('Erro ao disparar conversão:', error)
         alert('❌ Erro ao disparar conversão:\n' + error)
       }
     }
