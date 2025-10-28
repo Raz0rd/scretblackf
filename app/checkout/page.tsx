@@ -538,6 +538,8 @@ export default function CheckoutPage() {
               router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
               
               // Enviar para UTMify com status PAID (não-bloqueante)
+              // NOTA: O webhook já envia PAID para UTMify, mas mantemos este envio como fallback
+              // A API /api/utmify-track tem proteção anti-duplicação via flag utmifyPaidSent
               sendToUtmifyPaid(pixData.transactionId).catch(err => {
               })
             }
