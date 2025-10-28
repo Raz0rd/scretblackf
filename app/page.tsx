@@ -311,6 +311,8 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* Main Content */}
+      <main>
       {/* Hero Section */}
       <section className="bg-white/5 backdrop-blur-sm text-white py-20 border-b border-white/10">
         <div className="container mx-auto px-4 text-center">
@@ -541,6 +543,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-12">
