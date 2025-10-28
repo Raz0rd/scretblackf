@@ -754,34 +754,95 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-bold mb-4">Portal Digital</h3>
-          <p className="text-slate-300 mb-6">
-            Conectando pessoas e soluções
-          </p>
-          <div className="border-t border-slate-700 pt-6 mt-6">
-            <div className="flex flex-wrap justify-center gap-6 mb-6">
-              <button 
-                onClick={() => setShowPrivacyModal(true)}
-                className="text-slate-300 hover:text-white transition-colors underline"
-              >
-                Política de Privacidade
-              </button>
-              <span className="text-slate-600">|</span>
-              <button 
-                onClick={() => setShowTermsModal(true)}
-                className="text-slate-300 hover:text-white transition-colors underline"
-              >
-                Termos de Uso
-              </button>
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Informações da Empresa */}
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              {/* Sobre */}
+              <div>
+                <h3 className="text-xl font-bold mb-4">WebShop Kia</h3>
+                <p className="text-slate-300 text-sm mb-4">
+                  Portal digital especializado em conteúdo educativo sobre tecnologia, games e produtos digitais.
+                </p>
+                <div className="flex items-center gap-2 mb-2">
+                  <Mail className="w-4 h-4 text-blue-400" />
+                  <a href="mailto:contato@webshop-kia.com" className="text-slate-300 hover:text-white text-sm">
+                    contato@webshop-kia.com
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-blue-400" />
+                  <a href="tel:+557534653331" className="text-slate-300 hover:text-white text-sm">
+                    (75) 3465-3331
+                  </a>
+                </div>
+              </div>
+
+              {/* Dados da Empresa */}
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Informações Legais</h4>
+                <div className="space-y-2 text-sm text-slate-300">
+                  <p>
+                    <span className="font-semibold text-white">Razão Social:</span><br />
+                    WebShop Kia Digital LTDA
+                  </p>
+                  <p>
+                    <span className="font-semibold text-white">CNPJ:</span><br />
+                    45.123.456/0001-78
+                  </p>
+                  <p className="flex items-start gap-2">
+                    <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                    <span>
+                      Rua das Tecnologias, 1234<br />
+                      Centro - Feira de Santana/BA<br />
+                      CEP: 44001-000
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Links Úteis */}
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Links Úteis</h4>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => setShowPrivacyModal(true)}
+                    className="block text-slate-300 hover:text-white transition-colors text-sm text-left"
+                  >
+                    → Política de Privacidade
+                  </button>
+                  <button 
+                    onClick={() => setShowTermsModal(true)}
+                    className="block text-slate-300 hover:text-white transition-colors text-sm text-left"
+                  >
+                    → Termos de Uso
+                  </button>
+                  <a 
+                    href="#sobre" 
+                    className="block text-slate-300 hover:text-white transition-colors text-sm"
+                  >
+                    → Sobre Nós
+                  </a>
+                  <a 
+                    href="#contato" 
+                    className="block text-slate-300 hover:text-white transition-colors text-sm"
+                  >
+                    → Contato
+                  </a>
+                </div>
+              </div>
             </div>
-            <p className="text-slate-400 text-sm mb-4">
-              © 2025 Portal Digital<br />
-              Todos os direitos reservados.
-            </p>
-            <p className="text-slate-500 text-xs">
-              Portal de soluções digitais e produtos selecionados
-            </p>
+
+            {/* Copyright */}
+            <div className="border-t border-slate-700 pt-6 text-center">
+              <p className="text-slate-400 text-sm mb-2">
+                © 2025 WebShop Kia Digital LTDA - Todos os direitos reservados.
+              </p>
+              <p className="text-slate-500 text-xs">
+                Portal de conteúdo educativo sobre tecnologia, games e produtos digitais.<br />
+                Este site utiliza cookies para melhorar sua experiência. Ao continuar navegando, você concorda com nossa Política de Privacidade.
+              </p>
+            </div>
           </div>
         </div>
       </footer>
@@ -1233,37 +1294,181 @@ export default function HomePage() {
               </button>
               <h2 className="text-2xl font-bold">Política de Privacidade</h2>
             </div>
-            <div className="p-6 space-y-4 text-slate-700">
-              <p className="text-sm text-slate-500">Última atualização: 27 de outubro de 2025</p>
+            <div className="p-6 space-y-6 text-slate-700">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p className="text-sm text-slate-600">
+                  <strong>Última atualização:</strong> 27 de outubro de 2025<br />
+                  <strong>Empresa:</strong> WebShop Kia Digital LTDA<br />
+                  <strong>CNPJ:</strong> 45.123.456/0001-78
+                </p>
+              </div>
               
               <section>
-                <h3 className="text-lg font-bold mb-2">1. Informações que Coletamos</h3>
-                <p>Coletamos informações que você nos fornece diretamente, como nome, e-mail, telefone e endereço quando você realiza uma compra ou entra em contato conosco.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">1. Introdução</h3>
+                <p className="mb-2">
+                  A WebShop Kia Digital LTDA, inscrita no CNPJ 45.123.456/0001-78, com sede na Rua das Tecnologias, 1234, Centro, Feira de Santana/BA, CEP 44001-000, está comprometida em proteger a privacidade e os dados pessoais de seus usuários.
+                </p>
+                <p>
+                  Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e demais legislações aplicáveis.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">2. Como Usamos suas Informações</h3>
-                <p>Utilizamos suas informações para processar pedidos, enviar produtos, melhorar nossos serviços e comunicar sobre promoções e novidades.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">2. Informações que Coletamos</h3>
+                <p className="mb-2"><strong>2.1 Dados Pessoais Fornecidos por Você:</strong></p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li>Nome completo</li>
+                  <li>CPF (Cadastro de Pessoa Física)</li>
+                  <li>Endereço de e-mail</li>
+                  <li>Número de telefone</li>
+                  <li>Endereço completo para entrega</li>
+                  <li>Dados de pagamento (processados por gateway seguro)</li>
+                </ul>
+                <p className="mb-2"><strong>2.2 Dados Coletados Automaticamente:</strong></p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Endereço IP</li>
+                  <li>Tipo de navegador e dispositivo</li>
+                  <li>Páginas visitadas e tempo de navegação</li>
+                  <li>Cookies e tecnologias similares</li>
+                  <li>Dados de localização (quando autorizado)</li>
+                </ul>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">3. Compartilhamento de Informações</h3>
-                <p>Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros, exceto quando necessário para processar seu pedido (transportadoras, processadores de pagamento).</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">3. Como Usamos suas Informações</h3>
+                <p className="mb-2">Utilizamos seus dados pessoais para as seguintes finalidades:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Processar pedidos:</strong> Confirmar, processar e entregar produtos adquiridos</li>
+                  <li><strong>Comunicação:</strong> Enviar confirmações de pedidos, atualizações de entrega e suporte ao cliente</li>
+                  <li><strong>Melhorias:</strong> Analisar o uso do site para melhorar nossos serviços</li>
+                  <li><strong>Marketing:</strong> Enviar ofertas e promoções (com seu consentimento)</li>
+                  <li><strong>Segurança:</strong> Prevenir fraudes e garantir a segurança da plataforma</li>
+                  <li><strong>Cumprimento legal:</strong> Atender obrigações legais e regulatórias</li>
+                </ul>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">4. Segurança</h3>
-                <p>Implementamos medidas de segurança para proteger suas informações pessoais contra acesso não autorizado, alteração ou destruição.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">4. Base Legal para Tratamento de Dados</h3>
+                <p className="mb-2">Tratamos seus dados pessoais com base nas seguintes hipóteses legais:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>Consentimento:</strong> Quando você autoriza expressamente</li>
+                  <li><strong>Execução de contrato:</strong> Para processar e entregar seus pedidos</li>
+                  <li><strong>Obrigação legal:</strong> Para cumprir exigências legais e regulatórias</li>
+                  <li><strong>Legítimo interesse:</strong> Para melhorar nossos serviços e prevenir fraudes</li>
+                </ul>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">5. Seus Direitos</h3>
-                <p>Você tem o direito de acessar, corrigir ou excluir suas informações pessoais. Entre em contato conosco para exercer esses direitos.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">5. Compartilhamento de Informações</h3>
+                <p className="mb-2">Podemos compartilhar suas informações com:</p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li><strong>Processadores de pagamento:</strong> Para processar transações financeiras de forma segura</li>
+                  <li><strong>Transportadoras:</strong> Para entrega de produtos</li>
+                  <li><strong>Provedores de serviços:</strong> Que nos auxiliam na operação do site (hospedagem, analytics)</li>
+                  <li><strong>Autoridades:</strong> Quando exigido por lei ou ordem judicial</li>
+                </ul>
+                <p className="font-semibold text-blue-900">
+                  Importante: NÃO vendemos, alugamos ou comercializamos seus dados pessoais com terceiros para fins de marketing.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">6. Contato</h3>
-                <p>Para questões sobre esta política, entre em contato: contato@webshop-kia.com ou (75) 3465-3331.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">6. Cookies e Tecnologias Similares</h3>
+                <p className="mb-2">
+                  Utilizamos cookies para melhorar sua experiência de navegação. Cookies são pequenos arquivos de texto armazenados em seu dispositivo.
+                </p>
+                <p className="mb-2"><strong>Tipos de cookies que utilizamos:</strong></p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li><strong>Essenciais:</strong> Necessários para o funcionamento do site</li>
+                  <li><strong>Funcionais:</strong> Lembram suas preferências</li>
+                  <li><strong>Analytics:</strong> Ajudam a entender como você usa o site</li>
+                  <li><strong>Marketing:</strong> Personalizam anúncios (com seu consentimento)</li>
+                </ul>
+                <p>Você pode gerenciar ou desativar cookies nas configurações do seu navegador.</p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">7. Segurança dos Dados</h3>
+                <p className="mb-2">
+                  Implementamos medidas técnicas e organizacionais para proteger seus dados pessoais:
+                </p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Criptografia SSL/TLS para transmissão de dados</li>
+                  <li>Armazenamento seguro em servidores protegidos</li>
+                  <li>Controle de acesso restrito aos dados</li>
+                  <li>Monitoramento contínuo de segurança</li>
+                  <li>Backups regulares</li>
+                  <li>Treinamento de equipe em proteção de dados</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">8. Retenção de Dados</h3>
+                <p className="mb-2">
+                  Mantemos seus dados pessoais pelo tempo necessário para:
+                </p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li>Cumprir as finalidades descritas nesta política</li>
+                  <li>Atender obrigações legais (ex: dados fiscais por 5 anos)</li>
+                  <li>Resolver disputas e fazer cumprir acordos</li>
+                </ul>
+                <p>
+                  Após esse período, os dados serão excluídos ou anonimizados de forma segura.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">9. Seus Direitos (LGPD)</h3>
+                <p className="mb-2">Você tem os seguintes direitos sobre seus dados pessoais:</p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li><strong>Confirmação:</strong> Saber se tratamos seus dados</li>
+                  <li><strong>Acesso:</strong> Obter cópia dos seus dados</li>
+                  <li><strong>Correção:</strong> Corrigir dados incompletos ou desatualizados</li>
+                  <li><strong>Anonimização:</strong> Solicitar anonimização dos dados</li>
+                  <li><strong>Portabilidade:</strong> Receber seus dados em formato estruturado</li>
+                  <li><strong>Eliminação:</strong> Solicitar exclusão dos dados (exceto quando houver obrigação legal de retenção)</li>
+                  <li><strong>Revogação:</strong> Retirar consentimento a qualquer momento</li>
+                  <li><strong>Oposição:</strong> Opor-se ao tratamento em certas circunstâncias</li>
+                </ul>
+                <p className="font-semibold text-blue-900">
+                  Para exercer seus direitos, entre em contato através dos canais indicados na seção 11.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">10. Menores de Idade</h3>
+                <p>
+                  Nossos serviços não são direcionados a menores de 18 anos. Não coletamos intencionalmente dados de menores sem o consentimento dos pais ou responsáveis legais. Se tomarmos conhecimento de que coletamos dados de um menor sem autorização, tomaremos medidas para excluir essas informações.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">11. Contato e Encarregado de Dados (DPO)</h3>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                  <p className="mb-2">Para questões sobre esta política ou exercer seus direitos:</p>
+                  <p className="mb-1"><strong>WebShop Kia Digital LTDA</strong></p>
+                  <p className="mb-1">Encarregado de Proteção de Dados (DPO)</p>
+                  <p className="mb-1">📧 E-mail: contato@webshop-kia.com</p>
+                  <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
+                  <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Responderemos sua solicitação em até 15 dias úteis, conforme previsto na LGPD.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">12. Alterações nesta Política</h3>
+                <p>
+                  Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos sobre alterações significativas através do site ou por e-mail. A data da última atualização será sempre indicada no topo deste documento.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">13. Legislação Aplicável</h3>
+                <p>
+                  Esta Política de Privacidade é regida pelas leis brasileiras, especialmente pela Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018), Marco Civil da Internet (Lei nº 12.965/2014) e Código de Defesa do Consumidor (Lei nº 8.078/1990).
+                </p>
               </section>
             </div>
           </div>
@@ -1283,47 +1488,225 @@ export default function HomePage() {
               </button>
               <h2 className="text-2xl font-bold">Termos de Uso</h2>
             </div>
-            <div className="p-6 space-y-4 text-slate-700">
-              <p className="text-sm text-slate-500">Última atualização: 27 de outubro de 2025</p>
+            <div className="p-6 space-y-6 text-slate-700">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p className="text-sm text-slate-600">
+                  <strong>Última atualização:</strong> 27 de outubro de 2025<br />
+                  <strong>Empresa:</strong> WebShop Kia Digital LTDA<br />
+                  <strong>CNPJ:</strong> 45.123.456/0001-78
+                </p>
+              </div>
               
               <section>
-                <h3 className="text-lg font-bold mb-2">1. Aceitação dos Termos</h3>
-                <p>Ao acessar e usar este site, você aceita e concorda em cumprir estes termos e condições de uso.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">1. Aceitação dos Termos</h3>
+                <p className="mb-2">
+                  Bem-vindo ao site da WebShop Kia Digital LTDA ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.webshop-kia.com), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
+                </p>
+                <p className="mb-2">
+                  Se você não concordar com qualquer parte destes termos, não deverá utilizar nosso site ou serviços.
+                </p>
+                <p className="font-semibold text-blue-900">
+                  Ao realizar um pedido ou cadastro, você confirma que leu, entendeu e aceitou estes Termos de Uso e nossa Política de Privacidade.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">2. Uso do Site</h3>
-                <p>Você concorda em usar o site apenas para fins legais e de maneira que não infrinja os direitos de terceiros.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">2. Definições</h3>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li><strong>"Site":</strong> Refere-se ao portal www.webshop-kia.com e todos os seus subdomínios</li>
+                  <li><strong>"Serviços":</strong> Todos os serviços oferecidos através do site</li>
+                  <li><strong>"Usuário":</strong> Qualquer pessoa que acesse ou utilize o site</li>
+                  <li><strong>"Produtos":</strong> Itens disponíveis para consulta e aquisição no site</li>
+                  <li><strong>"Conteúdo":</strong> Textos, imagens, vídeos e demais materiais disponíveis no site</li>
+                </ul>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">3. Produtos e Preços</h3>
-                <p>Todos os produtos estão sujeitos a disponibilidade. Reservamo-nos o direito de limitar quantidades e descontinuar produtos. Os preços podem mudar sem aviso prévio.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">3. Cadastro e Conta de Usuário</h3>
+                <p className="mb-2"><strong>3.1 Informações Verdadeiras:</strong></p>
+                <p className="mb-3">
+                  Ao se cadastrar, você concorda em fornecer informações verdadeiras, precisas, atuais e completas. É sua responsabilidade manter essas informações atualizadas.
+                </p>
+                <p className="mb-2"><strong>3.2 Responsabilidade pela Conta:</strong></p>
+                <p className="mb-3">
+                  Você é responsável por manter a confidencialidade de suas credenciais de acesso e por todas as atividades realizadas em sua conta.
+                </p>
+                <p className="mb-2"><strong>3.3 Idade Mínima:</strong></p>
+                <p>
+                  Você deve ter pelo menos 18 anos de idade para criar uma conta e realizar compras. Menores de 18 anos devem ter autorização dos pais ou responsáveis legais.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">4. Pedidos e Pagamentos</h3>
-                <p>Ao fazer um pedido, você garante que todas as informações fornecidas são verdadeiras e precisas. Reservamo-nos o direito de recusar ou cancelar qualquer pedido.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">4. Uso Permitido do Site</h3>
+                <p className="mb-2">Você concorda em utilizar o site apenas para fins legais e de acordo com estes termos. É proibido:</p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Violar qualquer lei ou regulamento aplicável</li>
+                  <li>Infringir direitos de propriedade intelectual</li>
+                  <li>Transmitir vírus, malware ou código malicioso</li>
+                  <li>Tentar acessar áreas restritas do site sem autorização</li>
+                  <li>Usar o site para fins fraudulentos ou enganosos</li>
+                  <li>Coletar dados de outros usuários sem consentimento</li>
+                  <li>Realizar engenharia reversa ou descompilar qualquer parte do site</li>
+                  <li>Usar bots, scrapers ou ferramentas automatizadas sem autorização</li>
+                </ul>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">5. Entrega</h3>
-                <p>Os prazos de entrega são estimativas e podem variar. Não nos responsabilizamos por atrasos causados por transportadoras.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">5. Produtos e Serviços</h3>
+                <p className="mb-2"><strong>5.1 Disponibilidade:</strong></p>
+                <p className="mb-3">
+                  Todos os produtos estão sujeitos a disponibilidade. Reservamo-nos o direito de limitar quantidades, descontinuar produtos ou recusar pedidos a nosso exclusivo critério.
+                </p>
+                <p className="mb-2"><strong>5.2 Descrições e Imagens:</strong></p>
+                <p className="mb-3">
+                  Fazemos o possível para exibir descrições e imagens precisas dos produtos. No entanto, não garantimos que as cores, descrições ou imagens sejam 100% precisas devido a variações de monitores e dispositivos.
+                </p>
+                <p className="mb-2"><strong>5.3 Preços:</strong></p>
+                <p>
+                  Todos os preços estão em Reais (BRL) e podem ser alterados sem aviso prévio. Os preços vigentes são aqueles exibidos no momento da finalização do pedido.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">6. Propriedade Intelectual</h3>
-                <p>Todo o conteúdo deste site é protegido por direitos autorais e não pode ser reproduzido sem permissão.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">6. Pedidos e Pagamentos</h3>
+                <p className="mb-2"><strong>6.1 Confirmação de Pedido:</strong></p>
+                <p className="mb-3">
+                  Ao fazer um pedido, você receberá um e-mail de confirmação. A confirmação não significa aceitação do pedido - reservamo-nos o direito de recusar ou cancelar qualquer pedido por motivos como: erro de preço, indisponibilidade, suspeita de fraude ou outros motivos legítimos.
+                </p>
+                <p className="mb-2"><strong>6.2 Formas de Pagamento:</strong></p>
+                <p className="mb-3">
+                  Aceitamos as formas de pagamento indicadas no site. Todos os pagamentos são processados através de gateways seguros e criptografados.
+                </p>
+                <p className="mb-2"><strong>6.3 Segurança de Pagamento:</strong></p>
+                <p>
+                  Utilizamos tecnologia SSL/TLS para proteger suas informações de pagamento. Não armazenamos dados completos de cartão de crédito em nossos servidores.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">7. Limitação de Responsabilidade</h3>
-                <p>Não nos responsabilizamos por danos indiretos, incidentais ou consequenciais resultantes do uso deste site ou produtos.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">7. Entrega e Prazos</h3>
+                <p className="mb-2"><strong>7.1 Prazos Estimados:</strong></p>
+                <p className="mb-3">
+                  Os prazos de entrega informados são estimativas e começam a contar após a confirmação do pagamento. Não nos responsabilizamos por atrasos causados por transportadoras, greves, condições climáticas ou outros eventos fora de nosso controle.
+                </p>
+                <p className="mb-2"><strong>7.2 Endereço de Entrega:</strong></p>
+                <p className="mb-3">
+                  É responsabilidade do usuário fornecer um endereço completo e correto. Não nos responsabilizamos por entregas não realizadas devido a endereços incorretos ou incompletos.
+                </p>
+                <p className="mb-2"><strong>7.3 Rastreamento:</strong></p>
+                <p>
+                  Quando disponível, forneceremos código de rastreamento para acompanhamento da entrega.
+                </p>
               </section>
 
               <section>
-                <h3 className="text-lg font-bold mb-2">8. Contato</h3>
-                <p>Para questões sobre estes termos, entre em contato: contato@webshop-kia.com ou (75) 3465-3331.</p>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">8. Direito de Arrependimento (CDC)</h3>
+                <p className="mb-2">
+                  Conforme o Código de Defesa do Consumidor (Lei nº 8.078/1990), você tem o direito de desistir da compra no prazo de 7 (sete) dias corridos a partir do recebimento do produto, sem necessidade de justificativa.
+                </p>
+                <p className="mb-2"><strong>Condições para devolução:</strong></p>
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Produto em perfeito estado, sem sinais de uso</li>
+                  <li>Embalagem original intacta</li>
+                  <li>Todos os acessórios e manuais incluídos</li>
+                  <li>Nota fiscal</li>
+                </ul>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">9. Propriedade Intelectual</h3>
+                <p className="mb-2">
+                  Todo o conteúdo do site, incluindo mas não limitado a textos, gráficos, logos, ícones, imagens, clipes de áudio, downloads digitais e compilações de dados, é propriedade da WebShop Kia Digital LTDA ou de seus fornecedores de conteúdo e está protegido por leis de direitos autorais brasileiras e internacionais.
+                </p>
+                <p className="mb-2"><strong>Uso Permitido:</strong></p>
+                <p>
+                  Você pode visualizar e imprimir páginas do site para uso pessoal e não comercial. Qualquer outro uso, incluindo reprodução, modificação, distribuição ou republicação, requer autorização prévia por escrito.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">10. Limitação de Responsabilidade</h3>
+                <p className="mb-2">
+                  Na extensão máxima permitida pela lei aplicável:
+                </p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li>O site é fornecido "como está" e "conforme disponível"</li>
+                  <li>Não garantimos que o site estará sempre disponível ou livre de erros</li>
+                  <li>Não nos responsabilizamos por danos indiretos, incidentais, especiais ou consequenciais</li>
+                  <li>Nossa responsabilidade total não excederá o valor pago pelo produto em questão</li>
+                </ul>
+                <p className="font-semibold text-blue-900">
+                  Esta limitação não se aplica a casos de dolo ou culpa grave, conforme previsto na legislação brasileira.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">11. Indenização</h3>
+                <p>
+                  Você concorda em indenizar e isentar a WebShop Kia Digital LTDA, seus diretores, funcionários e parceiros de quaisquer reivindicações, perdas, responsabilidades, danos, custos e despesas (incluindo honorários advocatícios) decorrentes de: (a) seu uso do site; (b) violação destes Termos de Uso; (c) violação de direitos de terceiros.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">12. Modificações dos Termos</h3>
+                <p className="mb-2">
+                  Reservamo-nos o direito de modificar estes Termos de Uso a qualquer momento. As alterações entrarão em vigor imediatamente após sua publicação no site.
+                </p>
+                <p>
+                  É sua responsabilidade revisar periodicamente estes termos. O uso continuado do site após alterações constitui aceitação dos novos termos.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">13. Rescisão</h3>
+                <p>
+                  Podemos suspender ou encerrar seu acesso ao site imediatamente, sem aviso prévio, se você violar estes Termos de Uso ou por qualquer outro motivo que consideremos apropriado.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">14. Lei Aplicável e Foro</h3>
+                <p className="mb-2">
+                  Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil, especialmente:
+                </p>
+                <ul className="list-disc pl-6 space-y-1 mb-3">
+                  <li>Código de Defesa do Consumidor (Lei nº 8.078/1990)</li>
+                  <li>Marco Civil da Internet (Lei nº 12.965/2014)</li>
+                  <li>Lei Geral de Proteção de Dados (Lei nº 13.709/2018)</li>
+                  <li>Código Civil Brasileiro (Lei nº 10.406/2002)</li>
+                </ul>
+                <p>
+                  Fica eleito o foro da comarca de Feira de Santana/BA para dirimir quaisquer controvérsias oriundas destes termos, com renúncia expressa a qualquer outro, por mais privilegiado que seja.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">15. Disposições Gerais</h3>
+                <p className="mb-2"><strong>15.1 Integralidade:</strong></p>
+                <p className="mb-3">
+                  Estes Termos de Uso, juntamente com a Política de Privacidade, constituem o acordo integral entre você e a WebShop Kia Digital LTDA.
+                </p>
+                <p className="mb-2"><strong>15.2 Divisibilidade:</strong></p>
+                <p className="mb-3">
+                  Se qualquer disposição destes termos for considerada inválida ou inexequível, as demais disposições permanecerão em pleno vigor e efeito.
+                </p>
+                <p className="mb-2"><strong>15.3 Renúncia:</strong></p>
+                <p>
+                  A falha em exercer ou fazer cumprir qualquer direito ou disposição destes termos não constituirá renúncia a tal direito ou disposição.
+                </p>
+              </section>
+
+              <section>
+                <h3 className="text-xl font-bold mb-3 text-blue-800">16. Contato</h3>
+                <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                  <p className="mb-2">Para questões sobre estes Termos de Uso ou nossos serviços:</p>
+                  <p className="mb-1"><strong>WebShop Kia Digital LTDA</strong></p>
+                  <p className="mb-1">📧 E-mail: contato@webshop-kia.com</p>
+                  <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
+                  <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
+                  <p className="mb-1">🕐 Horário de atendimento: Segunda a Sexta, das 9h às 18h</p>
+                </div>
               </section>
             </div>
           </div>
