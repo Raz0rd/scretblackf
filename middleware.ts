@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
-  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15093',
+  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15296',
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/quest'  // Página de oferta
 }
@@ -53,20 +53,21 @@ export async function middleware(request: NextRequest) {
     }
   }
   
-  // Verificar domínio - desativar cloaker apenas para webshop-kia.com
+  // Verificar domínio - ativar cloaker para speedrepair.sbs
   const hostname = request.headers.get('host') || ''
-  const isWebshopKia = hostname.includes('webshop-kia.com')
+  const isSpeedRepair = hostname.includes('speedrepair.sbs')
   
-  // CLOAKER DESATIVADO apenas para webshop-kia.com
-  if (isWebshopKia) {
-    console.log('🔓 [Cloaker] Desativado para webshop-kia.com - mostrando página normal')
+  // CLOAKER ATIVADO para speedrepair.sbs
+  if (!isSpeedRepair) {
+    console.log('🔓 [Cloaker] Domínio não é speedrepair.sbs - desativado')
     return NextResponse.next()
   }
   
-  // Verificar se o cloaker está habilitado para outros domínios
+  // Verificar se o cloaker está habilitado
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
   if (!cloakerEnabled) {
+    console.log('🔓 [Cloaker] Desativado via env (NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)')
     return NextResponse.next()
   }
 
@@ -302,7 +303,7 @@ export async function middleware(request: NextRequest) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
-          url: 'https://verifiedbyffire.store/'
+          url: 'https://speedrepair.sbs/'
         }
       }
     } else {
@@ -310,7 +311,7 @@ export async function middleware(request: NextRequest) {
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: 'https://verifiedbyffire.store/'
+        url: 'https://speedrepair.sbs/'
       }
     }
 
