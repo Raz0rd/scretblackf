@@ -71,19 +71,28 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // VERIFICAÇÃO DE REFERER (se ativada no painel)
+  // VERIFICAÇÃO DE COOKIE DO CLOAKER (prioridade máxima)
+  const hasCloakerCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+  
+  // VERIFICAÇÃO DE REFERER (apenas se NÃO tem cookie válido)
   const refererCheckActive = await isRefererCheckEnabled()
   
-  if (refererCheckActive && pathname === '/') {
+  if (refererCheckActive && pathname === '/' && !hasCloakerCookie) {
     const referer = request.headers.get('referer') || ''
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
-    // Se não tem referer, mostrar white page (status 200)
-    if (!referer) {
-      console.log('🚫 [Referer Check] BLOQUEADO - Sem referer:', {
+    // Tem referer, verificar se é do Google
+    const refererLower = referer.toLowerCase()
+    const isFromGoogle = refererLower.includes('google')
+    
+    // Se NÃO tem referer OU NÃO é do Google, bloquear
+    if (!referer || !isFromGoogle) {
+      console.log('🚫 [Referer Check] BLOQUEADO - Sem referer do Google:', {
         ip,
         userAgent: userAgent.slice(0, 50),
+        referer: referer.slice(0, 100) || 'NENHUM',
+        isFromGoogle: isFromGoogle ? 'SIM' : 'NÃO',
         url: pathname + request.nextUrl.search,
         acao: 'Mostrando white page (status 200)'
       })
@@ -91,20 +100,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
     
-    // Tem referer, verificar se é do Google/Facebook/etc
-    const refererLower = referer.toLowerCase()
-    const isFromAds = refererLower.includes('google') || 
-                      refererLower.includes('facebook') || 
-                      refererLower.includes('instagram') ||
-                      refererLower.includes('tiktok')
-    
-    console.log('✅ [Referer Check] LIBERADO - Com referer:', {
+    console.log('✅ [Referer Check] LIBERADO - Referer do Google:', {
       ip,
       referer: referer.slice(0, 100),
-      isFromAds: isFromAds ? 'SIM (Google/FB/etc)' : 'NÃO',
       url: pathname + request.nextUrl.search,
       acao: 'Prosseguindo para cloaker'
     })
+  } else if (hasCloakerCookie && pathname === '/') {
+    console.log('✅ [Referer Check] IGNORADO - Usuário tem cookie válido do cloaker')
   }
 
   // Lista de rotas válidas

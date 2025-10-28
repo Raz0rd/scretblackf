@@ -61,7 +61,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
@@ -71,6 +71,7 @@ const nextConfig = {
               "form-action 'self'",
               "frame-ancestors 'none'",
               "object-src 'none'",
+              "upgrade-insecure-requests",
             ].join('; '),
           },
         ],
