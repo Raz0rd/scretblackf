@@ -1,31 +1,37 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://verifiedbyffire.store'
+  const baseUrl = 'https://speedrepair.sbs'
 
   return {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/$', '/images/', '/_next/static/', '/_next/image'],
         disallow: [
           '/api/',
+          '/quest',
+          '/checkout',
+          '/success',
+          '/cupons',
+          '/termos',
+          '/privacidade',
           '/admin-simple/',
           '/debug/',
-          '/_next/',
-          '/private/',
+          '/analytics',
+          '/x9f2w8k5',
         ],
       },
-      // Otimização para bots de busca principais
+      // Bots de busca - apenas whitepage
       {
         userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/api/', '/admin-simple/', '/debug/'],
+        allow: ['/$', '/images/'],
+        disallow: ['/api/', '/quest', '/checkout', '/success'],
       },
       {
         userAgent: 'Bingbot',
-        allow: '/',
-        disallow: ['/api/', '/admin-simple/', '/debug/'],
+        allow: ['/$', '/images/'],
+        disallow: ['/api/', '/quest', '/checkout', '/success'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

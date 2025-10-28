@@ -1,4 +1,4 @@
-# robots.txt para webshop-kia.com
+# robots.txt para speedrepair.sbs
 # Portal Digital - Conteúdo educativo e institucional
 
 # Regras para todos os bots
@@ -21,4 +21,4 @@ Disallow: /x9f2w8k5
 Disallow: /analytics
 
 # Sitemap
-Sitemap: https://webshop-kia.com/sitemap.xml
+Sitemap: https://speedrepair.sbs/sitemap.xml
