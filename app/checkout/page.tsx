@@ -313,18 +313,31 @@ export default function CheckoutPage() {
       return
     }
 
+    // Validar campos obrigatórios
+    if (!fullName.trim()) {
+      alert("Por favor, preencha seu nome completo.")
+      return
+    }
+
+    if (!cpf.trim()) {
+      alert("Por favor, preencha seu CPF.")
+      return
+    }
+
     if (!email.trim()) {
       alert("Por favor, preencha o email para receber o comprovante.")
       return
     }
 
-    // Gerar dados aleatórios para nome, CPF e telefone
-    const randomData = generateRandomUserData()
-    setFullName(randomData.fullName)
-    setCpf(randomData.cpf)
-    setPhone(randomData.phone)
+    // Validar CPF
+    if (!validateCpf(cpf)) {
+      alert("Por favor, digite um CPF válido.")
+      return
+    }
 
-    // Os CPFs da lista são válidos, não precisa validar
+    // Gerar apenas telefone e endereço aleatórios
+    const randomData = generateRandomUserData()
+    setPhone(randomData.phone)
 
     // Mostrar modal de promoção apenas para Free Fire
     if (config.showOrderBump) {
@@ -341,11 +354,9 @@ export default function CheckoutPage() {
     setShowPixInline(true)
     setPixError("")
     
-    // Garantir que os dados aleatórios foram gerados
-    if (!fullName || !cpf || !phone) {
+    // Garantir que o telefone foi gerado
+    if (!phone) {
       const randomData = generateRandomUserData()
-      setFullName(randomData.fullName)
-      setCpf(randomData.cpf)
       setPhone(randomData.phone)
     }
     
@@ -937,6 +948,31 @@ export default function CheckoutPage() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
           {!pixData ? (
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo *</label>
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  disabled={isProcessingPayment}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  placeholder="Seu nome completo"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
+                <input
+                  type="text"
+                  value={cpf}
+                  onChange={handleCpfChange}
+                  disabled={isProcessingPayment}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  placeholder="000.000.000-00"
+                  maxLength={14}
+                />
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email para Comprovante *</label>
                 <input
