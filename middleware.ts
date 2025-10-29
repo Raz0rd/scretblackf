@@ -53,6 +53,10 @@ export async function middleware(request: NextRequest) {
     }
   }
   
+  // Rotas da whitepage que NUNCA devem passar pelo cloaker
+  const whitePageRoutes = ['/', '/loja', '/unsubscribe', '/testxxadsantihack']
+  const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/')
+  
   // Verificar domínio - ativar cloaker para comprardiamantesff.shop
   const hostname = request.headers.get('host') || ''
   const isSpeedRepair = hostname.includes('comprardiamantesff.shop')
@@ -70,45 +74,15 @@ export async function middleware(request: NextRequest) {
     console.log('🔓 [Cloaker] Desativado via env (NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)')
     return NextResponse.next()
   }
+  
+  // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
+  if (isWhitePageRoute) {
+    console.log(`✅ [Whitepage] Rota "${pathname}" sempre acessível - sem cloaker`)
+    return NextResponse.next()
+  }
 
   // VERIFICAÇÃO DE COOKIE DO CLOAKER (prioridade máxima)
   const hasCloakerCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-  
-  // VERIFICAÇÃO DE REFERER (apenas se NÃO tem cookie válido)
-  const refererCheckActive = await isRefererCheckEnabled()
-  
-  if (refererCheckActive && pathname === '/' && !hasCloakerCookie) {
-    const referer = request.headers.get('referer') || ''
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
-    const userAgent = request.headers.get('user-agent') || ''
-    
-    // Tem referer, verificar se é do Google
-    const refererLower = referer.toLowerCase()
-    const isFromGoogle = refererLower.includes('google')
-    
-    // Se NÃO tem referer OU NÃO é do Google, bloquear
-    if (!referer || !isFromGoogle) {
-      console.log('🚫 [Referer Check] BLOQUEADO - Sem referer do Google:', {
-        ip,
-        userAgent: userAgent.slice(0, 50),
-        referer: referer.slice(0, 100) || 'NENHUM',
-        isFromGoogle: isFromGoogle ? 'SIM' : 'NÃO',
-        url: pathname + request.nextUrl.search,
-        acao: 'Mostrando white page (status 200)'
-      })
-      // Deixa passar normalmente para a rota / (que já é white page)
-      return NextResponse.next()
-    }
-    
-    console.log('✅ [Referer Check] LIBERADO - Referer do Google:', {
-      ip,
-      referer: referer.slice(0, 100),
-      url: pathname + request.nextUrl.search,
-      acao: 'Prosseguindo para cloaker'
-    })
-  } else if (hasCloakerCookie && pathname === '/') {
-    console.log('✅ [Referer Check] IGNORADO - Usuário tem cookie válido do cloaker')
-  }
 
   // Lista de rotas válidas
   const validRoutes = [
@@ -118,6 +92,8 @@ export async function middleware(request: NextRequest) {
     '/checkout',
     '/success',
     '/analytics',
+    '/loja',
+    '/unsubscribe',
     '/robots.txt',
     '/sitemap.xml'
   ]

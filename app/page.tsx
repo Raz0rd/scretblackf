@@ -1,9 +1,18 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, ShoppingCart, Star, Award, Users, X, Package, Truck, Zap, Shield, CreditCard, Headphones } from 'lucide-react'
 import QRCode from 'qrcode'
 import { trackPurchase } from '@/lib/google-ads'
+import GoogleAdsTest from '@/components/GoogleAdsTest'
+import Navbar from '@/components/Navbar'
+import BlogSection from '@/components/BlogSection'
+import Newsletter from '@/components/Newsletter'
+import Testimonials from '@/components/Testimonials'
+import FAQ from '@/components/FAQ'
+import Shop from '@/components/Shop'
+import HowToRedeem from '@/components/HowToRedeem'
+import Footer from '@/components/Footer'
 
 interface AddressData {
   cep: string
@@ -286,40 +295,112 @@ export default function HomePage() {
       
       {/* Conteúdo */}
       <div className="relative z-10">
-      {/* Header */}
-      <header className="bg-white/5 backdrop-blur-sm text-white shadow-xl border-b border-white/10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <LightningLogo size="lg" />
-              <div>
-                <h1 className="text-4xl font-bold mb-2">Portal Digital</h1>
-                <p className="text-slate-300 text-lg">Soluções e serviços digitais</p>
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Main Content */}
+      <main className="pt-16">
+      {/* Hero Section com Banner */}
+      <section id="hero" className="relative bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
+        {/* Banner de fundo */}
+        <div className="relative w-full h-[500px] md:h-[600px]">
+          <img 
+            src="/images/products/banner.png" 
+            alt="Dimbux Banner" 
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          
+          {/* Overlay para melhor legibilidade */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+          
+          {/* Conteúdo sobre o banner */}
+          <div className="absolute inset-0 flex items-center">
+            <div className="container mx-auto px-4">
+              <div className="max-w-2xl">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/30 border border-blue-400/50 rounded-full mb-6 backdrop-blur-sm">
+                  <Shield className="w-4 h-4 text-blue-300" />
+                  <span className="text-sm font-semibold text-blue-200">Plataforma Segura e Confiável</span>
+                </div>
+
+                <h1 className="text-6xl md:text-8xl font-black mb-4 text-white drop-shadow-2xl" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '0.05em' }}>
+                  DIMBUX
+                </h1>
+                <p className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent drop-shadow-lg" style={{ fontFamily: 'Impact, "Arial Black", sans-serif' }}>
+                  Mais Dimas, mais Robux, mais diversão!
+                </p>
+                <p className="text-lg md:text-xl text-slate-200 mb-8 max-w-xl drop-shadow-md">
+                  A forma mais rápida, segura e confiável de adquirir diamantes Free Fire e Robux. 
+                  Entrega instantânea e suporte 24/7.
+                </p>
               </div>
-            </div>
-            <div className="hidden md:flex items-center gap-6">
-              {showTestButton && (
-                <button
-                  onClick={testGoogleAdsConversion}
-                  className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg transition-colors"
-                >
-                  🧪 Testar Conversão
-                </button>
-              )}
             </div>
           </div>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main>
-      {/* Hero Section */}
-      <section className="bg-white/5 backdrop-blur-sm text-white py-20 border-b border-white/10">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl font-bold mb-6">Bem-vindo ao Portal</h2>
-          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Conectando pessoas e soluções digitais. Explore nossos serviços e produtos selecionados.
-          </p>
+        {/* Conteúdo abaixo do banner */}
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto text-center">
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <a 
+                href="/loja"
+                className="relative px-8 py-4 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 overflow-hidden group shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:shadow-[0_0_50px_rgba(6,182,212,0.8)]"
+              >
+                {/* Glow effect permanente */}
+                <div className="absolute inset-0 bg-cyan-400/10 rounded-lg animate-pulse"></div>
+                
+                {/* Brilho animado no hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                
+                {/* Borda brilhante cyan */}
+                <div className="absolute inset-0 rounded-lg border-2 border-cyan-400/60"></div>
+                
+                {/* Conteúdo */}
+                <ShoppingCart className="w-5 h-5 relative z-10 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">Ver Loja</span>
+              </a>
+              <button 
+                onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold rounded-lg transition-all"
+              >
+                Fale Conosco
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-blue-400 mb-1">10k+</div>
+                <div className="text-sm text-slate-300">Clientes Satisfeitos</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-cyan-400 mb-1">24/7</div>
+                <div className="text-sm text-slate-300">Suporte Online</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-green-400 mb-1">5min</div>
+                <div className="text-sm text-slate-300">Entrega Média</div>
+              </div>
+              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-bold text-yellow-400 mb-1">4.9★</div>
+                <div className="text-sm text-slate-300">Avaliação</div>
+              </div>
+            </div>
+
+            {/* Test Button (hidden by default) */}
+            {showTestButton && (
+              <div className="mt-8">
+                <button
+                  onClick={testGoogleAdsConversion}
+                  className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg transition-colors shadow-lg"
+                >
+                  🧪 Testar Conversão Google Ads
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
@@ -353,7 +434,7 @@ export default function HomePage() {
       </section>
 
       {/* Nossos Serviços */}
-      <section className="py-16 bg-white/5 backdrop-blur-sm">
+      <section id="servicos" className="py-16 bg-white/5 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12 text-white">Nossos Serviços</h2>
           <p className="text-center text-slate-300 mb-8 max-w-2xl mx-auto">
@@ -392,7 +473,7 @@ export default function HomePage() {
       </section>
 
       {/* Contato */}
-      <section className="py-16 bg-white/5 backdrop-blur-sm">
+      <section id="contato" className="py-16 bg-white/5 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12 text-white">
             Entre em Contato
@@ -404,7 +485,7 @@ export default function HomePage() {
               </p>
               <div className="flex justify-center items-center gap-4">
                 <Mail className="w-6 h-6 text-blue-400" />
-                <p className="text-lg text-white">contato@comprardiamantesff.shop</p>
+                <p className="text-lg text-white">contato_loja@comprardiamantesff.shop</p>
               </div>
             </div>
           </div>
@@ -543,6 +624,75 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQ />
+
+      {/* Por Que Escolher */}
+      <section id="sobre" className="py-20 bg-gradient-to-b from-slate-800 to-slate-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Por Que Escolher Comprar Diamantes FF?
+            </h2>
+            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+              Somos a plataforma mais confiável para adquirir diamantes Free Fire no Brasil
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-blue-500/50 transition-all transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-blue-500/50">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Entrega Rápida</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Receba seus diamantes em até 5 minutos após a confirmação do pagamento. Processo automatizado e eficiente.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-green-500/50 transition-all transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-400 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/50">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">100% Seguro</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Transações protegidas com criptografia SSL. Seus dados e pagamentos estão completamente seguros conosco.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-purple-500/50 transition-all transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-400 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-purple-500/50">
+                <CreditCard className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Pagamento Fácil</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Aceitamos PIX, cartão de crédito e outras formas de pagamento. Escolha a que for mais conveniente para você.
+              </p>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-yellow-500/50 transition-all transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-400 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-yellow-500/50">
+                <Headphones className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">Suporte 24/7</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Nossa equipe está sempre disponível para ajudar. Atendimento rápido e eficiente a qualquer hora do dia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* Blog */}
+      <BlogSection />
+
+      {/* Newsletter */}
+      <Newsletter />
+
       </main>
 
       {/* Footer */}
@@ -553,20 +703,20 @@ export default function HomePage() {
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               {/* Sobre */}
               <div>
-                <h3 className="text-xl font-bold mb-4">SpeedRepair</h3>
+                <h3 className="text-xl font-bold mb-4">Comprar Diamantes FF</h3>
                 <p className="text-slate-300 text-sm mb-4">
-                  Portal digital especializado em conteúdo educativo sobre tecnologia, games e produtos digitais.
+                  Plataforma líder em venda de diamantes para Free Fire. Segurança, rapidez e confiabilidade em cada transação.
                 </p>
                 <div className="flex items-center gap-2 mb-2">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <a href="mailto:contato@comprardiamantesff.shop" className="text-slate-300 hover:text-white text-sm">
-                    contato@comprardiamantesff.shop
+                  <a href="mailto:contato_loja@comprardiamantesff.shop" className="text-slate-300 hover:text-white text-sm">
+                    contato_loja@comprardiamantesff.shop
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-blue-400" />
-                  <a href="tel:+557534653331" className="text-slate-300 hover:text-white text-sm">
-                    (75) 3465-3331
+                  <a href="tel:+5511945622020" className="text-slate-300 hover:text-white text-sm">
+                    (11) 94562-2020
                   </a>
                 </div>
               </div>
@@ -577,18 +727,18 @@ export default function HomePage() {
                 <div className="space-y-2 text-sm text-slate-300">
                   <p>
                     <span className="font-semibold text-white">Razão Social:</span><br />
-                    LUIZ ANTONIO SOUZA DOS SANTOS
+                    AMANDA IZABEL DUTRA DA SILVA
                   </p>
                   <p>
                     <span className="font-semibold text-white">CNPJ:</span><br />
-                    45.123.456/0001-78
+                    60.730.759/0001-51
                   </p>
                   <p className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
                     <span>
-                      Rua das Tecnologias, 1234<br />
-                      Centro - Feira de Santana/BA<br />
-                      CEP: 44001-000
+                      Avenida Santo Amaro, 765<br />
+                      Vila Nova Conceição - São Paulo/SP<br />
+                      CEP: 04505-001
                     </span>
                   </p>
                 </div>
@@ -626,19 +776,15 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Copyright */}
-            <div className="border-t border-slate-700 pt-6 text-center">
-              <p className="text-slate-400 text-sm mb-2">
-                © 2025 LUIZ ANTONIO SOUZA DOS SANTOS - Todos os direitos reservados.
-              </p>
-              <p className="text-slate-500 text-xs">
-                Portal de conteúdo educativo sobre tecnologia, games e produtos digitais.<br />
-                Este site utiliza cookies para melhorar sua experiência. Ao continuar navegando, você concorda com nossa Política de Privacidade.
-              </p>
-            </div>
           </div>
         </div>
       </footer>
+
+      {/* Footer Profissional */}
+      <Footer />
+
+      {/* Botão de Teste Google Ads */}
+      <GoogleAdsTest />
 
       {/* Modal de Endereço */}
       {showAddressModal && (
@@ -944,7 +1090,7 @@ export default function HomePage() {
       {/* Modal Política de Privacidade */}
       {showPrivacyModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white text-slate-900 rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
             <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative sticky top-0">
               <button
                 onClick={() => setShowPrivacyModal(false)}
@@ -1106,10 +1252,10 @@ export default function HomePage() {
                 <h3 className="text-xl font-bold mb-3 text-blue-800">11. Contato e Encarregado de Dados (DPO)</h3>
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre esta política ou exercer seus direitos:</p>
-                  <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
+                  <p className="mb-1"><strong>AMANDA IZABEL DUTRA DA SILVA</strong></p>
                   <p className="mb-1">Encarregado de Proteção de Dados (DPO)</p>
-                  <p className="mb-1">📧 E-mail: contato@comprardiamantesff.shop</p>
-                  <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
+                  <p className="mb-1">📧 E-mail: contato_loja@comprardiamantesff.shop</p>
+                  <p className="mb-1">📞 Telefone: (11) 94562-2020</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mt-3 text-sm text-slate-600">
                     Responderemos sua solicitação em até 15 dias úteis, conforme previsto na LGPD.
@@ -1138,7 +1284,7 @@ export default function HomePage() {
       {/* Modal Termos de Uso */}
       {showTermsModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white text-slate-900 rounded-2xl shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto">
             <div className="bg-gradient-to-r from-blue-700 to-blue-800 text-white p-6 rounded-t-2xl relative sticky top-0">
               <button
                 onClick={() => setShowTermsModal(false)}
@@ -1361,9 +1507,9 @@ export default function HomePage() {
                 <h3 className="text-xl font-bold mb-3 text-blue-800">16. Contato</h3>
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre estes Termos de Uso ou nossos serviços:</p>
-                  <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
-                  <p className="mb-1">📧 E-mail: contato@comprardiamantesff.shop</p>
-                  <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
+                  <p className="mb-1"><strong>AMANDA IZABEL DUTRA DA SILVA</strong></p>
+                  <p className="mb-1">📧 E-mail: contato_loja@comprardiamantesff.shop</p>
+                  <p className="mb-1">📞 Telefone: (11) 94562-2020</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mb-1">🕐 Horário de atendimento: Segunda a Sexta, das 9h às 18h</p>
                 </div>

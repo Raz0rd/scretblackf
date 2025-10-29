@@ -66,7 +66,7 @@ const nextConfig = {
               "img-src 'self' data: https: blob:",
               "font-src 'self' data:",
               "connect-src 'self' https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://viacep.com.br",
-              "frame-src 'self' https://www.google.com https://www.googletagmanager.com",
+              "frame-src 'self' https://www.google.com https://www.googletagmanager.com https://streamable.com",
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'none'",

@@ -85,7 +85,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17681471168'
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
   const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
 
   return (

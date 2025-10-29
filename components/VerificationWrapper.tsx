@@ -20,9 +20,12 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
       return
     }
 
-    // Verificar se está na rota / (white page) ou /cupons - bypass verificação
+    // Verificar se está nas rotas da whitepage - bypass verificação
     const currentPath = window.location.pathname
-    if (currentPath === '/' || currentPath.startsWith('/cupons')) {
+    const whitePageRoutes = ['/', '/loja', '/unsubscribe', '/cupons', '/produto']
+    const isWhitePage = whitePageRoutes.some(route => currentPath === route || currentPath.startsWith(route))
+    
+    if (isWhitePage) {
       setIsVerified(true)
       setIsLoading(false)
       return
