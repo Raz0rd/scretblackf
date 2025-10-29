@@ -1,4 +1,4 @@
-# robots.txt para speedrepair.sbs
+# robots.txt para comprardiamantesff.shop
 # Portal Digital - Conteúdo educativo e institucional
 
 # Regras para todos os bots
@@ -21,4 +21,4 @@ Disallow: /x9f2w8k5
 Disallow: /analytics
 
 # Sitemap
-Sitemap: https://speedrepair.sbs/sitemap.xml
+Sitemap: https://comprardiamantesff.shop/sitemap.xml

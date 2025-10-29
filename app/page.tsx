@@ -404,7 +404,7 @@ export default function HomePage() {
               </p>
               <div className="flex justify-center items-center gap-4">
                 <Mail className="w-6 h-6 text-blue-400" />
-                <p className="text-lg text-white">contato@speedrepair.sbs</p>
+                <p className="text-lg text-white">contato@comprardiamantesff.shop</p>
               </div>
             </div>
           </div>
@@ -559,8 +559,8 @@ export default function HomePage() {
                 </p>
                 <div className="flex items-center gap-2 mb-2">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <a href="mailto:contato@speedrepair.sbs" className="text-slate-300 hover:text-white text-sm">
-                    contato@speedrepair.sbs
+                  <a href="mailto:contato@comprardiamantesff.shop" className="text-slate-300 hover:text-white text-sm">
+                    contato@comprardiamantesff.shop
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
@@ -1108,7 +1108,7 @@ export default function HomePage() {
                   <p className="mb-2">Para questões sobre esta política ou exercer seus direitos:</p>
                   <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
                   <p className="mb-1">Encarregado de Proteção de Dados (DPO)</p>
-                  <p className="mb-1">📧 E-mail: contato@speedrepair.sbs</p>
+                  <p className="mb-1">📧 E-mail: contato@comprardiamantesff.shop</p>
                   <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mt-3 text-sm text-slate-600">
@@ -1160,7 +1160,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">1. Aceitação dos Termos</h3>
                 <p className="mb-2">
-                  Bem-vindo ao site da LUIZ ANTONIO SOUZA DOS SANTOS ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.speedrepair.sbs), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
+                  Bem-vindo ao site da LUIZ ANTONIO SOUZA DOS SANTOS ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.comprardiamantesff.shop), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
                 </p>
                 <p className="mb-2">
                   Se você não concordar com qualquer parte destes termos, não deverá utilizar nosso site ou serviços.
@@ -1173,7 +1173,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">2. Definições</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>"Site":</strong> Refere-se ao portal www.speedrepair.sbs e todos os seus subdomínios</li>
+                  <li><strong>"Site":</strong> Refere-se ao portal www.comprardiamantesff.shop e todos os seus subdomínios</li>
                   <li><strong>"Serviços":</strong> Todos os serviços oferecidos através do site</li>
                   <li><strong>"Usuário":</strong> Qualquer pessoa que acesse ou utilize o site</li>
                   <li><strong>"Produtos":</strong> Itens disponíveis para consulta e aquisição no site</li>
@@ -1362,7 +1362,7 @@ export default function HomePage() {
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre estes Termos de Uso ou nossos serviços:</p>
                   <p className="mb-1"><strong>LUIZ ANTONIO SOUZA DOS SANTOS</strong></p>
-                  <p className="mb-1">📧 E-mail: contato@speedrepair.sbs</p>
+                  <p className="mb-1">📧 E-mail: contato@comprardiamantesff.shop</p>
                   <p className="mb-1">📞 Telefone: (75) 3465-3331</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mb-1">🕐 Horário de atendimento: Segunda a Sexta, das 9h às 18h</p>
