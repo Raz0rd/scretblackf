@@ -54,7 +54,8 @@ export async function middleware(request: NextRequest) {
   }
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
-  const whitePageRoutes = ['/', '/loja', '/unsubscribe', '/testxxadsantihack']
+  // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
+  const whitePageRoutes = ['/loja', '/unsubscribe', '/testxxadsantihack']
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/')
   
   // Verificar domínio - ativar cloaker para comprardiamantesff.shop
