@@ -7,7 +7,15 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/$', '/images/', '/_next/static/', '/_next/image'],
+        allow: [
+          '/',
+          '/loja',
+          '/produto/',
+          '/unsubscribe',
+          '/images/',
+          '/_next/static/',
+          '/_next/image',
+        ],
         disallow: [
           '/api/',
           '/quest',
@@ -20,18 +28,20 @@ export default function robots(): MetadataRoute.Robots {
           '/debug/',
           '/analytics',
           '/x9f2w8k5',
+          '/testxxadsantihack',
+          '/test-ads',
         ],
       },
-      // Bots de busca - apenas whitepage
+      // Bots de busca - whitepage completa
       {
         userAgent: 'Googlebot',
-        allow: ['/$', '/images/'],
-        disallow: ['/api/', '/quest', '/checkout', '/success'],
+        allow: ['/', '/loja', '/produto/', '/images/'],
+        disallow: ['/api/', '/quest', '/checkout', '/success', '/testxxadsantihack'],
       },
       {
         userAgent: 'Bingbot',
-        allow: ['/$', '/images/'],
-        disallow: ['/api/', '/quest', '/checkout', '/success'],
+        allow: ['/', '/loja', '/produto/', '/images/'],
+        disallow: ['/api/', '/quest', '/checkout', '/success', '/testxxadsantihack'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
