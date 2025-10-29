@@ -193,14 +193,20 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||
     pathname.startsWith('/sw.js') ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/favicon.ico' ||
+    pathname === '/favicon.svg' ||
     pathname.includes('.js') ||
     pathname.includes('.css') ||
     pathname.includes('.png') ||
     pathname.includes('.jpg') ||
     pathname.includes('.ico') ||
+    pathname.includes('.svg') ||
     pathname.includes('.woff') ||
     pathname.includes('.woff2') ||
-    pathname.includes('.json')
+    pathname.includes('.json') ||
+    pathname.includes('.xml')
   ) {
     return NextResponse.next()
   }
