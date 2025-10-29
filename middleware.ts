@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
-  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15296',
+  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15311',
   whitePagePath: '/',  // Página principal agora é white page
-  offerPagePath: '/quest'  // Página de oferta
+  offerPagePath: '/promo'  // Página de oferta
 }
 
 // Função para verificar se verificação de referer está ativa
@@ -88,7 +88,7 @@ export async function middleware(request: NextRequest) {
   // Lista de rotas válidas
   const validRoutes = [
     '/',
-    '/quest',
+    '/promo',
     '/cupons',
     '/checkout',
     '/success',
@@ -125,8 +125,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /quest - só acessível com cookie do cloaker OU com parâmetros de tracking
-  if (pathname.startsWith('/quest')) {
+  // Proteger rota /promo - só acessível com cookie do cloaker OU com parâmetros de tracking
+  if (pathname.startsWith('/promo')) {
     const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
     const hasTrackingParams = request.nextUrl.search.includes('gclid') || 
                               request.nextUrl.search.includes('fbclid') ||
@@ -134,7 +134,7 @@ export async function middleware(request: NextRequest) {
     
     // Se não tem cookie E não tem parâmetros de tracking, bloquear
     if (!hasValidCookie && !hasTrackingParams) {
-      console.log('🚫 [Cloaker] Acesso a /quest sem cookie ou tracking - redirecionando para /')
+      console.log('🚫 [Cloaker] Acesso a /promo sem cookie ou tracking - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
@@ -148,7 +148,7 @@ export async function middleware(request: NextRequest) {
         sameSite: 'lax',
         maxAge: 60 * 60 * 24 // 24 horas
       })
-      console.log('✅ [Cloaker] Cookie setado para /quest com tracking params')
+      console.log('✅ [Cloaker] Cookie setado para /promo com tracking params')
     }
     
     return response
@@ -212,13 +212,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /quest
+  // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /promo
   // Usuário real NUNCA deve ver white page novamente
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
   
   if (hasValidCookie) {
-    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /quest')
-    return NextResponse.redirect(new URL('/quest', request.url))
+    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /promo')
+    return NextResponse.redirect(new URL('/promo', request.url))
   }
 
   try {
@@ -302,8 +302,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), REDIRECIONAR para /quest com cookie
-    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /quest')
+    // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
+    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /promo')
     const url = request.nextUrl.clone()
     url.pathname = CLOAKER_CONFIG.offerPagePath
     // Manter query params (gclid, utm, etc) mas NÃO adicionar _verified

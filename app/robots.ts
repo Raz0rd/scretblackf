@@ -18,7 +18,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
         disallow: [
           '/api/',
-          '/quest',
+          '/promo',
           '/checkout',
           '/success',
           '/cupons',
@@ -36,12 +36,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'Googlebot',
         allow: ['/', '/loja', '/produto/', '/images/'],
-        disallow: ['/api/', '/quest', '/checkout', '/success', '/testxxadsantihack'],
+        disallow: ['/api/', '/promo', '/checkout', '/success', '/testxxadsantihack'],
       },
       {
         userAgent: 'Bingbot',
         allow: ['/', '/loja', '/produto/', '/images/'],
-        disallow: ['/api/', '/quest', '/checkout', '/success', '/testxxadsantihack'],
+        disallow: ['/api/', '/promo', '/checkout', '/success', '/testxxadsantihack'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

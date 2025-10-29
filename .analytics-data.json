@@ -1,5 +1,5 @@
 {
-  "totalAccess": 2319,
+  "totalAccess": 2329,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -18552,14 +18552,94 @@
       "ip": "::1",
       "referer": "http://localhost:3000/test-ads?testeconversao=sim",
       "query": "?testeconversao=sim"
+    },
+    {
+      "timestamp": "2025-10-29T18:29:04.844Z",
+      "path": "/test-ads",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/test-ads?testeconversao=sim",
+      "query": "?testeconversao=sim"
+    },
+    {
+      "timestamp": "2025-10-29T18:29:04.871Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-29T18:29:04.962Z",
+      "path": "/test-ads",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/test-ads?testeconversao=sim",
+      "query": "?testeconversao=sim"
+    },
+    {
+      "timestamp": "2025-10-29T18:29:04.988Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-29T18:29:17.999Z",
+      "path": "/test-ads",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/test-ads?testeconversao=sim",
+      "query": "?testeconversao=sim"
+    },
+    {
+      "timestamp": "2025-10-29T18:29:18.027Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-29T18:29:18.127Z",
+      "path": "/test-ads",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/test-ads?testeconversao=sim",
+      "query": "?testeconversao=sim"
+    },
+    {
+      "timestamp": "2025-10-29T18:29:18.155Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-29T18:49:47.883Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761762558100",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-29T18:49:48.009Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761762558100",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 14,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 252,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 250,
-    "/": 178,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 253,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 251,
+    "/": 182,
     "/manifest.json": 9,
     "/icon-192x192.png": 8,
     "/fonts/Metropolis-Medium-f3a73873.woff2": 70,
@@ -18608,7 +18688,7 @@
     "/api/game-data": 5,
     "/api/get-avatar": 3,
     "/api/send-order-email": 1,
-    "/test-ads": 3,
+    "/test-ads": 7,
     "/api/test-conversion": 1
   },
   "lastReset": "2025-10-26T17:49:28.105Z"
