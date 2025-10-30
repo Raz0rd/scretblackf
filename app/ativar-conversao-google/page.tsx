@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Script from 'next/script'
 
 declare global {
   interface Window {
@@ -51,35 +50,28 @@ export default function TestAdsPage() {
     return false
   }
 
+  // Verificar se gtag já está carregado (vem do layout)
+  useEffect(() => {
+    const checkGtag = setInterval(() => {
+      if (typeof window !== 'undefined' && window.gtag) {
+        setGtagLoaded(true)
+        console.log('✅ Google Ads tag detectada (do layout)')
+        clearInterval(checkGtag)
+      }
+    }, 100)
+    
+    // Limpar após 5 segundos
+    setTimeout(() => clearInterval(checkGtag), 5000)
+    
+    return () => clearInterval(checkGtag)
+  }, [])
+
   if (testParam !== 'sim') {
     return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Acesso negado</div>
   }
 
   return (
-    <>
-      {/* Google tag (gtag.js) */}
-      {googleAdsId && (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
-            strategy="afterInteractive"
-            onLoad={() => {
-              setGtagLoaded(true)
-              console.log('✅ Google Ads tag carregada')
-            }}
-          />
-          <Script id="google-ads-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${googleAdsId}');
-            `}
-          </Script>
-        </>
-      )}
-
-      <div className="min-h-screen bg-slate-900 p-8 text-white">
+    <div className="min-h-screen bg-slate-900 p-8 text-white">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-8">🧪 Teste de Conversão Google Ads</h1>
           
@@ -142,6 +134,5 @@ export default function TestAdsPage() {
           </div>
         </div>
       </div>
-    </>
   )
 }
