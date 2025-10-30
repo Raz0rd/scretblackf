@@ -7,7 +7,6 @@ import ClickTracker from "@/components/ClickTracker"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
-import GoogleAds from "@/components/GoogleAds"
 
 export const metadata: Metadata = {
   title: "Dimbux - Recarga de Diamantes Free Fire e Robux | Entrega Rápida",
@@ -96,7 +95,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <body className="font-sans">
-        <GoogleAds />
         <HeadManager />
         <DynamicTheme />
         <DevToolsBlocker />
