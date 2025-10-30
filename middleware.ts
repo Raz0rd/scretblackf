@@ -66,7 +66,7 @@ export async function middleware(request: NextRequest) {
   
   // CLOAKER ATIVADO apenas para o domínio configurado
   if (!isTargetDomain) {
-    console.log(`🔓 [Cloaker] Domínio não é ${targetDomain} - desativado`)
+    console.log(` [Cloaker] Domínio não é ${targetDomain} - desativado`)
     return NextResponse.next()
   }
   
