@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { usePathname } from 'next/navigation';
-import { loadTrackingScripts } from '@/lib/tracking';
 
 export default function HeadManager() {
   const pathname = usePathname();
@@ -35,11 +34,7 @@ export default function HeadManager() {
             trackingScripts
           });
 
-          // Carregar scripts de rastreamento do Ratoeira ADS apenas se habilitado e não estiver em desenvolvimento
-          const ratoeiraEnabled = process.env.NEXT_PUBLIC_RATOEIRA_ENABLED === 'true';
-          if (ratoeiraEnabled && !isDevelopment) {
-            loadTrackingScripts();
-          }
+          // Scripts de rastreamento removidos
         }
       } catch (error) {
         //console.error('Erro ao carregar configurações do cabeçalho:', error);
@@ -49,24 +44,7 @@ export default function HeadManager() {
     loadHeadContent();
   }, [mounted, isDevelopment]);
 
-  // Scripts do Ratoeira ADS (adicionados diretamente no head) - apenas se habilitado
-  const ratoeiraEnabled = process.env.NEXT_PUBLIC_RATOEIRA_ENABLED === 'true' && !isDevelopment;
-  const ratoeiraScripts = ratoeiraEnabled ? (
-    <>
-      <script 
-        key="ratoeira-main"
-        src="https://cdn.fortittutitrackin.site/code/7289/7289-01530a2b-3c0c-4a69-bd7e-c97d74d11b4b.min.js" 
-        defer 
-        async
-      />
-      <script 
-        key="ratoeira-base"
-        src="https://cdn.fortittutitrackin.site/code/base.min.js" 
-        defer 
-        async
-      />
-    </>
-  ) : null;
+  // Ratoeira ADS removido
 
   // Scripts UTMify - Injeção Direta no DOM (TODAS AS PÁGINAS)
   const utmifyPixelId = process.env.NEXT_PUBLIC_PIXELID_UTMFY;
@@ -251,8 +229,7 @@ export default function HeadManager() {
         <div dangerouslySetInnerHTML={{ __html: headContent.metaTags }} />
       )}
       
-      {/* Scripts de Rastreamento do Ratoeira ADS */}
-      {ratoeiraScripts}
+      {/* Scripts de Rastreamento removidos */}
       
       {/* Scripts UTMify - Injetados via useEffect diretamente no DOM */}
       
