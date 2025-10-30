@@ -146,41 +146,12 @@ export async function POST(request: NextRequest) {
       console.log('   - Valor: R$', (transaction.amount / 100).toFixed(2))
       console.log('   - Cliente:', transaction.customer?.name)
       
-      // ENVIAR POSTBACK PARA ALTERCPA APENAS QUANDO PAID
+      // CONVERSÃO SERÁ ENVIADA PARA GOOGLE ADS NA PÁGINA /SUCCESS
       if (isPaid) {
-        // PAID: Enviar status=approve com payout
-        console.log('')
-        console.log('🎯 [WEBHOOK] Status PAID detectado - enviando postback APPROVE...')
-        
-        try {
-          const payoutValue = transaction.amount / 100 // Converter de centavos para reais
-          
-          // Enviar para AlterCPA - APPROVE
-          const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15093&status=approve&payout=' + payoutValue.toFixed(2)
-          
-          console.log('📤 [AlterCPA] Enviando postback APPROVE...')
-          console.log('   - Payout: R$', payoutValue.toFixed(2))
-          
-          const altercpaResponse = await fetch(altercpaUrl, { method: 'GET' })
-          
-          if (altercpaResponse.ok) {
-            const result = await altercpaResponse.text()
-            console.log('✅ [AlterCPA] Postback APPROVE enviado com sucesso!')
-            console.log('   - Response:', result)
-          } else {
-            console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE')
-            console.error('   - Status:', altercpaResponse.status)
-          }
-        } catch (error) {
-          console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE:', error)
-        }
-        
         console.log('')
         console.log('📝 [WEBHOOK] Próximo passo: Usuário será redirecionado para /success')
         console.log('📝 [WEBHOOK] Na página /success, o Google Ads receberá a conversão')
       }
-      // NOTA: status=new JÁ é enviado pela página /quest ao carregar
-      // Não enviar novamente aqui para evitar duplicação
       
       // Recuperar tracking parameters do metadata OU do order storage
       let trackingParameters: Record<string, string | null> = {
