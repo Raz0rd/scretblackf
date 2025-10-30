@@ -84,33 +84,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Proteger rota /promo - só acessível com cookie do cloaker OU com parâmetros de tracking
+  // Proteger rota /promo - APENAS acessível com cookie do cloaker
+  // Usuários que tentarem acessar direto (mesmo com gclid) serão bloqueados
   if (pathname === '/promo' || pathname === '/promo/') {
     const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-    const hasTrackingParams = request.nextUrl.search.includes('gclid') || 
-                              request.nextUrl.search.includes('fbclid') ||
-                              request.nextUrl.search.includes('utm_')
     
-    // Se não tem cookie E não tem parâmetros de tracking, bloquear
-    if (!hasValidCookie && !hasTrackingParams) {
-      console.log('🚫 [Cloaker] Acesso a /promo sem cookie ou tracking - redirecionando para /')
+    // Se não tem cookie do cloaker, bloquear SEMPRE
+    if (!hasValidCookie) {
+      console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem cookie OU parâmetros de tracking, deixar passar e setar cookie
-    const response = NextResponse.next()
-    if (!hasValidCookie && hasTrackingParams) {
-      // Setar cookie para próximas requisições
-      response.cookies.set('cloaker_verified', 'true', {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 // 24 horas
-      })
-      console.log('✅ [Cloaker] Cookie setado para /promo com tracking params')
-    }
-    
-    return response
+    // Se tem cookie válido, deixar passar
+    console.log('✅ [Cloaker] Acesso a /promo permitido (cookie válido)')
+    return NextResponse.next()
   }
 
   // Proteger rota /success - mas permitir Google Ads Bot
