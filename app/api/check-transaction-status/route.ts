@@ -6,32 +6,32 @@ import { getBrazilTimestamp } from "@/lib/brazil-time"
 const processedConversions = new Map<string, number>()
 const DEBOUNCE_TIME = 10000 // 10 segundos
 
-// Função para consultar status no BlackCat
-async function checkStatusBlackCat(transactionId: string) {
-  const blackcatUrl = `https://api.blackcatpagamentos.com/v1/transactions/${transactionId}`
-  const blackcatAuth = process.env.BLACKCAT_API_AUTH
+// Função para consultar status no Ezzpag
+async function checkStatusEzzpag(transactionId: string) {
+  const ezzpagUrl = `https://api.ezzypag.com.br/v1/transactions/${transactionId}`
+  const ezzpagAuth = process.env.EZZPAG_API_AUTH
 
-  if (!blackcatAuth) {
-    throw new Error("BLACKCAT_API_AUTH não configurado")
+  if (!ezzpagAuth) {
+    throw new Error("EZZPAG_API_AUTH não configurado")
   }
 
-  console.log(`[BlackCat] Consultando: ${blackcatUrl}`)
+  console.log(`[Ezzpag] Consultando: ${ezzpagUrl}`)
 
-  const response = await fetch(blackcatUrl, {
+  const response = await fetch(ezzpagUrl, {
     method: "GET",
     headers: {
-      "accept": "application/json",
-      "authorization": blackcatAuth
+      "Authorization": `Basic ${ezzpagAuth}`,
+      "Content-Type": "application/json"
     }
   })
 
   if (!response.ok) {
-    console.error(`[BlackCat] Erro na API: ${response.status}`)
-    throw new Error(`Erro na API BlackCat: ${response.status}`)
+    console.error(`[Ezzpag] Erro na API: ${response.status}`)
+    throw new Error(`Erro na API Ezzpag: ${response.status}`)
   }
 
   const transactionData = await response.json()
-  console.log(`[BlackCat] Status atual: ${transactionData.status}`)
+  console.log(`[Ezzpag] Status atual: ${transactionData.status}`)
   
   return transactionData
 }
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Escolher gateway baseado na variável de ambiente
-    const gateway = process.env.PAYMENT_GATEWAY || 'blackcat'
+    const gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
     console.log(`[CHECK-STATUS] Gateway selecionado: ${gateway.toUpperCase()}`)
     console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
 
@@ -137,7 +137,8 @@ export async function POST(request: NextRequest) {
       } else if (gateway === 'umbrela') {
         transactionData = await checkStatusUmbrela(transactionId)
       } else {
-        transactionData = await checkStatusBlackCat(transactionId)
+        // Padrão: Ezzpag
+        transactionData = await checkStatusEzzpag(transactionId)
       }
     } catch (error) {
       console.error(`[CHECK-STATUS] Erro ao consultar gateway:`, error)

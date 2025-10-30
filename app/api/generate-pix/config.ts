@@ -14,7 +14,7 @@ export function getConfig() {
     
     // API Keys - DEVEM estar configuradas no Netlify
     umbrelaApiKey: process.env.UMBRELA_API_KEY || '',
-    blackcatAuth: process.env.BLACKCAT_API_AUTH || '',
+    ezzpagAuth: process.env.EZZPAG_API_AUTH || '',
     ghostpayKey: process.env.GHOSTPAY_API_KEY || '',
     
     // Debug

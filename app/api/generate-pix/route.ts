@@ -39,119 +39,6 @@ export async function OPTIONS(request: NextRequest) {
   })
 }
 
-// Função para gerar PIX via BlackCat
-async function generatePixBlackCat(body: any, baseUrl: string) {
-  const authToken = process.env.BLACKCAT_API_AUTH
-  console.log("\n🐈 [BlackCat] Verificando autenticação:", authToken ? "✓ Token presente" : "✗ Token ausente")
-  
-  if (!authToken) {
-    console.error("❌ [BlackCat] BLACKCAT_API_AUTH não configurado")
-    throw new Error("Configuração de API não encontrada")
-  }
-
-  console.log("📤 [BlackCat] REQUEST BODY:", JSON.stringify(body, null, 2))
-  
-  // Log dos parâmetros UTM recebidos para análise
-  console.log("🔗 [UTM PARAMS] Parâmetros recebidos para PIX:")
-  console.log("📊 [UTM PARAMS] UTM Source:", body.utmParams?.utm_source || 'N/A')
-  console.log("📊 [UTM PARAMS] UTM Medium:", body.utmParams?.utm_medium || 'N/A')
-  console.log("📊 [UTM PARAMS] UTM Campaign:", body.utmParams?.utm_campaign || 'N/A')
-  console.log("📊 [UTM PARAMS] UTM Term:", body.utmParams?.utm_term || 'N/A')
-  console.log("📊 [UTM PARAMS] UTM Content:", body.utmParams?.utm_content || 'N/A')
-  console.log("📊 [UTM PARAMS] GCLID:", body.utmParams?.gclid || 'N/A')
-  console.log("📊 [UTM PARAMS] FBCLID:", body.utmParams?.fbclid || 'N/A')
-  console.log("📊 [UTM PARAMS] Todos os UTMs:", JSON.stringify(body.utmParams || {}, null, 2))
-  
-  console.log("🌐 [BlackCat] URL dinâmica detectada:", baseUrl)
-
-  // Gerar email fake baseado no nome do usuário
-  const generateFakeEmail = (name: string): string => {
-    const cleanName = name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
-    return `${cleanName}@gmail.com`
-  }
-
-  const blackcatPayload = {
-    amount: body.amount,
-    currency: "BRL",
-    paymentMethod: "pix",
-    postbackUrl: `${baseUrl}/api/webhook`,
-    metadata: null,
-    items: [
-      {
-        title: body.itemType === "recharge" ? "eBook eSport Digital Premium" : "eBook eSport Gold Edition",
-        unitPrice: body.amount,
-        tangible: false,
-        quantity: 1,
-      },
-    ],
-    customer: {
-      ...body.customer,
-      email: generateFakeEmail(body.customer.name)
-    },
-  }
-  
-  console.log("📦 [BlackCat] PAYLOAD ENVIADO:", JSON.stringify(blackcatPayload, null, 2))
-  console.log("🎯 [BlackCat] URL:", "https://api.blackcatpagamentos.com/v1/transactions")
-  console.log("🔑 [BlackCat] Auth Token:", authToken.substring(0, 10) + "...")
-  
-  const response = await fetch("https://api.blackcatpagamentos.com/v1/transactions", {
-    method: "POST",
-    headers: {
-      accept: "application/json",
-      authorization: authToken,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(blackcatPayload),
-  })
-
-  console.log("📡 [BlackCat] RESPONSE STATUS:", response.status)
-  console.log("📊 [BlackCat] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    console.error("❌ [BlackCat] ERROR RESPONSE:", {
-      status: response.status,
-      statusText: response.statusText,
-      body: errorText,
-      headers: Object.fromEntries(response.headers.entries())
-    })
-    
-    throw new Error(`Erro na API de pagamento: ${response.status}`)
-  }
-
-  const data = await response.json()
-  console.log("✅ [BlackCat] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
-
-  // Extrair informações importantes da resposta
-  const transactionId = data.id || data.transaction_id || data.transactionId || data.payment_id
-  const pixCode = data.pix?.qrcode || data.pixCode || data.pix_code || data.code || data.qr_code_text || data.payment_code
-  const qrCodeImage = data.qrCode || data.qr_code || data.qr_code_url || data.pix?.qr_code_url
-  
-  console.log("🔍 [BlackCat] DADOS EXTRAÍDOS:", {
-    transactionId,
-    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
-    qrCodeImage: qrCodeImage ? "Presente" : "Ausente"
-  })
-
-  // Retornar dados normalizados
-  try {
-    console.log('✅ [PIX] QR Code gerado com sucesso')
-  } catch (error) {
-    console.error('[PIX] Erro ao registrar conversão QR:', error)
-  }
-  
-  const normalizedResponse = {
-    ...data,
-    transactionId,
-    pixCode,
-    qrCode: qrCodeImage,
-    success: true
-  }
-  
-  console.log("🎉 [BlackCat] RESPOSTA NORMALIZADA:", JSON.stringify(normalizedResponse, null, 2))
-  return normalizedResponse
-}
-
 // Função para gerar PIX via GhostPay
 async function generatePixGhostPay(body: any, baseUrl: string) {
   const secretKey = process.env.GHOSTPAY_API_KEY
@@ -251,9 +138,159 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     qrCode: qrCodeImage,
     success: true
   }
-  
   console.log("🎉 [GhostPay] RESPOSTA NORMALIZADA:", JSON.stringify(normalizedResponse, null, 2))
   return normalizedResponse
+}
+
+// Função para gerar PIX via Ezzpag
+async function generatePixEzzpag(body: any, baseUrl: string) {
+  const authToken = process.env.EZZPAG_API_AUTH
+  console.log("\n💳 [Ezzpag] Verificando autenticação:", authToken ? "✓ Token presente" : "✗ Token ausente")
+  
+  if (!authToken) {
+    console.error("❌ [Ezzpag] EZZPAG_API_AUTH não configurado")
+    throw new Error("Configuração de API Ezzpag não encontrada")
+  }
+
+  console.log("📤 [Ezzpag] REQUEST BODY:", JSON.stringify(body, null, 2))
+  console.log("🌐 [Ezzpag] URL dinâmica detectada:", baseUrl)
+
+  // Gerar email fake baseado no nome do usuário
+  const generateFakeEmail = (name: string): string => {
+    const cleanName = name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
+    return `${cleanName}@icloud.com`
+  }
+
+  // Limpar telefone (somente números)
+  const cleanPhone = (phone: string): string => {
+    return phone.replace(/\D/g, '')
+  }
+
+  // Endereços para uso aleatório
+  const ADDRESSES = [
+  { cep: "12510516", cidade: "Guaratinguetá", estado: "SP", bairro: "Bosque dos Ipês", rua: "Rua Fábio Rangel Dinamarco" },
+  { cep: "58400295", cidade: "Campina Grande", estado: "PB", bairro: "Centro", rua: "Rua Frei Caneca" },
+  { cep: "66025660", cidade: "Belém", estado: "PA", bairro: "Jurunas", rua: "Rua dos Mundurucus" },
+  { cep: "29161376", cidade: "Serra", estado: "ES", bairro: "Novo Horizonte", rua: "Rua dos Ipês" },
+  { cep: "88302350", cidade: "Itajaí", estado: "SC", bairro: "Centro", rua: "Rua Alberto Werner" },
+  { cep: "38411140", cidade: "Uberlândia", estado: "MG", bairro: "Luizote de Freitas", rua: "Rua Rio Corumbá" },
+  { cep: "69020470", cidade: "Manaus", estado: "AM", bairro: "Centro", rua: "Rua Ferreira Pena" },
+  { cep: "57020570", cidade: "Maceió", estado: "AL", bairro: "Centro", rua: "Rua do Imperador" },
+  { cep: "11704000", cidade: "Praia Grande", estado: "SP", bairro: "Ocian", rua: "Avenida Presidente Kennedy" },
+  { cep: "64001210", cidade: "Teresina", estado: "PI", bairro: "Centro", rua: "Rua Areolino de Abreu" },
+  { cep: "40015120", cidade: "Salvador", estado: "BA", bairro: "Comércio", rua: "Rua Portugal" },
+  { cep: "50710160", cidade: "Recife", estado: "PE", bairro: "Madalena", rua: "Rua Real da Torre" },
+  { cep: "74055010", cidade: "Goiânia", estado: "GO", bairro: "Setor Central", rua: "Rua 4" },
+  { cep: "79002140", cidade: "Campo Grande", estado: "MS", bairro: "Centro", rua: "Rua 14 de Julho" },
+  { cep: "87020025", cidade: "Maringá", estado: "PR", bairro: "Zona 01", rua: "Avenida Herval" },
+  { cep: "69083350", cidade: "Manaus", estado: "AM", bairro: "Coroado", rua: "Rua do Sol" },
+  { cep: "96010600", cidade: "Pelotas", estado: "RS", bairro: "Centro", rua: "Rua XV de Novembro" },
+  { cep: "76820394", cidade: "Porto Velho", estado: "RO", bairro: "Centro", rua: "Rua José de Alencar" },
+  { cep: "69304520", cidade: "Boa Vista", estado: "RR", bairro: "Mecejana", rua: "Rua General Penha Brasil" },
+  { cep: "64018520", cidade: "Teresina", estado: "PI", bairro: "Piçarra", rua: "Rua Desembargador Pires de Castro" },
+  { cep: "89010025", cidade: "Blumenau", estado: "SC", bairro: "Centro", rua: "Rua XV de Novembro" },
+  { cep: "76870466", cidade: "Ariquemes", estado: "RO", bairro: "Setor 04", rua: "Rua Jamari" },
+  { cep: "69900120", cidade: "Rio Branco", estado: "AC", bairro: "Centro", rua: "Rua Marechal Deodoro" },
+  { cep: "72030015", cidade: "Brasília", estado: "DF", bairro: "Taguatinga Centro", rua: "C 1" },
+  { cep: "15025020", cidade: "São José do Rio Preto", estado: "SP", bairro: "Centro", rua: "Rua Voluntários de São Paulo" },
+  { cep: "79002240", cidade: "Campo Grande", estado: "MS", bairro: "Centro", rua: "Rua Dom Aquino" },
+  { cep: "69918732", cidade: "Rio Branco", estado: "AC", bairro: "Village Tiradentes", rua: "Rua da Paz" },
+  { cep: "59015300", cidade: "Natal", estado: "RN", bairro: "Cidade Alta", rua: "Rua João Pessoa" },
+  { cep: "65010250", cidade: "São Luís", estado: "MA", bairro: "Centro", rua: "Rua Grande" },
+  { cep: "87050210", cidade: "Maringá", estado: "PR", bairro: "Jardim Novo Horizonte", rua: "Rua das Tulipas" }
+]
+
+  
+  const randomAddress = ADDRESSES[Math.floor(Math.random() * ADDRESSES.length)]
+  
+  // Gerar número de rua aleatório entre 12 e 999
+  const randomStreetNumber = Math.floor(Math.random() * (999 - 12 + 1)) + 12
+
+  const ezzpagPayload = {
+    customer: {
+      document: {
+        number: body.customer.document.number || body.customer.document,
+        type: 'cpf'
+      },
+      name: body.customer.name,
+      email: body.customer.email || generateFakeEmail(body.customer.name),
+      phone: cleanPhone(body.customer.phone)
+    },
+    shipping: {
+      address: {
+        street: randomAddress.rua,
+        streetNumber: randomStreetNumber.toString(),
+        zipCode: randomAddress.cep,
+        neighborhood: randomAddress.bairro,
+        city: randomAddress.cidade,
+        state: randomAddress.estado,
+        country: 'BR'
+      },
+      fee: 0
+    },
+    items: [{
+      tangible: false,
+      title: body.itemType === "recharge" ? "Produto Digital Premium" : "Produto Digital Gold",
+      unitPrice: body.amount,
+      quantity: 1
+    }],
+    amount: body.amount,
+    paymentMethod: 'pix'
+  }
+  
+  console.log("📦 [Ezzpag] PAYLOAD ENVIADO:", JSON.stringify(ezzpagPayload, null, 2))
+  console.log("🎯 [Ezzpag] URL:", "https://api.ezzypag.com.br/v1/transactions")
+  console.log("🔑 [Ezzpag] Auth Token:", authToken.substring(0, 10) + "...")
+  
+  const response = await fetch("https://api.ezzypag.com.br/v1/transactions", {
+    method: "POST",
+    headers: {
+      'Authorization': `Basic ${authToken}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(ezzpagPayload),
+  })
+
+  console.log("📡 [Ezzpag] RESPONSE STATUS:", response.status)
+  console.log("📊 [Ezzpag] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error("❌ [Ezzpag] ERROR RESPONSE:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText,
+      headers: Object.fromEntries(response.headers.entries())
+    })
+    
+    throw new Error(`Erro na API Ezzpag: ${response.status}`)
+  }
+
+  const data = await response.json()
+  console.log("✅ [Ezzpag] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
+
+  // Extrair informações da resposta Ezzpag
+  const transactionId = data.id?.toString()
+  const pixCode = data.pix?.qrcode
+  
+  console.log("🔍 [Ezzpag] DADOS EXTRAÍDOS:", {
+    transactionId,
+    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
+    status: data.status
+  })
+
+  // Retornar no formato esperado pelo frontend
+  return {
+    transactionId,
+    pixCode,
+    qrCode: pixCode,
+    expirationDate: data.pix?.expirationDate,
+    status: data.status,
+    secureUrl: data.secureUrl,
+    success: true,
+    rawResponse: data
+  }
 }
 
 // Função para gerar PIX via Umbrela
@@ -294,9 +331,9 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     const randomVariant = variants[Math.floor(Math.random() * variants.length)]
     
     if (itemType === "recharge") {
-      return `IPTV Assinatura Premium ${randomVariant}`
+      return `IPTV Assinatura Premium ${randomVariant}new`
     } else {
-      return `IPTV Gold Premium ${randomVariant}`
+      return `IPTV Gold Premium ${randomVariant}new`
     }
   }
 
@@ -465,26 +502,29 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
   } catch (networkError) {
     console.error("❌ [Umbrela] NETWORK ERROR:", networkError)
     
-    // Lançar erro para ser capturado pelo catch principal
-    throw new Error(`Erro de rede Umbrela: ${networkError instanceof Error ? networkError.message : 'Unknown error'}`)
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    // Ler configurações das env vars
     const config = getConfig()
     const gateway = config.paymentGateway
-    console.log("\n💳 [GATEWAY] Gateway selecionado:", gateway.toUpperCase())
+    
+    console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("🚀 [GATEWAY] Iniciando geração de PIX")
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("🎯 [GATEWAY] Gateway selecionado:", gateway)
     
     // Debug de variáveis de ambiente
     console.log("🔑 [ENV] PAYMENT_GATEWAY:", config.paymentGateway)
     console.log("🔑 [ENV] UMBRELA_API_KEY:", config.umbrelaApiKey ? "✓ Presente" : "❌ Ausente")
+    console.log("🔑 [ENV] EZZPAG_API_AUTH:", process.env.EZZPAG_API_AUTH ? "✓ Presente" : "❌ Ausente")
     console.log("🔑 [ENV] NODE_ENV:", getEnvVar('NODE_ENV'))
     console.log("🔧 [CONFIG] Debug completo:", {
       isNetlify: config.isNetlify,
       isProduction: config.isProduction,
-      hasUmbrelaKey: !!config.umbrelaApiKey
+      hasUmbrelaKey: !!config.umbrelaApiKey,
+      hasEzzpagKey: !!process.env.EZZPAG_API_AUTH
     })
     
     const body = await request.json()
@@ -511,7 +551,8 @@ export async function POST(request: NextRequest) {
     } else if (gateway === 'umbrela') {
       result = await generatePixUmbrela(body, baseUrl)
     } else {
-      result = await generatePixBlackCat(body, baseUrl)
+      // Padrão: Ezzpag
+      result = await generatePixEzzpag(body, baseUrl)
     }
     
     // SALVAR no order storage com tracking parameters

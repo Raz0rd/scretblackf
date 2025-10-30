@@ -140,7 +140,7 @@ export default function HowToRedeem() {
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
               <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
                 <iframe 
-                  src="https://streamable.com/e/7rucz1" 
+                  src="https://streamable.com/e/c2de61?" 
                   frameBorder="0" 
                   width="100%" 
                   height="100%" 

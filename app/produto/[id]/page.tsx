@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { ArrowLeft, ShoppingCart, Check, Star, Clock, Shield, Zap, MessageCircle } from 'lucide-react'
 import Footer from '@/components/Footer'
+import { DevToolsBlocker } from '@/components/DevToolsBlocker'
 
 // Dados dos produtos
 const products = {
@@ -566,6 +567,7 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <DevToolsBlocker />
       {/* Header simples */}
       <header className="bg-slate-900 py-4 sticky top-0 z-50 border-b border-slate-800">
         <div className="container mx-auto px-4">
@@ -652,7 +654,6 @@ export default function ProductPage() {
                 <input
                   type="email"
                   required
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="seu@email.com"
@@ -962,7 +963,7 @@ export default function ProductPage() {
           <div className="bg-slate-900 rounded-xl overflow-hidden shadow-2xl border-2 border-slate-700">
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
               <iframe
-                src={product.game === 'freefire' ? 'https://streamable.com/e/tfd839' : 'https://streamable.com/e/7rucz1'}
+                src={product.game === 'freefire' ? 'https://streamable.com/e/c2de61' : 'https://streamable.com/e/7rucz1'}
                 frameBorder="0"
                 width="100%"
                 height="100%"
