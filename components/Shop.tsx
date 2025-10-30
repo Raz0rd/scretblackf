@@ -13,6 +13,7 @@ interface Product {
   popular?: boolean
   bonus?: string
   image: string
+  special?: boolean
 }
 
 const products: Product[] = [
@@ -54,14 +55,6 @@ const products: Product[] = [
     image: '/images/products/5600-min.png'
   },
   // Robux - Nomes corretos das imagens
-  {
-    id: 'rbx-800',
-    name: '800 Robux',
-    game: 'robux',
-    amount: '800',
-    price: 18.90,
-    image: '/images/products/roblox_800_robux.webp'
-  },
   {
     id: 'rbx-1500',
     name: '1500 Robux',
@@ -106,6 +99,18 @@ const products: Product[] = [
     originalPrice: 119.90,
     bonus: '-23%',
     image: '/images/products/robux-10000-DH0988eb.webp'
+  },
+  {
+    id: 'rbx-15000-bonus',
+    name: '10.000 ROBUX + BÔNUS 5.000',
+    game: 'robux',
+    amount: '15000',
+    price: 177.50,
+    originalPrice: 299.90,
+    popular: true,
+    bonus: '-33% | 2.847 vendidos hoje',
+    image: '/images/products/robux-10000-DH0988eb.webp',
+    special: true
   }
 ]
 
@@ -200,12 +205,23 @@ export default function Shop() {
             <div
               key={product.id}
               className={`relative bg-white/5 backdrop-blur-md rounded-2xl p-6 border transition-all transform hover:-translate-y-2 hover:shadow-2xl ${
-                product.popular
+                product.special
+                  ? 'border-cyan-400 shadow-2xl shadow-cyan-500/50 animate-pulse-slow ring-2 ring-cyan-400/30'
+                  : product.popular
                   ? 'border-yellow-500/50 shadow-lg shadow-yellow-500/20'
                   : 'border-white/10 hover:border-blue-500/50'
               }`}
+              style={product.special ? {
+                boxShadow: '0 0 30px rgba(34, 211, 238, 0.4), 0 0 60px rgba(34, 211, 238, 0.2), inset 0 0 20px rgba(34, 211, 238, 0.1)'
+              } : {}}
             >
-              {product.popular && (
+              {product.special && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-full text-xs font-bold text-white shadow-lg shadow-cyan-500/50 animate-pulse">
+                  🔥 OFERTA LIMITADA
+                </div>
+              )}
+
+              {product.popular && !product.special && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full text-xs font-bold text-white shadow-lg">
                   ⭐ POPULAR
                 </div>
@@ -213,7 +229,7 @@ export default function Shop() {
 
               {product.bonus && (
                 <div className="absolute -top-3 right-4 px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full text-xs font-bold text-white shadow-lg">
-                  🎁 BÔNUS
+                  {product.bonus}
                 </div>
               )}
 

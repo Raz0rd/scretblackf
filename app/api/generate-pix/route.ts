@@ -131,14 +131,14 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     qrCodeImage: qrCodeImage ? "Presente" : "Ausente"
   })
 
+  // Retornar apenas dados essenciais para o frontend (segurança)
   const normalizedResponse = {
-    ...data,
     transactionId,
     pixCode,
     qrCode: qrCodeImage,
     success: true
   }
-  console.log("🎉 [GhostPay] RESPOSTA NORMALIZADA:", JSON.stringify(normalizedResponse, null, 2))
+  console.log("🎉 [GhostPay] RESPOSTA NORMALIZADA (dados essenciais)")
   return normalizedResponse
 }
 
@@ -257,14 +257,38 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
 
   if (!response.ok) {
     const errorText = await response.text()
-    console.error("❌ [Ezzpag] ERROR RESPONSE:", {
-      status: response.status,
-      statusText: response.statusText,
-      body: errorText,
-      headers: Object.fromEntries(response.headers.entries())
-    })
+    let errorData: any = {}
     
-    throw new Error(`Erro na API Ezzpag: ${response.status}`)
+    try {
+      errorData = JSON.parse(errorText)
+    } catch (e) {
+      errorData = { message: errorText }
+    }
+    
+    console.error("❌ [Ezzpag] ERROR:", response.status, errorData.message || errorText)
+    
+    // Mapear erros para mensagens amigáveis
+    let userMessage = 'Erro ao processar pagamento. Tente novamente.'
+    
+    if (response.status === 400) {
+      if (errorData.message?.toLowerCase().includes('cpf')) {
+        userMessage = 'CPF inválido. Por favor, verifique os dados e tente novamente.'
+      } else if (errorData.message?.toLowerCase().includes('phone')) {
+        userMessage = 'Telefone inválido. Por favor, verifique os dados.'
+      } else if (errorData.message?.toLowerCase().includes('email')) {
+        userMessage = 'E-mail inválido. Por favor, verifique os dados.'
+      } else {
+        userMessage = 'Dados inválidos. Por favor, verifique as informações.'
+      }
+    } else if (response.status === 401 || response.status === 403) {
+      userMessage = 'Erro de autenticação. Entre em contato com o suporte.'
+    } else if (response.status === 422) {
+      userMessage = 'Dados incompletos ou inválidos. Verifique as informações.'
+    } else if (response.status >= 500) {
+      userMessage = 'Serviço temporariamente indisponível. Tente novamente em instantes.'
+    }
+    
+    throw new Error(userMessage)
   }
 
   const data = await response.json()
@@ -280,16 +304,12 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     status: data.status
   })
 
-  // Retornar no formato esperado pelo frontend
+  // Retornar apenas dados essenciais para o frontend (segurança)
   return {
     transactionId,
     pixCode,
     qrCode: pixCode,
-    expirationDate: data.pix?.expirationDate,
-    status: data.status,
-    secureUrl: data.secureUrl,
-    success: true,
-    rawResponse: data
+    success: true
   }
 }
 
@@ -488,15 +508,15 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
       status: data.data?.status
     })
     
+    // Retornar apenas dados essenciais para o frontend (segurança)
     const normalizedResponse = {
-      ...data.data,
       transactionId,
       pixCode,
       qrCode: qrCodeImage,
       success: true
     }
     
-    console.log("🎉 [Umbrela] RESPOSTA NORMALIZADA:", JSON.stringify(normalizedResponse, null, 2))
+    console.log("🎉 [Umbrela] RESPOSTA NORMALIZADA (dados essenciais)")
     return normalizedResponse
     
   } catch (networkError) {
@@ -556,11 +576,18 @@ export async function POST(request: NextRequest) {
     }
     
     // SALVAR no order storage com tracking parameters
+    if (!result || !result.transactionId) {
+      throw new Error("Resposta inválida do gateway de pagamento")
+    }
+    
+    // Type assertion para garantir que result tem transactionId
+    const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
+    
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
     try {
       const orderData = {
-        orderId: result.externalRef || result.transactionId,
-        transactionId: result.transactionId,
+        orderId: validResult.transactionId,
+        transactionId: validResult.transactionId,
         amount: body.amount,
         customerData: {
           name: body.customer?.name || '',
@@ -582,17 +609,23 @@ export async function POST(request: NextRequest) {
     
     // DEBUG: Verificar se dados foram salvos no storage
     console.log("🔍 [DEBUG] Verificando se dados foram salvos no storage...")
-    const savedOrder = orderStorageService.getOrder(result.transactionId)
+    const savedOrder = orderStorageService.getOrder(validResult.transactionId)
     if (savedOrder) {
       console.log("✅ [DEBUG] Dados salvos no storage:", JSON.stringify(savedOrder, null, 2))
     } else {
       console.error("❌ [DEBUG] ERRO: Dados NÃO foram salvos no storage!")
     }
     
-    return NextResponse.json(result)
+    return NextResponse.json(validResult)
   } catch (error) {
-    console.error("💥 [GATEWAY] EXCEPTION:", error)
-    console.error("🔍 [GATEWAY] Error details:", error instanceof Error ? error.message : 'Unknown error')
-    return NextResponse.json({ error: "Erro ao gerar pagamento PIX" }, { status: 500 })
+    console.error("💥 [GATEWAY] ERRO:", error instanceof Error ? error.message : 'Unknown error')
+    
+    // Retornar mensagem amigável para o usuário
+    const userMessage = error instanceof Error ? error.message : 'Erro ao processar pagamento. Tente novamente.'
+    
+    return NextResponse.json({ 
+      error: userMessage,
+      success: false 
+    }, { status: 500 })
   }
 }

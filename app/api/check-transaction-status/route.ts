@@ -150,7 +150,10 @@ export async function POST(request: NextRequest) {
     }
 
     const currentStatus = transactionData.status
-    const isNowPaid = currentStatus === 'paid' || currentStatus === 'PAID' // Umbrela usa PAID (maiúsculo)
+    // Mapear status de diferentes gateways
+    // Ezzpag: waiting_payment, paid, approved, canceled, refunded
+    // Umbrela: WAITING_PAYMENT, PAID
+    const isNowPaid = currentStatus === 'paid' || currentStatus === 'approved' || currentStatus === 'PAID'
     const isWaitingPayment = currentStatus === 'waiting_payment' || currentStatus === 'WAITING_PAYMENT'
 
     // Se status é paid, verificar se já foi processado pelo webhook

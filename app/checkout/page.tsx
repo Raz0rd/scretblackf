@@ -100,6 +100,9 @@ export default function CheckoutPage() {
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'expired'>('pending')
   const [showPromoModal, setShowPromoModal] = useState(false)
   const [selectedPromos, setSelectedPromos] = useState<string[]>([])
+  const [showErrorModal, setShowErrorModal] = useState(false)
+  const [errorModalType, setErrorModalType] = useState<'404' | 'validation' | 'generic'>('generic')
+  const [errorModalMessage, setErrorModalMessage] = useState('')
 
   // Get URL parameters
   const itemType = searchParams.get("type") || searchParams.get("itemType") || "recharge"
@@ -315,23 +318,31 @@ export default function CheckoutPage() {
 
     // Validar campos obrigatórios
     if (!fullName.trim()) {
-      alert("Por favor, preencha seu nome completo.")
+      setErrorModalMessage("Por favor, preencha seu nome completo.")
+      setErrorModalType('validation')
+      setShowErrorModal(true)
       return
     }
 
     if (!cpf.trim()) {
-      alert("Por favor, preencha seu CPF.")
+      setErrorModalMessage("Por favor, preencha seu CPF.")
+      setErrorModalType('validation')
+      setShowErrorModal(true)
       return
     }
 
     if (!email.trim()) {
-      alert("Por favor, preencha o email para receber o comprovante.")
+      setErrorModalMessage("Por favor, preencha o email para receber o comprovante.")
+      setErrorModalType('validation')
+      setShowErrorModal(true)
       return
     }
 
     // Validar CPF
     if (!validateCpf(cpf)) {
-      alert("Por favor, digite um CPF válido.")
+      setErrorModalMessage("Por favor, digite um CPF válido.")
+      setErrorModalType('validation')
+      setShowErrorModal(true)
       return
     }
 
@@ -425,18 +436,27 @@ export default function CheckoutPage() {
         setTimeLeft(15 * 60)
         setTimerActive(true)
         
-        // ❌ REMOVIDO: Envio duplicado para UTMify
-        // O webhook já envia automaticamente quando recebe a confirmação
-        // sendToUtmify('pending', data).catch(err => {
-        // })
+        // ✅ Enviar para UTMify com status PENDING (waiting_payment)
+        sendToUtmify('pending', data).catch(err => {
+          console.error('[Checkout] Erro ao enviar PENDING para UTMify:', err)
+        })
         
       } else {
         const errorData = await response.json().catch(() => ({}))
         const errorMessage = errorData.error || errorData.message || `Erro HTTP ${response.status}`
-        setPixError(`Erro ao gerar PIX: ${errorMessage}`)
+        
+        // Mostrar modal de erro ao invés de texto inline
+        setErrorModalMessage(errorMessage)
+        setErrorModalType('generic')
+        setShowErrorModal(true)
+        setShowPixInline(false)
       }
     } catch (error) {
-      setPixError('Erro ao gerar PIX. Tente novamente.')
+      // Mostrar modal de erro ao invés de texto inline
+      setErrorModalMessage('Erro ao gerar PIX. Tente novamente.')
+      setErrorModalType('generic')
+      setShowErrorModal(true)
+      setShowPixInline(false)
     } finally {
       setIsProcessingPayment(false)
     }
@@ -546,14 +566,15 @@ export default function CheckoutPage() {
               const totalValue = getFinalPrice() + getPromoTotal()
               
               // Redirecionar para a página de sucesso
+              // O webhook já enviou UTMify PAID - aqui apenas redirecionamos
               router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
-              
-              // Enviar para UTMify com status PAID (não-bloqueante)
-              // NOTA: O webhook já envia PAID para UTMify, mas mantemos este envio como fallback
-              // A API /api/utmify-track tem proteção anti-duplicação via flag utmifyPaidSent
-              sendToUtmifyPaid(pixData.transactionId).catch(err => {
-              })
             }
+          } else if (response.status === 404) {
+            // Erro 404 - transação não encontrada, mostrar modal para atualizar
+            setTimerActive(false)
+            setErrorModalMessage('Transação não encontrada no sistema.')
+            setErrorModalType('404')
+            setShowErrorModal(true)
           }
         } catch (error) {
           // Erro silencioso no polling
@@ -1312,6 +1333,71 @@ export default function CheckoutPage() {
         type={toastType}
         onClose={() => setShowToast(false)}
       />
+
+      {/* Modal de Erro */}
+      {showErrorModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#1B1B25] rounded-2xl shadow-2xl max-w-md w-full border border-white/10 animate-in fade-in zoom-in duration-200">
+            <div className="p-6 space-y-4">
+              {/* Ícone e Título */}
+              <div className="flex flex-col items-center text-center space-y-3">
+                {errorModalType === '404' ? (
+                  <>
+                    <div className="w-16 h-16 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">Transação Não Encontrada</h3>
+                    <p className="text-white/70 text-sm">
+                      A transação não foi localizada no sistema. Por favor, atualize a página e tente novamente.
+                    </p>
+                  </>
+                ) : errorModalType === 'validation' ? (
+                  <>
+                    <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">Atenção</h3>
+                    <p className="text-white/70 text-sm">{errorModalMessage}</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">Erro ao Processar</h3>
+                    <p className="text-white/70 text-sm">{errorModalMessage}</p>
+                  </>
+                )}
+              </div>
+
+              {/* Botões */}
+              <div className="flex gap-3 pt-2">
+                {errorModalType === '404' ? (
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                  >
+                    Atualizar Página
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowErrorModal(false)}
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                  >
+                    Entendi
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )

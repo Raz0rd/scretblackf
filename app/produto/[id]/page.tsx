@@ -963,7 +963,7 @@ export default function ProductPage() {
           <div className="bg-slate-900 rounded-xl overflow-hidden shadow-2xl border-2 border-slate-700">
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
               <iframe
-                src={product.game === 'freefire' ? 'https://streamable.com/e/c2de61' : 'https://streamable.com/e/7rucz1'}
+                src={product.game === 'freefire' ? 'https://streamable.com/e/c2de61' : 'https://streamable.com/e/f1qg6g'}
                 frameBorder="0"
                 width="100%"
                 height="100%"
