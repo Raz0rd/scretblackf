@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Script from 'next/script'
 
 export default function TestAdsPage() {
   const searchParams = useSearchParams()
@@ -10,6 +11,7 @@ export default function TestAdsPage() {
   const [gclid, setGclid] = useState('')
   const [result, setResult] = useState<any>(null)
   const [utmParams, setUtmParams] = useState<any>({})
+  const [gtagLoaded, setGtagLoaded] = useState(false)
 
   useEffect(() => {
     const params: any = {}
@@ -53,10 +55,47 @@ export default function TestAdsPage() {
     return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Acesso negado</div>
   }
 
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || ''
+  const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || ''
+
   return (
-    <div className="min-h-screen bg-slate-900 p-8 text-white">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Teste de Conversão Google Ads</h1>
+    <>
+      {/* Google Ads Tag */}
+      {googleAdsId && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+            strategy="afterInteractive"
+            onLoad={() => setGtagLoaded(true)}
+          />
+          <Script id="google-ads-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${googleAdsId}');
+            `}
+          </Script>
+        </>
+      )}
+
+      <div className="min-h-screen bg-slate-900 p-8 text-white">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold mb-8">Teste de Conversão Google Ads</h1>
+          
+          {/* Status do GTM */}
+          <div className="bg-slate-800 p-4 rounded-lg mb-6">
+            <h2 className="text-lg font-bold mb-2">Status Google Ads</h2>
+            <p className={gtagLoaded ? 'text-green-400' : 'text-yellow-400'}>
+              {gtagLoaded ? '✅ GTM Carregado' : '⏳ Carregando GTM...'}
+            </p>
+            <p className="text-sm text-gray-400 mt-2">
+              Google Ads ID: {googleAdsId || 'Não configurado'}
+            </p>
+            <p className="text-sm text-gray-400">
+              Conversion Label: {conversionLabel || 'Não configurado'}
+            </p>
+          </div>
         
         <div className="bg-slate-800 p-6 rounded-lg mb-6">
           <h2 className="text-xl font-bold mb-4">Parâmetros Capturados</h2>
@@ -90,7 +129,8 @@ export default function TestAdsPage() {
             </pre>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
