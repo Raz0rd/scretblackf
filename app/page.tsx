@@ -102,22 +102,18 @@ export default function HomePage() {
   const testGoogleAdsConversion = () => {
     // Gerar ID de transação aleatório
     const transactionId = `TEST_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    // Valor entre 1.00 e 20.00
-    const randomValue = parseFloat((Math.random() * 19 + 1).toFixed(2))
-    
-    const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
-    const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL
+    const randomValue = parseFloat((Math.random() * 100 + 10).toFixed(2))
     
     console.log('🧪 [TEST] Testando conversão Google Ads')
     console.log('   - Transaction ID:', transactionId)
     console.log('   - Valor:', randomValue, 'BRL')
-    console.log('   - Google Ads ID:', googleAdsId)
-    console.log('   - Conversion Label:', conversionLabel)
+    console.log('   - AW ID:', process.env.NEXT_PUBLIC_GOOGLE_ADS_ID)
+    console.log('   - Label:', process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA)
     
     // Disparar conversão diretamente
     trackPurchase(transactionId, randomValue)
     
-    alert(`✅ Conversão de teste enviada!\n\nTransaction ID: ${transactionId}\nValor: R$ ${randomValue.toFixed(2)}\n\nVerifique o console para mais detalhes.`)
+    alert(`✅ Conversão de teste enviada!\n\nTransaction ID: ${transactionId}\nValor: R$ ${randomValue.toFixed(2)}`)
   }
 
 

@@ -1,13 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import Script from "next/script"
 import "./globals.css"
 import HeadManager from "@/components/HeadManager"
 import ClickTracker from "@/components/ClickTracker"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
 import { DevToolsBlocker } from "@/components/DevToolsBlocker"
+import GoogleAds from "@/components/GoogleAds"
 
 export const metadata: Metadata = {
   title: "Dimbux - Recarga de Diamantes Free Fire e Robux | Entrega Rápida",
@@ -93,31 +93,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
-  const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
-
   return (
     <html lang="pt-BR" className="dark">
-      <head>
-        {/* Google Ads - Global Site Tag */}
-        {googleAdsEnabled && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-ads-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${googleAdsId}');
-              `}
-            </Script>
-          </>
-        )}
-      </head>
       <body className="font-sans">
+        <GoogleAds />
         <HeadManager />
         <DynamicTheme />
         <DevToolsBlocker />
