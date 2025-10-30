@@ -86,7 +86,7 @@ export default function HomePage() {
   // Verificar parâmetro de teste
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('adsgoogleTestNow') === 'true') {
+    if (urlParams.get('testeconversaogoogle') === 'ativado') {
       setShowTestButton(true)
     }
   }, [])
