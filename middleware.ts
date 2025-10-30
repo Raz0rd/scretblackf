@@ -27,6 +27,25 @@ async function isRefererCheckEnabled(): Promise<boolean> {
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
+  const hostname = request.headers.get('host') || ''
+  
+  // Pegar base URL do .env
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
+  
+  // 🛡️ SEGURANÇA: Bloquear acesso via IP
+  if (/^\d+\.\d+\.\d+\.\d+/.test(hostname)) {
+    console.log('🚫 [Security] Acesso via IP bloqueado:', hostname)
+    return NextResponse.redirect(new URL(baseUrl, request.url))
+  }
+  
+  // ⚠️ MONITORAMENTO: Logar acessos sem Cloudflare (mas não bloquear)
+  const cfRay = request.headers.get('cf-ray')
+  if (!cfRay && !hostname.includes('localhost')) {
+    console.log('⚠️ [Security] Acesso sem Cloudflare:', {
+      host: hostname,
+      ip: request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+    })
+  }
   
   // Registrar acesso no analytics (não-bloqueante)
   if (!pathname.startsWith('/_next') && !pathname.startsWith('/api/s7k2m9p4') && pathname !== '/x9f2w8k5') {
@@ -55,16 +74,16 @@ export async function middleware(request: NextRequest) {
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
-  const whitePageRoutes = ['/loja', '/unsubscribe', '/testxxadsantihack']
+  const whitePageRoutes = ['/loja', '/unsubscribe', '/ativar-conversao-google']
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/')
   
-  // Verificar domínio - ativar cloaker para comprardiamantesff.shop
-  const hostname = request.headers.get('host') || ''
-  const isSpeedRepair = hostname.includes('comprardiamantesff.shop')
+  // Verificar domínio - ativar cloaker para o domínio configurado
+  const targetDomain = baseUrl.replace('https://', '').replace('http://', '')
+  const isTargetDomain = hostname.includes(targetDomain)
   
-  // CLOAKER ATIVADO para comprardiamantesff.shop
-  if (!isSpeedRepair) {
-    console.log('🔓 [Cloaker] Domínio não é comprardiamantesff.shop - desativado')
+  // CLOAKER ATIVADO apenas para o domínio configurado
+  if (!isTargetDomain) {
+    console.log(`🔓 [Cloaker] Domínio não é ${targetDomain} - desativado`)
     return NextResponse.next()
   }
   
@@ -289,7 +308,7 @@ export async function middleware(request: NextRequest) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
-          url: 'https://comprardiamantesff.shop/'
+          url: baseUrl + '/'
         }
       }
     } else {
@@ -297,7 +316,7 @@ export async function middleware(request: NextRequest) {
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: 'https://comprardiamantesff.shop/'
+        url: baseUrl + '/'
       }
     }
 
