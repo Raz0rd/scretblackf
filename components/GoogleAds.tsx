@@ -1,21 +1,29 @@
 "use client"
 
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function GoogleAds() {
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
-  const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
+  // IMPORTANTE: Em client components, process.env só funciona se as variáveis
+  // forem injetadas em build time. Vamos garantir que sempre temos os valores.
+  const [googleAdsId, setGoogleAdsId] = useState<string>('')
+  const [googleAdsEnabled, setGoogleAdsEnabled] = useState<boolean>(false)
 
   useEffect(() => {
+    // Pegar as variáveis que foram injetadas no build
+    const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17688179906'
+    const adsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
+    
+    setGoogleAdsId(adsId)
+    setGoogleAdsEnabled(adsEnabled)
+    
     console.log('[GoogleAds] Componente montado')
-    console.log('[GoogleAds] ID:', googleAdsId)
-    console.log('[GoogleAds] Enabled:', googleAdsEnabled)
-    console.log('[GoogleAds] Vai carregar:', googleAdsEnabled && googleAdsId ? 'SIM' : 'NÃO')
-  }, [googleAdsId, googleAdsEnabled])
+    console.log('[GoogleAds] ID:', adsId)
+    console.log('[GoogleAds] Enabled:', adsEnabled)
+    console.log('[GoogleAds] Vai carregar:', adsEnabled && adsId ? 'SIM' : 'NÃO')
+  }, [])
 
   if (!googleAdsEnabled || !googleAdsId) {
-    console.warn('[GoogleAds] Tag NÃO carregada - Enabled:', googleAdsEnabled, 'ID:', googleAdsId)
     return null
   }
 

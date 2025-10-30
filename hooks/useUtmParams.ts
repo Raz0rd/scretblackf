@@ -41,9 +41,20 @@ export const useUtmParams = () => {
       const utmString = params.toString()
       setUtmParams(utmString)
       
-      // Armazenar no localStorage para persistir
+      // Armazenar no localStorage E sessionStorage para persistir
       if (utmString) {
         localStorage.setItem('utmParams', utmString)
+        
+        // IMPORTANTE: Salvar cada parâmetro individualmente no sessionStorage
+        // para o checkout conseguir recuperar
+        utmParameters.forEach(param => {
+          const value = urlParams.get(param)
+          if (value) {
+            sessionStorage.setItem(`utm_${param}`, value)
+          }
+        })
+        
+        console.log('✅ [UTM] Parâmetros salvos:', utmString)
       }
     }
   }, [])
