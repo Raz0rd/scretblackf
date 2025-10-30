@@ -84,51 +84,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // VERIFICAÇÃO DE COOKIE DO CLOAKER (prioridade máxima)
-  const hasCloakerCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-
-  // Lista de rotas válidas
-  const validRoutes = [
-    '/',
-    '/promo',
-    '/cupons',
-    '/checkout',
-    '/success',
-    '/analytics',
-    '/loja',
-    '/unsubscribe',
-    '/robots.txt',
-    '/sitemap.xml'
-  ]
-
-  // Rotas que devem ser sempre permitidas (iniciando com)
-  const allowedPrefixes = [
-    '/api',
-    '/_next',
-    '/images',
-    '/fonts',
-    '/manifest',
-    '/icon-',
-    '/sw.js'
-  ]
-
-  // Verificar se é uma rota exata válida
-  const isExactMatch = validRoutes.includes(pathname)
-  
-  // Verificar se começa com um dos prefixos permitidos
-  const hasAllowedPrefix = allowedPrefixes.some(prefix => pathname.startsWith(prefix))
-  
-  // Verificar se é um arquivo estático (tem extensão)
-  const isStaticFile = pathname.includes('.')
-
-  // Se não for nenhum dos casos acima, bloquear
-  if (!isExactMatch && !hasAllowedPrefix && !isStaticFile) {
-    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para /`)
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-
   // Proteger rota /promo - só acessível com cookie do cloaker OU com parâmetros de tracking
-  if (pathname.startsWith('/promo')) {
+  if (pathname === '/promo' || pathname === '/promo/') {
     const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
     const hasTrackingParams = request.nextUrl.search.includes('gclid') || 
                               request.nextUrl.search.includes('fbclid') ||
@@ -312,12 +269,14 @@ export async function middleware(request: NextRequest) {
 
     // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
     console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /promo')
-    const url = request.nextUrl.clone()
-    url.pathname = CLOAKER_CONFIG.offerPagePath
-    // Manter query params (gclid, utm, etc) mas NÃO adicionar _verified
+    
+    // Criar URL sem barra final
+    const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
+    // Manter query params (gclid, utm, etc)
+    redirectUrl.search = request.nextUrl.search
     
     // Criar resposta com cookie de verificação (httpOnly - não pode ser forjado)
-    const response = NextResponse.redirect(url)
+    const response = NextResponse.redirect(redirectUrl)
     response.cookies.set('cloaker_verified', 'true', {
       httpOnly: true,  // Cookie não acessível via JavaScript
       secure: true,    // Apenas HTTPS
