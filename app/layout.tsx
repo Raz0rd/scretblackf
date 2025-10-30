@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Suspense } from "react"
+import Script from "next/script"
 import "./globals.css"
 import HeadManager from "@/components/HeadManager"
 import ClickTracker from "@/components/ClickTracker"

@@ -135,21 +135,22 @@ export default function HeadManager() {
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
   
   useEffect(() => {
-    if (!mounted || typeof window === 'undefined' || !googleAdsEnabled) return;
+    if (!mounted || typeof window === 'undefined') return;
 
-    // Desabilitar no desenvolvimento
-    if (isDevelopment) {
+    // Verificar se já existe
+    if (document.getElementById('google-gtag-script')) {
+      console.log('[HeadManager] Google Ads tag já carregada');
       return;
     }
 
-    // Remover scripts antigos se existirem
-    const oldGtagScript = document.getElementById('google-gtag-script');
-    const oldGtagInit = document.getElementById('google-gtag-init');
-    const oldGtagFunctions = document.getElementById('google-gtag-functions');
-    
-    if (oldGtagScript) oldGtagScript.remove();
-    if (oldGtagInit) oldGtagInit.remove();
-    if (oldGtagFunctions) oldGtagFunctions.remove();
+    if (!googleAdsEnabled || !googleAdsId) {
+      console.log('[HeadManager] Google Ads desabilitado ou ID não definido');
+      return;
+    }
+
+    console.log('[HeadManager] 🚀 Carregando Google Ads tag...');
+    console.log('[HeadManager] ID:', googleAdsId);
+    console.log('[HeadManager] Enabled:', googleAdsEnabled);
 
     // 1. Injetar script do Google Tag Manager
     const gtagScript = document.createElement('script');
@@ -171,14 +172,12 @@ export default function HeadManager() {
 
     // 3. Se ADS_INDIVIDUAL=true, injetar funções gtag_report_conversion
     if (adsIndividual) {
-      // Pegar labels de conversão do .env
-      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'S9KKCL7Qo6obEMa9u7JB';
+      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || '';
       const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
       
       const gtagFunctions = document.createElement('script');
       gtagFunctions.id = 'google-gtag-functions';
       gtagFunctions.innerHTML = `
-        // Função para conversão: Compra (Pagamento confirmado)
         window.gtag_report_conversion_purchase = function(transactionId, value) {
           gtag('event', 'conversion', {
             'send_to': '${conversionIdCompra}',
@@ -192,6 +191,8 @@ export default function HeadManager() {
       document.head.appendChild(gtagFunctions);
     }
 
+    console.log('[HeadManager] ✅ Google Ads tag carregada com sucesso!');
+
     // Cleanup
     return () => {
       const gtag = document.getElementById('google-gtag-script');
@@ -202,7 +203,7 @@ export default function HeadManager() {
       if (init) init.remove();
       if (funcs) funcs.remove();
     };
-  }, [mounted, pathname, googleAdsEnabled, googleAdsId, adsIndividual, isDevelopment]);
+  }, [mounted, pathname, googleAdsEnabled, googleAdsId, adsIndividual]);
 
   // Injetar Meta Tags SEO no DOM
   useEffect(() => {
