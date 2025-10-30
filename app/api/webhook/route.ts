@@ -53,9 +53,7 @@ const DEBOUNCE_TIME = 5000 // 5 segundos
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] BlackCat webhook received! 🚨🚨🚨")
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] Timestamp:", new Date().toISOString())
-    
+    console.log('📥 [WEBHOOK] Recebido:', new Date().toISOString())
     const body: BlackCatWebhookPayload = await request.json()
     console.log("🚨🚨🚨 [WEBHOOK DEBUG] Payload recebido:", JSON.stringify(body, null, 2))
 
