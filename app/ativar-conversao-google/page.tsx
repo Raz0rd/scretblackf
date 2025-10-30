@@ -66,8 +66,18 @@ export default function TestAdsPage() {
     return () => clearInterval(checkGtag)
   }, [])
 
-  if (testParam !== 'sim') {
-    return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Acesso negado</div>
+  // Aceitar 'sim', 'true', ou '1'
+  const isAuthorized = testParam === 'sim' || testParam === 'true' || testParam === '1'
+  
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">🚫 Acesso Negado</h1>
+          <p className="text-gray-400">Use: ?testeconversao=true ou ?testeconversao=sim</p>
+        </div>
+      </div>
+    )
   }
 
   return (

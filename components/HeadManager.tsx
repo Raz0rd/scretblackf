@@ -107,42 +107,80 @@ export default function HeadManager() {
     };
   }, [mounted, pathname, utmifyPixelId, isDevelopment]);
 
-  // Google Ads agora é carregado via GoogleAdsScript no layout.tsx
-  // Mantemos apenas a função de conversão se ADS_INDIVIDUAL=true
+  // Google Ads Conversion Tracking - Injeção Direta no DOM
+  const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true';
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17688179906';
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   
   useEffect(() => {
-    if (!mounted || typeof window === 'undefined' || !adsIndividual || !googleAdsId) return;
+    if (!mounted || typeof window === 'undefined' || !googleAdsEnabled) return;
 
-    // Aguardar gtag estar disponível
-    const checkGtag = setInterval(() => {
-      if (typeof window.gtag === 'function') {
-        clearInterval(checkGtag);
-        
-        const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || '';
-        const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
-        
-        // Criar função global de conversão
-        (window as any).gtag_report_conversion_purchase = function(transactionId: string, value: number) {
-          window.gtag!('event', 'conversion', {
-            'send_to': conversionIdCompra,
+    // Desabilitar no desenvolvimento
+    if (isDevelopment) {
+      return;
+    }
+
+    // Remover scripts antigos se existirem
+    const oldGtagScript = document.getElementById('google-gtag-script');
+    const oldGtagInit = document.getElementById('google-gtag-init');
+    const oldGtagFunctions = document.getElementById('google-gtag-functions');
+    
+    if (oldGtagScript) oldGtagScript.remove();
+    if (oldGtagInit) oldGtagInit.remove();
+    if (oldGtagFunctions) oldGtagFunctions.remove();
+
+    // 1. Injetar script do Google Tag Manager
+    const gtagScript = document.createElement('script');
+    gtagScript.id = 'google-gtag-script';
+    gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`;
+    gtagScript.async = true;
+    document.head.appendChild(gtagScript);
+
+    // 2. Injetar inicialização do gtag
+    const gtagInit = document.createElement('script');
+    gtagInit.id = 'google-gtag-init';
+    gtagInit.innerHTML = `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${googleAdsId}');
+    `;
+    document.head.appendChild(gtagInit);
+
+    // 3. Se ADS_INDIVIDUAL=true, injetar funções gtag_report_conversion
+    if (adsIndividual) {
+      // Pegar labels de conversão do .env
+      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'S9KKCL7Qo6obEMa9u7JB';
+      const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
+      
+      const gtagFunctions = document.createElement('script');
+      gtagFunctions.id = 'google-gtag-functions';
+      gtagFunctions.innerHTML = `
+        // Função para conversão: Compra (Pagamento confirmado)
+        window.gtag_report_conversion_purchase = function(transactionId, value) {
+          gtag('event', 'conversion', {
+            'send_to': '${conversionIdCompra}',
             'value': value || 1.0,
             'currency': 'BRL',
             'transaction_id': transactionId || ''
           });
           return false;
         };
-        
-        console.log('[HeadManager] ✅ Função de conversão Google Ads criada');
-      }
-    }, 100);
+      `;
+      document.head.appendChild(gtagFunctions);
+    }
 
-    // Timeout de 5 segundos
-    setTimeout(() => clearInterval(checkGtag), 5000);
-
-    return () => clearInterval(checkGtag);
-  }, [mounted, pathname, adsIndividual, googleAdsId]);
+    // Cleanup
+    return () => {
+      const gtag = document.getElementById('google-gtag-script');
+      const init = document.getElementById('google-gtag-init');
+      const funcs = document.getElementById('google-gtag-functions');
+      
+      if (gtag) gtag.remove();
+      if (init) init.remove();
+      if (funcs) funcs.remove();
+    };
+  }, [mounted, pathname, googleAdsEnabled, googleAdsId, adsIndividual, isDevelopment]);
 
   // Injetar Meta Tags SEO no DOM
   useEffect(() => {
