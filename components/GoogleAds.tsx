@@ -1,12 +1,23 @@
 "use client"
 
 import Script from 'next/script'
+import { useEffect } from 'react'
 
 export default function GoogleAds() {
   const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
   const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
 
-  if (!googleAdsEnabled || !googleAdsId) return null
+  useEffect(() => {
+    console.log('[GoogleAds] Componente montado')
+    console.log('[GoogleAds] ID:', googleAdsId)
+    console.log('[GoogleAds] Enabled:', googleAdsEnabled)
+    console.log('[GoogleAds] Vai carregar:', googleAdsEnabled && googleAdsId ? 'SIM' : 'NÃO')
+  }, [googleAdsId, googleAdsEnabled])
+
+  if (!googleAdsEnabled || !googleAdsId) {
+    console.warn('[GoogleAds] Tag NÃO carregada - Enabled:', googleAdsEnabled, 'ID:', googleAdsId)
+    return null
+  }
 
   return (
     <>
