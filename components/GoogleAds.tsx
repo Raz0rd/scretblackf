@@ -11,7 +11,7 @@ export default function GoogleAds() {
 
   useEffect(() => {
     // Pegar as variáveis que foram injetadas no build
-    const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17688179906'
+    const adsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || ''
     const adsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true'
     
     setGoogleAdsId(adsId)
@@ -21,6 +21,13 @@ export default function GoogleAds() {
     console.log('[GoogleAds] ID:', adsId)
     console.log('[GoogleAds] Enabled:', adsEnabled)
     console.log('[GoogleAds] Vai carregar:', adsEnabled && adsId ? 'SIM' : 'NÃO')
+    
+    if (!adsEnabled) {
+      console.warn('[GoogleAds] ⚠️ NEXT_PUBLIC_GOOGLE_ADS_ENABLED não está "true"')
+    }
+    if (!adsId) {
+      console.error('[GoogleAds] ❌ NEXT_PUBLIC_GOOGLE_ADS_ID não está definido no .env!')
+    }
   }, [])
 
   if (!googleAdsEnabled || !googleAdsId) {
