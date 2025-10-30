@@ -107,81 +107,42 @@ export default function HeadManager() {
     };
   }, [mounted, pathname, utmifyPixelId, isDevelopment]);
 
-  // Google Ads Conversion Tracking - Injeção Direta no DOM
-  const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true';
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+  // Google Ads agora é carregado via GoogleAdsScript no layout.tsx
+  // Mantemos apenas a função de conversão se ADS_INDIVIDUAL=true
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   
   useEffect(() => {
-    if (!mounted || typeof window === 'undefined') return;
+    if (!mounted || typeof window === 'undefined' || !adsIndividual || !googleAdsId) return;
 
-    // Verificar se já existe
-    if (document.getElementById('google-gtag-script')) {
-      console.log('[HeadManager] Google Ads tag já carregada');
-      return;
-    }
-
-    if (!googleAdsEnabled || !googleAdsId) {
-      console.log('[HeadManager] Google Ads desabilitado ou ID não definido');
-      return;
-    }
-
-    console.log('[HeadManager] 🚀 Carregando Google Ads tag...');
-    console.log('[HeadManager] ID:', googleAdsId);
-    console.log('[HeadManager] Enabled:', googleAdsEnabled);
-
-    // 1. Injetar script do Google Tag Manager
-    const gtagScript = document.createElement('script');
-    gtagScript.id = 'google-gtag-script';
-    gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`;
-    gtagScript.async = true;
-    document.head.appendChild(gtagScript);
-
-    // 2. Injetar inicialização do gtag
-    const gtagInit = document.createElement('script');
-    gtagInit.id = 'google-gtag-init';
-    gtagInit.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '${googleAdsId}');
-    `;
-    document.head.appendChild(gtagInit);
-
-    // 3. Se ADS_INDIVIDUAL=true, injetar funções gtag_report_conversion
-    if (adsIndividual) {
-      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || '';
-      const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
-      
-      const gtagFunctions = document.createElement('script');
-      gtagFunctions.id = 'google-gtag-functions';
-      gtagFunctions.innerHTML = `
-        window.gtag_report_conversion_purchase = function(transactionId, value) {
-          gtag('event', 'conversion', {
-            'send_to': '${conversionIdCompra}',
+    // Aguardar gtag estar disponível
+    const checkGtag = setInterval(() => {
+      if (typeof window.gtag === 'function') {
+        clearInterval(checkGtag);
+        
+        const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || '';
+        const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
+        
+        // Criar função global de conversão
+        (window as any).gtag_report_conversion_purchase = function(transactionId: string, value: number) {
+          window.gtag!('event', 'conversion', {
+            'send_to': conversionIdCompra,
             'value': value || 1.0,
             'currency': 'BRL',
             'transaction_id': transactionId || ''
           });
           return false;
         };
-      `;
-      document.head.appendChild(gtagFunctions);
-    }
+        
+        console.log('[HeadManager] ✅ Função de conversão Google Ads criada');
+      }
+    }, 100);
 
-    console.log('[HeadManager] ✅ Google Ads tag carregada com sucesso!');
+    // Timeout de 5 segundos
+    setTimeout(() => clearInterval(checkGtag), 5000);
 
-    // Cleanup
-    return () => {
-      const gtag = document.getElementById('google-gtag-script');
-      const init = document.getElementById('google-gtag-init');
-      const funcs = document.getElementById('google-gtag-functions');
-      
-      if (gtag) gtag.remove();
-      if (init) init.remove();
-      if (funcs) funcs.remove();
-    };
-  }, [mounted, pathname, googleAdsEnabled, googleAdsId, adsIndividual]);
+    return () => clearInterval(checkGtag);
+  }, [mounted, pathname, adsIndividual, googleAdsId]);
 
   // Injetar Meta Tags SEO no DOM
   useEffect(() => {
