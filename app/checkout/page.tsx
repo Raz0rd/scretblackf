@@ -545,8 +545,42 @@ export default function CheckoutPage() {
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
               
-              // Redirecionar para a página de sucesso
-              router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
+              // Capturar parâmetros UTM e gclid da URL atual
+              const urlParams = new URLSearchParams(window.location.search)
+              const gclid = urlParams.get('gclid') || utmParameters.gclid || ''
+              const utm_source = urlParams.get('utm_source') || utmParameters.utm_source || ''
+              const utm_campaign = urlParams.get('utm_campaign') || utmParameters.utm_campaign || ''
+              const utm_medium = urlParams.get('utm_medium') || utmParameters.utm_medium || ''
+              const utm_content = urlParams.get('utm_content') || utmParameters.utm_content || ''
+              const utm_term = urlParams.get('utm_term') || utmParameters.utm_term || ''
+              
+              // Construir URL da whitepage com todos os parâmetros
+              const whitePageBaseUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
+              
+              if (!whitePageBaseUrl) {
+                console.error('❌ [PAID] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
+                return
+              }
+              
+              const whitePageUrl = new URL(`${whitePageBaseUrl}/sucesso/index.html`)
+              whitePageUrl.searchParams.set('transactionId', pixData.transactionId)
+              whitePageUrl.searchParams.set('amount', (totalValue * 100).toString())
+              whitePageUrl.searchParams.set('playerName', playerName)
+              whitePageUrl.searchParams.set('itemValue', itemValue)
+              whitePageUrl.searchParams.set('game', currentGame)
+              
+              // Adicionar parâmetros de tracking
+              if (gclid) whitePageUrl.searchParams.set('gclid', gclid)
+              if (utm_source) whitePageUrl.searchParams.set('utm_source', utm_source)
+              if (utm_campaign) whitePageUrl.searchParams.set('utm_campaign', utm_campaign)
+              if (utm_medium) whitePageUrl.searchParams.set('utm_medium', utm_medium)
+              if (utm_content) whitePageUrl.searchParams.set('utm_content', utm_content)
+              if (utm_term) whitePageUrl.searchParams.set('utm_term', utm_term)
+              
+              console.log('✅ [PAID] Redirecionando para whitepage:', whitePageUrl.toString())
+              
+              // Redirecionar para whitepage SEM enviar referer
+              window.location.replace(whitePageUrl.toString())
               
               // Enviar para UTMify com status PAID (não-bloqueante)
               // NOTA: O webhook já envia PAID para UTMify, mas mantemos este envio como fallback
