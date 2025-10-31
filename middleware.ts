@@ -65,9 +65,10 @@ export async function middleware(request: NextRequest) {
     console.log('🌐 IP:', ip)
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
     
-    // Lista de referers permitidos (hardcoded para Edge Runtime)
-    // IMPORTANTE: Manter sincronizado com allowed-referers.json
+    // Lista de whitepages externas permitidas (hardcoded para Edge Runtime)
+    // Cada whitepage que enviar tráfego será detectada e usada na conversão
     const allowedReferers: string[] = [
+      'cuponeriavirtual.shop',
       'recarga-jogoff.shop'
     ]
     
@@ -167,6 +168,19 @@ export async function middleware(request: NextRequest) {
     
     const response = NextResponse.next()
     
+    // Extrair domínio do referer para salvar origem da conversão
+    let originDomain = ''
+    try {
+      const refererUrl = new URL(referer)
+      originDomain = refererUrl.origin // Ex: https://cuponeriavirtual.shop
+    } catch (e) {
+      // Se falhar ao parsear, tentar extrair manualmente
+      const match = referer.match(/^(https?:\/\/[^\/]+)/)
+      if (match) {
+        originDomain = match[1]
+      }
+    }
+    
     // Salvar referer em cookie (para usar na página de sucesso)
     response.cookies.set('source_referer', referer, {
       httpOnly: true,
@@ -174,6 +188,19 @@ export async function middleware(request: NextRequest) {
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 // 24 horas
     })
+    
+    // Salvar domínio de origem codificado em base64 (segurança)
+    if (originDomain) {
+      // Codificar em base64 para ofuscar
+      const encodedDomain = Buffer.from(originDomain).toString('base64')
+      response.cookies.set('_ref_origin', encodedDomain, {
+        httpOnly: false, // Precisa ser acessível pelo JavaScript no checkout
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 // 24 horas
+      })
+      console.log('💾 [Cookie] Origem salva (base64):', encodedDomain, '→', originDomain)
+    }
     
     // Marcar como verificado
     response.cookies.set('referer_verified', 'true', {

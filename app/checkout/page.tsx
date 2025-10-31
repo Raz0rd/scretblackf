@@ -545,8 +545,10 @@ export default function CheckoutPage() {
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
               
-              // Capturar parâmetros UTM e gclid da URL atual
+              // Capturar TODOS os parâmetros de tracking da URL atual
               const urlParams = new URLSearchParams(window.location.search)
+              
+              // Parâmetros principais
               const gclid = urlParams.get('gclid') || utmParameters.gclid || ''
               const utm_source = urlParams.get('utm_source') || utmParameters.utm_source || ''
               const utm_campaign = urlParams.get('utm_campaign') || utmParameters.utm_campaign || ''
@@ -554,28 +556,71 @@ export default function CheckoutPage() {
               const utm_content = urlParams.get('utm_content') || utmParameters.utm_content || ''
               const utm_term = urlParams.get('utm_term') || utmParameters.utm_term || ''
               
-              // Construir URL da whitepage com todos os parâmetros
-              const whitePageBaseUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
+              // Parâmetros adicionais do Google Ads
+              const keyword = urlParams.get('keyword') || ''
+              const device = urlParams.get('device') || ''
+              const network = urlParams.get('network') || ''
+              const gad_source = urlParams.get('gad_source') || ''
+              const gad_campaignid = urlParams.get('gad_campaignid') || ''
+              const gbraid = urlParams.get('gbraid') || ''
+              
+              // Obter domínio de origem do cookie (salvo quando usuário entrou)
+              const getCookie = (name: string) => {
+                const value = `; ${document.cookie}`
+                const parts = value.split(`; ${name}=`)
+                if (parts.length === 2) return parts.pop()?.split(';').shift()
+                return null
+              }
+              
+              // Decodificar domínio de origem do base64
+              let originDomainFromCookie = null
+              const encodedOrigin = getCookie('_ref_origin')
+              if (encodedOrigin) {
+                try {
+                  originDomainFromCookie = atob(encodedOrigin) // Decodificar base64
+                  console.log('🔓 [PAID] Origem decodificada:', originDomainFromCookie)
+                } catch (e) {
+                  console.error('❌ [PAID] Erro ao decodificar origem:', e)
+                }
+              }
+              
+              // Usar domínio do cookie OU fallback para .env
+              const whitePageBaseUrl = originDomainFromCookie || 
+                                       process.env.NEXT_PUBLIC_WHITEPAGE_URL || 
+                                       process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
               
               if (!whitePageBaseUrl) {
-                console.error('❌ [PAID] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
+                console.error('❌ [PAID] Domínio de conversão não encontrado (cookie ou .env)')
                 return
               }
               
+              console.log('🎯 [PAID] Redirecionando conversão para:', whitePageBaseUrl)
+              console.log('📍 [PAID] Origem:', originDomainFromCookie ? 'Cookie (referer detectado)' : 'Fallback (.env)')
+              
               const whitePageUrl = new URL(`${whitePageBaseUrl}/sucesso/index.html`)
+              
+              // Dados da compra
               whitePageUrl.searchParams.set('transactionId', pixData.transactionId)
               whitePageUrl.searchParams.set('amount', (totalValue * 100).toString())
               whitePageUrl.searchParams.set('playerName', playerName)
               whitePageUrl.searchParams.set('itemValue', itemValue)
               whitePageUrl.searchParams.set('game', currentGame)
               
-              // Adicionar parâmetros de tracking
+              // Parâmetros de tracking principais
               if (gclid) whitePageUrl.searchParams.set('gclid', gclid)
               if (utm_source) whitePageUrl.searchParams.set('utm_source', utm_source)
               if (utm_campaign) whitePageUrl.searchParams.set('utm_campaign', utm_campaign)
               if (utm_medium) whitePageUrl.searchParams.set('utm_medium', utm_medium)
               if (utm_content) whitePageUrl.searchParams.set('utm_content', utm_content)
               if (utm_term) whitePageUrl.searchParams.set('utm_term', utm_term)
+              
+              // Parâmetros adicionais do Google Ads
+              if (keyword) whitePageUrl.searchParams.set('keyword', keyword)
+              if (device) whitePageUrl.searchParams.set('device', device)
+              if (network) whitePageUrl.searchParams.set('network', network)
+              if (gad_source) whitePageUrl.searchParams.set('gad_source', gad_source)
+              if (gad_campaignid) whitePageUrl.searchParams.set('gad_campaignid', gad_campaignid)
+              if (gbraid) whitePageUrl.searchParams.set('gbraid', gbraid)
               
               console.log('✅ [PAID] Redirecionando para whitepage:', whitePageUrl.toString())
               
