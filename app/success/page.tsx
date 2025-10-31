@@ -113,8 +113,8 @@ export default function SuccessPage() {
       <div className="max-w-2xl w-full bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
         <div className="text-center">
           {/* Ícone de sucesso */}
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-500/20 mb-6">
-            <svg className="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-black/20 mb-6">
+            <svg className="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -140,7 +140,7 @@ export default function SuccessPage() {
               {amount && (
                 <div className="flex justify-between items-center py-2 border-b border-gray-700">
                   <span className="text-gray-400 font-medium">Valor Pago:</span>
-                  <span className="text-blue-400 font-semibold text-lg">
+                  <span className="text-black font-semibold text-lg">
                     R$ {(parseFloat(amount) / 100).toFixed(2).replace('.', ',')}
                   </span>
                 </div>
@@ -217,8 +217,8 @@ export default function SuccessPage() {
           </div>
           
           {/* Mensagem final */}
-          <div className="mb-8 p-4 bg-blue-900/20 border border-blue-800 rounded-lg">
-            <p className="text-blue-300 text-center">
+          <div className="mb-8 p-4 bg-gray-100 border border-gray-300 rounded-lg">
+            <p className="text-gray-700 text-center">
               Obrigado por sua compra! Aproveite seus créditos e continue desfrutando de nossos serviços.
             </p>
           </div>

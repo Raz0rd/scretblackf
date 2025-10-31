@@ -41,7 +41,7 @@ export default function CuponsPage() {
       { name: 'mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-      { name: 'theme-color', content: '#00a8ff' },
+      { name: 'theme-color', content: '#ffffff' },
     ]
 
     metaTags.forEach(tag => {
@@ -61,9 +61,9 @@ export default function CuponsPage() {
       "description": "Plataforma independente de cupons verificados para jogos online",
       "publisher": {
         "@type": "Organization",
-        "name": "EASYCOM COMERCIO E SERVICOS LTDA",
-        "legalName": "EASYCOM",
-        "taxID": "18.877.138/0001-39",
+        "name": "TICUPOL INDUSTRIA E COMERCIO LTDA",
+        "legalName": "TICUPOL",
+        "taxID": "58.041.030/0001-28",
         "foundingDate": "2010-01-01",
         "address": {
           "@type": "PostalAddress",
@@ -91,12 +91,12 @@ export default function CuponsPage() {
     style.id = 'coopersam-styles'
     style.innerHTML = `
       :root {
-        --bg: #0a0e14;
-        --card: #0d1218;
-        --accent: #00a8ff;
-        --accent-glow: #39c5ff;
-        --muted: #7a9dbd;
-        --glass: rgba(0, 168, 255, 0.05);
+        --bg: #ffffff;
+        --card: #f8f9fa;
+        --accent: #000000;
+        --accent-glow: #333333;
+        --muted: #666666;
+        --glass: rgba(0, 0, 0, 0.05);
         --maxw: 1100px;
       }
 
@@ -1293,8 +1293,8 @@ export default function CuponsPage() {
               <h3 style={{margin:'0 0 8px 0'}}>Quem Somos</h3>
               <p className="small muted">
                 A <strong>Gaming Store</strong> é operada pela
-                <strong> EASYCOM COMERCIO E SERVICOS LTDA</strong> —
-                <strong> CNPJ 18.877.138/0001-39</strong>, empresa estabelecida no mercado.
+                <strong> TICUPOL INDUSTRIA E COMERCIO LTDA</strong> —
+                <strong> CNPJ 58.041.030/0001-28</strong>, empresa estabelecida no mercado.
                 <br /><br />
                 Somos uma <strong>empresa séria e comprometida</strong> no segmento de
                 serviços administrativos, localizada em
@@ -1351,10 +1351,10 @@ export default function CuponsPage() {
         <footer>
           <div>
             © <strong>Gaming Store</strong> — Operado por
-            <strong> EASYCOM COMERCIO E SERVICOS LTDA</strong> (CNPJ: 18.877.138/0001-39)
+            <strong> TICUPOL INDUSTRIA E COMERCIO LTDA</strong> (CNPJ: 58.041.030/0001-28)
           </div>
           <div className="small muted" style={{marginTop:'4px'}}>
-            Razão Social: EASYCOM COMERCIO E SERVICOS LTDA · CNPJ: 18.877.138/0001-39
+            Razão Social: TICUPOL INDUSTRIA E COMERCIO LTDA · CNPJ: 58.041.030/0001-28
           </div>
           
           <div className="small muted" style={{
@@ -1393,7 +1393,7 @@ export default function CuponsPage() {
                 <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
                 
                 <h3>1. Informações que Coletamos</h3>
-                <p>A EASYCOM coleta informações quando você utiliza nossos serviços, incluindo:</p>
+                <p>A TICUPOL coleta informações quando você utiliza nossos serviços, incluindo:</p>
                 <ul>
                   <li>Dados de navegação e uso do site</li>
                   <li>Informações fornecidas voluntariamente em formulários</li>
@@ -1432,7 +1432,7 @@ export default function CuponsPage() {
                 <h3>6. Contato</h3>
                 <p>Para questões sobre privacidade, entre em contato:</p>
                 <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}</p>
-                <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
+                <p><strong>CNPJ:</strong> 58.041.030/0001-28</p>
               </>
             )}
 
@@ -1639,7 +1639,7 @@ export default function CuponsPage() {
                 <p>Ao acessar e usar o site Gaming Store, você concorda com estes termos e condições.</p>
 
                 <h3>2. Sobre o Serviço</h3>
-                <p>A EASYCOM oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
+                <p>A TICUPOL oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
 
                 <h3>3. Uso dos Cupons</h3>
                 <ul>
@@ -1659,7 +1659,7 @@ export default function CuponsPage() {
                 </ul>
 
                 <h3>5. Limitação de Responsabilidade</h3>
-                <p>A EASYCOM não se responsabiliza por:</p>
+                <p>A TICUPOL não se responsabiliza por:</p>
                 <ul>
                   <li>Problemas com cupons fornecidos por terceiros</li>
                   <li>Interrupções no serviço</li>
@@ -1673,8 +1673,8 @@ export default function CuponsPage() {
                 <p>Estes termos são regidos pelas leis brasileiras.</p>
 
                 <h3>8. Contato</h3>
-                <p><strong>EASYCOM COMERCIO E SERVICOS LTDA</strong></p>
-                <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
+                <p><strong>TICUPOL INDUSTRIA E COMERCIO LTDA</strong></p>
+                <p><strong>CNPJ:</strong> 58.041.030/0001-28</p>
                 <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}</p>
                 <p><strong>Endereço:</strong> São Paulo - SP</p>
               </>
