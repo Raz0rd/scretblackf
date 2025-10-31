@@ -1,5 +1,5 @@
 {
-  "totalAccess": 3364,
+  "totalAccess": 3378,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -26912,17 +26912,129 @@
       "ip": "::1",
       "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
       "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:57:08.563Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:57:08.654Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:58:55.804Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:58:55.883Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:59:37.123Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T01:03:29.870Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T01:04:56.380Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T01:06:52.070Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872696363",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T01:06:52.208Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872696363",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T01:06:52.246Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872696363",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T01:06:59.982Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T01:07:00.089Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872819964",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T01:07:00.130Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872819964",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T01:07:00.170Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872819964",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 18,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 337,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 335,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 339,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 337,
     "/": 224,
     "/manifest.json": 9,
     "/icon-192x192.png": 8,
-    "/fonts/Metropolis-Medium-f3a73873.woff2": 113,
+    "/fonts/Metropolis-Medium-f3a73873.woff2": 115,
     "/.well-known/appspecific/com.chrome.devtools.json": 138,
     "/icon-512x512.png": 3,
     "/images/products/ff-1050.png": 3,
@@ -27003,7 +27115,7 @@
     "/images/picpay.webp": 1,
     "/images/nupay.webp": 1,
     "/images/mercado-pago.webp": 1,
-    "/checkout": 24,
+    "/checkout": 32,
     "/images/garena-logo.png": 3,
     "/images/Pacote%20Coelh%C3%A3o.png": 5,
     "/images/sombraRoxa.png": 5,

@@ -614,7 +614,6 @@ export async function POST(request: NextRequest) {
       
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
-      console.log("📋 [STORAGE] Dados salvos:", JSON.stringify(orderData, null, 2))
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }

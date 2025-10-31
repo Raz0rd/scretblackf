@@ -146,6 +146,13 @@ export async function POST(request: NextRequest) {
       console.log('   - Valor: R$', (transaction.amount / 100).toFixed(2))
       console.log('   - Cliente:', transaction.customer?.name)
       
+      // Mostrar URL do postback/webhook
+      if (webhookUrl) {
+        console.log('   - Postback URL:', webhookUrl)
+      } else {
+        console.log('   - Postback URL: (não fornecida - Ezzpag)')
+      }
+      
       // CONVERSÃO SERÁ ENVIADA PARA GOOGLE ADS NA PÁGINA /SUCCESS
       if (isPaid) {
         console.log('')
@@ -199,12 +206,55 @@ export async function POST(request: NextRequest) {
             console.log("[v0] ❌ Nenhum pedido encontrado no order storage")
           }
         } else {
-          console.log("col-start-1 row-start-1 text-center text-sm sm:text-base font-bold text-white ✅ UTMs já recuperados do metadata, não precisa do fallback")
+          console.log("[v0] ✅ UTMs já recuperados do metadata, não precisa do fallback")
         }
         
       } catch (error) {
         console.error("[v0] Error parsing metadata:", error)
       }
+      
+      // 🎯 LOGS DE ORIGEM DA VENDA
+      console.log('')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🎯 [ORIGEM DA VENDA]')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      
+      // Identificar fonte principal
+      if (trackingParameters.gclid) {
+        console.log('📍 Fonte: Google Ads (Paid)')
+        console.log('   - GCLID:', trackingParameters.gclid)
+        if (trackingParameters.gad_source) console.log('   - GAD Source:', trackingParameters.gad_source)
+        if (trackingParameters.gbraid) console.log('   - GBraid:', trackingParameters.gbraid)
+      } else if (trackingParameters.utm_source) {
+        console.log('📍 Fonte:', trackingParameters.utm_source)
+        if (trackingParameters.utm_campaign) console.log('   - Campanha:', trackingParameters.utm_campaign)
+        if (trackingParameters.utm_medium) console.log('   - Meio:', trackingParameters.utm_medium)
+        if (trackingParameters.utm_content) console.log('   - Conteúdo:', trackingParameters.utm_content)
+        if (trackingParameters.utm_term) console.log('   - Termo:', trackingParameters.utm_term)
+      } else if (trackingParameters.src) {
+        console.log('📍 Fonte (src):', trackingParameters.src)
+        if (trackingParameters.sck) console.log('   - SCK:', trackingParameters.sck)
+      } else {
+        console.log('📍 Fonte: Tráfego Direto ou Orgânico')
+        console.log('   ⚠️ Nenhum parâmetro de rastreamento encontrado')
+      }
+      
+      // Informações adicionais
+      if (trackingParameters.xcod) {
+        console.log('   - Código Afiliado (xcod):', trackingParameters.xcod)
+      }
+      if (trackingParameters.keyword) {
+        console.log('   - Palavra-chave:', trackingParameters.keyword)
+      }
+      if (trackingParameters.device) {
+        console.log('   - Dispositivo:', trackingParameters.device)
+      }
+      if (trackingParameters.network) {
+        console.log('   - Rede:', trackingParameters.network)
+      }
+      
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('')
       
       // Criar dados para enviar para UTMify no formato EXATO da documentação
       const utmifyData = {
