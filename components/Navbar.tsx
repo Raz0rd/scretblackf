@@ -38,15 +38,18 @@ export default function Navbar() {
             <a href="/loja" className="text-slate-700 hover:text-blue-600 transition-colors font-semibold">
               🛒 Loja
             </a>
+            <a href="/meus-pedidos" className="text-slate-700 hover:text-green-600 transition-colors font-semibold">
+              📦 Meus Pedidos
+            </a>
             <button onClick={() => scrollToSection('servicos')} className="text-slate-700 hover:text-blue-600 transition-colors">
               Serviços
             </button>
             <button onClick={() => scrollToSection('sobre')} className="text-slate-700 hover:text-blue-600 transition-colors">
               Sobre
             </button>
-            <button onClick={() => scrollToSection('blog')} className="text-slate-700 hover:text-blue-600 transition-colors">
-              Blog
-            </button>
+            <a href="/blog" className="text-slate-700 hover:text-blue-600 transition-colors font-semibold">
+              📰 Blog
+            </a>
             <button onClick={() => scrollToSection('faq')} className="text-slate-700 hover:text-blue-600 transition-colors">
               FAQ
             </button>
@@ -71,15 +74,18 @@ export default function Navbar() {
               <a href="/loja" className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2 font-semibold">
                 🛒 Loja
               </a>
+              <a href="/meus-pedidos" className="text-slate-700 hover:text-green-600 transition-colors text-left py-2 font-semibold">
+                📦 Meus Pedidos
+              </a>
               <button onClick={() => scrollToSection('servicos')} className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2">
                 Serviços
               </button>
               <button onClick={() => scrollToSection('sobre')} className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2">
                 Sobre
               </button>
-              <button onClick={() => scrollToSection('blog')} className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2">
-                Blog
-              </button>
+              <a href="/blog" className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2 font-semibold">
+                📰 Blog
+              </a>
               <button onClick={() => scrollToSection('faq')} className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2">
                 FAQ
               </button>
