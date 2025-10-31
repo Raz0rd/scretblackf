@@ -21,8 +21,29 @@ export default function CuponsPage() {
 
   // Função para testar conversão do Google Ads
   const handleTestConversion = () => {
-    // Redirecionar para /success com parâmetros de teste
-    router.push('/success?transactionId=test_google_ads_123&amount=5000&playerName=Teste&itemType=recharge&itemValue=1060&game=freefire')
+    // Disparar conversão diretamente sem redirecionar
+    if (typeof window !== 'undefined' && window.gtag) {
+      const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17683862692'
+      const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'wKeVCK6GirUbEKSpqfBB'
+      const conversionId = `${googleAdsId}/${conversionLabel}`
+      
+      console.log('[TESTE] 🧪 Disparando conversão de teste...')
+      console.log('[TESTE] Conversion ID:', conversionId)
+      console.log('[TESTE] Transaction ID: test_' + Date.now())
+      
+      window.gtag('event', 'conversion', {
+        'send_to': conversionId,
+        'value': 50.0,
+        'currency': 'BRL',
+        'transaction_id': 'test_' + Date.now()
+      })
+      
+      console.log('[TESTE] ✅ Conversão enviada!')
+      alert('✅ Conversão de teste enviada! Verifique o console (F12) para detalhes.')
+    } else {
+      console.error('[TESTE] ❌ gtag não está disponível')
+      alert('❌ Erro: gtag não carregado. Verifique se NEXT_PUBLIC_GOOGLE_ADS_ENABLED=true')
+    }
   }
 
   useEffect(() => {
