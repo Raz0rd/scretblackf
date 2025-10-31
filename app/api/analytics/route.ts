@@ -4,11 +4,13 @@ import { createClient } from '@supabase/supabase-js'
 // Forçar rota dinâmica
 export const dynamic = 'force-dynamic'
 
-// Inicializar Supabase
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Inicializar Supabase (opcional - só se as variáveis estiverem configuradas)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+const supabase = supabaseUrl && supabaseServiceKey 
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null
 
 interface AnalyticsData {
   ip: string
@@ -39,6 +41,14 @@ function getRealIP(request: NextRequest): string {
 // POST - Registrar analytics
 export async function POST(request: NextRequest) {
   try {
+    // Verificar se Supabase está configurado
+    if (!supabase) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Analytics não configurado (Supabase não disponível)' 
+      }, { status: 503 })
+    }
+    
     const body = await request.json()
     
     const realIp = getRealIP(request)
@@ -88,6 +98,14 @@ export async function POST(request: NextRequest) {
 // GET - Buscar analytics (protegido)
 export async function GET(request: NextRequest) {
   try {
+    // Verificar se Supabase está configurado
+    if (!supabase) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Analytics não configurado (Supabase não disponível)' 
+      }, { status: 503 })
+    }
+    
     const searchParams = request.nextUrl.searchParams
     const limit = parseInt(searchParams.get('limit') || '100')
     const offset = parseInt(searchParams.get('offset') || '0')
