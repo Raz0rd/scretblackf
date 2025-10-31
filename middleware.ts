@@ -94,6 +94,13 @@ export async function middleware(request: NextRequest) {
     
     // Se não tem referer, BLOQUEAR
     if (!referer) {
+      const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
+      
+      if (!whitepageUrl) {
+        console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
+        return NextResponse.redirect(new URL('/cupons', request.url))
+      }
+      
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -101,10 +108,10 @@ export async function middleware(request: NextRequest) {
       console.log('🌐 IP:', ip)
       console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
       console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Redirecionando para /cupons (White Page)')
+      console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-      // Redirecionar para página de erro ou mostrar whitepage
-      return NextResponse.redirect(new URL('/cupons', request.url))
+      
+      return NextResponse.redirect(whitepageUrl)
     }
     
     // Verificar se referer está na whitelist
@@ -114,6 +121,13 @@ export async function middleware(request: NextRequest) {
     )
     
     if (!isAllowed) {
+      const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
+      
+      if (!whitepageUrl) {
+        console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
+        return NextResponse.redirect(new URL('/cupons', request.url))
+      }
+      
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -122,10 +136,10 @@ export async function middleware(request: NextRequest) {
       console.log('🌐 IP:', ip)
       console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
       console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Redirecionando para /cupons (White Page)')
+      console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-      // Redirecionar para página de erro ou mostrar whitepage
-      return NextResponse.redirect(new URL('/cupons', request.url))
+      
+      return NextResponse.redirect(whitepageUrl)
     }
     
     // Referer AUTORIZADO - Verificar UTMs obrigatórios do Google
