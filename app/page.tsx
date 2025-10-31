@@ -9,6 +9,7 @@ export default function CuponsPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [showTestButton, setShowTestButton] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // Verificar se tem parâmetro ?test=google para mostrar botão de teste
   useEffect(() => {
@@ -32,11 +33,11 @@ export default function CuponsPage() {
       { name: 'author', content: 'EASYCOM - Comércio e Serviços' },
       { property: 'og:type', content: 'website' },
       { property: 'og:locale', content: 'pt_BR' },
-      { property: 'og:title', content: 'Gaming Store — Cupons Verificados para Jogos Online' },
+      { property: 'og:title', content: 'EASY CUPONS — Cupons Verificados para Jogos Online' },
       { property: 'og:description', content: 'Cupons e promoções verificadas para Free Fire, PUBG, Mobile Legends, Genshin Impact e mais jogos. Plataforma independente e segura.' },
-      { property: 'og:site_name', content: 'Gaming Store' },
+      { property: 'og:site_name', content: 'EASY CUPONS' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Gaming Store — Cupons para Jogos Online' },
+      { name: 'twitter:title', content: 'EASY CUPONS — Cupons para Jogos Online' },
       { name: 'twitter:description', content: 'Cupons verificados para Free Fire, PUBG, Mobile Legends e mais jogos.' },
       { name: 'mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
@@ -56,7 +57,7 @@ export default function CuponsPage() {
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Gaming Store",
+      "name": "EASY CUPONS",
       "url": process.env.NEXT_PUBLIC_BASE_URL || "https://rurubux.shop",
       "description": "Plataforma independente de cupons verificados para jogos online",
       "publisher": {
@@ -92,11 +93,11 @@ export default function CuponsPage() {
     style.innerHTML = `
       :root {
         --bg: #ffffff;
-        --card: #f8f9fa;
+        --card: #ffffff;
         --accent: #000000;
-        --accent-glow: #333333;
-        --muted: #666666;
-        --glass: rgba(0, 0, 0, 0.05);
+        --accent-glow: #000000;
+        --muted: #333333;
+        --glass: rgba(0, 0, 0, 0.02);
         --maxw: 1100px;
       }
 
@@ -117,8 +118,8 @@ export default function CuponsPage() {
         max-width: 100vw;
         cursor: none;
         margin: 0;
-        background: #050a05;
-        color: #e0ffe0;
+        background: linear-gradient(180deg, #818181 0%, #ffffff 76.1%, #7179cf 100%) !important;
+        color: #000000;
         font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial;
         -webkit-font-smoothing: antialiased;
         padding: 16px;
@@ -152,8 +153,8 @@ export default function CuponsPage() {
         width: 100%;
         height: 100%;
         background: 
-          linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-          linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+          linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+          linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
         background-size: 50px 50px;
         animation: gridMove 20s linear infinite;
         pointer-events: none;
@@ -167,7 +168,7 @@ export default function CuponsPage() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(0, 255, 65, 0.1) 0%, transparent 50%);
+        background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.03) 0%, transparent 50%);
         animation: pulse 4s ease-in-out infinite;
         pointer-events: none;
         z-index: 0;
@@ -223,7 +224,7 @@ export default function CuponsPage() {
         height: 100%;
         border: 2px solid var(--accent-glow);
         border-radius: 50%;
-        box-shadow: 0 0 15px var(--accent-glow), inset 0 0 15px rgba(0, 255, 65, 0.2);
+        box-shadow: 0 0 15px var(--accent-glow), inset 0 0 15px rgba(0, 0, 0, 0.2);
       }
 
       .sniper-dot {
@@ -249,15 +250,15 @@ export default function CuponsPage() {
       a { 
         color: var(--accent); 
         text-decoration: none;
-        text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       }
 
       .container {
-        background: linear-gradient(180deg, rgba(0, 255, 65, 0.05), rgba(0, 255, 65, 0.02));
+        background: #ffffff;
         border-radius: 12px;
         padding: 12px;
-        box-shadow: 0 6px 40px rgba(0, 255, 65, 0.3), 0 0 20px rgba(0, 255, 65, 0.1);
-        border: 1px solid rgba(0, 255, 65, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.15);
         backdrop-filter: blur(10px);
         width: 100%;
         max-width: 100%;
@@ -292,19 +293,19 @@ export default function CuponsPage() {
         width: 56px;
         height: 56px;
         border-radius: 10px;
-        background: linear-gradient(135deg, var(--accent), #00cc33);
+        background: var(--accent);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        color: #000;
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+        color: #ffffff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
       }
 
       h1 { 
         margin: 0; 
         font-size: 18px;
-        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        text-shadow: none;
       }
 
       @media (min-width: 768px) {
@@ -341,13 +342,13 @@ export default function CuponsPage() {
 
       .btn {
         background: var(--accent);
-        color: #000;
+        color: #ffffff;
         padding: 8px 12px;
         border-radius: 10px;
         font-weight: 600;
         cursor: pointer;
         border: none;
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
         display: inline-block;
         font-size: 13px;
@@ -363,19 +364,19 @@ export default function CuponsPage() {
       }
 
       .btn:hover {
-        box-shadow: 0 0 25px rgba(0, 255, 65, 0.8);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
       }
 
       .btn.ghost {
         background: transparent;
         color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
 
       .btn.ghost:hover {
-        background: rgba(0, 255, 65, 0.1);
+        background: rgba(0, 0, 0, 0.1);
         border-color: var(--accent);
       }
 
@@ -393,11 +394,11 @@ export default function CuponsPage() {
       }
 
       .card {
-        background: rgba(13, 20, 16, 0.8);
+        background: #ffffff;
         padding: 14px;
         border-radius: 12px;
-        border: 1px solid rgba(0, 255, 65, 0.2);
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(5px);
         width: 100%;
         max-width: 100%;
@@ -414,8 +415,8 @@ export default function CuponsPage() {
         gap: 8px;
         padding: 10px;
         border-radius: 8px;
-        background: rgba(0, 255, 65, 0.05);
-        border: 1px solid rgba(0, 255, 65, 0.15);
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
         flex-wrap: wrap;
         width: 100%;
@@ -430,9 +431,9 @@ export default function CuponsPage() {
       }
 
       .coupon:hover {
-        background: rgba(0, 255, 65, 0.1);
-        border-color: rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        background: rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       }
 
       .coupon .left { 
@@ -445,14 +446,14 @@ export default function CuponsPage() {
       }
 
       .chip {
-        background: rgba(0, 255, 65, 0.15);
+        background: rgba(0, 0, 0, 0.15);
         padding: 6px 8px;
         border-radius: 8px;
         font-weight: 700;
         letter-spacing: 1px;
         color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         font-size: 11px;
         white-space: nowrap;
       }
@@ -466,12 +467,12 @@ export default function CuponsPage() {
 
       .coupon-code {
         font-family: monospace;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(255, 255, 255, 0.9);
         padding: 6px 8px;
         border-radius: 6px;
         color: var(--accent);
-        border: 1px solid rgba(0, 255, 65, 0.2);
-        text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         font-size: 13px;
         word-break: break-all;
       }
@@ -498,10 +499,10 @@ export default function CuponsPage() {
         width: 100%;
         padding: 10px;
         border-radius: 10px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(0, 255, 65, 0.3);
-        color: var(--accent);
-        box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        color: #1a1a1a;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         font-size: 16px; /* Evita zoom no iOS */
         -webkit-appearance: none;
       }
@@ -509,7 +510,7 @@ export default function CuponsPage() {
       .search:focus {
         outline: none;
         border-color: var(--accent);
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
       }
 
       .search::placeholder {
@@ -586,14 +587,14 @@ export default function CuponsPage() {
       }
 
       .modal-content {
-        background: linear-gradient(180deg, #0d1410, #0a0e0a);
+        background: linear-gradient(180deg, #ffffff, #f8f9fa);
         border: 2px solid var(--accent);
         border-radius: 16px;
         padding: 20px;
         max-width: 90vw;
         max-height: 85vh;
         overflow-y: auto;
-        box-shadow: 0 0 50px rgba(0, 255, 65, 0.5);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         position: relative;
         animation: slideIn 0.4s ease;
         width: 100%;
@@ -612,7 +613,7 @@ export default function CuponsPage() {
         top: 15px;
         right: 15px;
         background: var(--accent);
-        color: #000;
+        color: #ffffff;
         border: none;
         width: 40px;
         height: 40px;
@@ -622,18 +623,18 @@ export default function CuponsPage() {
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         transition: all 0.3s ease;
       }
 
       .modal-close:hover {
         transform: rotate(90deg) scale(1.1);
-        box-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
       }
 
       .modal-content h2 {
         color: var(--accent);
-        text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+        text-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
         margin-top: 0;
       }
 
@@ -645,18 +646,18 @@ export default function CuponsPage() {
       }
 
       .modal-content p, .modal-content ul {
-        color: #e0ffe0;
+        color: #000000;
         line-height: 1.8;
         font-size: 14px;
       }
 
       .modal-content p strong {
-        color: #fff;
+        color: #000000;
       }
 
       .modal-content ul {
         margin-left: 20px;
-        background: rgba(0, 255, 65, 0.05);
+        background: rgba(0, 0, 0, 0.05);
         padding: 12px 12px 12px 32px;
         border-radius: 8px;
         border-left: 3px solid var(--accent);
@@ -664,7 +665,7 @@ export default function CuponsPage() {
 
       .modal-content li {
         margin-bottom: 8px;
-        color: #d0ffd0;
+        color: #000000;
       }
 
       .modal-content::-webkit-scrollbar {
@@ -773,6 +774,99 @@ export default function CuponsPage() {
         }
         100% {
           opacity: 0;
+        }
+      }
+
+      /* Loading Screen */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #818181 0%, #ffffff 76.1%, #7179cf 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        animation: fadeOut 0.5s ease-out 1.5s forwards;
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          pointer-events: none;
+        }
+      }
+
+      .loading-logo {
+        font-size: 64px;
+        font-weight: 900;
+        color: #000000;
+        letter-spacing: 4px;
+        animation: slideInScale 0.8s ease-out;
+      }
+
+      @keyframes slideInScale {
+        0% {
+          transform: translateY(-50px) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      .loading-text {
+        font-size: 18px;
+        color: #333333;
+        margin-top: 20px;
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+      }
+
+      @keyframes fadeInUp {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .loading-dots {
+        display: flex;
+        gap: 8px;
+        margin-top: 30px;
+      }
+
+      .loading-dot {
+        width: 12px;
+        height: 12px;
+        background: #000000;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out both;
+      }
+
+      .loading-dot:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      .loading-dot:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+
+      @keyframes bounce {
+        0%, 80%, 100% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
         }
       }
     `
@@ -926,6 +1020,11 @@ export default function CuponsPage() {
     initSniperCursor()
     createParticles()
 
+    // Remover loading após 2 segundos
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+
     // Event listeners
     document.getElementById('search')?.addEventListener('input', filterCoupons)
     
@@ -1044,14 +1143,28 @@ export default function CuponsPage() {
   }
 
   return (
-    <div className="wrap">
-      <div className="container" role="main" aria-labelledby="site-title">
+    <>
+      {/* Loading Screen */}
+      {loading && (
+        <div className="loading-screen">
+          <div className="loading-logo">EASY CUPONS</div>
+          <div className="loading-text">Cupons e Promoções para Jogos</div>
+          <div className="loading-dots">
+            <div className="loading-dot"></div>
+            <div className="loading-dot"></div>
+            <div className="loading-dot"></div>
+          </div>
+        </div>
+      )}
+
+      <div className="wrap">
+        <div className="container" role="main" aria-labelledby="site-title">
         <header>
           <div className="brand">
-            <div className="logo" aria-hidden="true">CG</div>
+            <div className="logo" aria-hidden="true">EC</div>
             <div>
-              <h1 id="site-title">Gaming Store</h1>
-              <p className="lead">Cupons verificados • dicas seguras para conseguir diamantes no Free Fire</p>
+              <h1 id="site-title">EASY CUPONS</h1>
+              <p className="lead">Cupons verificados e promoções para jogos online • Recargas com desconto</p>
             </div>
           </div>
           <div className="actions">
@@ -1072,12 +1185,12 @@ export default function CuponsPage() {
               </div>
 
               <div className="coupon-list" id="couponList">
-                <article className="coupon" data-code="COOPERSAM10" data-valid="Até 2025-12-31" data-store="Coopersam" data-tags="cooperativa,bonus">
+                <article className="coupon" data-code="GAME10" data-valid="Até 2025-12-31" data-store="Gaming" data-tags="gaming,bonus">
                   <div className="left">
-                    <div className="chip">Coopersam</div>
+                    <div className="chip">Gaming</div>
                     <div>
                       <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">COOPERSAM10</strong>
+                        <strong className="coupon-code">GAME10</strong>
                         <span className="muted"> — 10% bônus</span>
                       </div>
                       <div className="meta small">Validade: <span className="muted">Até 31 Dez 2025</span></div>
@@ -1088,12 +1201,12 @@ export default function CuponsPage() {
                   </div>
                 </article>
 
-                <article className="coupon" data-code="GAMING2025" data-valid="Até 2025-11-30" data-store="Coopersam" data-tags="gaming,promo">
+                <article className="coupon" data-code="PROMO2025" data-valid="Até 2025-11-30" data-store="Gaming" data-tags="gaming,promo">
                   <div className="left">
                     <div className="chip">Exclusivo</div>
                     <div>
                       <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">GAMING2025</strong>
+                        <strong className="coupon-code">PROMO2025</strong>
                         <span className="muted"> — bônus especial</span>
                       </div>
                       <div className="meta small">Validade: <span className="muted">30 Nov 2025</span></div>
@@ -1104,12 +1217,12 @@ export default function CuponsPage() {
                   </div>
                 </article>
 
-                <article className="coupon" data-code="FREEFIRE15" data-valid="Até 2025-12-15" data-store="Coopersam" data-tags="freefire,diamantes">
+                <article className="coupon" data-code="FIRE15" data-valid="Até 2025-12-15" data-store="Gaming" data-tags="freefire,diamantes">
                   <div className="left">
                     <div className="chip">Free Fire</div>
                     <div>
                       <div style={{display:'flex', gap:'8px', alignItems:'center'}}>
-                        <strong className="coupon-code">FREEFIRE15</strong>
+                        <strong className="coupon-code">FIRE15</strong>
                         <span className="muted"> — 15% de desconto</span>
                       </div>
                       <div className="meta small">Validade: <span className="muted">15 Dez 2025</span></div>
@@ -1130,7 +1243,7 @@ export default function CuponsPage() {
             <section className="card" style={{marginTop:'16px'}}>
               <h2 style={{margin:'0 0 12px 0'}}>Sobre Nossos Serviços</h2>
               <p className="small" style={{lineHeight:'1.8'}}>
-                A <strong>Gaming Store</strong> é uma plataforma independente especializada em <strong>cupons e promoções para jogos online</strong>. 
+                A <strong>EASY CUPONS</strong> é uma plataforma independente especializada em <strong>cupons e promoções para jogos online</strong>. 
                 Trabalhamos de forma autônoma, sem vínculo direto com desenvolvedoras ou publishers de jogos.
               </p>
               <p className="small" style={{lineHeight:'1.8', marginTop:'12px'}}>
@@ -1144,22 +1257,22 @@ export default function CuponsPage() {
               <p className="small" style={{marginBottom:'12px'}}>Oferecemos cupons e promoções para diversos títulos populares:</p>
               
               <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'10px'}}>
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
+                <div style={{padding:'12px', background:'rgba(0,0,0,0.03)', borderRadius:'8px', border:'1px solid rgba(0,0,0,0.1)'}}>
                   <strong style={{color:'var(--accent)'}}>Battle Royale</strong>
                   <div className="small" style={{marginTop:'4px'}}>Free Fire, PUBG Mobile, Fortnite, Apex Legends</div>
                 </div>
                 
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
+                <div style={{padding:'12px', background:'rgba(0,0,0,0.03)', borderRadius:'8px', border:'1px solid rgba(0,0,0,0.1)'}}>
                   <strong style={{color:'var(--accent)'}}>MOBA</strong>
                   <div className="small" style={{marginTop:'4px'}}>Mobile Legends, League of Legends, Arena of Valor</div>
                 </div>
                 
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
+                <div style={{padding:'12px', background:'rgba(0,0,0,0.03)', borderRadius:'8px', border:'1px solid rgba(0,0,0,0.1)'}}>
                   <strong style={{color:'var(--accent)'}}>RPG & MMO</strong>
                   <div className="small" style={{marginTop:'4px'}}>Genshin Impact, Ragnarok, Black Desert</div>
                 </div>
                 
-                <div style={{padding:'12px', background:'rgba(0,255,65,0.05)', borderRadius:'8px', border:'1px solid rgba(0,255,65,0.15)'}}>
+                <div style={{padding:'12px', background:'rgba(0,0,0,0.03)', borderRadius:'8px', border:'1px solid rgba(0,0,0,0.1)'}}>
                   <strong style={{color:'var(--accent)'}}>Outros Títulos</strong>
                   <div className="small" style={{marginTop:'4px'}}>Roblox, Minecraft, Valorant, CS:GO</div>
                 </div>
@@ -1179,13 +1292,13 @@ export default function CuponsPage() {
                     minWidth:'32px', 
                     height:'32px', 
                     background:'var(--accent)', 
-                    color:'#000', 
+                    color:'#ffffff', 
                     borderRadius:'50%', 
                     display:'flex', 
                     alignItems:'center', 
                     justifyContent:'center',
                     fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
+                    boxShadow:'0 0 15px rgba(0,0,0,0.2)'
                   }}>1</div>
                   <div>
                     <strong>Parcerias com Plataformas</strong>
@@ -1200,13 +1313,13 @@ export default function CuponsPage() {
                     minWidth:'32px', 
                     height:'32px', 
                     background:'var(--accent)', 
-                    color:'#000', 
+                    color:'#ffffff', 
                     borderRadius:'50%', 
                     display:'flex', 
                     alignItems:'center', 
                     justifyContent:'center',
                     fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
+                    boxShadow:'0 0 15px rgba(0,0,0,0.2)'
                   }}>2</div>
                   <div>
                     <strong>Verificação e Validação</strong>
@@ -1221,13 +1334,13 @@ export default function CuponsPage() {
                     minWidth:'32px', 
                     height:'32px', 
                     background:'var(--accent)', 
-                    color:'#000', 
+                    color:'#ffffff', 
                     borderRadius:'50%', 
                     display:'flex', 
                     alignItems:'center', 
                     justifyContent:'center',
                     fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
+                    boxShadow:'0 0 15px rgba(0,0,0,0.2)'
                   }}>3</div>
                   <div>
                     <strong>Uso Seguro</strong>
@@ -1242,13 +1355,13 @@ export default function CuponsPage() {
                     minWidth:'32px', 
                     height:'32px', 
                     background:'var(--accent)', 
-                    color:'#000', 
+                    color:'#ffffff', 
                     borderRadius:'50%', 
                     display:'flex', 
                     alignItems:'center', 
                     justifyContent:'center',
                     fontWeight:'700',
-                    boxShadow:'0 0 15px rgba(0,255,65,0.5)'
+                    boxShadow:'0 0 15px rgba(0,0,0,0.2)'
                   }}>4</div>
                   <div>
                     <strong>Suporte Contínuo</strong>
@@ -1265,22 +1378,22 @@ export default function CuponsPage() {
               <p className="small" style={{color:'var(--muted)'}}>Conteúdos educativos sobre gaming e recargas seguras.</p>
 
               <div style={{display:'flex', flexDirection:'column', gap:'12px', marginTop:'12px'}}>
-                <a href="#" onClick={(e) => openModal('identify', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', transition:'all 0.3s', cursor:'pointer'}}>
+                <a href="#" onClick={(e) => openModal('identify', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,0,0,0.1)', borderRadius:'10px', background:'rgba(0,0,0,0.02)', transition:'all 0.3s', cursor:'pointer'}}>
                   <strong>Como Identificar Cupons Legítimos</strong>
                   <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Aprenda a diferenciar ofertas reais de golpes e fraudes online.</div>
                 </a>
 
-                <a href="#" onClick={(e) => openModal('security', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
+                <a href="#" onClick={(e) => openModal('security', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,0,0,0.1)', borderRadius:'10px', background:'rgba(0,0,0,0.02)', cursor:'pointer'}}>
                   <strong>Melhores Práticas de Segurança</strong>
                   <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Proteja sua conta e dados pessoais ao fazer recargas online.</div>
                 </a>
 
-                <a href="#" onClick={(e) => openModal('events', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
+                <a href="#" onClick={(e) => openModal('events', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,0,0,0.1)', borderRadius:'10px', background:'rgba(0,0,0,0.02)', cursor:'pointer'}}>
                   <strong>Promoções e Eventos Oficiais</strong>
                   <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Fique por dentro dos eventos oficiais dos jogos e aproveite bônus extras.</div>
                 </a>
 
-                <a href="#" onClick={(e) => openModal('conditions', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,255,65,0.15)', borderRadius:'10px', background:'rgba(0,255,65,0.02)', cursor:'pointer'}}>
+                <a href="#" onClick={(e) => openModal('conditions', e)} style={{display:'block', padding:'14px', border:'1px solid rgba(0,0,0,0.1)', borderRadius:'10px', background:'rgba(0,0,0,0.02)', cursor:'pointer'}}>
                   <strong>Entendendo Termos e Condições</strong>
                   <div className="small" style={{color:'var(--muted)', marginTop:'4px'}}>Saiba interpretar as regras de uso dos cupons e evite problemas.</div>
                 </a>
@@ -1292,7 +1405,7 @@ export default function CuponsPage() {
             <div className="card">
               <h3 style={{margin:'0 0 8px 0'}}>Quem Somos</h3>
               <p className="small muted">
-                A <strong>Gaming Store</strong> é operada pela
+                A <strong>EASY CUPONS</strong> é operada pela
                 <strong> TICUPOL INDUSTRIA E COMERCIO LTDA</strong> —
                 <strong> CNPJ 58.041.030/0001-28</strong>, empresa estabelecida no mercado.
                 <br /><br />
@@ -1350,7 +1463,7 @@ export default function CuponsPage() {
 
         <footer>
           <div>
-            © <strong>Gaming Store</strong> — Operado por
+            © <strong>EASY CUPONS</strong> — Operado por
             <strong> TICUPOL INDUSTRIA E COMERCIO LTDA</strong> (CNPJ: 58.041.030/0001-28)
           </div>
           <div className="small muted" style={{marginTop:'4px'}}>
@@ -1360,12 +1473,12 @@ export default function CuponsPage() {
           <div className="small muted" style={{
             marginTop:'12px', 
             padding:'12px', 
-            background:'rgba(0,255,65,0.05)', 
+            background:'rgba(0,0,0,0.03)', 
             borderRadius:'8px',
-            border:'1px solid rgba(0,255,65,0.1)',
+            border:'1px solid rgba(0,0,0,0.08)',
             lineHeight:'1.6'
           }}>
-            <strong style={{color:'var(--accent)'}}>Aviso Legal:</strong> A Gaming Store é uma plataforma independente de divulgação de cupons e promoções. 
+            <strong style={{color:'var(--accent)'}}>Aviso Legal:</strong> A EASY CUPONS é uma plataforma independente de divulgação de cupons e promoções. 
             Não somos afiliados, patrocinados, endossados ou de qualquer forma oficialmente conectados com as empresas desenvolvedoras dos jogos mencionados 
             (incluindo mas não limitado a Garena, Riot Games, Epic Games, Activision, Tencent, miHoYo, Roblox Corporation, Mojang Studios, entre outras). 
             Todos os nomes de produtos, logotipos e marcas são propriedade de seus respectivos donos. O uso de qualquer nome comercial ou marca registrada 
@@ -1636,7 +1749,7 @@ export default function CuponsPage() {
                 <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
                 
                 <h3>1. Aceitação dos Termos</h3>
-                <p>Ao acessar e usar o site Gaming Store, você concorda com estes termos e condições.</p>
+                <p>Ao acessar e usar o site EASY CUPONS, você concorda com estes termos e condições.</p>
 
                 <h3>2. Sobre o Serviço</h3>
                 <p>A TICUPOL oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
@@ -1697,6 +1810,7 @@ export default function CuponsPage() {
           </button>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
