@@ -4,12 +4,15 @@ import { useEffect } from 'react'
 
 export function DevToolsBlocker() {
   useEffect(() => {
-    // Verificar se está em produção
+    // Verificar se está em produção E se não é localhost
     const isProduction = process.env.NODE_ENV === 'production'
+    const isLocalhost = typeof window !== 'undefined' && 
+                        (window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1')
     
-    // Em desenvolvimento, não bloquear (para facilitar debug)
-    if (!isProduction) {
-      console.log('[DevTools] Proteção desativada em desenvolvimento')
+    // Em desenvolvimento OU localhost, não bloquear (para facilitar debug)
+    if (!isProduction || isLocalhost) {
+      console.log('[DevTools] Proteção desativada em desenvolvimento/localhost')
       return
     }
     

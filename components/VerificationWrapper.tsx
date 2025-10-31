@@ -20,13 +20,21 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
       return
     }
 
-    // Verificar se está na rota / (white page) ou /cupons - bypass verificação
+    // ============================================
+    // 🔒 VERIFICAÇÃO DE ROTA /cupons (White Page)
+    // ============================================
     const currentPath = window.location.pathname
-    if (currentPath === '/' || currentPath.startsWith('/cupons')) {
+    
+    if (currentPath.startsWith('/cupons')) {
+      console.log('🚫 [VerificationWrapper] Rota /cupons - ACESSO BLOQUEADO (White Page)')
       setIsVerified(true)
       setIsLoading(false)
       return
     }
+    
+    // ============================================
+    // ✅ Rota / - EXIGE verificação de usuário
+    // ============================================
 
     // Timeout de segurança para evitar loading infinito
     const safetyTimeout = setTimeout(() => {

@@ -1,0 +1,111 @@
+═══════════════════════════════════════════════════════════════════
+📋 INSTRUÇÕES - WHITEPAGE/SUCESSO/INDEX.HTML
+═══════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ WEBHOOK - QUANDO RECEBER STATUS=PAID
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Redirecionar para:
+whitepage/sucesso/index.html?transactionId=ABC123&amount=5000&playerName=João&itemValue=100&game=freefire
+
+📌 PARÂMETROS OBRIGATÓRIOS:
+   - transactionId = ID da transação
+   - amount = Valor em centavos (5000 = R$ 50,00)
+   - playerName = Nome do jogador
+   - itemValue = Quantidade de diamantes/coins
+   - game = Nome do jogo (freefire, deltaforce, etc)
+
+⚠️ IMPORTANTE: Usar meta no-referrer para não mostrar de onde veio!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2️⃣ CÓDIGO DO WEBHOOK (REDIRECIONAR SEM REFERER)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Quando receber status=paid, retornar este HTML:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="refresh" content="0;url=whitepage/sucesso/index.html?transactionId=ABC123&amount=5000&playerName=João&itemValue=100&game=freefire">
+</head>
+<body>
+  <p>Processando pagamento...</p>
+</body>
+</html>
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3️⃣ CRIAR ARQUIVO: whitepage/sucesso/index.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Local: whitepage/sucesso/index.html
+
+Conteúdo: (VER CÓDIGO COMPLETO NO ARQUIVO HTML CRIADO)
+
+O QUE O index.html FAZ:
+✅ Recebe os parâmetros da URL
+✅ Mostra página de sucesso bonita
+✅ Dispara conversão Google Ads automaticamente
+✅ NÃO mostra referer (porque usamos meta no-referrer)
+✅ Exibe informações da compra
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4️⃣ EXEMPLO COMPLETO DE URL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+https://rurubux.shop/whitepage/sucesso/index.html?transactionId=TXN123456&amount=5000&playerName=João Silva&itemValue=100&game=freefire
+
+PARÂMETROS:
+- transactionId=TXN123456 (ID da transação)
+- amount=5000 (R$ 50,00 em centavos)
+- playerName=João Silva (nome do jogador)
+- itemValue=100 (100 diamantes)
+- game=freefire (jogo)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5️⃣ ESTRUTURA DE PASTAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+rurubux.shop/
+├── whitepage/
+│   └── sucesso/
+│       └── index.html  ← CRIAR ESTE ARQUIVO
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6️⃣ CONFIGURAÇÃO GOOGLE ADS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+No index.html, substituir:
+- AW-XXXXXXXXXX → Seu Google Ads ID
+- CONVERSION_LABEL → Seu label de conversão
+
+Exemplo:
+gtag('event', 'conversion', {
+  'send_to': 'AW-17683862692/wKeVCK6GirUbEKSpqfBB',
+  'value': valorEmReais,
+  'currency': 'BRL',
+  'transaction_id': transactionId
+});
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7️⃣ CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Criar pasta whitepage/sucesso/
+[ ] Criar arquivo index.html
+[ ] Configurar Google Ads ID e Conversion Label
+[ ] Testar com URL de exemplo
+[ ] Webhook redireciona com meta no-referrer
+[ ] Verificar se conversão dispara no Google Ads
+
+
+═══════════════════════════════════════════════════════════════════
+✅ PRONTO PARA IMPLEMENTAR!
+═══════════════════════════════════════════════════════════════════

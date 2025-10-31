@@ -180,71 +180,145 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
   if (step === 'loading') {
     return (
-      <div className="fixed inset-0 z-[9999] bg-gray-100" style={{
-        backgroundImage: `
-          radial-gradient(circle at 20% 30%, rgba(229, 231, 235, 0.8) 0%, transparent 50%),
-          radial-gradient(circle at 70% 20%, rgba(243, 244, 246, 0.6) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(229, 231, 235, 0.7) 0%, transparent 60%),
-          radial-gradient(circle at 30% 90%, rgba(243, 244, 246, 0.5) 0%, transparent 45%)
-        `
-      }}>
-        <div className="flex items-center justify-center min-h-screen p-4">
-          <div className="text-center text-gray-800">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-500 border-t-transparent mb-4"></div>
-            <h2 className="text-xl font-bold mb-2 text-gray-900">Usuário Verificado!</h2>
-            <p className="text-gray-600">Entrando no site como usuário logado...</p>
+      <div className="fixed inset-0 z-[9999] bg-black overflow-hidden">
+        {/* Raios de fundo animados */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20"></div>
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70"
+              style={{
+                width: `${Math.random() * 60 + 40}%`,
+                left: `${Math.random() * 50}%`,
+                top: `${Math.random() * 100}%`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+                animation: `lightning ${Math.random() * 2 + 1}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="flex items-center justify-center min-h-screen p-4 relative z-10">
+          <div className="text-center">
+            {/* Círculo elétrico pulsante */}
+            <div className="relative inline-block mb-6">
+              <div className="w-24 h-24 rounded-full border-4 border-cyan-400 animate-ping absolute"></div>
+              <div className="w-24 h-24 rounded-full border-4 border-purple-500 animate-pulse"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-4xl">⚡</div>
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse">
+              Usuário Verificado!
+            </h2>
+            <p className="text-cyan-300">Entrando no site como usuário logado...</p>
           </div>
         </div>
+        
+        <style jsx>{`
+          @keyframes lightning {
+            0%, 100% { opacity: 0; transform: scaleX(0); }
+            50% { opacity: 1; transform: scaleX(1); }
+          }
+        `}</style>
       </div>
     )
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden">
-      {/* Animação de fundo - Partículas flutuantes */}
+    <div className="fixed inset-0 z-[9999] bg-black overflow-hidden">
+      {/* Grid elétrico de fundo */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-950 via-blue-950 to-black"></div>
+      
+      {/* Raios elétricos animados */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-red-500/10"
+            className="absolute bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
             style={{
-              width: `${Math.random() * 100 + 50}px`,
-              height: `${Math.random() * 100 + 50}px`,
+              width: `${Math.random() * 80 + 20}%`,
+              height: '2px',
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 10 + 10}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 5}s`
+              transform: `rotate(${Math.random() * 180 - 90}deg)`,
+              opacity: 0.6,
+              animation: `lightning-strike ${Math.random() * 3 + 2}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 3}s`,
+              boxShadow: '0 0 10px rgba(34, 211, 238, 0.8), 0 0 20px rgba(34, 211, 238, 0.4)'
             }}
           />
         ))}
       </div>
 
-      {/* Animação de ondas subindo */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-red-500/30 to-transparent animate-wave" />
-        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-blue-500/20 to-transparent animate-wave-slow" />
+      {/* Partículas elétricas flutuantes */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: `radial-gradient(circle, ${['#06b6d4', '#8b5cf6', '#ec4899'][Math.floor(Math.random() * 3)]} 0%, transparent 70%)`,
+              animation: `electric-float ${Math.random() * 8 + 5}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+              boxShadow: `0 0 ${Math.random() * 10 + 5}px currentColor`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Pulsos de energia do centro */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 animate-pulse-slow"></div>
+        <div className="absolute w-64 h-64 rounded-full bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-cyan-500/20 animate-ping-slow"></div>
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) translateX(0); }
-          25% { transform: translateY(-30px) translateX(20px); }
-          50% { transform: translateY(-60px) translateX(-20px); }
-          75% { transform: translateY(-30px) translateX(20px); }
+        @keyframes lightning-strike {
+          0%, 100% { opacity: 0; transform: scaleX(0) rotate(var(--rotation)); }
+          10% { opacity: 1; transform: scaleX(1) rotate(var(--rotation)); }
+          20% { opacity: 0; transform: scaleX(0.8) rotate(var(--rotation)); }
+          30% { opacity: 0.8; transform: scaleX(1) rotate(var(--rotation)); }
+          40%, 100% { opacity: 0; transform: scaleX(0) rotate(var(--rotation)); }
         }
-        @keyframes wave {
-          0% { transform: translateY(100%); }
-          100% { transform: translateY(-100%); }
+        @keyframes electric-float {
+          0%, 100% { 
+            transform: translate(0, 0) scale(1); 
+            opacity: 0.8;
+          }
+          25% { 
+            transform: translate(30px, -40px) scale(1.2); 
+            opacity: 1;
+          }
+          50% { 
+            transform: translate(-20px, -80px) scale(0.8); 
+            opacity: 0.6;
+          }
+          75% { 
+            transform: translate(40px, -40px) scale(1.1); 
+            opacity: 0.9;
+          }
         }
-        @keyframes wave-slow {
-          0% { transform: translateY(100%); }
-          100% { transform: translateY(-150%); }
+        @keyframes pulse-slow {
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.2); opacity: 0.5; }
         }
-        .animate-wave {
-          animation: wave 8s linear infinite;
+        @keyframes ping-slow {
+          0% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(1.5); opacity: 0.3; }
+          100% { transform: scale(2); opacity: 0; }
         }
-        .animate-wave-slow {
-          animation: wave-slow 12s linear infinite;
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+        .animate-ping-slow {
+          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
         }
       `}</style>
 
@@ -253,40 +327,51 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
           
           {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-red-500/30 p-8 text-center shadow-2xl animate-fade-in-up">
-              {/* Ícone animado */}
+            <div className="bg-gray-900/80 backdrop-blur-md rounded-2xl border border-cyan-400/30 p-8 text-center shadow-2xl shadow-cyan-500/10 animate-fade-in-up">
+              {/* Ícone profissional de raio */}
               <div className="mb-6 flex justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-red-500/20 rounded-full animate-ping" />
-                  <div className="relative bg-red-500/10 p-6 rounded-full border-2 border-red-500/50">
-                    <svg className="w-12 h-12 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <div className="absolute inset-0 bg-cyan-400/20 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+                  <div className="relative bg-gradient-to-br from-cyan-500/10 to-purple-500/10 p-8 rounded-full border border-cyan-400/40">
+                    <svg 
+                      className="w-16 h-16 text-cyan-400" 
+                      fill="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" />
                     </svg>
                   </div>
                 </div>
               </div>
 
               <div className="mb-6">
-                <h1 className="text-2xl font-bold mb-2 text-white">Verificação de Segurança</h1>
-                <p className="text-gray-400 text-sm">
+                <h1 className="text-3xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+                  Verificação de Segurança
+                </h1>
+                <p className="text-gray-300 text-sm">
                   Para sua proteção, precisamos verificar que você é um usuário real
                 </p>
               </div>
               
               <button
                 onClick={handleInitialCheck}
-                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50 hover:scale-105"
+                className="w-full bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-purple-500/30 hover:shadow-cyan-500/50 hover:scale-105 border border-cyan-400/20"
               >
-                Iniciar Verificação
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" />
+                  </svg>
+                  Iniciar Verificação
+                </span>
               </button>
             </div>
           )}
 
           {/* Tela de Termos */}
           {step === 'terms' && (
-            <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-2xl">
+            <div className="bg-gray-900/80 backdrop-blur-md rounded-2xl border border-purple-400/30 p-8 shadow-2xl shadow-purple-500/10">
               <div className="mb-6">
-                <h2 className="text-xl font-bold mb-4 text-gray-900">Termos de Uso e Política de Privacidade</h2>
+                <h2 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">Termos de Uso e Política de Privacidade</h2>
                 <div className="bg-gray-50 rounded-lg p-4 max-h-64 overflow-y-auto text-sm text-gray-700 leading-relaxed border">
                   
                   <div className="bg-red-50 border-l-4 border-red-500 p-3 mb-4">
@@ -340,23 +425,23 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
               </div>
 
               <div className="mb-4">
-                <label className="flex items-start text-sm text-gray-700">
+                <label className="flex items-start text-sm text-cyan-100">
                   <input
                     type="checkbox"
                     checked={accepted}
                     onChange={(e) => setAccepted(e.target.checked)}
-                    className="mr-3 w-5 h-5 text-red-600 rounded focus:ring-red-500 mt-0.5"
+                    className="mr-3 w-5 h-5 text-cyan-500 rounded focus:ring-cyan-500 mt-0.5 bg-gray-800 border-cyan-400"
                   />
                   <span>
                     Eu li e aceito os{' '}
-                    <span className="text-red-600 underline font-bold">
+                    <span className="text-cyan-400 underline font-bold">
                       Termos de Uso
                     </span>
                     {' '}e{' '}
-                    <span className="text-red-600 underline font-bold">
+                    <span className="text-cyan-400 underline font-bold">
                       Política de Privacidade
                     </span>, 
-                    e desejo ter acesso às <strong className="text-red-600">ofertas exclusivas</strong> para usuários verificados
+                    e desejo ter acesso às <strong className="text-pink-400">ofertas exclusivas</strong> para usuários verificados
                   </span>
                 </label>
               </div>
@@ -370,20 +455,20 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
               <div className="flex gap-3">
                 <button
                   onClick={() => setStep('initial')}
-                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-all duration-200 border"
+                  className="flex-1 bg-gray-800 hover:bg-gray-700 text-cyan-300 font-medium py-3 px-4 rounded-lg transition-all duration-200 border border-cyan-400/30 hover:border-cyan-400/50"
                 >
-                  Voltar
+                  ← Voltar
                 </button>
                 <button
                   onClick={handleAcceptTerms}
                   disabled={!accepted}
-                  className={`flex-1 font-bold py-2 px-4 rounded-lg transition-all duration-200 ${
+                  className={`flex-1 font-bold py-3 px-4 rounded-lg transition-all duration-300 ${
                     accepted
-                      ? 'bg-red-500 hover:bg-red-600 text-white'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-600 hover:via-pink-600 hover:to-cyan-600 text-white shadow-lg shadow-purple-500/50 hover:scale-105 border border-purple-400/30'
+                      : 'bg-gray-700 text-gray-500 cursor-not-allowed border border-gray-600'
                   }`}
                 >
-                  Continuar
+                  Continuar ⚡
                 </button>
               </div>
             </div>
@@ -391,24 +476,24 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela de Verificação */}
           {step === 'verification' && (
-            <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-2xl">
+            <div className="bg-gray-900/80 backdrop-blur-md rounded-2xl border border-cyan-400/30 p-8 shadow-2xl shadow-cyan-500/10">
               <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2 text-gray-900">Verificação de Usuário</h2>
-                <p className="text-gray-600 text-sm mb-4">
+                <h2 className="text-2xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">⚡ Verificação de Usuário</h2>
+                <p className="text-cyan-200 text-sm mb-4">
                   Insira seu ID de jogador para confirmar que você é um usuário real
                 </p>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-700">
-                      ID do Jogador * (apenas números)
+                    <label className="block text-sm font-medium mb-2 text-cyan-300">
+                      ⚡ ID do Jogador * (apenas números)
                     </label>
                     <input
                       type="text"
                       value={playerId}
                       onChange={(e) => setPlayerId(e.target.value.replace(/[^0-9]/g, ''))}
                       placeholder="Digite seu ID do jogo (ex: 5435431)"
-                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full px-4 py-3 bg-gray-800 border-2 border-cyan-400/50 rounded-lg text-cyan-100 placeholder-cyan-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                       disabled={isLoading}
                       maxLength={15}
                     />

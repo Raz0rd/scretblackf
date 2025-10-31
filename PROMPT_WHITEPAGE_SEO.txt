@@ -1,0 +1,376 @@
+═══════════════════════════════════════════════════════════════════════════════
+🎯 PROMPT PARA CRIAR WHITEPAGE INSTITUCIONAL 100% SEO PROFISSIONAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Crie um site institucional completo e profissional para uma empresa de recarga de jogos online, 
+focado em SEO e otimização para Google. O site deve ser 100% HTML/CSS/JS estático.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 INFORMAÇÕES DA EMPRESA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Nome: RuruBux - Centro Oficial de Recarga de Jogos
+Domínio: rurubux.shop
+Segmento: Recarga de diamantes e moedas para jogos mobile (Free Fire, Delta Force, etc)
+Público-alvo: Jogadores brasileiros de 13-35 anos
+Diferenciais: Entrega rápida, preços competitivos, suporte 24h, pagamento seguro
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 PALAVRAS-CHAVE PRINCIPAIS (SEO)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIMÁRIAS:
+- recarga de diamantes free fire
+- comprar diamantes free fire
+- recarga free fire barata
+- diamantes free fire oficial
+- recarga segura free fire
+- recarga delta force
+- comprar coins delta force
+- recarga de jogos online
+- loja oficial de recarga
+
+SECUNDÁRIAS:
+- como recarregar free fire
+- melhor site de recarga
+- recarga instantânea
+- diamantes baratos
+- recarga confiável
+- pagamento seguro pix
+- entrega rápida diamantes
+- suporte 24 horas
+- recarga automática
+- loja verificada
+
+LONG-TAIL:
+- onde comprar diamantes free fire com desconto
+- site confiável para recarregar free fire
+- recarga de diamantes com pix
+- melhor preço diamantes free fire
+- recarga free fire entrega imediata
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📄 ESTRUTURA DO SITE (PÁGINAS OBRIGATÓRIAS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. index.html (Homepage)
+   - Hero section com CTA
+   - Seção de jogos suportados
+   - Benefícios e diferenciais
+   - Depoimentos de clientes
+   - FAQ
+   - Selos de segurança
+   - Footer completo
+
+2. termos-de-uso.html
+   - Termos completos e profissionais
+   - Estrutura legal
+   - Última atualização
+
+3. politica-de-privacidade.html
+   - LGPD compliant
+   - Coleta de dados
+   - Uso de cookies
+   - Direitos do usuário
+
+4. politica-de-reembolso.html
+   - Condições de reembolso
+   - Prazos
+   - Processo
+
+5. como-funciona.html
+   - Passo a passo da recarga
+   - Tutorial com imagens
+   - Perguntas frequentes
+
+6. contato.html
+   - Formulário de contato
+   - Informações da empresa
+   - Horários de atendimento
+   - Redes sociais
+
+7. sobre.html
+   - História da empresa
+   - Missão, visão, valores
+   - Equipe
+   - Certificações
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 DESIGN E IDENTIDADE VISUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Cores principais:
+- Primária: #EF4444 (vermelho vibrante)
+- Secundária: #3B82F6 (azul confiança)
+- Accent: #10B981 (verde sucesso)
+- Neutro: #1F2937 (cinza escuro)
+- Background: #FFFFFF (branco limpo)
+
+Tipografia:
+- Títulos: Inter, Poppins ou Montserrat (bold)
+- Corpo: Inter ou Roboto (regular)
+- Tamanhos: 16px base, 48px+ para títulos
+
+Estilo:
+- Moderno e profissional
+- Clean e minimalista
+- Responsivo (mobile-first)
+- Animações suaves
+- Ícones SVG
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 OTIMIZAÇÕES SEO OBRIGATÓRIAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+META TAGS (em todas as páginas):
+✅ <title> único e descritivo (50-60 caracteres)
+✅ <meta name="description"> (150-160 caracteres)
+✅ <meta name="keywords">
+✅ <meta name="author" content="RuruBux">
+✅ <meta name="robots" content="index, follow">
+✅ <link rel="canonical">
+
+OPEN GRAPH (redes sociais):
+✅ og:title
+✅ og:description
+✅ og:image (1200x630px)
+✅ og:url
+✅ og:type
+✅ og:site_name
+
+TWITTER CARD:
+✅ twitter:card
+✅ twitter:title
+✅ twitter:description
+✅ twitter:image
+
+SCHEMA.ORG (JSON-LD):
+✅ Organization schema
+✅ WebSite schema
+✅ BreadcrumbList schema
+✅ FAQPage schema
+✅ Product schema (para cada jogo)
+
+ESTRUTURA HTML:
+✅ Heading hierarchy (H1 > H2 > H3)
+✅ Alt text em todas as imagens
+✅ Links internos relevantes
+✅ URLs amigáveis
+✅ Sitemap.xml
+✅ Robots.txt
+
+PERFORMANCE:
+✅ Imagens otimizadas (WebP)
+✅ CSS minificado
+✅ JS minificado
+✅ Lazy loading
+✅ Cache headers
+✅ Compressão GZIP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏆 ELEMENTOS DE CONFIANÇA (TRUST SIGNALS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SELOS DE SEGURANÇA:
+✅ SSL/HTTPS (cadeado verde)
+✅ Site Seguro
+✅ Pagamento Protegido
+✅ Dados Criptografados
+✅ LGPD Compliant
+✅ Empresa Verificada
+
+BADGES:
+✅ "Entrega em 5 minutos"
+✅ "Suporte 24/7"
+✅ "+10.000 clientes satisfeitos"
+✅ "Pagamento 100% seguro"
+✅ "Garantia de reembolso"
+✅ "Site oficial verificado"
+
+DEPOIMENTOS:
+✅ Mínimo 6 depoimentos reais
+✅ Com foto, nome e avaliação (5 estrelas)
+✅ Texto autêntico e específico
+
+ESTATÍSTICAS:
+✅ Número de clientes atendidos
+✅ Avaliação média (4.9/5.0)
+✅ Tempo médio de entrega
+✅ Taxa de satisfação
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 SEÇÕES DA HOMEPAGE (index.html)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. HEADER/NAVBAR
+   - Logo RuruBux
+   - Menu: Início | Como Funciona | Jogos | Contato
+   - Botão CTA: "Recarregar Agora"
+   - Ícones de redes sociais
+
+2. HERO SECTION
+   - Título principal: "Recarga de Diamantes Free Fire Rápida e Segura"
+   - Subtítulo: "Entrega em até 5 minutos | Pagamento via PIX | Suporte 24h"
+   - CTA principal: "Recarregar Agora"
+   - CTA secundário: "Como Funciona"
+   - Imagem/ilustração de destaque
+
+3. JOGOS SUPORTADOS
+   - Cards dos jogos (Free Fire, Delta Force, etc)
+   - Ícone do jogo
+   - Nome
+   - Descrição breve
+   - Botão "Recarregar"
+
+4. BENEFÍCIOS/DIFERENCIAIS
+   - Grid 3x2 com ícones
+   - Entrega Rápida (5 min)
+   - Pagamento Seguro (SSL)
+   - Suporte 24/7
+   - Preços Competitivos
+   - Sem Taxas Ocultas
+   - Garantia de Reembolso
+
+5. COMO FUNCIONA (3 PASSOS)
+   - Passo 1: Escolha o jogo e valor
+   - Passo 2: Insira seu ID e pague
+   - Passo 3: Receba instantaneamente
+   - Com ícones e ilustrações
+
+6. DEPOIMENTOS
+   - Carrossel ou grid de depoimentos
+   - Foto, nome, avaliação, texto
+   - Mínimo 6 depoimentos
+
+7. FAQ (Perguntas Frequentes)
+   - Accordion com 8-10 perguntas
+   - Respostas completas
+   - Schema.org FAQPage
+
+8. SELOS DE CONFIANÇA
+   - Barra com selos de segurança
+   - SSL, Pagamento Seguro, LGPD, etc
+
+9. CTA FINAL
+   - "Pronto para recarregar?"
+   - Botão grande: "Começar Agora"
+
+10. FOOTER
+    - Logo e descrição
+    - Links úteis (Termos, Privacidade, Contato)
+    - Redes sociais
+    - Formas de pagamento aceitas
+    - Copyright
+    - Endereço (se houver)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 CONTEÚDO EXEMPLO (HOMEPAGE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TITLE:
+"RuruBux - Recarga de Diamantes Free Fire Rápida e Segura | Site Oficial"
+
+META DESCRIPTION:
+"Recarga de diamantes Free Fire e Delta Force com entrega em 5 minutos. Pagamento seguro via PIX, suporte 24h e garantia de reembolso. Site oficial verificado."
+
+H1:
+"Recarga de Diamantes Free Fire Rápida, Segura e Confiável"
+
+SUBTÍTULO:
+"A RuruBux é o centro oficial de recarga para jogos mobile. Entrega instantânea, preços competitivos e suporte 24 horas. Mais de 10.000 jogadores confiam em nós!"
+
+BENEFÍCIOS:
+- ⚡ Entrega em até 5 minutos
+- 🔒 Pagamento 100% seguro via PIX
+- 💬 Suporte 24 horas por dia
+- 💰 Melhores preços do mercado
+- ✅ Sem taxas ocultas
+- 🔄 Garantia de reembolso
+
+FAQ EXEMPLO:
+1. Como funciona a recarga?
+2. Quanto tempo demora para receber?
+3. Quais formas de pagamento aceitam?
+4. É seguro fornecer meu ID?
+5. Posso pedir reembolso?
+6. Vocês são site oficial?
+7. Tem suporte em português?
+8. Qual o valor mínimo de recarga?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛠️ TECNOLOGIAS E FERRAMENTAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HTML5 semântico
+CSS3 moderno (Flexbox, Grid)
+JavaScript vanilla (sem frameworks)
+TailwindCSS ou Bootstrap (opcional)
+Font Awesome ou Lucide Icons
+Google Fonts (Inter, Poppins)
+AOS (Animate On Scroll)
+Swiper.js (para carrosséis)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CHECKLIST FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PÁGINAS:
+[ ] index.html (homepage completa)
+[ ] termos-de-uso.html
+[ ] politica-de-privacidade.html
+[ ] politica-de-reembolso.html
+[ ] como-funciona.html
+[ ] contato.html
+[ ] sobre.html
+
+SEO:
+[ ] Meta tags em todas as páginas
+[ ] Schema.org JSON-LD
+[ ] Sitemap.xml
+[ ] Robots.txt
+[ ] Alt text em imagens
+[ ] URLs amigáveis
+[ ] Links internos
+
+CONFIANÇA:
+[ ] Selos de segurança
+[ ] Depoimentos reais
+[ ] FAQ completo
+[ ] Políticas legais
+[ ] Informações de contato
+
+PERFORMANCE:
+[ ] Imagens otimizadas
+[ ] CSS/JS minificado
+[ ] Lazy loading
+[ ] Mobile responsive
+[ ] Velocidade < 3s
+
+CONTEÚDO:
+[ ] Palavras-chave integradas naturalmente
+[ ] Textos originais (não copiados)
+[ ] CTAs claros
+[ ] Informações completas
+[ ] Sem erros ortográficos
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 OBJETIVO FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Criar um site institucional que:
+✅ Ranqueie bem no Google para palavras-chave do nicho
+✅ Transmita confiança e profissionalismo
+✅ Converta visitantes em clientes
+✅ Seja 100% responsivo e rápido
+✅ Cumpra todas as normas legais (LGPD, termos, etc)
+✅ Seja bem visto por bots do Google (SEO perfeito)
+
+═══════════════════════════════════════════════════════════════════════════════
+✅ USE ESTE PROMPT COM CLAUDE, CHATGPT OU QUALQUER IA DE CÓDIGO
+═══════════════════════════════════════════════════════════════════════════════
+
+Copie todo este prompt e cole na IA de sua escolha. Ela criará um site completo,
+profissional e otimizado para SEO, pronto para ser usado como whitepage.
+
+IMPORTANTE: Peça para a IA gerar TODO o código de uma vez, incluindo todas as 
+páginas, CSS, JavaScript e arquivos auxiliares (sitemap.xml, robots.txt).

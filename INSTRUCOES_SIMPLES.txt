@@ -1,0 +1,104 @@
+═══════════════════════════════════════════════════════════════════
+📋 INSTRUÇÕES SIMPLES - PRESELL E PÁGINA DE SUCESSO
+═══════════════════════════════════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ PRESELL - O QUE ENVIAR PARA RURUBUX.SHOP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Você precisa enviar TODOS esses parâmetros UTM na URL:
+
+✅ OBRIGATÓRIOS:
+   - utm_source=google
+   - utm_campaign=NOME_DA_CAMPANHA
+   - utm_medium=cpc
+   - utm_content=781467470329
+   - utm_term=PALAVRA_CHAVE
+   - keyword=PALAVRA_CHAVE
+   - device=desktop (ou mobile)
+   - network=search (ou display)
+   - gad_source=1
+   - gad_campaignid=ID_DA_CAMPANHA
+   - gbraid=GBRAID_VALUE
+
+📌 EXEMPLO DE URL COMPLETA:
+https://rurubux.shop/?utm_source=google&utm_campaign=black_friday&utm_medium=cpc&utm_content=781467470329&utm_term=diamantes&keyword=diamantes&device=desktop&network=search&gad_source=1&gad_campaignid=12345&gbraid=abc123
+
+⚠️ SE FALTAR ALGUM PARÂMETRO:
+   → Usuário será redirecionado DE VOLTA para a presell
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2️⃣ PÁGINA DE SUCESSO - O QUE VOCÊ PRECISA CRIAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 ROTA: /sucesso
+
+📥 PARÂMETROS QUE VAI RECEBER:
+   - transactionId (obrigatório) = ID da transação
+   - amount (obrigatório) = Valor pago
+   - currency (opcional) = Moeda (padrão: BRL)
+
+📌 EXEMPLO DE URL:
+https://rurubux.shop/sucesso?transactionId=TXN123456&amount=50.00&currency=BRL
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3️⃣ COMO BLOQUEAR O REFERER (NÃO MOSTRAR DE ONDE VEIO)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Quando você redirecionar do webhook para /sucesso, use este HTML:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="refresh" content="0;url=https://rurubux.shop/sucesso?transactionId=XXX&amount=YYY">
+</head>
+<body>
+  <p>Processando pagamento...</p>
+</body>
+</html>
+
+🔒 ISSO GARANTE:
+   ✅ Não envia referer para a página /sucesso
+   ✅ Google Ads não vê de onde veio
+   ✅ Apenas recebe os dados da conversão
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4️⃣ RESUMO DO FLUXO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Google Ads → Presell (com UTMs)
+2. Presell → Rurubux.shop (envia TODOS os UTMs)
+3. Usuário faz pagamento
+4. Webhook recebe status=paid
+5. Webhook → /sucesso (COM meta no-referrer)
+6. Página /sucesso dispara conversão Google Ads
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5️⃣ CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRESELL:
+[ ] Captura UTMs do Google Ads
+[ ] Envia TODOS os 11 parâmetros para rurubux.shop
+[ ] Testa se está enviando corretamente
+
+PÁGINA /sucesso:
+[ ] Criar rota /sucesso
+[ ] Receber transactionId e amount
+[ ] Disparar conversão Google Ads
+[ ] Mostrar mensagem de sucesso
+
+WEBHOOK:
+[ ] Quando status=paid, redirecionar para /sucesso
+[ ] Usar meta no-referrer
+[ ] Enviar transactionId e amount na URL
+
+
+═══════════════════════════════════════════════════════════════════
+✅ PRONTO! ESSAS SÃO AS INSTRUÇÕES SIMPLES
+═══════════════════════════════════════════════════════════════════
