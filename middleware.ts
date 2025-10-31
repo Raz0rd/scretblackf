@@ -8,23 +8,6 @@ const CLOAKER_CONFIG = {
   offerPagePath: '/quest'  // Página de oferta
 }
 
-// Função para verificar se verificação de referer está ativa
-async function isRefererCheckEnabled(): Promise<boolean> {
-  try {
-    const settingsPath = require('path').join(process.cwd(), '.analytics-settings.json')
-    const fs = require('fs')
-    
-    if (fs.existsSync(settingsPath)) {
-      const data = fs.readFileSync(settingsPath, 'utf-8')
-      const settings = JSON.parse(data)
-      return settings.refererCheckEnabled === true
-    }
-  } catch (error) {
-    // Se houver erro, retorna false (desativado)
-  }
-  return false
-}
-
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   
