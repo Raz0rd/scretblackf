@@ -74,23 +74,18 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
-    // Carregar lista de referers permitidos
-    let allowedReferers: string[] = []
-    try {
-      const fs = require('fs')
-      const path = require('path')
-      const refererListPath = path.join(process.cwd(), 'allowed-referers.json')
-      
-      if (fs.existsSync(refererListPath)) {
-        const data = fs.readFileSync(refererListPath, 'utf-8')
-        const config = JSON.parse(data)
-        allowedReferers = config.referers || []
-      }
-    } catch (error) {
-      console.error('❌ [Referer] Erro ao carregar whitelist:', error)
-      // Se erro ao carregar, bloquear acesso
-      allowedReferers = []
-    }
+    // Log do referer recebido (para debug)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('🔍 [REFERER CHECK] Nova tentativa de acesso')
+    console.log('🔗 Referer recebido:', referer || '(vazio)')
+    console.log('🌐 IP:', ip)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+    
+    // Lista de referers permitidos (hardcoded para Edge Runtime)
+    // IMPORTANTE: Manter sincronizado com allowed-referers.json
+    const allowedReferers: string[] = [
+      'recarga-jogoff.shop'
+    ]
     
     // Se não tem referer, BLOQUEAR
     if (!referer) {
@@ -98,7 +93,7 @@ export async function middleware(request: NextRequest) {
       
       if (!whitepageUrl) {
         console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
-        return NextResponse.redirect(new URL('/cupons', request.url))
+        return NextResponse.redirect(new URL('/cupons', request.url), 302)
       }
       
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -111,7 +106,7 @@ export async function middleware(request: NextRequest) {
       console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
-      return NextResponse.redirect(whitepageUrl)
+      return NextResponse.redirect(whitepageUrl, 302)
     }
     
     // Verificar se referer está na whitelist
@@ -125,7 +120,7 @@ export async function middleware(request: NextRequest) {
       
       if (!whitepageUrl) {
         console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
-        return NextResponse.redirect(new URL('/cupons', request.url))
+        return NextResponse.redirect(new URL('/cupons', request.url), 302)
       }
       
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -139,7 +134,7 @@ export async function middleware(request: NextRequest) {
       console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
-      return NextResponse.redirect(whitepageUrl)
+      return NextResponse.redirect(whitepageUrl, 302)
     }
     
     // Referer AUTORIZADO - Verificar UTMs obrigatórios do Google
