@@ -267,23 +267,35 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     
     console.error("❌ [Ezzpag] ERROR:", response.status, errorData.message || errorText)
     
-    // Mapear erros para mensagens amigáveis
+    // Extrair mensagem de erro específica da Ezzpag
     let userMessage = 'Erro ao processar pagamento. Tente novamente.'
+    const ezzpagError = errorData.message || errorText
     
-    if (response.status === 400) {
-      if (errorData.message?.toLowerCase().includes('cpf')) {
+    // Verificar erros específicos da Ezzpag (422 retorna array de erros)
+    if (response.status === 422) {
+      if (ezzpagError.includes('customer.email is invalid')) {
+        userMessage = 'customer.email is invalid'
+      } else if (ezzpagError.includes('customer.phone is invalid')) {
+        userMessage = 'customer.phone is invalid'
+      } else if (ezzpagError.includes('customer.document is invalid')) {
+        userMessage = 'customer.document is invalid'
+      } else if (ezzpagError.includes('customer.name is invalid')) {
+        userMessage = 'customer.name is invalid'
+      } else {
+        userMessage = 'Dados incompletos ou inválidos. Verifique as informações.'
+      }
+    } else if (response.status === 400) {
+      if (ezzpagError.toLowerCase().includes('cpf')) {
         userMessage = 'CPF inválido. Por favor, verifique os dados e tente novamente.'
-      } else if (errorData.message?.toLowerCase().includes('phone')) {
-        userMessage = 'Telefone inválido. Por favor, verifique os dados.'
-      } else if (errorData.message?.toLowerCase().includes('email')) {
-        userMessage = 'E-mail inválido. Por favor, verifique os dados.'
+      } else if (ezzpagError.toLowerCase().includes('phone')) {
+        userMessage = 'customer.phone is invalid'
+      } else if (ezzpagError.toLowerCase().includes('email')) {
+        userMessage = 'customer.email is invalid'
       } else {
         userMessage = 'Dados inválidos. Por favor, verifique as informações.'
       }
     } else if (response.status === 401 || response.status === 403) {
       userMessage = 'Erro de autenticação. Entre em contato com o suporte.'
-    } else if (response.status === 422) {
-      userMessage = 'Dados incompletos ou inválidos. Verifique as informações.'
     } else if (response.status >= 500) {
       userMessage = 'Serviço temporariamente indisponível. Tente novamente em instantes.'
     }

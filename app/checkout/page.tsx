@@ -443,11 +443,60 @@ export default function CheckoutPage() {
         
       } else {
         const errorData = await response.json().catch(() => ({}))
-        const errorMessage = errorData.error || errorData.message || `Erro HTTP ${response.status}`
+        let errorMessage = errorData.error || errorData.message || `Erro HTTP ${response.status}`
+        let errorType: 'validation' | 'generic' | '404' = 'generic'
+        
+        // Mapear erros específicos da API Ezzpag e outros
+        if (errorMessage.includes('customer.email is invalid') || errorMessage.includes('email is invalid')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ E-mail Inválido\n\nPor favor, verifique seu e-mail com atenção:\n\n' +
+                        '✓ Deve conter @ (exemplo: seuemail@gmail.com)\n' +
+                        '✓ Não pode ter espaços\n' +
+                        '✓ Deve ter um domínio válido (.com, .br, etc)'
+        } else if (errorMessage.includes('customer.phone') || errorMessage.includes('phone is invalid')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ Telefone Inválido\n\nPor favor, verifique seu telefone:\n\n' +
+                        '✓ Deve incluir o DDD\n' +
+                        '✓ Formato: (11) 98765-4321\n' +
+                        '✓ Apenas números são aceitos'
+        } else if (errorMessage.includes('customer.document') || errorMessage.includes('document is invalid') || errorMessage.includes('CPF')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ CPF Inválido\n\nPor favor, verifique seu CPF:\n\n' +
+                        '✓ Deve ter 11 dígitos\n' +
+                        '✓ Apenas números\n' +
+                        '✓ CPF deve ser válido'
+        } else if (errorMessage.includes('customer.name') || errorMessage.includes('name is invalid')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ Nome Inválido\n\nPor favor, verifique seu nome:\n\n' +
+                        '✓ Digite seu nome completo\n' +
+                        '✓ Mínimo 2 palavras\n' +
+                        '✓ Sem números ou caracteres especiais'
+        } else if (errorMessage.includes('Dados incompletos') || errorMessage.includes('inválidos')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ Dados Incompletos\n\nPor favor, verifique se todos os campos foram preenchidos corretamente:\n\n' +
+                        '✓ Nome completo\n' +
+                        '✓ E-mail válido\n' +
+                        '✓ Telefone com DDD\n' +
+                        '✓ CPF válido'
+        } else if (errorMessage.includes('email') || errorMessage.includes('e-mail')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ E-mail Inválido\n\nPor favor, verifique seu e-mail com atenção:\n\n' +
+                        '✓ Deve conter @ (exemplo: seuemail@gmail.com)\n' +
+                        '✓ Não pode ter espaços\n' +
+                        '✓ Deve ter um domínio válido (.com, .br, etc)'
+        } else if (errorMessage.includes('telefone') || errorMessage.includes('phone')) {
+          errorType = 'validation'
+          errorMessage = '⚠️ Telefone Inválido\n\nPor favor, verifique seu telefone:\n\n' +
+                        '✓ Deve incluir o DDD\n' +
+                        '✓ Formato: (11) 98765-4321\n' +
+                        '✓ Apenas números são aceitos'
+        } else if (response.status === 404) {
+          errorType = '404'
+        }
         
         // Mostrar modal de erro ao invés de texto inline
         setErrorModalMessage(errorMessage)
-        setErrorModalType('generic')
+        setErrorModalType(errorType)
         setShowErrorModal(true)
         setShowPixInline(false)
       }
@@ -1360,8 +1409,24 @@ export default function CheckoutPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold text-white">Atenção</h3>
-                    <p className="text-white/70 text-sm">{errorModalMessage}</p>
+                    <h3 className="text-xl font-bold text-white">Atenção - Verifique os Dados</h3>
+                    <div className="text-left w-full">
+                      <p className="text-white/70 text-sm mb-4">
+                        {errorModalMessage.split('\n\n')[0]}
+                      </p>
+                      {errorModalMessage.includes('✓') && (
+                        <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
+                          <div className="space-y-2">
+                            {errorModalMessage.split('\n').filter(line => line.includes('✓')).map((line, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-sm text-white/80">
+                                <span className="text-orange-400">✓</span>
+                                <span>{line.replace('✓', '').trim()}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </>
                 ) : (
                   <>

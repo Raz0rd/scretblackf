@@ -1,5 +1,5 @@
 {
-  "totalAccess": 3114,
+  "totalAccess": 3338,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -24912,18 +24912,1810 @@
       "ip": "::1",
       "referer": "",
       "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:20.389Z",
+      "path": "/meus-pedidos",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:20.795Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:20.932Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:20.981Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.016Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.052Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.109Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.146Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870560355",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.194Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870560355",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:21.230Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:22.542Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:22.913Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.053Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.092Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.128Z",
+      "path": "/images/products/1060-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.164Z",
+      "path": "/images/products/2180-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.233Z",
+      "path": "/images/products/robux_1500.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.298Z",
+      "path": "/images/products/5600-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.338Z",
+      "path": "/images/products/robux_2700.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.375Z",
+      "path": "/images/products/robux-3600-o6_PR7Lu.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.412Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870562503",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.490Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870562503",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.529Z",
+      "path": "/images/products/robux-4500-CBGtdrYT.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.567Z",
+      "path": "/images/products/robux-10000-DH0988eb.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.639Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.694Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.765Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.806Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:23.843Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:24.959Z",
+      "path": "/produto/ff-calca",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.281Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.324Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.364Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.402Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.440Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.509Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.548Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870564919",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.603Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870564919",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.644Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870564919",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:29:25.710Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.198Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.376Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.529Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.567Z",
+      "path": "/images/products/1060-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.604Z",
+      "path": "/images/products/5600-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.653Z",
+      "path": "/images/products/robux_2700.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.690Z",
+      "path": "/images/products/robux_1500.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.727Z",
+      "path": "/images/products/2180-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.785Z",
+      "path": "/images/products/robux-3600-o6_PR7Lu.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.821Z",
+      "path": "/images/products/robux-4500-CBGtdrYT.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:29.858Z",
+      "path": "/images/products/robux-10000-DH0988eb.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:31.699Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:31.991Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.029Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.066Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.102Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.139Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.214Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.269Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870691661",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.306Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870691661",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.343Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:32.404Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:55.837Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.166Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.204Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.241Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.279Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.315Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.373Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.410Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870715802",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.463Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870715802",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.499Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:31:56.557Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:35.698Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:35.996Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.034Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.071Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.109Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.172Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.233Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.270Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.322Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870755656",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.376Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870755656",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:36.422Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.263Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.523Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.561Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.599Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.635Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.671Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.757Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.795Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870776231",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.832Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870776231",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.878Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:56.933Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:32:59.346Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870776231",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:33:07.096Z",
+      "path": "/api/newsletter",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:30.835Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.158Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.194Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.230Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.266Z",
+      "path": "/images/products/1060-min.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.302Z",
+      "path": "/images/products/2180-min.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.382Z",
+      "path": "/images/products/5600-min.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.419Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870930767",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.488Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870930767",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.525Z",
+      "path": "/images/products/robux_1500.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.563Z",
+      "path": "/images/products/robux_2700.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.627Z",
+      "path": "/images/products/robux-3600-o6_PR7Lu.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.664Z",
+      "path": "/images/products/robux-4500-CBGtdrYT.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.738Z",
+      "path": "/images/products/robux-10000-DH0988eb.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.806Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.861Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.898Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.949Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:31.986Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:32.597Z",
+      "path": "/produto/ff-calca",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:32.882Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:32.920Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:32.958Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:32.996Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.035Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.092Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.141Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870932567",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.177Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870932567",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.215Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870930767",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:33.273Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:40.350Z",
+      "path": "/api/game-data",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": "?uid=10005307"
+    },
+    {
+      "timestamp": "2025-10-31T00:35:42.900Z",
+      "path": "/api/get-avatar",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": "?headPicId=902000306"
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.048Z",
+      "path": "/promo",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.198Z",
+      "path": "/produto/ff-calca",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/produto/ff-calca",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.281Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.642Z",
+      "path": "/images/icon.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.804Z",
+      "path": "/images/profile-icon.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.884Z",
+      "path": "/images/banner1.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.921Z",
+      "path": "/images/banner2.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.958Z",
+      "path": "/images/banner3.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:56.995Z",
+      "path": "/images/carouselHaikyu.jpg",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.032Z",
+      "path": "/images/fb.svg",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.171Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870956099",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.306Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870956099",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.343Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870956099",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.391Z",
+      "path": "/images/ic-twitter-92527e61.svg",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.427Z",
+      "path": "/images/abaixodobannercarousel.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.463Z",
+      "path": "/images/ic-vk-abadf989.svg",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.536Z",
+      "path": "/images/pattern-game-selection-59889447.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.573Z",
+      "path": "/images/checkout-banner.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.647Z",
+      "path": "/images/gg.svg",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.684Z",
+      "path": "/images/point.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.721Z",
+      "path": "/images/HAIKIU%20FLY%20HIGH.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.758Z",
+      "path": "/images/delta-force-icon.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.817Z",
+      "path": "/images/semanal.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.871Z",
+      "path": "/images/mensal.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.909Z",
+      "path": "/images/boyahplus.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.946Z",
+      "path": "/images/passe-nivel.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:57.983Z",
+      "path": "/images/pix_boa_mb.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:58.022Z",
+      "path": "/images/creditcard.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:58.078Z",
+      "path": "/images/picpay.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:58.124Z",
+      "path": "/images/nupay.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:58.162Z",
+      "path": "/images/mercado-pago.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:35:59.615Z",
+      "path": "/api/game-data",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": "?uid=10005307"
+    },
+    {
+      "timestamp": "2025-10-31T00:36:00.988Z",
+      "path": "/api/get-avatar",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": "?headPicId=902000306"
+    },
+    {
+      "timestamp": "2025-10-31T00:36:04.792Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:36:04.868Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:36:04.983Z",
+      "path": "/images/garena-logo.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/promo",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:05.031Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:05.075Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:05.113Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:12.665Z",
+      "path": "/images/Pacote%20Coelh%C3%A3o.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:12.803Z",
+      "path": "/images/sombraRoxa.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:12.839Z",
+      "path": "/images/Barba%20do%20Velho.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:12.876Z",
+      "path": "/images/Cal%C3%A7a%20Angelical%20Azul.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:12.913Z",
+      "path": "/images/Dunk%20Master.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:14.048Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:14.090Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:36:14.310Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:14.348Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:14.385Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761870964855",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:36:42.110Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:38:03.209Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:38:26.928Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:40:16.595Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871106909",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:16.731Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871106909",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:16.769Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871106909",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:17.458Z",
+      "path": "/images/sombraRoxa.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:17.595Z",
+      "path": "/images/Barba%20do%20Velho.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:17.632Z",
+      "path": "/images/Pacote%20Coelh%C3%A3o.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:17.668Z",
+      "path": "/images/Dunk%20Master.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:17.707Z",
+      "path": "/images/Cal%C3%A7a%20Angelical%20Azul.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:40:18.994Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:18.430Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:41:31.475Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871278413",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:31.622Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871278413",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:31.659Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871278413",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:33.335Z",
+      "path": "/images/sombraRoxa.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:33.474Z",
+      "path": "/images/Barba%20do%20Velho.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:33.512Z",
+      "path": "/images/Pacote%20Coelh%C3%A3o.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:33.549Z",
+      "path": "/images/Dunk%20Master.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:33.588Z",
+      "path": "/images/Cal%C3%A7a%20Angelical%20Azul.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:34.020Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:49.364Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.045Z",
+      "path": "/images/checkout-banner.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.082Z",
+      "path": "/images/icon.webp",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.123Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.161Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871309303",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.199Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871309303",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.237Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871309303",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:50.275Z",
+      "path": "/images/garena-logo.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:56.817Z",
+      "path": "/images/Barba%20do%20Velho.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:56.956Z",
+      "path": "/images/Pacote%20Coelh%C3%A3o.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:56.993Z",
+      "path": "/images/sombraRoxa.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:57.030Z",
+      "path": "/images/Cal%C3%A7a%20Angelical%20Azul.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:57.069Z",
+      "path": "/images/Dunk%20Master.png",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:41:57.291Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:42:57.478Z",
+      "path": "/checkout",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": "?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067"
+    },
+    {
+      "timestamp": "2025-10-31T00:43:23.932Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871377461",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:24.070Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871377461",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:24.109Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761871377461",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.291Z",
+      "path": "/images/sombraRoxa.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.432Z",
+      "path": "/images/Pacote%20Coelh%C3%A3o.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.469Z",
+      "path": "/images/Cal%C3%A7a%20Angelical%20Azul.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.507Z",
+      "path": "/images/Dunk%20Master.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.545Z",
+      "path": "/images/Barba%20do%20Velho.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-10-31T00:43:25.797Z",
+      "path": "/api/generate-pix",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3000/checkout?type=special&value=Passe+Booyah+Premium+Plus&price=11.99&bonus=0&playerId=10005307&payment=PIX&app=100067",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 18,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 319,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 317,
-    "/": 220,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 335,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 333,
+    "/": 224,
     "/manifest.json": 9,
     "/icon-192x192.png": 8,
-    "/fonts/Metropolis-Medium-f3a73873.woff2": 101,
-    "/.well-known/appspecific/com.chrome.devtools.json": 126,
+    "/fonts/Metropolis-Medium-f3a73873.woff2": 111,
+    "/.well-known/appspecific/com.chrome.devtools.json": 137,
     "/icon-512x512.png": 3,
     "/images/products/ff-1050.png": 3,
     "/images/products/ff-calca-angelical.png": 3,
@@ -24936,37 +26728,37 @@
     "/images/products/roblox-4500.png": 4,
     "/images/products/roblox-7000.png": 4,
     "/images/products/roblox-10000.png": 4,
-    "/images/products/robux-10000-DH0988eb.webp": 58,
-    "/images/products/robux-4500-CBGtdrYT.webp": 56,
-    "/images/products/robux-3600-o6_PR7Lu.webp": 56,
-    "/images/products/robux_1500.webp": 56,
+    "/images/products/robux-10000-DH0988eb.webp": 61,
+    "/images/products/robux-4500-CBGtdrYT.webp": 59,
+    "/images/products/robux-3600-o6_PR7Lu.webp": 59,
+    "/images/products/robux_1500.webp": 59,
     "/images/products/roblox_800_robux.webp": 49,
-    "/images/products/robux_2700.webp": 56,
-    "/images/products/ANGELICAL.png": 58,
-    "/images/products/1060-min.png": 76,
-    "/images/products/2180-min.png": 55,
-    "/images/products/5600-min.png": 56,
-    "/loja": 105,
+    "/images/products/robux_2700.webp": 59,
+    "/images/products/ANGELICAL.png": 62,
+    "/images/products/1060-min.png": 79,
+    "/images/products/2180-min.png": 58,
+    "/images/products/5600-min.png": 59,
+    "/loja": 109,
     "/produto/ff-1060": 99,
-    "/produto/ff-calca": 15,
-    "/images/products/norton.webp": 128,
-    "/images/products/paymentMethods.png": 128,
-    "/images/products/google%20Site%20Seguro.webp": 128,
-    "/images/products/reclameAqui.avif": 128,
-    "/api/newsletter": 4,
+    "/produto/ff-calca": 18,
+    "/images/products/norton.webp": 137,
+    "/images/products/paymentMethods.png": 137,
+    "/images/products/google%20Site%20Seguro.webp": 137,
+    "/images/products/reclameAqui.avif": 137,
+    "/api/newsletter": 5,
     "/images/products/logoDimbux.png": 4,
-    "/images/products/banner.png": 47,
-    "/images/products/backgroundFOOTER.png": 130,
-    "/images/products/LogoDimBuxBAckgroundFREE.png": 92,
+    "/images/products/banner.png": 51,
+    "/images/products/backgroundFOOTER.png": 139,
+    "/images/products/LogoDimBuxBAckgroundFREE.png": 100,
     "/produto/rbx-4500": 1,
-    "/api/generate-pix": 14,
+    "/api/generate-pix": 20,
     "/api/utmify": 1,
     "/api/check-transaction-status": 285,
     "/produto/rbx-800": 1,
     "/api/utmify-track": 8,
     "/api/validate-ff-id": 1,
-    "/api/game-data": 11,
-    "/api/get-avatar": 9,
+    "/api/game-data": 13,
+    "/api/get-avatar": 11,
     "/api/send-order-email": 5,
     "/test-ads": 7,
     "/api/test-conversion": 1,
@@ -24975,8 +26767,41 @@
     "/produto/rbx-15000-bonus": 2,
     "/produto/rbx-10000": 6,
     "/produto/ff-5600": 1,
-    "/meus-pedidos": 8,
-    "/blog": 3
+    "/meus-pedidos": 9,
+    "/blog": 3,
+    "/promo": 1,
+    "/images/icon.webp": 2,
+    "/images/profile-icon.webp": 1,
+    "/images/banner1.png": 1,
+    "/images/banner2.png": 1,
+    "/images/banner3.png": 1,
+    "/images/carouselHaikyu.jpg": 1,
+    "/images/fb.svg": 1,
+    "/images/ic-twitter-92527e61.svg": 1,
+    "/images/abaixodobannercarousel.png": 1,
+    "/images/ic-vk-abadf989.svg": 1,
+    "/images/pattern-game-selection-59889447.png": 1,
+    "/images/checkout-banner.webp": 2,
+    "/images/gg.svg": 1,
+    "/images/point.webp": 1,
+    "/images/HAIKIU%20FLY%20HIGH.png": 1,
+    "/images/delta-force-icon.webp": 1,
+    "/images/semanal.png": 1,
+    "/images/mensal.png": 1,
+    "/images/boyahplus.png": 1,
+    "/images/passe-nivel.webp": 1,
+    "/images/pix_boa_mb.png": 1,
+    "/images/creditcard.webp": 1,
+    "/images/picpay.webp": 1,
+    "/images/nupay.webp": 1,
+    "/images/mercado-pago.webp": 1,
+    "/checkout": 8,
+    "/images/garena-logo.png": 2,
+    "/images/Pacote%20Coelh%C3%A3o.png": 5,
+    "/images/sombraRoxa.png": 5,
+    "/images/Barba%20do%20Velho.png": 5,
+    "/images/Cal%C3%A7a%20Angelical%20Azul.png": 5,
+    "/images/Dunk%20Master.png": 5
   },
   "lastReset": "2025-10-26T17:49:28.105Z"
 }
