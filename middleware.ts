@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
-  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15047',
+  url: 'https://www.altercpa.one/fltr/969-8f076e082dbcb1d080037ec2c216d589-15443',
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/quest'  // Página de oferta
 }
@@ -56,7 +56,12 @@ export async function middleware(request: NextRequest) {
   // Verificar se o cloaker está habilitado
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
-  if (!cloakerEnabled) {
+  // Liberar localhost para testes
+  const host = request.headers.get('host') || ''
+  const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1')
+  
+  if (!cloakerEnabled || isLocalhost) {
+    console.log(isLocalhost ? '🔓 [Cloaker] LOCALHOST LIBERADO' : '⚪ [Cloaker] Desabilitado')
     return NextResponse.next()
   }
 
@@ -281,7 +286,7 @@ export async function middleware(request: NextRequest) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
-          url: 'https://verifiedbyffire.store/'
+          url: process.env.NEXT_PUBLIC_BASE_URL || 'https://buxfire.shop/'
         }
       }
     } else {
@@ -289,7 +294,7 @@ export async function middleware(request: NextRequest) {
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: 'https://verifiedbyffire.store/'
+        url: process.env.NEXT_PUBLIC_BASE_URL || 'https://buxfire.shop/'
       }
     }
 

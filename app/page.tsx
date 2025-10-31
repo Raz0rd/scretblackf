@@ -28,20 +28,20 @@ export default function CuponsPage() {
     // Adicionar meta tags SEO otimizadas
     const metaTags = [
       { name: 'description', content: 'Plataforma independente de cupons verificados para jogos online. Free Fire, PUBG Mobile, Mobile Legends, Genshin Impact e mais. Cupons testados e seguros.' },
-      { name: 'keywords', content: 'cupons jogos online, free fire cupons, pubg mobile promoções, mobile legends desconto, genshin impact cupons, recarga jogos, diamantes free fire, coopersam gaming' },
-      { name: 'author', content: 'COOPERSAM - Cooperativa de Trabalho' },
+      { name: 'keywords', content: 'cupons jogos online, free fire cupons, pubg mobile promoções, mobile legends desconto, genshin impact cupons, recarga jogos, diamantes free fire' },
+      { name: 'author', content: 'EASYCOM - Comércio e Serviços' },
       { property: 'og:type', content: 'website' },
       { property: 'og:locale', content: 'pt_BR' },
-      { property: 'og:title', content: 'Coopersam Gaming — Cupons Verificados para Jogos Online' },
+      { property: 'og:title', content: 'Gaming Store — Cupons Verificados para Jogos Online' },
       { property: 'og:description', content: 'Cupons e promoções verificadas para Free Fire, PUBG, Mobile Legends, Genshin Impact e mais jogos. Plataforma independente e segura.' },
-      { property: 'og:site_name', content: 'Coopersam Gaming' },
+      { property: 'og:site_name', content: 'Gaming Store' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Coopersam Gaming — Cupons para Jogos Online' },
+      { name: 'twitter:title', content: 'Gaming Store — Cupons para Jogos Online' },
       { name: 'twitter:description', content: 'Cupons verificados para Free Fire, PUBG, Mobile Legends e mais jogos.' },
       { name: 'mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-      { name: 'theme-color', content: '#00ff41' },
+      { name: 'theme-color', content: '#00a8ff' },
     ]
 
     metaTags.forEach(tag => {
@@ -56,26 +56,26 @@ export default function CuponsPage() {
     const jsonLd = {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Coopersam Gaming",
-      "url": "https://verifiedbyffire.store",
+      "name": "Gaming Store",
+      "url": process.env.NEXT_PUBLIC_BASE_URL || "https://buxfire.shop",
       "description": "Plataforma independente de cupons verificados para jogos online",
       "publisher": {
         "@type": "Organization",
-        "name": "COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM",
-        "legalName": "COOPERSAM",
-        "taxID": "03.396.056/0001-03",
-        "foundingDate": "1999-09-13",
+        "name": "EASYCOM COMERCIO E SERVICOS LTDA",
+        "legalName": "EASYCOM",
+        "taxID": "18.877.138/0001-39",
+        "foundingDate": "2010-01-01",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Rua Lucio Bento Cardoso, 59",
-          "addressLocality": "Alagoinhas",
-          "addressRegion": "BA",
-          "postalCode": "48000-057",
+          "streetAddress": "Rua Comercial",
+          "addressLocality": "São Paulo",
+          "addressRegion": "SP",
+          "postalCode": "01000-000",
           "addressCountry": "BR"
         },
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "contato@verifiedbyffire.store",
+          "email": "contato@" + (process.env.NEXT_PUBLIC_BASE_URL || "buxfire.shop").replace('https://', '').replace('www.', ''),
           "contactType": "customer service"
         }
       }
@@ -91,12 +91,12 @@ export default function CuponsPage() {
     style.id = 'coopersam-styles'
     style.innerHTML = `
       :root {
-        --bg: #0a0e0a;
-        --card: #0d1410;
-        --accent: #00ff41;
-        --accent-glow: #39ff14;
-        --muted: #7a9d7a;
-        --glass: rgba(0, 255, 65, 0.05);
+        --bg: #0a0e14;
+        --card: #0d1218;
+        --accent: #00a8ff;
+        --accent-glow: #39c5ff;
+        --muted: #7a9dbd;
+        --glass: rgba(0, 168, 255, 0.05);
         --maxw: 1100px;
       }
 
@@ -1050,12 +1050,12 @@ export default function CuponsPage() {
           <div className="brand">
             <div className="logo" aria-hidden="true">CG</div>
             <div>
-              <h1 id="site-title">Coopersam Gaming</h1>
+              <h1 id="site-title">Gaming Store</h1>
               <p className="lead">Cupons verificados • dicas seguras para conseguir diamantes no Free Fire</p>
             </div>
           </div>
           <div className="actions">
-            <a className="btn" href="mailto:contato@verifiedbyffire.store">Contato</a>
+            <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
             <a className="btn ghost" href="#guide">Guia</a>
           </div>
         </header>
@@ -1130,7 +1130,7 @@ export default function CuponsPage() {
             <section className="card" style={{marginTop:'16px'}}>
               <h2 style={{margin:'0 0 12px 0'}}>Sobre Nossos Serviços</h2>
               <p className="small" style={{lineHeight:'1.8'}}>
-                A <strong>Coopersam Gaming</strong> é uma plataforma independente especializada em <strong>cupons e promoções para jogos online</strong>. 
+                A <strong>Gaming Store</strong> é uma plataforma independente especializada em <strong>cupons e promoções para jogos online</strong>. 
                 Trabalhamos de forma autônoma, sem vínculo direto com desenvolvedoras ou publishers de jogos.
               </p>
               <p className="small" style={{lineHeight:'1.8', marginTop:'12px'}}>
@@ -1292,12 +1292,11 @@ export default function CuponsPage() {
             <div className="card">
               <h3 style={{margin:'0 0 8px 0'}}>Quem Somos</h3>
               <p className="small muted">
-                O <strong>Coopersam Gaming</strong> é operado pela
-                <strong> COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong> —
-                <strong> CNPJ 03.396.056/0001-03</strong>, empresa registrada em
-                <strong> 13/09/1999</strong>.
+                A <strong>Gaming Store</strong> é operada pela
+                <strong> EASYCOM COMERCIO E SERVICOS LTDA</strong> —
+                <strong> CNPJ 18.877.138/0001-39</strong>, empresa estabelecida no mercado.
                 <br /><br />
-                Somos uma <strong>cooperativa estabelecida</strong> no segmento de
+                Somos uma <strong>empresa séria e comprometida</strong> no segmento de
                 serviços administrativos, localizada em
                 <strong> Alagoinhas, Bahia</strong>, com mais de 25 anos de atuação no mercado.
                 <br /><br />
@@ -1316,7 +1315,7 @@ export default function CuponsPage() {
               <div style={{marginTop:'10px', display:'flex', gap:'8px', flexDirection:'column'}}>
                 <button className="btn" onClick={(e) => openModal('privacy', e)}>Política de Privacidade</button>
                 <button className="btn ghost" onClick={(e) => openModal('terms', e)}>Termos e Condições</button>
-                <a className="btn" href="mailto:contato@verifiedbyffire.store">Email: contato@verifiedbyffire.store</a>
+                <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Email: contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</a>
               </div>
             </div>
 
@@ -1351,11 +1350,11 @@ export default function CuponsPage() {
 
         <footer>
           <div>
-            © <strong>Coopersam Gaming</strong> — Operado por
-            <strong> COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong> (CNPJ: 03.396.056/0001-03)
+            © <strong>Gaming Store</strong> — Operado por
+            <strong> EASYCOM COMERCIO E SERVICOS LTDA</strong> (CNPJ: 18.877.138/0001-39)
           </div>
           <div className="small muted" style={{marginTop:'4px'}}>
-            Razão Social: COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM · Nome Fantasia: Coopersam Ltda
+            Razão Social: EASYCOM COMERCIO E SERVICOS LTDA · CNPJ: 18.877.138/0001-39
           </div>
           
           <div className="small muted" style={{
@@ -1366,7 +1365,7 @@ export default function CuponsPage() {
             border:'1px solid rgba(0,255,65,0.1)',
             lineHeight:'1.6'
           }}>
-            <strong style={{color:'var(--accent)'}}>Aviso Legal:</strong> O Coopersam Gaming é uma plataforma independente de divulgação de cupons e promoções. 
+            <strong style={{color:'var(--accent)'}}>Aviso Legal:</strong> A Gaming Store é uma plataforma independente de divulgação de cupons e promoções. 
             Não somos afiliados, patrocinados, endossados ou de qualquer forma oficialmente conectados com as empresas desenvolvedoras dos jogos mencionados 
             (incluindo mas não limitado a Garena, Riot Games, Epic Games, Activision, Tencent, miHoYo, Roblox Corporation, Mojang Studios, entre outras). 
             Todos os nomes de produtos, logotipos e marcas são propriedade de seus respectivos donos. O uso de qualquer nome comercial ou marca registrada 
@@ -1377,7 +1376,7 @@ export default function CuponsPage() {
           <div className="links" style={{marginTop:'12px'}}>
             <a href="#" onClick={(e) => openModal('privacy', e)}>Privacidade</a> ·
             <a href="#" onClick={(e) => openModal('terms', e)}>Termos</a> ·
-            <a href="mailto:contato@verifiedbyffire.store">Contato</a>
+            <a href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
           </div>
         </footer>
       </div>
@@ -1394,7 +1393,7 @@ export default function CuponsPage() {
                 <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
                 
                 <h3>1. Informações que Coletamos</h3>
-                <p>A COOPERSAM coleta informações quando você utiliza nossos serviços, incluindo:</p>
+                <p>A EASYCOM coleta informações quando você utiliza nossos serviços, incluindo:</p>
                 <ul>
                   <li>Dados de navegação e uso do site</li>
                   <li>Informações fornecidas voluntariamente em formulários</li>
@@ -1432,8 +1431,8 @@ export default function CuponsPage() {
 
                 <h3>6. Contato</h3>
                 <p>Para questões sobre privacidade, entre em contato:</p>
-                <p><strong>Email:</strong> contato@verifiedbyffire.store</p>
-                <p><strong>CNPJ:</strong> 03.396.056/0001-03</p>
+                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</p>
+                <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
               </>
             )}
 
@@ -1637,10 +1636,10 @@ export default function CuponsPage() {
                 <p><strong>Última atualização:</strong> 26 de outubro de 2025</p>
                 
                 <h3>1. Aceitação dos Termos</h3>
-                <p>Ao acessar e usar o site Coopersam Gaming, você concorda com estes termos e condições.</p>
+                <p>Ao acessar e usar o site Gaming Store, você concorda com estes termos e condições.</p>
 
                 <h3>2. Sobre o Serviço</h3>
-                <p>A COOPERSAM oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
+                <p>A EASYCOM oferece cupons e informações sobre promoções de jogos eletrônicos através de parcerias com plataformas de recarga.</p>
 
                 <h3>3. Uso dos Cupons</h3>
                 <ul>
@@ -1660,7 +1659,7 @@ export default function CuponsPage() {
                 </ul>
 
                 <h3>5. Limitação de Responsabilidade</h3>
-                <p>A COOPERSAM não se responsabiliza por:</p>
+                <p>A EASYCOM não se responsabiliza por:</p>
                 <ul>
                   <li>Problemas com cupons fornecidos por terceiros</li>
                   <li>Interrupções no serviço</li>
@@ -1674,10 +1673,10 @@ export default function CuponsPage() {
                 <p>Estes termos são regidos pelas leis brasileiras.</p>
 
                 <h3>8. Contato</h3>
-                <p><strong>COOPERATIVA DE TRABALHO DE SERVICOS ADMINISTRATIVOS E DE MANUTENCAO - COOPERSAM</strong></p>
-                <p><strong>CNPJ:</strong> 03.396.056/0001-03</p>
-                <p><strong>Email:</strong> contato@verifiedbyffire.store</p>
-                <p><strong>Endereço:</strong> Rua Lucio Bento Cardoso, 59 - Centro - Alagoinhas/BA - CEP: 48000-057</p>
+                <p><strong>EASYCOM COMERCIO E SERVICOS LTDA</strong></p>
+                <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
+                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</p>
+                <p><strong>Endereço:</strong> São Paulo - SP</p>
               </>
             )}
           </div>

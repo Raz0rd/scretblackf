@@ -10,7 +10,6 @@ import { useUtmParams } from '@/hooks/useUtmParams';
 import HeadManager from '@/components/HeadManager';
 import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
-import { trackNewLead } from '@/lib/cloaker-tracking';
 
 export default function HomePage() {
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
@@ -136,11 +135,6 @@ export default function HomePage() {
     }
     
     setMounted(true)
-    
-    // 🎯 Cloaker: Rastrear novo lead ao acessar a página
-    trackNewLead().catch(err => {
-      console.error('[HomePage] Erro ao rastrear novo lead:', err)
-    })
   }, [])
 
   // Detectar se é desktop

@@ -2,25 +2,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { orderStorageService } from '@/lib/order-storage'
 import { getBrazilTimestamp } from '@/lib/brazil-time'
 
-interface BlackCatTransaction {
-  id: string
-  tenantId: string
-  companyId: number
+// Interface genérica para transações (Ezzpag, Umbrela, etc)
+interface Transaction {
+  id: string | number
+  tenantId?: string
+  companyId?: number
   amount: number
-  currency: string
+  currency?: string
   paymentMethod: string
   status: string
-  installments: number
+  installments?: number
   paidAt: string | null
-  paidAmount: number
-  refundedAt: string | null
-  refundedAmount: number
-  postbackUrl: string
-  metadata: string
-  ip: string
-  externalRef: string
-  secureId: string
-  secureUrl: string
+  paidAmount?: number
+  refundedAt?: string | null
+  refundedAmount?: number
+  postbackUrl?: string
+  metadata?: string | null
+  ip?: string | null
+  externalRef?: string | null
+  secureId?: string
+  secureUrl?: string
   createdAt: string
   updatedAt: string
   customer: {
@@ -28,7 +29,7 @@ interface BlackCatTransaction {
     name: string
     email: string
     phone: string
-    birthdate: string
+    birthdate?: string | null
     document: {
       type: string
       number: string
@@ -36,15 +37,18 @@ interface BlackCatTransaction {
   }
   pix?: {
     qrcode: string
-    end2EndId: string | null
-    receiptUrl: string | null
+    end2EndId?: string | null
+    receiptUrl?: string | null
     expirationDate: string
   }
 }
 
-interface BlackCatWebhookPayload {
+interface WebhookPayload {
   type: string
-  data: BlackCatTransaction
+  data: Transaction
+  url?: string // Ezzpag envia URL no root do payload
+  objectId?: string // Ezzpag envia objectId
+  id?: number // Ezzpag envia ID do webhook
 }
 
 // Cache para evitar processamento duplicado (em memória)
@@ -53,15 +57,11 @@ const DEBOUNCE_TIME = 5000 // 5 segundos
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] BlackCat webhook received! 🚨🚨🚨")
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] Timestamp:", new Date().toISOString())
-    
-    const body: BlackCatWebhookPayload = await request.json()
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] Payload recebido:", JSON.stringify(body, null, 2))
+    const body: WebhookPayload = await request.json()
 
-    // Verificar se é uma transação do BlackCat
+    // Verificar se é uma transação
     if (body.type !== "transaction" || !body.data) {
-      console.log("[v0] Not a transaction webhook, ignoring")
+      console.log("[WEBHOOK] Not a transaction webhook, ignoring")
       return NextResponse.json({ success: true, message: "Not a transaction webhook" })
     }
 
@@ -99,39 +99,39 @@ export async function POST(request: NextRequest) {
     }
 
     // VALIDAÇÃO: Verificar se o webhook é do nosso projeto
+    // Ezzpag: NÃO envia postbackUrl (aceitar sempre)
+    // Umbrela: Envia postbackUrl (validar domínio)
     const whitePageUrl = process.env.UTMIFY_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL || ''
     const ourDomain = whitePageUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') // Remove https:// e /
-    const webhookUrl = body.data?.postbackUrl || ''
+    const webhookUrl = body.data?.postbackUrl || body.url || ''
     
-    console.log('🔍 [WEBHOOK] Validando domínio...')
-    console.log('   - ENV UTMIFY_WHITEPAGE_URL:', whitePageUrl || 'NÃO DEFINIDO')
-    console.log('   - Nosso domínio extraído:', ourDomain || 'VAZIO')
-    console.log('   - Webhook URL recebido:', webhookUrl || 'VAZIO')
-    
-    if (ourDomain && !webhookUrl.includes(ourDomain)) {
-      console.log('⚠️ [WEBHOOK] Transação de OUTRO projeto - IGNORANDO')
-      console.log('   - Produto:', body.data?.metadata || 'N/A')
-      console.log('')
+    // Se tem postbackUrl/url, validar domínio
+    if (webhookUrl && ourDomain && !webhookUrl.includes(ourDomain)) {
+      console.log('⚠️ [WEBHOOK] Outro projeto - IGNORADO | URL:', webhookUrl)
       return NextResponse.json({ 
         received: true, 
         message: 'Webhook de outro projeto - ignorado' 
       })
     }
-    
-    console.log('✅ [WEBHOOK] Validação OK - É do nosso projeto!')
-    console.log('')
 
-    const isPaid = status === 'paid' || status === 'approved' || status === 'PAID' // Umbrela usa PAID
+    // Mapear status de diferentes gateways
+    // Ezzpag: waiting_payment, paid, approved, canceled, refunded
+    // Umbrela: WAITING_PAYMENT, PAID
+    const isPaid = status === 'paid' || status === 'approved' || status === 'PAID'
     const isWaitingPayment = status === 'waiting_payment' || status === 'WAITING_PAYMENT'
 
-    console.log("🚨🚨🚨 [WEBHOOK DEBUG] Transaction details:", {
-      id: transactionId,
-      status,
-      amount: transaction.amount,
-      paymentMethod: transaction.paymentMethod,
-      customer: transaction.customer.name,
-      isPaid,
-      isWaitingPayment
+    // Detectar origem do webhook
+    const isEzzpag = !body.data?.postbackUrl && body.data?.secureUrl?.includes('ezzypag')
+    const isUmbrela = webhookUrl.includes('umbrela') || body.data?.postbackUrl?.includes('umbrela')
+    const origem = isEzzpag ? 'Ezzpag' : isUmbrela ? 'Umbrela' : 'Outro'
+    
+    // Log resumido com informações essenciais
+    console.log('📥 [WEBHOOK] Recebido:', {
+      id: transactionId.substring(0, 8) + '...',
+      status: status.toUpperCase(),
+      valor: `R$ ${(transaction.amount / 100).toFixed(2)}`,
+      cliente: transaction.customer.name,
+      origem
     })
 
     if (isPaid || isWaitingPayment) {
@@ -146,41 +146,19 @@ export async function POST(request: NextRequest) {
       console.log('   - Valor: R$', (transaction.amount / 100).toFixed(2))
       console.log('   - Cliente:', transaction.customer?.name)
       
-      // ENVIAR POSTBACK PARA ALTERCPA APENAS QUANDO PAID
+      // Mostrar URL do postback/webhook
+      if (webhookUrl) {
+        console.log('   - Postback URL:', webhookUrl)
+      } else {
+        console.log('   - Postback URL: (não fornecida - Ezzpag)')
+      }
+      
+      // CONVERSÃO SERÁ ENVIADA PARA GOOGLE ADS NA PÁGINA /SUCCESS
       if (isPaid) {
-        // PAID: Enviar status=approve com payout
-        console.log('')
-        console.log('🎯 [WEBHOOK] Status PAID detectado - enviando postback APPROVE...')
-        
-        try {
-          const payoutValue = transaction.amount / 100 // Converter de centavos para reais
-          
-          // Enviar para AlterCPA - APPROVE
-          const altercpaUrl = 'https://www.altercpa.one/api/filter/postback.json?id=969-8f076e082dbcb1d080037ec2c216d589&uid=15047&status=approve&payout=' + payoutValue.toFixed(2)
-          
-          console.log('📤 [AlterCPA] Enviando postback APPROVE...')
-          console.log('   - Payout: R$', payoutValue.toFixed(2))
-          
-          const altercpaResponse = await fetch(altercpaUrl, { method: 'GET' })
-          
-          if (altercpaResponse.ok) {
-            const result = await altercpaResponse.text()
-            console.log('✅ [AlterCPA] Postback APPROVE enviado com sucesso!')
-            console.log('   - Response:', result)
-          } else {
-            console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE')
-            console.error('   - Status:', altercpaResponse.status)
-          }
-        } catch (error) {
-          console.error('❌ [AlterCPA] Erro ao enviar postback APPROVE:', error)
-        }
-        
         console.log('')
         console.log('📝 [WEBHOOK] Próximo passo: Usuário será redirecionado para /success')
         console.log('📝 [WEBHOOK] Na página /success, o Google Ads receberá a conversão')
       }
-      // NOTA: status=new JÁ é enviado pela página /quest ao carregar
-      // Não enviar novamente aqui para evitar duplicação
       
       // Recuperar tracking parameters do metadata OU do order storage
       let trackingParameters: Record<string, string | null> = {
@@ -228,12 +206,55 @@ export async function POST(request: NextRequest) {
             console.log("[v0] ❌ Nenhum pedido encontrado no order storage")
           }
         } else {
-          console.log("col-start-1 row-start-1 text-center text-sm sm:text-base font-bold text-white ✅ UTMs já recuperados do metadata, não precisa do fallback")
+          console.log("[v0] ✅ UTMs já recuperados do metadata, não precisa do fallback")
         }
         
       } catch (error) {
         console.error("[v0] Error parsing metadata:", error)
       }
+      
+      // 🎯 LOGS DE ORIGEM DA VENDA
+      console.log('')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🎯 [ORIGEM DA VENDA]')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      
+      // Identificar fonte principal
+      if (trackingParameters.gclid) {
+        console.log('📍 Fonte: Google Ads (Paid)')
+        console.log('   - GCLID:', trackingParameters.gclid)
+        if (trackingParameters.gad_source) console.log('   - GAD Source:', trackingParameters.gad_source)
+        if (trackingParameters.gbraid) console.log('   - GBraid:', trackingParameters.gbraid)
+      } else if (trackingParameters.utm_source) {
+        console.log('📍 Fonte:', trackingParameters.utm_source)
+        if (trackingParameters.utm_campaign) console.log('   - Campanha:', trackingParameters.utm_campaign)
+        if (trackingParameters.utm_medium) console.log('   - Meio:', trackingParameters.utm_medium)
+        if (trackingParameters.utm_content) console.log('   - Conteúdo:', trackingParameters.utm_content)
+        if (trackingParameters.utm_term) console.log('   - Termo:', trackingParameters.utm_term)
+      } else if (trackingParameters.src) {
+        console.log('📍 Fonte (src):', trackingParameters.src)
+        if (trackingParameters.sck) console.log('   - SCK:', trackingParameters.sck)
+      } else {
+        console.log('📍 Fonte: Tráfego Direto ou Orgânico')
+        console.log('   ⚠️ Nenhum parâmetro de rastreamento encontrado')
+      }
+      
+      // Informações adicionais
+      if (trackingParameters.xcod) {
+        console.log('   - Código Afiliado (xcod):', trackingParameters.xcod)
+      }
+      if (trackingParameters.keyword) {
+        console.log('   - Palavra-chave:', trackingParameters.keyword)
+      }
+      if (trackingParameters.device) {
+        console.log('   - Dispositivo:', trackingParameters.device)
+      }
+      if (trackingParameters.network) {
+        console.log('   - Rede:', trackingParameters.network)
+      }
+      
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('')
       
       // Criar dados para enviar para UTMify no formato EXATO da documentação
       const utmifyData = {

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://verifiedbyffire.store'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://buxfire.shop'
 
   return {
     rules: [
