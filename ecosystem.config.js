@@ -4,6 +4,7 @@ module.exports = {
     script: 'npm',
     args: 'start',
     cwd: '/var/www/buxfire',
+    exec_mode: 'fork',
     instances: 1,
     autorestart: true,
     watch: false,
