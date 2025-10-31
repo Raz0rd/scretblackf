@@ -617,16 +617,6 @@ export async function POST(request: NextRequest) {
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }
-    
-    // DEBUG: Verificar se dados foram salvos no storage
-    console.log("🔍 [DEBUG] Verificando se dados foram salvos no storage...")
-    const savedOrder = orderStorageService.getOrder(validResult.transactionId)
-    if (savedOrder) {
-      console.log("✅ [DEBUG] Dados salvos no storage:", JSON.stringify(savedOrder, null, 2))
-    } else {
-      console.error("❌ [DEBUG] ERRO: Dados NÃO foram salvos no storage!")
-    }
-    
     return NextResponse.json(validResult)
   } catch (error) {
     console.error("💥 [GATEWAY] ERRO:", error instanceof Error ? error.message : 'Unknown error')

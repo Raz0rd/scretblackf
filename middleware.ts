@@ -59,12 +59,13 @@ export async function middleware(request: NextRequest) {
   // 🔒 SISTEMA DE REFERER WHITELIST (Cloaker Interno)
   // ============================================
   
-  // Liberar localhost para testes
+  // Verificar se está rodando em ambiente de desenvolvimento local
   const host = request.headers.get('host') || ''
   const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1')
   
-  if (isLocalhost) {
-    console.log('🔓 [Referer] LOCALHOST LIBERADO')
+  // Em produção, NUNCA liberar localhost (previne bypass com curl)
+  if (isLocalhost && process.env.NODE_ENV === 'development') {
+    console.log('🔓 [Referer] LOCALHOST LIBERADO (DEV MODE)')
     return NextResponse.next()
   }
 
@@ -91,11 +92,6 @@ export async function middleware(request: NextRequest) {
     if (!referer) {
       const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
       
-      if (!whitepageUrl) {
-        console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
-        return NextResponse.redirect(new URL('/cupons', request.url), 302)
-      }
-      
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -103,10 +99,10 @@ export async function middleware(request: NextRequest) {
       console.log('🌐 IP:', ip)
       console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
       console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
+      console.log('⚠️  Ação: Retornando 404 Not Found')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
-      return NextResponse.redirect(whitepageUrl, 302)
+      return new NextResponse(null, { status: 404 })
     }
     
     // Verificar se referer está na whitelist
@@ -118,11 +114,6 @@ export async function middleware(request: NextRequest) {
     if (!isAllowed) {
       const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
       
-      if (!whitepageUrl) {
-        console.error('❌ [MIDDLEWARE] NEXT_PUBLIC_WHITEPAGE_URL não configurado no .env')
-        return NextResponse.redirect(new URL('/cupons', request.url), 302)
-      }
-      
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -131,10 +122,10 @@ export async function middleware(request: NextRequest) {
       console.log('🌐 IP:', ip)
       console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
       console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Redirecionando para whitepage:', whitepageUrl)
+      console.log('⚠️  Ação: Retornando 404 Not Found')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
-      return NextResponse.redirect(whitepageUrl, 302)
+      return new NextResponse(null, { status: 404 })
     }
     
     // Referer AUTORIZADO - Verificar UTMs obrigatórios do Google
