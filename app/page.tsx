@@ -57,7 +57,7 @@ export default function CuponsPage() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Gaming Store",
-      "url": process.env.NEXT_PUBLIC_BASE_URL || "https://buxfire.shop",
+      "url": process.env.NEXT_PUBLIC_BASE_URL || "https://rurubux.shop",
       "description": "Plataforma independente de cupons verificados para jogos online",
       "publisher": {
         "@type": "Organization",
@@ -75,7 +75,7 @@ export default function CuponsPage() {
         },
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "contato@" + (process.env.NEXT_PUBLIC_BASE_URL || "buxfire.shop").replace('https://', '').replace('www.', ''),
+          "email": "contato@" + (process.env.NEXT_PUBLIC_BASE_URL || "rurubux.shop").replace('https://', '').replace('www.', ''),
           "contactType": "customer service"
         }
       }
@@ -1055,7 +1055,7 @@ export default function CuponsPage() {
             </div>
           </div>
           <div className="actions">
-            <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
+            <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
             <a className="btn ghost" href="#guide">Guia</a>
           </div>
         </header>
@@ -1315,7 +1315,7 @@ export default function CuponsPage() {
               <div style={{marginTop:'10px', display:'flex', gap:'8px', flexDirection:'column'}}>
                 <button className="btn" onClick={(e) => openModal('privacy', e)}>Política de Privacidade</button>
                 <button className="btn ghost" onClick={(e) => openModal('terms', e)}>Termos e Condições</button>
-                <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Email: contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</a>
+                <a className="btn" href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}`}>Email: contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}</a>
               </div>
             </div>
 
@@ -1376,7 +1376,7 @@ export default function CuponsPage() {
           <div className="links" style={{marginTop:'12px'}}>
             <a href="#" onClick={(e) => openModal('privacy', e)}>Privacidade</a> ·
             <a href="#" onClick={(e) => openModal('terms', e)}>Termos</a> ·
-            <a href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
+            <a href={`mailto:contato@${(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}`}>Contato</a>
           </div>
         </footer>
       </div>
@@ -1431,7 +1431,7 @@ export default function CuponsPage() {
 
                 <h3>6. Contato</h3>
                 <p>Para questões sobre privacidade, entre em contato:</p>
-                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</p>
+                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}</p>
                 <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
               </>
             )}
@@ -1675,7 +1675,7 @@ export default function CuponsPage() {
                 <h3>8. Contato</h3>
                 <p><strong>EASYCOM COMERCIO E SERVICOS LTDA</strong></p>
                 <p><strong>CNPJ:</strong> 18.877.138/0001-39</p>
-                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'buxfire.shop').replace('https://', '').replace('www.', '')}</p>
+                <p><strong>Email:</strong> contato@{(process.env.NEXT_PUBLIC_BASE_URL || 'rurubux.shop').replace('https://', '').replace('www.', '')}</p>
                 <p><strong>Endereço:</strong> São Paulo - SP</p>
               </>
             )}

@@ -286,7 +286,7 @@ export async function middleware(request: NextRequest) {
         console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
-          url: process.env.NEXT_PUBLIC_BASE_URL || 'https://buxfire.shop/'
+          url: process.env.NEXT_PUBLIC_BASE_URL || 'https://rurubux.shop/'
         }
       }
     } else {
@@ -294,7 +294,7 @@ export async function middleware(request: NextRequest) {
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
-        url: process.env.NEXT_PUBLIC_BASE_URL || 'https://buxfire.shop/'
+        url: process.env.NEXT_PUBLIC_BASE_URL || 'https://rurubux.shop/'
       }
     }
 
