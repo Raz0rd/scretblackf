@@ -74,9 +74,9 @@ export default function HomePage() {
     freefire: {
       name: 'Free Fire',
       banner: '/images/checkout-banner.webp',
-      icon: '/images/profile-icon.webp',
+      icon: '/images/icon.png',
       coinIcon: '/images/point.webp',
-      userIcon: '/images/profile-icon.webp',
+      userIcon: '/images/icon.png',
       rechargeValues: ["100", "310", "520", "1.060", "2.180", "5.600", "15.600"],
       promotionalValues: ["1.060", "2.180", "5.600", "15.600"],
       specialOffers: [
@@ -752,7 +752,7 @@ export default function HomePage() {
                   <div className="relative">
                     <img 
                       className="absolute -top-2 left-4 md:left-6 h-14 w-14 rounded-xl bg-white outline outline-4 outline-white" 
-                      src="/images/icon.webp" 
+                      src="/images/icon.png" 
                       alt="Free Fire"
                     />
                     <div className="ml-24 md:ml-[104px] pr-4 md:pr-6 pt-3" >
@@ -1202,7 +1202,7 @@ export default function HomePage() {
                           decoding="async"
                           className="pointer-events-none absolute inset-0 h-full w-full bg-white object-cover"
                           sizes="(max-width: 640px) 60px, (max-width: 768px) 70px, 105px"
-                          src="/images/profile-icon.webp"
+                          src="/images/icon.png"
                         />
                       </div>
                     </div>

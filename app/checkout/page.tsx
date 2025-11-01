@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import Toast from "../../components/toast"
+import PendingPaymentModal from "../../components/pending-payment-modal"
 import { useUtmParams } from "@/hooks/useUtmParams"
 import QRCode from "qrcode"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
@@ -100,6 +101,8 @@ export default function CheckoutPage() {
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'expired'>('pending')
   const [showPromoModal, setShowPromoModal] = useState(false)
   const [selectedPromos, setSelectedPromos] = useState<string[]>([])
+  const [showPendingPaymentModal, setShowPendingPaymentModal] = useState(false)
+  const [hasPendingPayment, setHasPendingPayment] = useState(false)
 
   // Get URL parameters
   const itemType = searchParams.get("type") || searchParams.get("itemType") || "recharge"
@@ -134,7 +137,7 @@ export default function CheckoutPage() {
   const gameConfig = {
     freefire: {
       banner: "/images/checkout-banner.webp",
-      icon: "/images/icon.webp",
+      icon: "/images/icon.png",
       coinIcon: "/images/point.png",
       name: "Free Fire",
       coinName: "Diamantes",
@@ -259,6 +262,88 @@ export default function CheckoutPage() {
     
     setUtmParameters(utmData)
   }, [playerId, utmParams])
+
+  // Detectar pagamento pendente ao carregar a página
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const pendingPayment = localStorage.getItem('pending_payment')
+    if (pendingPayment) {
+      try {
+        const paymentData = JSON.parse(pendingPayment)
+        // Verificar se o pagamento não expirou (15 minutos)
+        const createdAt = new Date(paymentData.createdAt).getTime()
+        const now = Date.now()
+        const fifteenMinutes = 15 * 60 * 1000
+        
+        if (now - createdAt < fifteenMinutes) {
+          setHasPendingPayment(true)
+          setShowPendingPaymentModal(true)
+        } else {
+          // Pagamento expirado, limpar
+          localStorage.removeItem('pending_payment')
+        }
+      } catch (error) {
+        console.error('Erro ao verificar pagamento pendente:', error)
+        localStorage.removeItem('pending_payment')
+      }
+    }
+  }, [])
+
+  // Função para continuar com pagamento pendente
+  const handleContinuePendingPayment = () => {
+    if (typeof window === 'undefined') return
+    
+    const pendingPayment = localStorage.getItem('pending_payment')
+    if (pendingPayment) {
+      try {
+        const paymentData = JSON.parse(pendingPayment)
+        
+        // Restaurar dados do pagamento
+        setPixData({
+          code: paymentData.pixCode,
+          qrCode: paymentData.pixQrCode,
+          transactionId: paymentData.transactionId
+        })
+        setQrCodeImage(paymentData.qrCodeImage)
+        setShowPixInline(true)
+        setTimerActive(true)
+        
+        // Calcular tempo restante
+        const createdAt = new Date(paymentData.createdAt).getTime()
+        const now = Date.now()
+        const elapsed = Math.floor((now - createdAt) / 1000)
+        const remaining = (15 * 60) - elapsed
+        setTimeLeft(remaining > 0 ? remaining : 0)
+        
+        setShowPendingPaymentModal(false)
+      } catch (error) {
+        console.error('Erro ao restaurar pagamento:', error)
+        handleStartNewPayment()
+      }
+    }
+  }
+
+  // Função para iniciar novo pagamento
+  const handleStartNewPayment = () => {
+    if (typeof window === 'undefined') return
+    
+    // Limpar pagamento pendente
+    localStorage.removeItem('pending_payment')
+    
+    // Limpar estados
+    setPixData(null)
+    setQrCodeImage('')
+    setShowPixInline(false)
+    setTimerActive(false)
+    setTimeLeft(15 * 60)
+    setPaymentStatus('pending')
+    setHasPendingPayment(false)
+    setShowPendingPaymentModal(false)
+    
+    // Não deslogar, apenas limpar itens do carrinho
+    // O usuário permanece logado
+  }
 
   const showToastMessage = (message: string, type: "success" | "error" | "info") => {
     setToastMessage(message)
@@ -425,6 +510,19 @@ export default function CheckoutPage() {
         setTimeLeft(15 * 60)
         setTimerActive(true)
         
+        // Salvar pagamento pendente no localStorage
+        const pendingPaymentData = {
+          pixCode: data.pixCode,
+          pixQrCode: data.qrCode,
+          transactionId: data.transactionId,
+          qrCodeImage: qrCodeImageData,
+          createdAt: new Date().toISOString(),
+          playerName,
+          itemValue,
+          price
+        }
+        localStorage.setItem('pending_payment', JSON.stringify(pendingPaymentData))
+        
         // ❌ REMOVIDO: Envio duplicado para UTMify
         // O webhook já envia automaticamente quando recebe a confirmação
         // sendToUtmify('pending', data).catch(err => {
@@ -541,6 +639,9 @@ export default function CheckoutPage() {
             if (data.success && data.status === 'paid') {
               setPaymentStatus('paid')
               setTimerActive(false)
+              
+              // Limpar pagamento pendente do localStorage
+              localStorage.removeItem('pending_payment')
               
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
@@ -1390,6 +1491,12 @@ export default function CheckoutPage() {
         message={toastMessage}
         type={toastType}
         onClose={() => setShowToast(false)}
+      />
+
+      <PendingPaymentModal
+        isOpen={showPendingPaymentModal}
+        onContinue={handleContinuePendingPayment}
+        onStartNew={handleStartNewPayment}
       />
 
     </div>
