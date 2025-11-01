@@ -1,0 +1,7 @@
+{
+  "ips": [
+    "2001:4860:7:303::eb",
+    "2804:391c:0:3c:a33f:2:0:31b6"
+  ],
+  "comment": "Adicione IPs aqui para bloquear. Não precisa rebuild/restart."
+}

@@ -58,6 +58,35 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
+    // Blacklist de IPs (bots, scrapers, etc)
+    // Lê do arquivo config/ip-blacklist.json para facilitar adição sem rebuild
+    let ipBlacklist: string[] = []
+    try {
+      const fs = require('fs')
+      const path = require('path')
+      const blacklistPath = path.join(process.cwd(), 'config', 'ip-blacklist.json')
+      if (fs.existsSync(blacklistPath)) {
+        const blacklistData = JSON.parse(fs.readFileSync(blacklistPath, 'utf-8'))
+        ipBlacklist = blacklistData.ips || []
+      }
+    } catch (error) {
+      console.error('[MIDDLEWARE] Erro ao ler blacklist:', error)
+      // Fallback para lista hardcoded
+      ipBlacklist = ['2001:4860:7:303::eb']
+    }
+    
+    if (ipBlacklist.includes(ip)) {
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🚫 [IP BLACKLIST] ACESSO BLOQUEADO')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🌐 IP:', ip)
+      console.log('📍 Motivo: IP na blacklist')
+      console.log('⚠️  Ação: Retornando 404 Not Found')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      
+      return new NextResponse(null, { status: 404 })
+    }
+    
     // Se já foi verificado (tem cookie), liberar APENAS se não for acesso com parâmetros
     const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
     const hasParams = request.nextUrl.searchParams.toString().length > 0
