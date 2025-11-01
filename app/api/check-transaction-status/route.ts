@@ -160,6 +160,20 @@ export async function POST(request: NextRequest) {
     if (isNowPaid) {
       console.log(`[CHECK-STATUS] Status é PAID!`)
       
+      // VALIDAÇÃO: Verificar se a transação é deste servidor
+      const storedOrder = orderStorageService.getOrder(transactionId)
+      if (!storedOrder) {
+        console.log(`❌ [CHECK-STATUS] Transação de OUTRO servidor - IGNORADO`)
+        console.log(`   - Transaction ID: ${transactionId}`)
+        console.log(`   - Motivo: Não encontrado no orderStorage deste servidor`)
+        return NextResponse.json({
+          success: true,
+          status: 'paid',
+          message: 'Transação de outro servidor - ignorada',
+          fromAnotherServer: true
+        })
+      }
+      
       // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar cache em memória
       const conversionKey = `${transactionId}-paid`
       const lastProcessed = processedConversions.get(conversionKey)
@@ -206,7 +220,7 @@ export async function POST(request: NextRequest) {
       console.log(`[CHECK-STATUS] Primeira vez processando PAID - enviando para UTMify...`)
 
       // Recuperar UTMs do storage ou usar fallback
-      let trackingParameters = {}
+      let trackingParameters: Record<string, any> = {}
       if (storedOrder && storedOrder.trackingParameters) {
         trackingParameters = storedOrder.trackingParameters
         console.log(`[CHECK-STATUS] UTMs recuperados do storage:`, trackingParameters)
@@ -227,6 +241,14 @@ export async function POST(request: NextRequest) {
       const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
       const utmifyToken = process.env.UTMIFY_API_TOKEN
       let utmifySuccess = false
+      
+      // Log de aviso se não tiver GCLID (Google Ads não vai aceitar, mas UTMify sim)
+      const hasGclid = trackingParameters.gclid && trackingParameters.gclid !== 'null'
+      if (!hasGclid) {
+        console.log(`⚠️ [CHECK-STATUS] Sem GCLID - Google Ads não vai aceitar esta conversão`)
+        console.log(`   - Mas enviando para UTMify mesmo assim (pode ter outros destinos)`)
+      }
+      
       console.log(`[CHECK-STATUS] 🔍 DEBUG UTMify: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
       
       if (utmifyEnabled && utmifyToken) {

@@ -60,7 +60,8 @@ export async function middleware(request: NextRequest) {
     
     // Se já foi verificado (tem cookie), liberar navegação interna
     const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
-    if (alreadyVerified && referer.includes('recargacomdescontos.shop')) {
+    if (alreadyVerified) {
+      // Se já foi verificado, liberar independente do referer
       console.log('✅ [REFERER] Navegação interna liberada (já verificado)')
       return NextResponse.next()
     }
