@@ -412,28 +412,83 @@ export async function POST(request: NextRequest) {
             const host = request.headers.get('host')
             const baseUrl = `${protocol}://${host}`
             
+            // Recuperar UTMs do storage
+            const trackingParameters = storedOrder.trackingParameters || {}
+            
+            // Extrair dados do cliente
+            const customerData = transactionData.customer || {}
+            const documentNumber = customerData.document?.number || customerData.document || '00000000000'
+            
+            // Criar dados no formato UTMify
+            const utmifyData = {
+              orderId: transactionId.toString(),
+              platform: "RecarGames",
+              paymentMethod: "pix",
+              status: "waiting_payment",
+              createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
+              approvedDate: null,
+              refundedAt: null,
+              customer: {
+                name: customerData.name || 'Cliente',
+                email: customerData.email || 'nao-informado@email.com',
+                phone: customerData.phone || null,
+                document: documentNumber,
+                country: "BR",
+                ip: transactionData.ip || "unknown"
+              },
+              products: [
+                {
+                  id: `recarga-${transactionId}`,
+                  name: "Recarga Free Fire",
+                  planId: null,
+                  planName: null,
+                  quantity: 1,
+                  priceInCents: transactionData.amount
+                }
+              ],
+              trackingParameters: {
+                src: (trackingParameters as any)?.src || null,
+                sck: (trackingParameters as any)?.sck || null,
+                utm_source: (trackingParameters as any)?.utm_source || null,
+                utm_campaign: (trackingParameters as any)?.utm_campaign || null,
+                utm_medium: (trackingParameters as any)?.utm_medium || null,
+                utm_content: (trackingParameters as any)?.utm_content || null,
+                utm_term: (trackingParameters as any)?.utm_term || null,
+                gclid: (trackingParameters as any)?.gclid || null,
+                xcod: (trackingParameters as any)?.xcod || null,
+                keyword: (trackingParameters as any)?.keyword || null,
+                device: (trackingParameters as any)?.device || null,
+                network: (trackingParameters as any)?.network || null,
+                gad_source: (trackingParameters as any)?.gad_source || null,
+                gbraid: (trackingParameters as any)?.gbraid || null
+              },
+              commission: {
+                totalPriceInCents: transactionData.amount,
+                gatewayFeeInCents: transactionData.amount,
+                userCommissionInCents: transactionData.amount
+              },
+              isTest: process.env.UTMIFY_TEST_MODE === 'true'
+            }
+            
             console.log(`📤 [CHECK-STATUS] Enviando PENDING para UTMify...`)
+            console.log(`[CHECK-STATUS] Dados:`, JSON.stringify(utmifyData, null, 2))
+            
             const utmifyResponse = await fetch(`${baseUrl}/api/utmify-track`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({
-                orderId: transactionId,
-                status: 'pending',
-                amount: transactionData.amount,
-                customerData: {
-                  name: transactionData.customer.name,
-                  email: transactionData.customer.email,
-                  phone: transactionData.customer.phone,
-                  document: transactionData.customer.document.number
-                },
-                trackingParameters: storedOrder.trackingParameters
-              }),
+              body: JSON.stringify(utmifyData),
             })
             
             if (utmifyResponse.ok) {
               console.log(`✅ [CHECK-STATUS] PENDING enviado para UTMify com sucesso`)
+              
+              // Marcar como enviado no storage
+              orderStorageService.saveOrder({
+                ...storedOrder,
+                utmifySent: true
+              })
             } else {
               console.error(`❌ [CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, utmifyResponse.status)
             }

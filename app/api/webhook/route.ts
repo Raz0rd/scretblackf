@@ -358,76 +358,14 @@ export async function POST(request: NextRequest) {
         console.error('[WEBHOOK] Erro ao registrar conversão de pagamento:', error)
       }
 
-      // Enviar para UTMify se habilitado
-      const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
-      const utmifyToken = process.env.UTMIFY_API_TOKEN
-      console.log(`[v0] 🔍 DEBUG UTMify: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
-      
-      // VERIFICAR SE JÁ FOI ENVIADO COMO PAID
-      const storedOrderCheck = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
-      if (isPaid && storedOrderCheck?.utmifyPaidSent) {
-        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-        console.log(`⚠️ [WEBHOOK] UTMify PAID DUPLICADO - BLOQUEADO`)
-        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-        console.log(`   - Transaction ID: ${transactionId}`)
-        console.log(`   - Order ID: ${orderId}`)
-        console.log(`   - Motivo: UTMify PAID já foi enviado anteriormente`)
-        console.log(`   - Ação: NENHUM envio será feito`)
-        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-        return NextResponse.json({ 
-          received: true, 
-          message: 'UTMify PAID já enviado - ignorado'
-        })
-      }
-      
-      try {
-        if (utmifyToken && utmifyEnabled) {
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-          console.log(`📤 [WEBHOOK → UTMify] Enviando status ${isPaid ? 'PAID' : 'PENDING'}`)
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-          console.log(`[v0] 🎯FINAL UTMs being sent to UTMify (${isPaid ? 'PAID' : 'PENDING'}):`, JSON.stringify(trackingParameters, null, 2))
-          console.log("[v0] Sending data to UTMify:", JSON.stringify(utmifyData, null, 2))
-          
-          const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {
-            method: 'POST', // CRÍTICO: sem isso, fetch usa GET por padrão!
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-token": utmifyToken,
-            },
-            body: JSON.stringify(utmifyData),
-          })
-
-          if (utmifyResponse.ok) {
-            const utmifyResult = await utmifyResponse.json()
-            console.log(`[v0] ✅ Successfully sent payment ${isPaid ? 'confirmation' : 'pending'} to UTMify`)
-            console.log('[v0] UTMify Response:', JSON.stringify(utmifyResult, null, 2))
-            
-            // Marcar como enviado no storage para evitar duplicação
-            const storedOrder = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
-            if (storedOrder) {
-              orderStorageService.saveOrder({
-                ...storedOrder,
-                utmifySent: true,
-                utmifyPaidSent: isPaid,
-                status: isPaid ? 'paid' : storedOrder.status,
-                paidAt: isPaid ? (transaction.paidAt || new Date().toISOString()) : storedOrder.paidAt
-              })
-              console.log(`[v0] 🔒 Marcado como enviado para UTMify no storage (evita duplicação)`)
-              console.log(`[v0] 🔒 Flag utmifyPaidSent = ${isPaid}`)
-            }
-            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-          } else {
-            const errorText = await utmifyResponse.text()
-            console.error("[v0] ❌ Failed to send to UTMify")
-            console.error("   - Status:", utmifyResponse.status)
-            console.error("   - Error:", errorText)
-          }
-        } else {
-          console.warn(`[v0] ⚠️ UTMify não enviado: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
-        }
-      } catch (error) {
-        console.error("[v0] ❌ Error sending to UTMify:", error)
-      }
+      // ⚠️ IMPORTANTE: Webhook NÃO envia para UTMify
+      // O envio para UTMify é feito pelo POLLING (check-transaction-status)
+      // Webhook apenas armazena os dados no orderStorage
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+      console.log(`📝 [WEBHOOK] Dados armazenados no orderStorage`)
+      console.log(`📝 [WEBHOOK] UTMify será notificado pelo POLLING`)
+      console.log(`📝 [WEBHOOK] Status: ${status}`)
+      console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
 
       // Aqui você pode adicionar outras ações quando o pagamento for confirmado
       // Por exemplo: atualizar banco de dados, enviar email, etc.
