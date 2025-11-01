@@ -107,20 +107,27 @@ export async function POST(request: NextRequest) {
     }
 
     // VALIDAÇÃO: Verificar se o webhook é do nosso projeto
-    // Ezzpag: NÃO envia postbackUrl (aceitar sempre)
-    // Umbrela: Envia postbackUrl (validar domínio)
-    const whitePageUrl = process.env.UTMIFY_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL || ''
-    const ourDomain = whitePageUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') // Remove https:// e /
+    // Gateway envia webhook para TODOS os domínios cadastrados
+    // Precisamos verificar se a transação foi criada NESTE servidor
     const webhookUrl = body.data?.postbackUrl || body.url || ''
+    const orderId = transaction.externalRef || transactionId
+    const storedOrder = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
     
-    // Se tem postbackUrl/url, validar domínio
-    if (webhookUrl && ourDomain && !webhookUrl.includes(ourDomain)) {
-      console.log('⚠️ [WEBHOOK] Outro projeto - IGNORADO | URL:', webhookUrl)
+    // Se a transação NÃO existe no nosso storage, IGNORAR
+    if (!storedOrder) {
+      console.log('⚠️ [WEBHOOK] Transação de outro servidor - IGNORADO')
+      console.log('   - Transaction ID:', transactionId)
+      console.log('   - Order ID:', orderId)
+      console.log('   - Motivo: Não encontrado no orderStorage deste servidor')
       return NextResponse.json({ 
         received: true, 
-        message: 'Webhook de outro projeto - ignorado' 
+        message: 'Webhook de outro servidor - ignorado' 
       })
     }
+    
+    console.log('✅ [WEBHOOK] Transação encontrada no storage deste servidor')
+    console.log('   - Transaction ID:', transactionId)
+    console.log('   - Order ID:', orderId)
 
     // Mapear status de diferentes gateways
     // Ezzpag: waiting_payment, paid, approved, canceled, refunded
