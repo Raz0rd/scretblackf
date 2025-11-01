@@ -59,23 +59,36 @@ export async function POST(request: NextRequest) {
   try {
     const body: WebhookPayload = await request.json()
 
-    // 🔍 LOG COMPLETO DO WEBHOOK RECEBIDO
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('📥 [WEBHOOK] RECEBIDO - PAYLOAD COMPLETO')
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log(JSON.stringify(body, null, 2))
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('')
-
     // Verificar se é uma transação
     if (body.type !== "transaction" || !body.data) {
-      console.log("[WEBHOOK] Not a transaction webhook, ignoring")
+      console.log("⚠️ [WEBHOOK] Tipo inválido - ignorado")
       return NextResponse.json({ success: true, message: "Not a transaction webhook" })
     }
 
     const transaction = body.data
     const transactionId = transaction.id.toString()
     const status = transaction.status
+    
+    // Identificar gateway
+    const isEzzpag = !body.data?.postbackUrl && body.data?.secureUrl?.includes('ezzypag')
+    const gatewayName = isEzzpag ? 'Ezzpag' : 'Outro'
+    
+    // 📥 CABEÇALHO DO WEBHOOK
+    const host = request.headers.get('host') || 'unknown'
+    const webhookRoute = `/api/webhook`
+    const fullUrl = `https://${host}${webhookRoute}`
+    
+    console.log('')
+    console.log('┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓')
+    console.log('┃ 📥 WEBHOOK RECEBIDO                      ┃')
+    console.log('┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛')
+    console.log(`📍 Rota: ${fullUrl}`)
+    console.log(`🎯 Gateway: ${gatewayName}`)
+    console.log(`🆔 ID: ${transactionId}`)
+    console.log(`📊 Status: ${status.toUpperCase()}`)
+    console.log(`💵 Valor: R$ ${(transaction.amount / 100).toFixed(2)}`)
+    console.log(`👤 Cliente: ${transaction.customer?.name || 'N/A'}`)
+    console.log('')
 
     // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar se já processamos este webhook recentemente
     const webhookKey = `${transactionId}-${status}`
@@ -136,7 +149,6 @@ export async function POST(request: NextRequest) {
     const isWaitingPayment = status === 'waiting_payment' || status === 'WAITING_PAYMENT'
 
     // Detectar origem do webhook
-    const isEzzpag = !body.data?.postbackUrl && body.data?.secureUrl?.includes('ezzypag')
     const isUmbrela = webhookUrl.includes('umbrela') || body.data?.postbackUrl?.includes('umbrela')
     const origem = isEzzpag ? 'Ezzpag' : isUmbrela ? 'Umbrela' : 'Outro'
     
