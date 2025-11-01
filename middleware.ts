@@ -110,6 +110,7 @@ export async function middleware(request: NextRequest) {
     ]
     
     // Se não tem referer, verificar se tem UTMs completos do Google Ads
+    let validatedByCloaker = false
     if (!referer) {
       // Pegar parâmetros da URL
       const urlParams = request.nextUrl.searchParams
@@ -124,7 +125,8 @@ export async function middleware(request: NextRequest) {
         console.log('   - Validado pelo Cloaker')
         console.log('   - GCLID:', gclid)
         console.log('   - Whitepage:', whitePageDomain)
-        // Continuar o fluxo normal (não retornar aqui)
+        validatedByCloaker = true
+        // Pular todas as outras validações de referer
       } else {
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
         console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
@@ -140,18 +142,20 @@ export async function middleware(request: NextRequest) {
       }
     }
     
-    // Verificar se referer está na whitelist
-    const refererLower = referer.toLowerCase()
-    const isFromGoogle = refererLower.includes('google.com')
-    const isFromOwnSite = refererLower.includes(request.headers.get('host') || '')
-    
-    // Permitir referer do próprio site se já foi verificado
-    const isAllowed = allowedReferers.some(allowed => 
-      refererLower.includes(allowed.toLowerCase())
-    ) || (isFromOwnSite && alreadyVerified)
-    
-    // Se vem do Google, precisa ter parâmetro válido
-    if (isFromGoogle && !whitePageDomain) {
+    // Se foi validado pelo cloaker, pular validações de referer
+    if (!validatedByCloaker) {
+      // Verificar se referer está na whitelist
+      const refererLower = referer.toLowerCase()
+      const isFromGoogle = refererLower.includes('google.com')
+      const isFromOwnSite = refererLower.includes(request.headers.get('host') || '')
+      
+      // Permitir referer do próprio site se já foi verificado
+      const isAllowed = allowedReferers.some(allowed => 
+        refererLower.includes(allowed.toLowerCase())
+      ) || (isFromOwnSite && alreadyVerified)
+      
+      // Se vem do Google, precisa ter parâmetro válido
+      if (isFromGoogle && !whitePageDomain) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -161,27 +165,28 @@ export async function middleware(request: NextRequest) {
       console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
       console.log('🔗 URL:', pathname + request.nextUrl.search)
       console.log('⚠️  Parâmetros verificados: campanha, conta, cupons')
-      console.log('⚠️  Ação: Retornando 404 Not Found')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+        console.log('⚠️  Ação: Retornando 404 Not Found')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+        
+        return new NextResponse(null, { status: 404 })
+      }
       
-      return new NextResponse(null, { status: 404 })
-    }
-    
-    if (!isAllowed) {
-      const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
-      
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('📍 Motivo: REFERER NÃO AUTORIZADO')
-      console.log('🔗 Referer:', referer)
-      console.log('🌐 IP:', ip)
-      console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
-      console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Retornando 404 Not Found')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-      
-      return new NextResponse(null, { status: 404 })
+      if (!isAllowed) {
+        const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
+        
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('📍 Motivo: REFERER NÃO AUTORIZADO')
+        console.log('🔗 Referer:', referer)
+        console.log('🌐 IP:', ip)
+        console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
+        console.log('🔗 URL:', pathname + request.nextUrl.search)
+        console.log('⚠️  Ação: Retornando 404 Not Found')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+        
+        return new NextResponse(null, { status: 404 })
+      }
     }
     
     // Referer AUTORIZADO - Verificar UTMs obrigatórios do Google

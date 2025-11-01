@@ -368,6 +368,82 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Se status é waiting_payment/pending, enviar para UTMify (primeira vez)
+    if (isWaitingPayment) {
+      console.log(`[CHECK-STATUS] Status é PENDING - enviando para UTMify`)
+      
+      // VALIDAÇÃO: Verificar se a transação é deste servidor
+      const storedOrder = orderStorageService.getOrder(transactionId)
+      if (!storedOrder) {
+        console.log(`❌ [CHECK-STATUS] Transação de OUTRO servidor - IGNORADO`)
+        console.log(`   - Transaction ID: ${transactionId}`)
+        return NextResponse.json({
+          success: true,
+          status: 'pending',
+          message: 'Transação de outro servidor - ignorada',
+          fromAnotherServer: true
+        })
+      }
+      
+      // Verificar se já enviou pending para UTMify (pelo webhook ou check-status anterior)
+      if (storedOrder.utmifySent) {
+        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado para UTMify - IGNORADO`)
+        return NextResponse.json({
+          success: true,
+          status: 'pending',
+          message: 'Pending já enviado para UTMify',
+          alreadySent: true
+        })
+      }
+      
+      const pendingKey = `${transactionId}-pending`
+      const lastPendingSent = processedConversions.get(pendingKey)
+      const now = Date.now()
+      
+      if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME) {
+        // Marcar como enviado
+        processedConversions.set(pendingKey, now)
+        
+        // Enviar para UTMify
+        const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
+        if (utmifyEnabled) {
+          try {
+            const protocol = request.headers.get('x-forwarded-proto') || 'https'
+            const host = request.headers.get('host')
+            const baseUrl = `${protocol}://${host}`
+            
+            console.log(`📤 [CHECK-STATUS] Enviando PENDING para UTMify...`)
+            const utmifyResponse = await fetch(`${baseUrl}/api/utmify-track`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                orderId: transactionId,
+                status: 'pending',
+                amount: transactionData.amount,
+                customerData: {
+                  name: transactionData.customer.name,
+                  email: transactionData.customer.email,
+                  phone: transactionData.customer.phone,
+                  document: transactionData.customer.document.number
+                },
+                trackingParameters: storedOrder.trackingParameters
+              }),
+            })
+            
+            if (utmifyResponse.ok) {
+              console.log(`✅ [CHECK-STATUS] PENDING enviado para UTMify com sucesso`)
+            } else {
+              console.error(`❌ [CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, utmifyResponse.status)
+            }
+          } catch (error) {
+            console.error(`[CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, error)
+          }
+        }
+      }
+    }
+    
     // Retornar status atual (sem processar)
     return NextResponse.json({
       success: true,
