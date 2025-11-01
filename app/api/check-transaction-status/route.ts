@@ -203,21 +203,7 @@ export async function POST(request: NextRequest) {
         }
       }
       
-      // IMPORTANTE: Verificar se já foi enviado para UTMify pelo webhook
-      // Evita duplicação de conversões
-      if (storedOrder && storedOrder.utmifySent) {
-        console.log(`[CHECK-STATUS] ⚠️ Conversão JÁ foi enviada para UTMify pelo webhook`)
-        console.log(`[CHECK-STATUS] ✅ Retornando sem reenviar (evitando duplicação)`)
-        return NextResponse.json({
-          success: true,
-          status: 'paid',
-          message: 'Pagamento já processado e enviado para UTMify',
-          alreadyProcessed: true,
-          utmifySent: true
-        })
-      }
-
-      console.log(`[CHECK-STATUS] Primeira vez processando PAID - enviando para UTMify...`)
+      console.log(`[CHECK-STATUS] ✅ Processando PAID - enviando para UTMify...`)
 
       // Recuperar UTMs do storage ou usar fallback
       let trackingParameters: Record<string, any> = {}
@@ -309,7 +295,15 @@ export async function POST(request: NextRequest) {
             isTest: process.env.UTMIFY_TEST_MODE === 'true'
           }
 
-          console.log(`[CHECK-STATUS] 📤 Dados sendo enviados para UTMify:`, JSON.stringify(utmifyData, null, 2))
+          console.log(`[CHECK-STATUS] 📤 Enviando PAID para UTMify:`)
+          console.log(`   - Order ID: ${utmifyData.orderId}`)
+          console.log(`   - Status: ${utmifyData.status}`)
+          console.log(`   - Valor: R$ ${(utmifyData.products[0].priceInCents / 100).toFixed(2)}`)
+          console.log(`   - Cliente: ${utmifyData.customer.name}`)
+          console.log(`   - Email: ${utmifyData.customer.email}`)
+          console.log(`   - GCLID: ${utmifyData.trackingParameters.gclid || 'N/A'}`)
+          console.log(`   - GAD Source: ${utmifyData.trackingParameters.gad_source || 'N/A'}`)
+          console.log(`   - GBraid: ${utmifyData.trackingParameters.gbraid || 'N/A'}`)
 
           // Detectar URL base automaticamente
           const protocol = request.headers.get('x-forwarded-proto') || 'https'
@@ -470,8 +464,15 @@ export async function POST(request: NextRequest) {
               isTest: process.env.UTMIFY_TEST_MODE === 'true'
             }
             
-            console.log(`📤 [CHECK-STATUS] Enviando PENDING para UTMify...`)
-            console.log(`[CHECK-STATUS] Dados:`, JSON.stringify(utmifyData, null, 2))
+            console.log(`📤 [CHECK-STATUS] Enviando PENDING para UTMify:`)
+            console.log(`   - Order ID: ${utmifyData.orderId}`)
+            console.log(`   - Status: ${utmifyData.status}`)
+            console.log(`   - Valor: R$ ${(utmifyData.products[0].priceInCents / 100).toFixed(2)}`)
+            console.log(`   - Cliente: ${utmifyData.customer.name}`)
+            console.log(`   - Email: ${utmifyData.customer.email}`)
+            console.log(`   - GCLID: ${utmifyData.trackingParameters.gclid || 'N/A'}`)
+            console.log(`   - GAD Source: ${utmifyData.trackingParameters.gad_source || 'N/A'}`)
+            console.log(`   - GBraid: ${utmifyData.trackingParameters.gbraid || 'N/A'}`)
             
             const utmifyResponse = await fetch(`${baseUrl}/api/utmify-track`, {
               method: "POST",
