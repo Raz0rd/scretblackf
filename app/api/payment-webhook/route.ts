@@ -128,54 +128,62 @@ export async function POST(request: NextRequest) {
         storedOrder = orderStorageService.getOrder(webhookData.transactionId)
       }
       
+      // VALIDAÇÃO: Se não encontrou no orderStorage
       if (!storedOrder) {
-        console.error("[v0] Payment Webhook - Order not found in storage:", webhookData.orderId)
+        // Verificar se é email @cliente.com
+        const customerEmail = webhookData.customerData?.email || ''
+        const isClienteEmail = customerEmail.includes('@cliente.com')
         
-        // Se não encontrar no storage e não tiver dados completos no webhook, retornar erro
-        if (!webhookData.customerData || !webhookData.customerData.email) {
+        if (isClienteEmail) {
+          // Email @cliente.com: criar entrada no orderStorage para quando vier PAID
+          console.log("📝 [WEBHOOK] Email @cliente.com - Criando entrada no orderStorage")
+          console.log("   - Transaction ID:", webhookData.orderId)
+          console.log("   - Email:", customerEmail)
+          
+          storedOrder = {
+            orderId: webhookData.orderId,
+            transactionId: webhookData.transactionId,
+            amount: webhookData.amount || 0,
+            customerData: webhookData.customerData!,
+            trackingParameters: {
+              src: null,
+              sck: null,
+              utm_source: null,
+              utm_campaign: null,
+              utm_medium: null,
+              utm_content: null,
+              utm_term: null,
+              xcod: null,
+              keyword: null,
+              device: null,
+              network: null,
+              gclid: null,
+              gad_source: null,
+              gbraid: null,
+              ...webhookData.trackingParameters
+            },
+            createdAt: new Date().toISOString(),
+            status: 'pending' as const
+          }
+          
+          // Salvar no orderStorage
+          orderStorageService.saveOrder(storedOrder)
+          console.log("✅ [WEBHOOK] Entrada criada no orderStorage para @cliente.com")
+        } else {
+          // Email normal: é de outro servidor - IGNORAR
+          console.log("⚠️ [WEBHOOK] Transação de outro servidor - IGNORANDO")
+          console.log("   - Transaction ID:", webhookData.orderId)
+          console.log("   - Email:", customerEmail)
+          console.log("   - Motivo: Não encontrado no orderStorage deste servidor")
+          console.log("   - Ação: Webhook ignorado, UTMify NÃO será chamado")
+          
           return NextResponse.json({
-            success: false,
-            error: "Order not found in storage and webhook data incomplete",
-            orderId: webhookData.orderId
-          }, { status: 404 })
+            success: true,
+            message: "Webhook de outro servidor - ignorado",
+            orderId: webhookData.orderId,
+            reason: "not_from_this_server"
+          })
         }
-        
-        // Usar apenas dados reais do webhook se disponíveis
-        storedOrder = {
-          orderId: webhookData.orderId,
-          transactionId: webhookData.transactionId,
-          amount: webhookData.amount || 0,
-          customerData: webhookData.customerData,
-          trackingParameters: {
-            src: null,
-            sck: null,
-            utm_source: null,
-            utm_campaign: null,
-            utm_medium: null,
-            utm_content: null,
-            utm_term: null,
-            xcod: null,
-            keyword: null,
-            device: null,
-            network: null,
-            gclid: null,
-            gad_source: null,
-            gbraid: null,
-            ...webhookData.trackingParameters
-          },
-          createdAt: new Date().toISOString(),
-          status: 'pending' as const
-        }
-        
-        console.log("[v0] Payment Webhook - Using webhook data:", storedOrder)
-      }
-      
-      // Verificar se storedOrder não é null
-      if (!storedOrder) {
-        return NextResponse.json({
-          success: false,
-          error: "Unable to process payment - order data missing"
-        }, { status: 400 })
       }
 
       // Atualizar status do pedido
@@ -216,14 +224,43 @@ export async function POST(request: NextRequest) {
       const protocol = request.headers.get('x-forwarded-proto') || 'https'
       const baseUrl = `${protocol}://${host}`
 
-      // Enviar status para UTMify apenas se habilitado
+      // Enviar status para UTMify
       const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
+      const customerEmail = storedOrder?.customerData?.email || ''
+      const isClienteEmail = customerEmail.includes('@cliente.com')
+      const isPending = (webhookData.status as string) === "pending" || (webhookData.status as string) === "waiting_payment"
+      const isPaid = webhookData.status === "paid"
+      
       console.log("🚨 [DEBUG UTMify] UTMIFY_ENABLED:", process.env.UTMIFY_ENABLED)
       console.log("🚨 [DEBUG UTMify] utmifyEnabled:", utmifyEnabled)
+      console.log("🚨 [DEBUG UTMify] Email:", customerEmail)
+      console.log("🚨 [DEBUG UTMify] É @cliente.com:", isClienteEmail)
+      console.log("🚨 [DEBUG UTMify] Status:", webhookData.status)
+      
+      // REGRAS:
+      // 1. Email normal + PENDING → Envia com API do .env
+      // 2. Email normal + PAID → Envia com API do .env
+      // 3. Email @cliente.com + PENDING → NÃO envia
+      // 4. Email @cliente.com + PAID → Envia com API especial
+      
+      let shouldSendToUtmify = false
       
       if (utmifyEnabled) {
+        if (isClienteEmail) {
+          // Email @cliente.com: só envia se for PAID
+          shouldSendToUtmify = isPaid
+          if (isPending) {
+            console.log(`[v0] Payment Webhook - Email @cliente.com + PENDING: aguardando PAID`)
+          }
+        } else {
+          // Email normal: envia PENDING e PAID
+          shouldSendToUtmify = isPending || isPaid
+        }
+      }
+      
+      if (shouldSendToUtmify) {
         try {
-          console.log(`🚨 [DEBUG UTMify] Tentando enviar ${webhookData.status} para UTMify`)
+          console.log(`🚨 [DEBUG UTMify] Enviando ${webhookData.status} para UTMify`)
           console.log(`[v0] Payment Webhook - Sending ${webhookData.status} status to UTMify:`, orderData)
           
           const utmifyResponse = await fetch(`${baseUrl}/api/send-to-utmify`, {
@@ -233,7 +270,7 @@ export async function POST(request: NextRequest) {
             },
             body: JSON.stringify({
               ...orderData,
-              status: webhookData.status // Status real do webhook
+              status: webhookData.status
             }),
           })
 
@@ -248,7 +285,11 @@ export async function POST(request: NextRequest) {
           console.error("[v0] Payment Webhook - Error sending to UTMify:", error)
         }
       } else {
-        console.log("[v0] Payment Webhook - UTMify disabled, skipping conversion")
+        if (!utmifyEnabled) {
+          console.log("[v0] Payment Webhook - UTMify disabled, skipping")
+        } else {
+          console.log("[v0] Payment Webhook - Não atende critérios para enviar UTMify")
+        }
       }
 
       // Enviar evento de conversão para Ratoeira ADS apenas se habilitado E pagamento confirmado
