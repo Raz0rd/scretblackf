@@ -65,18 +65,39 @@ export async function middleware(request: NextRequest) {
     console.log('🌐 IP:', ip)
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
     
-    // Lista de whitepages externas permitidas (hardcoded para Edge Runtime)
-    // Cada whitepage que enviar tráfego será detectada e usada na conversão
+    // Mapeamento de parâmetros de URL para whitepages
+    // Google Ads redireciona via google.com, então identificamos pela campanha
+    const whitePageMapping: Record<string, string> = {
+      'empresadomarcelo': 'cuponeriavirtual.shop',
+      'pessoal': 'recargajogom.click',
+      'promotion': 'recarga-jogoff.shop'
+    }
+    
+    // Pegar parâmetros da URL
+    const urlParams = request.nextUrl.searchParams
+    const campanha = urlParams.get('campanha')
+    const conta = urlParams.get('conta')
+    const cupons = urlParams.get('cupons')
+    
+    // Identificar whitepage pelo parâmetro
+    let whitePageDomain = ''
+    if (campanha && whitePageMapping[campanha]) {
+      whitePageDomain = whitePageMapping[campanha]
+    } else if (conta && whitePageMapping[conta]) {
+      whitePageDomain = whitePageMapping[conta]
+    } else if (cupons && whitePageMapping[cupons]) {
+      whitePageDomain = whitePageMapping[cupons]
+    }
+    
+    // Referers permitidos (APENAS Google Ads)
+    // Whitepages não enviam tráfego direto, apenas via Google Ads
     const allowedReferers: string[] = [
-      'cuponeriavirtual.shop',
-      'recarga-jogoff.shop',
-      'recargajogom.click'
+      'google.com',
+      'google.com.br'
     ]
     
     // Se não tem referer, BLOQUEAR
     if (!referer) {
-      const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
-      
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -95,6 +116,24 @@ export async function middleware(request: NextRequest) {
     const isAllowed = allowedReferers.some(allowed => 
       refererLower.includes(allowed.toLowerCase())
     )
+    
+    // Se vem do Google, precisa ter parâmetro válido
+    const isFromGoogle = refererLower.includes('google.com')
+    if (isFromGoogle && !whitePageDomain) {
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📍 Motivo: GOOGLE SEM PARÂMETRO VÁLIDO')
+      console.log('🔗 Referer:', referer)
+      console.log('🌐 IP:', ip)
+      console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
+      console.log('🔗 URL:', pathname + request.nextUrl.search)
+      console.log('⚠️  Parâmetros verificados: campanha, conta, cupons')
+      console.log('⚠️  Ação: Retornando 404 Not Found')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      
+      return new NextResponse(null, { status: 404 })
+    }
     
     if (!isAllowed) {
       const whitepageUrl = process.env.NEXT_PUBLIC_WHITEPAGE_URL || process.env.NEXT_PUBLIC_UTMIFY_WHITEPAGE_URL
@@ -169,18 +208,12 @@ export async function middleware(request: NextRequest) {
     
     const response = NextResponse.next()
     
-    // Extrair domínio do referer para salvar origem da conversão
-    let originDomain = ''
-    try {
-      const refererUrl = new URL(referer)
-      originDomain = refererUrl.origin // Ex: https://cuponeriavirtual.shop
-    } catch (e) {
-      // Se falhar ao parsear, tentar extrair manualmente
-      const match = referer.match(/^(https?:\/\/[^\/]+)/)
-      if (match) {
-        originDomain = match[1]
-      }
-    }
+    // Domínio da whitepage identificado pelo parâmetro (SEMPRE via Google Ads)
+    const originDomain = whitePageDomain
+    
+    console.log('🎯 [ORIGEM] Whitepage identificada:', originDomain)
+    console.log('   - Parâmetro usado:', campanha ? `campanha=${campanha}` : conta ? `conta=${conta}` : cupons ? `cupons=${cupons}` : '(nenhum)')
+    console.log('   - Referer Google:', referer)
     
     // Salvar referer em cookie (para usar na página de sucesso)
     response.cookies.set('source_referer', referer, {
