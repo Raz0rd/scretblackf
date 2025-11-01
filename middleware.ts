@@ -58,13 +58,18 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
-    // Se já foi verificado (tem cookie), liberar navegação interna
+    // Se já foi verificado (tem cookie), liberar APENAS se não for acesso com parâmetros
     const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
-    if (alreadyVerified) {
-      // Se já foi verificado, liberar independente do referer
+    const hasParams = request.nextUrl.searchParams.toString().length > 0
+    
+    if (alreadyVerified && !hasParams) {
+      // Se já foi verificado E não tem parâmetros na URL, liberar navegação interna
       console.log('✅ [REFERER] Navegação interna liberada (já verificado)')
       return NextResponse.next()
     }
+    
+    // Se tem parâmetros, SEMPRE validar (mesmo que já verificado)
+    // Isso evita que alguém tente acessar com apenas 1 parâmetro (espião)
     
     // Log do referer recebido (para debug)
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
