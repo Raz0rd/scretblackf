@@ -109,19 +109,35 @@ export async function middleware(request: NextRequest) {
       'google.com.br'
     ]
     
-    // Se não tem referer, BLOQUEAR
+    // Se não tem referer, verificar se tem UTMs completos do Google Ads
     if (!referer) {
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('📍 Motivo: SEM REFERER')
-      console.log('🌐 IP:', ip)
-      console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
-      console.log('🔗 URL:', pathname + request.nextUrl.search)
-      console.log('⚠️  Ação: Retornando 404 Not Found')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      // Pegar parâmetros da URL
+      const urlParams = request.nextUrl.searchParams
+      const gclid = urlParams.get('gclid')
+      const gad_source = urlParams.get('gad_source')
+      const gad_campaignid = urlParams.get('gad_campaignid')
       
-      return new NextResponse(null, { status: 404 })
+      // Se tem UTMs completos do Google Ads + parâmetro de whitepage, permitir
+      // (significa que passou pelo cloaker e é usuário real)
+      if (gclid && gad_source && gad_campaignid && whitePageDomain) {
+        console.log('✅ [REFERER] Sem referer MAS com UTMs completos do Google Ads - LIBERADO')
+        console.log('   - Validado pelo Cloaker')
+        console.log('   - GCLID:', gclid)
+        console.log('   - Whitepage:', whitePageDomain)
+        // Continuar o fluxo normal (não retornar aqui)
+      } else {
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        console.log('📍 Motivo: SEM REFERER')
+        console.log('🌐 IP:', ip)
+        console.log('🖥️  User-Agent:', userAgent.slice(0, 80))
+        console.log('🔗 URL:', pathname + request.nextUrl.search)
+        console.log('⚠️  Ação: Retornando 404 Not Found')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+        
+        return new NextResponse(null, { status: 404 })
+      }
     }
     
     // Verificar se referer está na whitelist
