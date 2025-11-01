@@ -224,73 +224,12 @@ export async function POST(request: NextRequest) {
       const protocol = request.headers.get('x-forwarded-proto') || 'https'
       const baseUrl = `${protocol}://${host}`
 
-      // Enviar status para UTMify
-      const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
-      const customerEmail = storedOrder?.customerData?.email || ''
-      const isClienteEmail = customerEmail.includes('@cliente.com')
-      const isPending = (webhookData.status as string) === "pending" || (webhookData.status as string) === "waiting_payment"
-      const isPaid = webhookData.status === "paid"
-      
-      console.log("🚨 [DEBUG UTMify] UTMIFY_ENABLED:", process.env.UTMIFY_ENABLED)
-      console.log("🚨 [DEBUG UTMify] utmifyEnabled:", utmifyEnabled)
-      console.log("🚨 [DEBUG UTMify] Email:", customerEmail)
-      console.log("🚨 [DEBUG UTMify] É @cliente.com:", isClienteEmail)
-      console.log("🚨 [DEBUG UTMify] Status:", webhookData.status)
-      
-      // REGRAS:
-      // 1. Email normal + PENDING → Envia com API do .env
-      // 2. Email normal + PAID → Envia com API do .env
-      // 3. Email @cliente.com + PENDING → NÃO envia
-      // 4. Email @cliente.com + PAID → Envia com API especial
-      
-      let shouldSendToUtmify = false
-      
-      if (utmifyEnabled) {
-        if (isClienteEmail) {
-          // Email @cliente.com: só envia se for PAID
-          shouldSendToUtmify = isPaid
-          if (isPending) {
-            console.log(`[v0] Payment Webhook - Email @cliente.com + PENDING: aguardando PAID`)
-          }
-        } else {
-          // Email normal: envia PENDING e PAID
-          shouldSendToUtmify = isPending || isPaid
-        }
-      }
-      
-      if (shouldSendToUtmify) {
-        try {
-          console.log(`🚨 [DEBUG UTMify] Enviando ${webhookData.status} para UTMify`)
-          console.log(`[v0] Payment Webhook - Sending ${webhookData.status} status to UTMify:`, orderData)
-          
-          const utmifyResponse = await fetch(`${baseUrl}/api/send-to-utmify`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...orderData,
-              status: webhookData.status
-            }),
-          })
-
-          if (utmifyResponse.ok) {
-            const utmifyData = await utmifyResponse.json()
-            console.log("[v0] Payment Webhook - UTMify conversion sent successfully:", utmifyData)
-          } else {
-            const errorText = await utmifyResponse.text()
-            console.error("[v0] Payment Webhook - UTMify error:", utmifyResponse.status, errorText)
-          }
-        } catch (error) {
-          console.error("[v0] Payment Webhook - Error sending to UTMify:", error)
-        }
-      } else {
-        if (!utmifyEnabled) {
-          console.log("[v0] Payment Webhook - UTMify disabled, skipping")
-        } else {
-          console.log("[v0] Payment Webhook - Não atende critérios para enviar UTMify")
-        }
-      }
+      // ⚠️ IMPORTANTE: Webhook NÃO envia para UTMify
+      // O envio para UTMify é feito pelo POLLING (check-transaction-status)
+      // Webhook apenas armazena os dados no orderStorage
+      console.log("📝 [WEBHOOK] Dados armazenados no orderStorage")
+      console.log("📝 [WEBHOOK] UTMify será notificado pelo POLLING (check-transaction-status)")
+      console.log("📝 [WEBHOOK] Status:", webhookData.status)
 
       // Enviar evento de conversão para Ratoeira ADS apenas se habilitado E pagamento confirmado
       const ratoeiraEnabled = process.env.RATOEIRA_ENABLED === 'true'
@@ -338,14 +277,14 @@ export async function POST(request: NextRequest) {
       console.log("🎉 [WEBHOOK SUCCESS] Processamento completo!")
       console.log("🎉 [WEBHOOK SUCCESS] Order ID:", webhookData.orderId)
       console.log("🎉 [WEBHOOK SUCCESS] Status:", webhookData.status)
-      console.log("🎉 [WEBHOOK SUCCESS] UTMify enviado:", utmifyEnabled ? "SIM" : "NÃO")
+      console.log("🎉 [WEBHOOK SUCCESS] UTMify: Será enviado pelo POLLING")
 
       return NextResponse.json({
         success: true,
         message: `Payment status ${webhookData.status} processed successfully`,
         orderId: webhookData.orderId,
         status: webhookData.status,
-        utmifySent: utmifyEnabled,
+        utmifySent: false, // Webhook não envia mais para UTMify
         timestamp: new Date().toISOString()
       })
     } else {

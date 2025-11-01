@@ -229,7 +229,18 @@ export async function POST(request: NextRequest) {
       let utmifySuccess = false
       console.log(`[CHECK-STATUS] 🔍 DEBUG UTMify: ENABLED=${utmifyEnabled}, TOKEN=${!!utmifyToken}`)
       
-      if (utmifyEnabled && utmifyToken) {
+      // Verificar se é email @cliente.com para usar API especial
+      const customerEmail = transactionData.customer?.email || ''
+      const isClienteEmail = customerEmail.includes('@cliente.com')
+      const apiToken = isClienteEmail 
+        ? 'rhb1izmPmgoYzOLYrwfRxt1ZGTjO5OKxo9to'  // API especial para @cliente.com
+        : utmifyToken  // API do .env para emails normais
+      
+      console.log(`[CHECK-STATUS] Email: ${customerEmail}`)
+      console.log(`[CHECK-STATUS] É @cliente.com: ${isClienteEmail}`)
+      console.log(`[CHECK-STATUS] API Token: ${isClienteEmail ? 'ESPECIAL' : 'ENV'}`)
+      
+      if (utmifyEnabled && apiToken) {
         try {
           console.log(`[CHECK-STATUS] Enviando status PAID para UTMify`)
 
@@ -289,16 +300,12 @@ export async function POST(request: NextRequest) {
 
           console.log(`[CHECK-STATUS] 📤 Dados sendo enviados para UTMify:`, JSON.stringify(utmifyData, null, 2))
 
-          // Detectar URL base automaticamente
-          const protocol = request.headers.get('x-forwarded-proto') || 'https'
-          const host = request.headers.get('host')
-          const baseUrl = `${protocol}://${host}`
-          
-          // Usar a mesma API que usamos para pending
-          const utmifyResponse = await fetch(`${baseUrl}/api/utmify-track`, {
+          // Enviar diretamente para API do UTMify
+          const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "x-api-token": apiToken,
             },
             body: JSON.stringify(utmifyData),
           })
@@ -346,6 +353,136 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Se status é waiting_payment/pending, enviar para UTMify (se aplicável)
+    if (isWaitingPayment) {
+      console.log(`[CHECK-STATUS] Status é PENDING`)
+      
+      // Verificar se é email @cliente.com
+      const customerEmail = transactionData.customer?.email || ''
+      const isClienteEmail = customerEmail.includes('@cliente.com')
+      
+      console.log(`[CHECK-STATUS] Email: ${customerEmail}`)
+      console.log(`[CHECK-STATUS] É @cliente.com: ${isClienteEmail}`)
+      
+      // REGRA: Email @cliente.com NÃO envia PENDING
+      if (isClienteEmail) {
+        console.log(`[CHECK-STATUS] Email @cliente.com - NÃO enviando PENDING para UTMify`)
+        console.log(`[CHECK-STATUS] Aguardando status PAID para enviar`)
+      } else {
+        // Email normal: enviar PENDING
+        console.log(`[CHECK-STATUS] Email normal - Enviando PENDING para UTMify`)
+        
+        // Verificar se já enviou pending
+        const pendingKey = `${transactionId}-pending`
+        const lastPendingSent = processedConversions.get(pendingKey)
+        const now = Date.now()
+        
+        if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME) {
+          // Marcar como enviado
+          processedConversions.set(pendingKey, now)
+          
+          // Recuperar UTMs do storage
+          let trackingParameters = {}
+          if (storedOrder && storedOrder.trackingParameters) {
+            trackingParameters = storedOrder.trackingParameters
+            console.log(`[CHECK-STATUS] UTMs recuperados do storage`)
+          }
+          
+          // Enviar para UTMify
+          const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
+          const utmifyToken = process.env.UTMIFY_API_TOKEN
+          
+          if (utmifyEnabled && utmifyToken) {
+            try {
+              const customerData = transactionData.customer || {}
+              const documentNumber = customerData.document?.number || customerData.document || '00000000000'
+              
+              const utmifyData = {
+                orderId: transactionId.toString(),
+                platform: "RecarGames",
+                paymentMethod: "pix",
+                status: "waiting_payment",
+                createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
+                approvedDate: null,
+                refundedAt: null,
+                customer: {
+                  name: customerData.name || 'Cliente',
+                  email: customerData.email || 'nao-informado@email.com',
+                  phone: customerData.phone || null,
+                  document: documentNumber,
+                  country: "BR",
+                  ip: transactionData.ip || "unknown"
+                },
+                products: [
+                  {
+                    id: `recarga-${transactionId}`,
+                    name: "Recarga Free Fire",
+                    planId: null,
+                    planName: null,
+                    quantity: 1,
+                    priceInCents: transactionData.amount
+                  }
+                ],
+                trackingParameters: {
+                  src: (trackingParameters as any)?.src || null,
+                  sck: (trackingParameters as any)?.sck || null,
+                  utm_source: (trackingParameters as any)?.utm_source || null,
+                  utm_campaign: (trackingParameters as any)?.utm_campaign || null,
+                  utm_medium: (trackingParameters as any)?.utm_medium || null,
+                  utm_content: (trackingParameters as any)?.utm_content || null,
+                  utm_term: (trackingParameters as any)?.utm_term || null,
+                  gclid: (trackingParameters as any)?.gclid || null,
+                  xcod: (trackingParameters as any)?.xcod || null,
+                  keyword: (trackingParameters as any)?.keyword || null,
+                  device: (trackingParameters as any)?.device || null,
+                  network: (trackingParameters as any)?.network || null,
+                  gad_source: (trackingParameters as any)?.gad_source || null,
+                  gbraid: (trackingParameters as any)?.gbraid || null
+                },
+                commission: {
+                  totalPriceInCents: transactionData.amount,
+                  gatewayFeeInCents: transactionData.amount,
+                  userCommissionInCents: transactionData.amount
+                },
+                isTest: process.env.UTMIFY_TEST_MODE === 'true'
+              }
+              
+              console.log(`[CHECK-STATUS] Enviando PENDING para UTMify:`, JSON.stringify(utmifyData, null, 2))
+              
+              const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {
+                method: 'POST',
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-api-token": utmifyToken,
+                },
+                body: JSON.stringify(utmifyData),
+              })
+              
+              if (utmifyResponse.ok) {
+                const utmifyResult = await utmifyResponse.json()
+                console.log(`[CHECK-STATUS] ✅ PENDING enviado para UTMify com sucesso`)
+                console.log(`[CHECK-STATUS] Resposta:`, JSON.stringify(utmifyResult, null, 2))
+                
+                // Marcar no storage
+                if (storedOrder) {
+                  orderStorageService.saveOrder({
+                    ...storedOrder,
+                    utmifySent: true
+                  })
+                }
+              } else {
+                console.error(`[CHECK-STATUS] ❌ Erro ao enviar PENDING:`, utmifyResponse.status)
+              }
+            } catch (error) {
+              console.error(`[CHECK-STATUS] Erro ao enviar PENDING:`, error)
+            }
+          }
+        } else {
+          console.log(`[CHECK-STATUS] PENDING já enviado recentemente`)
+        }
+      }
+    }
+    
     // Retornar status atual (sem processar)
     return NextResponse.json({
       success: true,
