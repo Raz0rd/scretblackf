@@ -143,7 +143,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
 }
 
 // Função para gerar PIX via Ezzpag
-async function generatePixEzzpag(body: any, baseUrl: string) {
+async function generatePixEzzpag(body: any, baseUrl: string, presell?: string) {
   const authToken = process.env.EZZPAG_API_AUTH
   console.log("\n💳 [Ezzpag] Verificando autenticação:", authToken ? "✓ Token presente" : "✗ Token ausente")
   
@@ -238,9 +238,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     paymentMethod: 'pix'
   }
   
-  console.log("📦 [Ezzpag] PAYLOAD ENVIADO:", JSON.stringify(ezzpagPayload, null, 2))
-  console.log("🎯 [Ezzpag] URL:", "https://api.ezzypag.com.br/v1/transactions")
-  console.log("🔑 [Ezzpag] Auth Token:", authToken.substring(0, 10) + "...")
+  console.log("📤 [Ezzpag] Criando transação PIX...")
   
   const response = await fetch("https://api.ezzypag.com.br/v1/transactions", {
     method: "POST",
@@ -251,9 +249,6 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     },
     body: JSON.stringify(ezzpagPayload),
   })
-
-  console.log("📡 [Ezzpag] RESPONSE STATUS:", response.status)
-  console.log("📊 [Ezzpag] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
 
   if (!response.ok) {
     const errorText = await response.text()
@@ -304,17 +299,18 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
   }
 
   const data = await response.json()
-  console.log("✅ [Ezzpag] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
 
   // Extrair informações da resposta Ezzpag
   const transactionId = data.id?.toString()
   const pixCode = data.pix?.qrcode
   
-  console.log("🔍 [Ezzpag] DADOS EXTRAÍDOS:", {
-    transactionId,
-    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
-    status: data.status
-  })
+  console.log("✅ [Ezzpag] PIX criado com sucesso!")
+  console.log(`   - Transaction ID: ${transactionId}`)
+  console.log(`   - Valor: R$ ${(data.amount / 100).toFixed(2)}`)
+  console.log(`   - Status: ${data.status}`)
+  console.log(`   - Cliente: ${data.customer?.name}`)
+  console.log(`   - Presell: ${presell || 'Direto'}`)
+  console.log(`   - URL Origem: ${body.baseUrl || 'N/A'}`)
 
   // Retornar apenas dados essenciais para o frontend (segurança)
   return {
@@ -566,6 +562,17 @@ export async function POST(request: NextRequest) {
     const protocol = request.headers.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
     const baseUrl = `${protocol}://${host}`
     
+    // Obter presell do cookie _ref_origin
+    const refOriginCookie = request.cookies.get('_ref_origin')?.value
+    let presell = 'Direto'
+    if (refOriginCookie) {
+      try {
+        presell = Buffer.from(refOriginCookie, 'base64').toString('utf-8')
+      } catch (e) {
+        presell = 'Direto'
+      }
+    }
+    
     // Debug detalhado da URL
     console.log("🌐 [URL DEBUG] Headers recebidos:", {
       host: request.headers.get('host'),
@@ -584,7 +591,7 @@ export async function POST(request: NextRequest) {
       result = await generatePixUmbrela(body, baseUrl)
     } else {
       // Padrão: Ezzpag
-      result = await generatePixEzzpag(body, baseUrl)
+      result = await generatePixEzzpag(body, baseUrl, presell)
     }
     
     // SALVAR no order storage com tracking parameters

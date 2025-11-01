@@ -126,12 +126,15 @@ export async function middleware(request: NextRequest) {
     
     // Verificar se referer está na whitelist
     const refererLower = referer.toLowerCase()
+    const isFromGoogle = refererLower.includes('google.com')
+    const isFromOwnSite = refererLower.includes(request.headers.get('host') || '')
+    
+    // Permitir referer do próprio site se já foi verificado
     const isAllowed = allowedReferers.some(allowed => 
       refererLower.includes(allowed.toLowerCase())
-    )
+    ) || (isFromOwnSite && alreadyVerified)
     
     // Se vem do Google, precisa ter parâmetro válido
-    const isFromGoogle = refererLower.includes('google.com')
     if (isFromGoogle && !whitePageDomain) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [REFERER CHECK] ACESSO BLOQUEADO')

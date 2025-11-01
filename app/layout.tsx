@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Recarga Free Fire, Delta Force, Haikyu - Site Oficial de Diamantes",
   description: "Site oficial de recarga para jogos! Compre diamantes Free Fire, créditos Delta Force e moedas Haikyu com segurança. Recarga rápida, bônus exclusivos e preços promocionais. Centro de recarga oficial de jogos mobile.",
   keywords: [
-    // Free Fire
+    // Free Fire - Principal
     "recarga free fire",
     "comprar diamantes free fire", 
     "diamantes free fire barato",
@@ -21,20 +21,45 @@ export const metadata: Metadata = {
     "site recarga free fire",
     "diamantes ff",
     "recarga ff oficial",
+    "free fire diamantes",
+    "recarga free fire pix",
+    "comprar diamantes ff",
+    "free fire recarga rapida",
+    "diamantes free fire promocao",
     
-    // Delta Force
+    // Delta Force - Principal
     "recarga delta force",
     "comprar creditos delta force",
     "delta force recarga oficial",
     "site recarga delta force",
+    "delta force coins",
+    "comprar coins delta force",
+    "delta force recarga rapida",
+    "creditos delta force barato",
+    "delta force recarga pix",
     
-    // Haikyu  
+    // Haikyu - Principal
     "recarga haikyu",
     "comprar moedas haikyu",
     "haikyu recarga oficial",
     "site recarga haikyu",
+    "haikyu fly high recarga",
+    "diamantes estelares haikyu",
+    "haikyu recarga rapida",
+    "moedas haikyu barato",
     
-    // Geral
+    // Long-tail (alta conversão)
+    "onde comprar diamantes free fire",
+    "melhor site recarga free fire",
+    "recarga free fire confiavel",
+    "recarga free fire segura",
+    "comprar diamantes free fire barato",
+    "site oficial recarga free fire",
+    "recarga delta force confiavel",
+    "melhor site delta force",
+    "recarga haikyu confiavel",
+    
+    // Geral - Conversão
     "recarga jogo",
     "site de recarga de jogos",
     "recarga jogos mobile",
@@ -44,7 +69,9 @@ export const metadata: Metadata = {
     "recarga segura jogos",
     "recarga rapida jogos",
     "bonus recarga jogos",
-    "promocao recarga jogos"
+    "promocao recarga jogos",
+    "recarga jogos pix",
+    "recarga jogos barato"
   ],
   authors: [{ name: "Centro Oficial de Recarga" }],
   generator: "Next.js",
