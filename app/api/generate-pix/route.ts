@@ -603,6 +603,10 @@ export async function POST(request: NextRequest) {
     const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
+    console.log("🔍 [STORAGE DEBUG] Body completo:", JSON.stringify(body, null, 2))
+    console.log("🔍 [STORAGE DEBUG] trackingParams:", body.trackingParams)
+    console.log("🔍 [STORAGE DEBUG] utmParams:", body.utmParams)
+    
     try {
       const orderData = {
         orderId: validResult.transactionId,
@@ -614,11 +618,12 @@ export async function POST(request: NextRequest) {
           phone: body.customer?.phone || '',
           document: body.customer?.document?.number || ''
         },
-        trackingParameters: body.trackingParams || {},
+        trackingParameters: body.trackingParams || body.utmParams || {},
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }
       
+      console.log("💾 [STORAGE] Dados que serão salvos:", JSON.stringify(orderData, null, 2))
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
     } catch (storageError) {
