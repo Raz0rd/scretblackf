@@ -59,21 +59,13 @@ export async function middleware(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || ''
     
     // Blacklist de IPs (bots, scrapers, etc)
-    // Lê do arquivo config/ip-blacklist.json para facilitar adição sem rebuild
-    let ipBlacklist: string[] = []
-    try {
-      const fs = require('fs')
-      const path = require('path')
-      const blacklistPath = path.join(process.cwd(), 'config', 'ip-blacklist.json')
-      if (fs.existsSync(blacklistPath)) {
-        const blacklistData = JSON.parse(fs.readFileSync(blacklistPath, 'utf-8'))
-        ipBlacklist = blacklistData.ips || []
-      }
-    } catch (error) {
-      console.error('[MIDDLEWARE] Erro ao ler blacklist:', error)
-      // Fallback para lista hardcoded
-      ipBlacklist = ['2001:4860:7:303::eb']
-    }
+    // Edge Runtime não suporta fs, então usamos lista hardcoded
+    // Para adicionar IPs, edite esta lista e faça commit
+    const ipBlacklist = [
+      '2001:4860:7:303::eb',
+      '2804:391c:0:3c:a33f:2:0:31b6',
+      '2001:4860:7:f03::dd', // Google Bot
+    ]
     
     if (ipBlacklist.includes(ip)) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
