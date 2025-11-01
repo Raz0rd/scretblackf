@@ -58,6 +58,13 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
+    // Se já foi verificado (tem cookie), liberar navegação interna
+    const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
+    if (alreadyVerified && referer.includes('recargacomdescontos.shop')) {
+      console.log('✅ [REFERER] Navegação interna liberada (já verificado)')
+      return NextResponse.next()
+    }
+    
     // Log do referer recebido (para debug)
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('🔍 [REFERER CHECK] Nova tentativa de acesso')
