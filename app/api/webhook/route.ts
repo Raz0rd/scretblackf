@@ -59,6 +59,14 @@ export async function POST(request: NextRequest) {
   try {
     const body: WebhookPayload = await request.json()
 
+    // 🔍 LOG COMPLETO DO WEBHOOK RECEBIDO
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('📥 [WEBHOOK] RECEBIDO - PAYLOAD COMPLETO')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log(JSON.stringify(body, null, 2))
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('')
+
     // Verificar se é uma transação
     if (body.type !== "transaction" || !body.data) {
       console.log("[WEBHOOK] Not a transaction webhook, ignoring")
