@@ -69,7 +69,8 @@ export async function middleware(request: NextRequest) {
     // Cada whitepage que enviar tráfego será detectada e usada na conversão
     const allowedReferers: string[] = [
       'cuponeriavirtual.shop',
-      'recarga-jogoff.shop'
+      'recarga-jogoff.shop',
+      'recargajogom.click'
     ]
     
     // Se não tem referer, BLOQUEAR
