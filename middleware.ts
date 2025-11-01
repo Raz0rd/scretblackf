@@ -83,7 +83,8 @@ export async function middleware(request: NextRequest) {
     const whitePageMapping: Record<string, string> = {
       'empresadomarcelo': 'cuponeriavirtual.shop',
       'pessoal': 'recargajogom.click',
-      'promotion': 'recarga-jogoff.shop'
+      'promotion': 'recarga-jogoff.shop',
+      'cupons': 'hubdecuponsedescontos.shop'
     }
     
     // Pegar parâmetros da URL
@@ -91,6 +92,7 @@ export async function middleware(request: NextRequest) {
     const campanha = urlParams.get('campanha')
     const conta = urlParams.get('conta')
     const cupons = urlParams.get('cupons')
+    const recargas = urlParams.get('recargas')
     
     // Identificar whitepage pelo parâmetro
     let whitePageDomain = ''
@@ -100,6 +102,8 @@ export async function middleware(request: NextRequest) {
       whitePageDomain = whitePageMapping[conta]
     } else if (cupons && whitePageMapping[cupons]) {
       whitePageDomain = whitePageMapping[cupons]
+    } else if (recargas && whitePageMapping[recargas]) {
+      whitePageDomain = whitePageMapping[recargas]
     }
     
     // Referers permitidos (APENAS Google Ads)
