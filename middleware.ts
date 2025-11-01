@@ -155,37 +155,23 @@ export async function middleware(request: NextRequest) {
     // Referer AUTORIZADO - Verificar UTMs obrigatórios do Google
     const searchParams = request.nextUrl.searchParams
     
-    // UTMs obrigatórios do Google Ads
-    const requiredUtms = {
-      utm_source: searchParams.get('utm_source'),
-      utm_campaign: searchParams.get('utm_campaign'),
-      utm_medium: searchParams.get('utm_medium'),
-      utm_content: searchParams.get('utm_content'),
-      utm_term: searchParams.get('utm_term'),
-      keyword: searchParams.get('keyword'),
-      device: searchParams.get('device'),
-      network: searchParams.get('network'),
-      gad_source: searchParams.get('gad_source'),
-      gad_campaignid: searchParams.get('gad_campaignid'),
-      gbraid: searchParams.get('gbraid')
-    }
+    // Parâmetros mínimos obrigatórios do Google Ads
+    // Google envia: gclid, gad_source, gad_campaignid (e às vezes gbraid)
+    const gclid = searchParams.get('gclid')
+    const gad_source = searchParams.get('gad_source')
+    const gad_campaignid = searchParams.get('gad_campaignid')
     
-    // Verificar se tem utm_source=google
-    const hasGoogleSource = requiredUtms.utm_source === 'google'
-    
-    // Verificar se tem TODOS os parâmetros obrigatórios
-    const missingUtms = Object.entries(requiredUtms)
-      .filter(([key, value]) => !value)
-      .map(([key]) => key)
-    
-    if (!hasGoogleSource || missingUtms.length > 0) {
+    // Verificar se tem os parâmetros mínimos do Google Ads
+    if (!gclid || !gad_source || !gad_campaignid) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('🚫 [UTM CHECK] PARÂMETROS INCOMPLETOS')
+      console.log('🚫 [UTM CHECK] PARÂMETROS GOOGLE ADS INCOMPLETOS')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('📍 Motivo: UTMs do Google Ads incompletos')
+      console.log('📍 Motivo: Faltam parâmetros essenciais do Google Ads')
       console.log('🔗 Referer:', referer)
       console.log('🌐 IP:', ip)
-      console.log('❌ UTMs faltando:', missingUtms.join(', '))
+      console.log('❌ gclid:', gclid || '(faltando)')
+      console.log('❌ gad_source:', gad_source || '(faltando)')
+      console.log('❌ gad_campaignid:', gad_campaignid || '(faltando)')
       console.log('⚠️  Ação: Redirecionando de volta para o referer')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
