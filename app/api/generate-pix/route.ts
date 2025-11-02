@@ -608,6 +608,24 @@ export async function POST(request: NextRequest) {
     console.log("🔍 [STORAGE DEBUG] utmParams:", body.utmParams)
     
     try {
+      // Parse trackingParams se vier como string
+      let trackingParameters: any = {}
+      if (body.trackingParams) {
+        if (typeof body.trackingParams === 'string') {
+          try {
+            trackingParameters = JSON.parse(body.trackingParams)
+            console.log("✅ [STORAGE] trackingParams parseado de string para objeto")
+          } catch (e) {
+            console.error("❌ [STORAGE] Erro ao parsear trackingParams:", e)
+            trackingParameters = {}
+          }
+        } else {
+          trackingParameters = body.trackingParams
+        }
+      } else if (body.utmParams) {
+        trackingParameters = body.utmParams
+      }
+      
       const orderData = {
         orderId: validResult.transactionId,
         transactionId: validResult.transactionId,
@@ -618,7 +636,7 @@ export async function POST(request: NextRequest) {
           phone: body.customer?.phone || '',
           document: body.customer?.document?.number || ''
         },
-        trackingParameters: body.trackingParams || body.utmParams || {},
+        trackingParameters,
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }
