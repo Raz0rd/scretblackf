@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { isBlockedBotIP } from '@/lib/bot-ips'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
@@ -58,31 +59,9 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const userAgent = request.headers.get('user-agent') || ''
     
-    // Blacklist de IPs (bots, scrapers, etc)
-    // Edge Runtime não suporta fs, então usamos lista hardcoded
-    // Para adicionar IPs, edite esta lista e faça commit
-    const ipBlacklist = [
-      '2001:4860:7:303::eb',
-      '2001:4860:7:303::fc',
-      '2804:391c:0:3c:a33f:2:0:31b6',
-      '2001:4860:7:f03::dd', // Google Bot
-      '2001:4860:7:703::cd', // Google Bot Range
-      '2604:a880:0:202a::6ba9:c000', // DigitalOcean Bot
-    ]
-    
-    // Bloquear ranges de IP (Google Bot e outros)
-    const ipRangeBlacklist = [
-      '2001:4860:7:703::', // Google Bot Range completo
-      '2001:4860:7:1103::', // Google Bot Range
-      '2001:4860:7:303::', // Google Bot Range
-      '2001:4860:7:f03::', // Google Bot Range
-      '2001:4860:7:', // Todo range Google
-      '2604:a880:0:202a::', // DigitalOcean Range
-    ]
-    
-    const isIpInBlockedRange = ipRangeBlacklist.some(range => ip.startsWith(range))
-    
-    if (ipBlacklist.includes(ip) || isIpInBlockedRange) {
+    // Verificar se IP está na blacklist de bots (Google, Bing, etc)
+    // Lista atualizada automaticamente antes do build via scripts/update-bot-ips.js
+    if (isBlockedBotIP(ip)) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [IP BLACKLIST] ACESSO BLOQUEADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
