@@ -396,7 +396,13 @@ export default function HomePage() {
   }
 
   const handleAcceptReward = () => {
-    setQuizStep('validation')
+    // Redirecionar para subdomain após aceitar recompensa
+    const currentHost = window.location.hostname
+    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+    const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+    
+    console.log('🎁 [REWARD] Recompensa aceita - redirecionando para subdomain')
+    window.location.href = subdomainUrl
   }
 
   const handleSkipQuiz = () => {
@@ -898,12 +904,15 @@ export default function HomePage() {
   }
 
   // Evitar problemas de hidratação - não renderizar até estar montado
+  console.log('🔍 [MOUNTED CHECK]', { mounted })
   if (!mounted) {
+    console.log('⏳ [MOUNTED] Aguardando montagem...')
     return null
   }
 
   // Verificar se está no subdomain
   const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
+  console.log('🌐 [SUBDOMAIN CHECK]', { isSubdomain, hostname: typeof window !== 'undefined' ? window.location.hostname : 'SSR' })
 
   console.log('📺 [RENDER CHECK]', {
     isSubdomain,
