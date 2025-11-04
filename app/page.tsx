@@ -902,17 +902,17 @@ export default function HomePage() {
   console.log('📺 [RENDER CHECK]', {
     isSubdomain,
     showBlurOverlay,
-    showPurchasePage,
     willShowQuiz: !isSubdomain && showBlurOverlay
   })
 
-  if (showPurchasePage) {
-    // Se está no domain base E showBlurOverlay é true, mostrar APENAS o quiz
-    if (!isSubdomain && showBlurOverlay) {
-      console.log('🎮 [RENDER] Renderizando QUIZ')
-      return (
-        <div className="min-h-screen bg-white flex flex-col">
-          <ArenaQuizModal
+  // ============================================
+  // DOMAIN BASE: Renderizar APENAS o QUIZ
+  // ============================================
+  if (!isSubdomain && showBlurOverlay) {
+    console.log('🎮 [RENDER] DOMAIN BASE - Renderizando APENAS QUIZ')
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <ArenaQuizModal
             quizStep={quizStep}
             currentQuestion={currentQuestion}
             timeLeft={timeLeft}
@@ -930,12 +930,15 @@ export default function HomePage() {
             onPlayerIdChange={setPlayerId}
             setShowSocialError={setShowSocialError}
           />
-        </div>
-      )
-    }
+      </div>
+    )
+  }
 
-    // Caso contrário (subdomain OU domain base com cookies), mostrar central de recargas
-    console.log('🏪 [RENDER] Renderizando CENTRAL DE RECARGAS')
+  // ============================================
+  // SUBDOMAIN: Renderizar APENAS CENTRAL DE RECARGAS
+  // ============================================
+  if (isSubdomain) {
+    console.log('🏪 [RENDER] SUBDOMAIN - Renderizando APENAS CENTRAL DE RECARGAS')
     return (
       <div className="min-h-screen bg-white flex flex-col">
         
@@ -2680,5 +2683,12 @@ export default function HomePage() {
         onSuccess={login}
       />
     </>
-  )
+    )
+  }
+
+  // ============================================
+  // FALLBACK: Domain base sem quiz (redirecionando...)
+  // ============================================
+  console.log('⏳ [RENDER] FALLBACK - Aguardando redirecionamento...')
+  return null
 }
