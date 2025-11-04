@@ -5,6 +5,7 @@ import { X, Copy, Check } from "lucide-react"
 import { useTrackingParams, type OrderData, type TrackingParameters } from "../hooks/useTrackingParams"
 import { orderStorageService } from "@/lib/order-storage"
 import { mobileDebug } from "@/lib/mobile-debug"
+import { getBrazilTimestamp } from "@/lib/brazil-time"
 
 interface PixModalProps {
   isOpen: boolean
@@ -170,7 +171,7 @@ export default function PixModal({ isOpen, onClose, amount, customerData, utmPar
             document: customerData.document
           },
           trackingParameters: finalUtmParams, // UTMs salvos para enviar ao UTMify depois
-          createdAt: new Date().toISOString()
+          createdAt: getBrazilTimestamp() // Usar horário de Brasília (GMT-3)
         }
         
         orderStorageService.saveOrder(orderForStorage)
