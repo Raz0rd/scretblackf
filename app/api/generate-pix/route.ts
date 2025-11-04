@@ -321,6 +321,107 @@ async function generatePixEzzpag(body: any, baseUrl: string, presell?: string) {
   }
 }
 
+// Função para gerar PIX via Nitro Pagamentos
+async function generatePixNitro(body: any, baseUrl: string) {
+  const apiKey = process.env.NITRO_API_KEY
+  console.log("\n⚡ [Nitro] Verificando autenticação:", apiKey ? "✓ Token presente" : "✗ Token ausente")
+  
+  if (!apiKey) {
+    console.error("❌ [Nitro] NITRO_API_KEY não configurado")
+    throw new Error("Configuração de API Nitro não encontrada")
+  }
+
+  console.log("📤 [Nitro] REQUEST BODY:", JSON.stringify(body, null, 2))
+  console.log("🌐 [Nitro] URL dinâmica detectada:", baseUrl)
+
+  // Extrair hostname para offer_hash
+  const hostname = baseUrl.split('//')[1]?.split(':')[0] || 'localhost'
+  const offerHash = hostname.split('.')[0].toUpperCase()
+
+  const nitroPayload = {
+    amount: body.amount,
+    offer_hash: offerHash,
+    payment_method: "pix",
+    customer: {
+      name: body.customer.name,
+      email: body.customer.email || `${body.customer.name.toLowerCase().replace(/\s+/g, '')}@gmail.com`,
+      phone_number: body.customer.phone,
+      document: body.customer.document.number || body.customer.document,
+      street_name: "Nome da Rua",
+      number: "sn",
+      complement: "Lt19 Qd 134",
+      neighborhood: "Centro",
+      city: "Itaguaí",
+      state: "RJ",
+      zip_code: "23822180"
+    },
+    cart: [
+      {
+        product_hash: offerHash,
+        title: offerHash,
+        cover: null,
+        price: body.amount,
+        quantity: body.quantity || 1,
+        operation_type: 1,
+        tangible: false
+      }
+    ],
+    installments: 12,
+    expire_in_days: 1,
+    postback_url: `${baseUrl}/api/webhook`
+  }
+  
+  console.log("📦 [Nitro] PAYLOAD ENVIADO:", JSON.stringify(nitroPayload, null, 2))
+  console.log("🎯 [Nitro] URL:", `https://api.nitropagamentos.com/api/public/v1/transactions?api_token=${apiKey}`)
+  
+  const response = await fetch(`https://api.nitropagamentos.com/api/public/v1/transactions?api_token=${apiKey}`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(nitroPayload),
+  })
+
+  console.log("📡 [Nitro] RESPONSE STATUS:", response.status)
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error("❌ [Nitro] ERROR RESPONSE:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText
+    })
+    
+    throw new Error(`Erro na API Nitro: ${response.status}`)
+  }
+
+  const data = await response.json()
+  console.log("✅ [Nitro] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
+
+  // Extrair informações da resposta Nitro
+  const transactionId = data.hash || data.id
+  const pixCode = data.pix?.pix_qr_code
+  
+  // Gerar QR Code base64
+  const QRCode = require('qrcode')
+  const qrCodeBase64 = await QRCode.toDataURL(pixCode, { errorCorrectionLevel: 'H' })
+  
+  console.log("🔍 [Nitro] DADOS EXTRAÍDOS:", {
+    transactionId,
+    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
+    hasQrCode: !!qrCodeBase64
+  })
+
+  // Retornar apenas dados essenciais para o frontend
+  return {
+    transactionId,
+    pixCode,
+    qrCode: qrCodeBase64,
+    success: true
+  }
+}
+
 // Função para gerar PIX via Umbrela
 async function generatePixUmbrela(body: any, baseUrl: string) {
   const config = getConfig()
@@ -586,7 +687,9 @@ export async function POST(request: NextRequest) {
     // Chamar gateway apropriado
     let result: any
     
-    if (gateway === 'ghostpay') {
+    if (gateway === 'nitro') {
+      result = await generatePixNitro(body, baseUrl)
+    } else if (gateway === 'ghostpay') {
       result = await generatePixGhostPay(body, baseUrl)
     } else if (gateway === 'umbrela') {
       result = await generatePixUmbrela(body, baseUrl)

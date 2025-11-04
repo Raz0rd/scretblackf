@@ -69,6 +69,37 @@ async function checkStatusGhostPay(transactionId: string) {
   return transactionData
 }
 
+// Função para consultar status no Nitro Pagamentos
+async function checkStatusNitro(transactionId: string) {
+  const apiKey = process.env.NITRO_API_KEY
+
+  if (!apiKey) {
+    throw new Error("NITRO_API_KEY não configurado")
+  }
+
+  const nitroUrl = `https://api.nitropagamentos.com/api/public/v1/transactions/${transactionId}?api_token=${apiKey}`
+  console.log(`[Nitro] Consultando: ${nitroUrl}`)
+
+  const response = await fetch(nitroUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    }
+  })
+
+  if (!response.ok) {
+    console.error(`[Nitro] Erro na API: ${response.status}`)
+    throw new Error(`Erro na API Nitro: ${response.status}`)
+  }
+
+  const transactionData = await response.json()
+  console.log(`[Nitro] Status atual: ${transactionData.payment_status}`)
+  console.log(`[Nitro] Dados completos:`, transactionData)
+  
+  return transactionData
+}
+
 // Função para consultar status no Umbrela
 async function checkStatusUmbrela(transactionId: string) {
   const umbrelaUrl = `https://api-gateway.umbrellapag.com/api/user/transactions/${transactionId}`
@@ -132,7 +163,9 @@ export async function POST(request: NextRequest) {
     let transactionData
     
     try {
-      if (gateway === 'ghostpay') {
+      if (gateway === 'nitro') {
+        transactionData = await checkStatusNitro(transactionId)
+      } else if (gateway === 'ghostpay') {
         transactionData = await checkStatusGhostPay(transactionId)
       } else if (gateway === 'umbrela') {
         transactionData = await checkStatusUmbrela(transactionId)
@@ -149,7 +182,15 @@ export async function POST(request: NextRequest) {
       }, { status: 500 })
     }
 
-    const currentStatus = transactionData.status
+    // Normalizar status baseado no gateway
+    let currentStatus
+    if (gateway === 'nitro') {
+      // Nitro usa payment_status
+      currentStatus = transactionData.payment_status
+    } else {
+      currentStatus = transactionData.status
+    }
+    
     const isNowPaid = currentStatus === 'paid' || currentStatus === 'approved' || currentStatus === 'PAID'
     const isWaitingPayment = currentStatus === 'waiting_payment' || currentStatus === 'WAITING_PAYMENT'
     

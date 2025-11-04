@@ -219,9 +219,6 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    const isSubdomain = window.location.hostname.startsWith('recarga.')
-    
-    // Verificar cookies de forma mais robusta
     const getCookie = (name: string) => {
       const value = `; ${document.cookie}`
       const parts = value.split(`; ${name}=`)
@@ -229,26 +226,41 @@ export default function HomePage() {
       return null
     }
     
-    const quizCompleted = getCookie('quiz_completed') === 'true'
-    const refererVerified = getCookie('referer_verified') === 'true'
-    const hasVerificationCookies = quizCompleted || refererVerified
+    const checkQuizVisibility = () => {
+      const isSubdomain = window.location.hostname.startsWith('recarga.')
+      const quizCompleted = getCookie('quiz_completed') === 'true'
+      const refererVerified = getCookie('referer_verified') === 'true'
+      const hasVerificationCookies = quizCompleted || refererVerified
+      
+      console.log('🔍 [QUIZ CHECK]', {
+        hostname: window.location.hostname,
+        isSubdomain,
+        cookies: {
+          quiz_completed: quizCompleted,
+          referer_verified: refererVerified
+        },
+        hasVerificationCookies,
+        showQuiz: !isSubdomain && !hasVerificationCookies
+      })
+      
+      // Quiz só aparece no domain base E se não tiver cookies de verificação
+      if (!isSubdomain && !hasVerificationCookies) {
+        setShowBlurOverlay(true)
+      } else {
+        setShowBlurOverlay(false)
+      }
+    }
     
-    console.log('🔍 [QUIZ CHECK]', {
-      hostname: window.location.hostname,
-      isSubdomain,
-      cookies: {
-        quiz_completed: quizCompleted,
-        referer_verified: refererVerified
-      },
-      hasVerificationCookies,
-      showQuiz: !isSubdomain && !hasVerificationCookies
-    })
+    // Verificar imediatamente
+    checkQuizVisibility()
     
-    // Quiz só aparece no domain base E se não tiver cookies de verificação
-    if (!isSubdomain && !hasVerificationCookies) {
-      setShowBlurOverlay(true)
-    } else {
-      setShowBlurOverlay(false)
+    // Verificar a cada 500ms por 5 segundos (para pegar cookies que chegam depois)
+    const interval = setInterval(checkQuizVisibility, 500)
+    const timeout = setTimeout(() => clearInterval(interval), 5000)
+    
+    return () => {
+      clearInterval(interval)
+      clearTimeout(timeout)
     }
   }, [])
 
