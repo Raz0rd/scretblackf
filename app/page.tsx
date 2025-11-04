@@ -231,10 +231,42 @@ export default function HomePage() {
       currentShowBlurOverlay: showBlurOverlay
     })
     
-    // Se está no SUBDOMAIN, NUNCA mostrar quiz
+    // Se está no SUBDOMAIN, verificar cookies e NUNCA mostrar quiz
     if (isSubdomain) {
       console.log('✅ [SUBDOMAIN] Forçando showBlurOverlay = false')
       setShowBlurOverlay(false)
+      
+      // Verificar se tem cookies válidos
+      const getCookie = (name: string): string | null => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) {
+          const cookieValue = parts.pop()?.split(';').shift()
+          return cookieValue || null
+        }
+        return null
+      }
+      
+      const quizCompleted = getCookie('quiz_completed') === 'true'
+      const refererVerified = getCookie('referer_verified') === 'true'
+      const hasVerificationCookies = quizCompleted || refererVerified
+      
+      console.log('🍪 [SUBDOMAIN COOKIES CHECK]', {
+        quizCompleted,
+        refererVerified,
+        hasVerificationCookies
+      })
+      
+      // Se NÃO tem cookies válidos, redirecionar para domain base
+      if (!hasVerificationCookies) {
+        console.log('❌ [SUBDOMAIN] Sem cookies válidos - redirecionando para domain base')
+        const baseDomain = hostname.replace('recarga.', '')
+        const baseUrl = `${window.location.protocol}//${baseDomain}${window.location.pathname}${window.location.search}`
+        
+        console.log('🔄 [REDIRECT] De:', hostname, 'Para:', baseUrl)
+        window.location.replace(baseUrl)
+      }
+      
       return
     }
     
@@ -404,12 +436,24 @@ export default function HomePage() {
   }
 
   const handleAcceptReward = () => {
-    // Redirecionar para subdomain após aceitar recompensa
+    // Salvar cookie de quiz completado para compartilhar entre domínios
     const currentHost = window.location.hostname
-    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-    const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+    const baseDomain = currentHost.replace('recarga.', '') // Remove subdomain se existir
+    
+    // Configurar cookie para funcionar em todos os subdomínios
+    const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+    document.cookie = `quiz_completed=true; ${cookieOptions}`
+    
+    console.log('🍪 [QUIZ COMPLETED] Cookie definido para:', `.${baseDomain}`)
+    console.log('   - quiz_completed=true')
+    
+    // Redirecionar para subdomain após aceitar recompensa
+    const subdomain = 'recarga'
+    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
     
     console.log('🎁 [REWARD] Recompensa aceita - redirecionando para subdomain')
+    console.log('🔄 [REDIRECT] Para:', subdomainUrl)
+    
     window.location.href = subdomainUrl
   }
 
@@ -679,10 +723,17 @@ export default function HomePage() {
         setShowIllusoryLoading(false)
         setShowBlurOverlay(false) // Fecha o modal após login
         
-        // Redirecionar para subdomain após login
+        // Salvar cookie de quiz completado
         const currentHost = window.location.hostname
-        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-        const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+        const baseDomain = currentHost.replace('recarga.', '')
+        const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+        document.cookie = `quiz_completed=true; ${cookieOptions}`
+        
+        console.log('🍪 [LOGIN] Cookie definido para:', `.${baseDomain}`)
+        
+        // Redirecionar para subdomain após login
+        const subdomain = 'recarga'
+        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
         setTimeout(() => {
           window.location.href = subdomainUrl
         }, 500)
@@ -712,10 +763,17 @@ export default function HomePage() {
               await fetchAvatarInfo(data.data.basicInfo.headPic)
             }
             
-            // Redirecionar para subdomain após login
+            // Salvar cookie de quiz completado
             const currentHost = window.location.hostname
-            const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-            const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+            const baseDomain = currentHost.replace('recarga.', '')
+            const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+            document.cookie = `quiz_completed=true; ${cookieOptions}`
+            
+            console.log('🍪 [LOGIN] Cookie definido para:', `.${baseDomain}`)
+            
+            // Redirecionar para subdomain após login
+            const subdomain = 'recarga'
+            const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
             setTimeout(() => {
               window.location.href = subdomainUrl
             }, 500)
