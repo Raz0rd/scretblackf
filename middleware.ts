@@ -88,13 +88,17 @@ export async function middleware(request: NextRequest) {
       console.log('⚠️  Ação: Redirecionando para domain base')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
       
-      // Redirecionar para domain base
+      // Redirecionar para domain base (remover subdomain)
       const parts = host.split('.')
-      // Se tem 3 ou mais partes (recarga.gmeports.com.br), pegar as últimas 3
-      // Se tem 2 partes (gmeports.com.br), manter as 2
-      const baseDomainHost = parts.length >= 3 ? parts.slice(-3).join('.') : parts.join('.')
-      const redirectUrl = new URL(request.url)
-      redirectUrl.hostname = baseDomainHost
+      // Se tem 3 partes (recarga.gmeports.com.br), pegar as últimas 2 (gmeports.com.br)
+      // Se tem 4 partes (recarga.gmeports.com.br), pegar as últimas 3 (gmeports.com.br)
+      const baseDomainHost = parts.length >= 3 ? parts.slice(-2).join('.') : parts.join('.')
+      
+      const protocol = request.headers.get('x-forwarded-proto') || 'https'
+      const redirectUrl = `${protocol}://${baseDomainHost}${pathname}`
+      
+      console.log('🔄 [REDIRECT] De:', host)
+      console.log('🔄 [REDIRECT] Para:', redirectUrl)
       
       return NextResponse.redirect(redirectUrl)
     }

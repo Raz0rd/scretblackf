@@ -221,8 +221,15 @@ export default function HomePage() {
     
     const isSubdomain = window.location.hostname.startsWith('recarga.')
     
+    console.log('🎯 [QUIZ CONTROL]', {
+      hostname: window.location.hostname,
+      isSubdomain,
+      currentShowBlurOverlay: showBlurOverlay
+    })
+    
     // Se está no SUBDOMAIN, NUNCA mostrar quiz
     if (isSubdomain) {
+      console.log('✅ [SUBDOMAIN] Forçando showBlurOverlay = false')
       setShowBlurOverlay(false)
       return
     }
@@ -879,9 +886,17 @@ export default function HomePage() {
   // Verificar se está no subdomain
   const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
 
+  console.log('📺 [RENDER CHECK]', {
+    isSubdomain,
+    showBlurOverlay,
+    showPurchasePage,
+    willShowQuiz: !isSubdomain && showBlurOverlay
+  })
+
   if (showPurchasePage) {
     // Se está no domain base E showBlurOverlay é true, mostrar APENAS o quiz
     if (!isSubdomain && showBlurOverlay) {
+      console.log('🎮 [RENDER] Renderizando QUIZ')
       return (
         <div className="min-h-screen bg-white flex flex-col">
           <ArenaQuizModal
@@ -907,6 +922,7 @@ export default function HomePage() {
     }
 
     // Caso contrário (subdomain OU domain base com cookies), mostrar central de recargas
+    console.log('🏪 [RENDER] Renderizando CENTRAL DE RECARGAS')
     return (
       <div className="min-h-screen bg-white flex flex-col">
         
