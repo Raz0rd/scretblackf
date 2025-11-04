@@ -902,8 +902,16 @@ export default function HomePage() {
   const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
 
   if (showPurchasePage) {
+    // Debug log
+    console.log('🎯 [RENDER]', {
+      isSubdomain,
+      showBlurOverlay,
+      showQuiz: !isSubdomain && showBlurOverlay
+    })
+    
     // Se está no domain base E não tem cookies, mostrar APENAS o quiz
     if (!isSubdomain && showBlurOverlay) {
+      console.log('📺 [RENDER] Renderizando APENAS quiz (domain base sem cookies)')
       return (
         <div className="min-h-screen bg-white flex flex-col">
           <ArenaQuizModal
@@ -929,6 +937,7 @@ export default function HomePage() {
     }
 
     // Caso contrário (subdomain OU domain base com cookies), mostrar central de recargas
+    console.log('📺 [RENDER] Renderizando central de recargas')
     return (
       <div className="min-h-screen bg-white flex flex-col">
         
