@@ -65,9 +65,13 @@ export async function middleware(request: NextRequest) {
   const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
   const isSubdomain = host.startsWith(subdomain + '.')
   
-  // Se está no SUBDOMAIN, EXIGIR verificação
+  // BYPASS: Permitir acesso direto ao checkout (usuário vem de anúncio direto)
+  const isCheckoutPage = pathname === '/checkout' || pathname.startsWith('/checkout/')
+  const hasTestParam = request.nextUrl.searchParams.get('test') === 'gads2024'
+  
+  // Se está no SUBDOMAIN, EXIGIR verificação (exceto checkout direto)
   if (isSubdomain) {
-    if (!alreadyVerified && !hasQuizCompleted) {
+    if (!alreadyVerified && !hasQuizCompleted && !isCheckoutPage) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('🚫 [SUBDOMAIN] ACESSO BLOQUEADO - NÃO VERIFICADO')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
