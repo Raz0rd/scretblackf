@@ -242,30 +242,22 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       localStorage.setItem('terms_accepted', 'true')
       localStorage.setItem('terms_accepted_at', Date.now().toString())
       
-      // Extrair domínio base para compartilhar cookies
-      const currentHost = window.location.hostname
-      const parts = currentHost.split('.')
-      const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
-      
-      // Salvar cookies para compartilhar entre subdomain e domain base
-      const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+      // Salvar cookies
+      const cookieOptions = `path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
       document.cookie = `quiz_completed=true; ${cookieOptions}`
       document.cookie = `referer_verified=true; ${cookieOptions}`
       
-      console.log('🍪 [VERIFICAÇÃO] Cookies definidos para domínio:', `.${baseDomain}`)
+      console.log('🍪 [VERIFICAÇÃO] Cookies definidos')
       console.log('   - quiz_completed=true')
       console.log('   - referer_verified=true')
       
       setStep('loading')
       
-      // Redirecionar para subdomain após 3 segundos
+      // Fechar modal após 2 segundos e liberar central de recargas
       setTimeout(() => {
-        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-        
-        console.log('🔄 [VERIFICAÇÃO] Redirecionando para página de recarga:', subdomainUrl)
-        window.location.href = subdomainUrl
-      }, 3000)
+        console.log('✅ [VERIFICAÇÃO] Liberando acesso à central de recargas')
+        onVerificationComplete() // Fecha o modal e libera a página
+      }, 2000)
       
     } catch (err) {
       setError('Erro na verificação. Verifique sua conexão e tente novamente.')
