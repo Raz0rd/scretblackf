@@ -670,6 +670,14 @@ export default function HomePage() {
         setIsLoading(false)
         setShowIllusoryLoading(false)
         setShowBlurOverlay(false) // Fecha o modal após login
+        
+        // Redirecionar para subdomain após login
+        const currentHost = window.location.hostname
+        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+        const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+        setTimeout(() => {
+          window.location.href = subdomainUrl
+        }, 500)
       }, 1500)
       return
     }
@@ -695,6 +703,14 @@ export default function HomePage() {
             if (data.data.basicInfo.headPic) {
               await fetchAvatarInfo(data.data.basicInfo.headPic)
             }
+            
+            // Redirecionar para subdomain após login
+            const currentHost = window.location.hostname
+            const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+            const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+            setTimeout(() => {
+              window.location.href = subdomainUrl
+            }, 500)
           }
         } else {
           setIsLoggedIn(false)
@@ -2285,7 +2301,7 @@ export default function HomePage() {
         </div>
         )}
 
-        {(selectedRechargeValue || selectedSpecialOffer) && (
+        {(selectedRechargeValue || selectedSpecialOffer!) && (
           <div className="fixed bottom-0 left-0 right-0 bg-[#1B1B25] border-t border-[#3C3E65] shadow-lg z-[5] safe-area-bottom">
             {/* Painel de Resumo Detalhado - Colapsável */}
             {showSummaryDetails && (
