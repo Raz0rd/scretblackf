@@ -160,17 +160,26 @@ export async function POST(request: NextRequest) {
     if (isNowPaid) {
       console.log(`[CHECK-STATUS] Status é PAID!`)
       
-      // VALIDAÇÃO: Verificar se a transação é deste servidor
+      // VALIDAÇÃO: Verificar se a transação está no storage
       const storedOrder = orderStorageService.getOrder(transactionId)
       if (!storedOrder) {
-        console.log(`❌ [CHECK-STATUS] Transação de OUTRO servidor - IGNORADO`)
+        console.log(`⚠️ [CHECK-STATUS] Transação NÃO encontrada no storage`)
         console.log(`   - Transaction ID: ${transactionId}`)
-        console.log(`   - Motivo: Não encontrado no orderStorage deste servidor`)
+        console.log(`   - Motivo: Pode ter sido perdida no hot-reload ou é de outro servidor`)
+        console.log(`   - Ação: Retornando status PAID sem enviar para UTMify`)
         return NextResponse.json({
           success: true,
           status: 'paid',
-          message: 'Transação de outro servidor - ignorada',
-          fromAnotherServer: true
+          message: 'Pagamento confirmado',
+          storageNotFound: true,
+          note: 'Transação não encontrada no storage local (hot-reload ou outro servidor)',
+          transactionData: {
+            id: transactionData.id,
+            status: transactionData.status,
+            amount: transactionData.amount,
+            paidAt: transactionData.paidAt,
+            customer: transactionData.customer?.name || 'N/A'
+          }
         })
       }
       
@@ -366,26 +375,25 @@ export async function POST(request: NextRequest) {
     if (isWaitingPayment) {
       console.log(`[CHECK-STATUS] Status é PENDING - enviando para UTMify`)
       
-      // VALIDAÇÃO: Verificar se a transação é deste servidor
+      // Buscar transação no storage
       const storedOrder = orderStorageService.getOrder(transactionId)
-      if (!storedOrder) {
-        console.log(`❌ [CHECK-STATUS] Transação de OUTRO servidor - IGNORADO`)
-        console.log(`   - Transaction ID: ${transactionId}`)
-        return NextResponse.json({
-          success: true,
-          status: 'pending',
-          message: 'Transação de outro servidor - ignorada',
-          fromAnotherServer: true
-        })
+      
+      // Se não encontrar, usar UTMs vazios (null) - UTMify aceita
+      let trackingParameters: Record<string, any> = {}
+      if (storedOrder && storedOrder.trackingParameters) {
+        trackingParameters = storedOrder.trackingParameters
+        console.log(`[CHECK-STATUS] UTMs recuperados do storage`)
+      } else {
+        console.log(`⚠️ [CHECK-STATUS] Sem UTMs no storage - enviando com valores null`)
       }
       
       // Verificar se já enviou pending para UTMify (pelo webhook ou check-status anterior)
-      if (storedOrder.utmifySent) {
+      if (storedOrder && storedOrder.utmifySent) {
         console.log(`⚠️ [CHECK-STATUS] PENDING já enviado para UTMify - IGNORADO`)
         return NextResponse.json({
           success: true,
           status: 'pending',
-          message: 'Pending já enviado para UTMify',
+          message: 'Aguardando pagamento',
           alreadySent: true
         })
       }
@@ -406,8 +414,8 @@ export async function POST(request: NextRequest) {
             const host = request.headers.get('host')
             const baseUrl = `${protocol}://${host}`
             
-            // Recuperar UTMs do storage
-            const trackingParameters = storedOrder.trackingParameters || {}
+            // Recuperar UTMs do storage (já verificado acima que trackingParameters existe)
+            const utmTrackingParams = storedOrder?.trackingParameters || trackingParameters
             
             // Extrair dados do cliente
             const customerData = transactionData.customer || {}
@@ -441,20 +449,20 @@ export async function POST(request: NextRequest) {
                 }
               ],
               trackingParameters: {
-                src: (trackingParameters as any)?.src || null,
-                sck: (trackingParameters as any)?.sck || null,
-                utm_source: (trackingParameters as any)?.utm_source || null,
-                utm_campaign: (trackingParameters as any)?.utm_campaign || null,
-                utm_medium: (trackingParameters as any)?.utm_medium || null,
-                utm_content: (trackingParameters as any)?.utm_content || null,
-                utm_term: (trackingParameters as any)?.utm_term || null,
-                gclid: (trackingParameters as any)?.gclid || null,
-                xcod: (trackingParameters as any)?.xcod || null,
-                keyword: (trackingParameters as any)?.keyword || null,
-                device: (trackingParameters as any)?.device || null,
-                network: (trackingParameters as any)?.network || null,
-                gad_source: (trackingParameters as any)?.gad_source || null,
-                gbraid: (trackingParameters as any)?.gbraid || null
+                src: (utmTrackingParams as any)?.src || null,
+                sck: (utmTrackingParams as any)?.sck || null,
+                utm_source: (utmTrackingParams as any)?.utm_source || null,
+                utm_campaign: (utmTrackingParams as any)?.utm_campaign || null,
+                utm_medium: (utmTrackingParams as any)?.utm_medium || null,
+                utm_content: (utmTrackingParams as any)?.utm_content || null,
+                utm_term: (utmTrackingParams as any)?.utm_term || null,
+                gclid: (utmTrackingParams as any)?.gclid || null,
+                xcod: (utmTrackingParams as any)?.xcod || null,
+                keyword: (utmTrackingParams as any)?.keyword || null,
+                device: (utmTrackingParams as any)?.device || null,
+                network: (utmTrackingParams as any)?.network || null,
+                gad_source: (utmTrackingParams as any)?.gad_source || null,
+                gbraid: (utmTrackingParams as any)?.gbraid || null
               },
               commission: {
                 totalPriceInCents: transactionData.amount,
@@ -486,10 +494,12 @@ export async function POST(request: NextRequest) {
               console.log(`✅ [CHECK-STATUS] PENDING enviado para UTMify com sucesso`)
               
               // Marcar como enviado no storage
-              orderStorageService.saveOrder({
-                ...storedOrder,
-                utmifySent: true
-              })
+              if (storedOrder) {
+                orderStorageService.saveOrder({
+                  ...storedOrder,
+                  utmifySent: true
+                })
+              }
             } else {
               console.error(`❌ [CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, utmifyResponse.status)
             }

@@ -176,9 +176,7 @@ export default function SuccessPage() {
                 </div>
               </div>
               
-              <p className="text-blue-300 text-sm text-center">
-                Tempo restante para processamento automático
-              </p>
+              <p className="text-center text-sm text-gray-500">Tempo restante para processamento automático</p>
             </div>
           </div>
           
@@ -188,7 +186,7 @@ export default function SuccessPage() {
             
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-200 mb-2">Recebo somente após 12 horas?</h4>
+                <h1 className="text-2xl font-bold text-gray-800 mb-2">Obrigado por comprar na PromoFFGames!</h1>
                 <p className="text-gray-400 text-sm">
                   Não. O prazo máximo para processamento é de 12 horas, mas na maioria dos casos os créditos 
                   são creditados em até 30 minutos após a confirmação do pagamento. Este prazo é apenas 

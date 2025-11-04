@@ -439,7 +439,7 @@ export default function CheckoutPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10">
-              <img src="/images/garena-logo.png" alt="Garena Logo" className="w-full h-full object-contain" />
+              <img src="/images/PromoFF-logo.png" alt="PromoFF Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="font-bold text-base sm:text-lg text-gray-800">Canal Oficial de</h1>
@@ -474,7 +474,7 @@ export default function CheckoutPage() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg">
             <img
-              src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png"
+              src="https://cdn-gop.PromoFFnow.com/gop/app/0000/100/067/icon.png"
               alt="Free Fire"
               className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
             />
@@ -496,7 +496,7 @@ export default function CheckoutPage() {
                 <span className="text-gray-600 text-sm sm:text-base">Total</span>
                 <div className="flex items-center gap-2">
                   <img
-                    src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/point.png"
+                    src="https://cdn-gop.PromoFFnow.com/gop/app/0000/100/067/point.png"
                     alt="Diamante"
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
@@ -511,7 +511,7 @@ export default function CheckoutPage() {
                   <span className="text-gray-600">Preço Original</span>
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <img
-                      src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/point.png"
+                      src="https://cdn-gop.PromoFFnow.com/gop/app/0000/100/067/point.png"
                       alt="Diamante"
                       className="w-3 h-3 sm:w-4 sm:h-4"
                     />
@@ -523,7 +523,7 @@ export default function CheckoutPage() {
                   <span className="text-gray-600">+ Bônus Geral</span>
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <img
-                      src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/point.png"
+                      src="https://cdn-gop.PromoFFnow.com/gop/app/0000/100/067/point.png"
                       alt="Diamante"
                       className="w-3 h-3 sm:w-4 sm:h-4"
                     />
@@ -707,7 +707,7 @@ export default function CheckoutPage() {
 
         {/* Footer - layout responsivo */}
         <div className="mt-6 sm:mt-8 text-center">
-          <p className="text-xs sm:text-sm text-gray-500">© 2025 Garena Online. Todos os direitos reservados.</p>
+          <p className="text-xs sm:text-sm text-gray-500">© 2025 PromoFF Online. Todos os direitos reservados.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-6 mt-2 text-xs sm:text-sm">
               FAQ
             </a>

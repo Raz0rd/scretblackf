@@ -53,14 +53,14 @@
 }
 
 :root {
-  /* Cores da Garena - Ajustadas para fundo mais escuro */
+  /* Cores da PromoFF - Ajustadas para fundo mais escuro */
   --background: 220 20% 10%; /* #191A23 */
   --foreground: 0 0% 100%; /* white */
   --card: 240 11% 24%; /* #353542 */
   --card-foreground: 0 0% 100%;
   --popover: 238 30% 18%;
   --popover-foreground: 0 0% 100%;
-  --primary: 2 77% 53%; /* #E4372E - Vermelho Garena */
+  --primary: 2 77% 53%; /* #E4372E - Vermelho PromoFF */
   --primary-foreground: 0 0% 100%;
   --secondary: 236 26% 27%; /* #333356 */
   --secondary-foreground: 0 0% 100%;
@@ -75,7 +75,7 @@
   --ring: 2 77% 53%;
   --radius: 0.5rem;
   
-  /* Variáveis customizadas da Garena - Mais escuras */
+  /* Variáveis customizadas da PromoFF - Mais escuras */
   --line: 237 25% 25%;
   --bg-base: 220 20% 10%;
   --text-title: 0 0% 100%;
@@ -92,7 +92,7 @@
 }
 
 .dark {
-  /* Mesmo esquema de cores do :root - Garena */
+  /* Mesmo esquema de cores do :root - PromoFF */
   --background: 237 33% 13%;
   --foreground: 0 0% 100%;
   --card: 238 30% 18%;
@@ -157,7 +157,7 @@
     background-color: rgba(22, 22, 43, 0.8) !important;
   }
   
-  /* Cores da Garena - Vermelho primário */
+  /* Cores da PromoFF - Vermelho primário */
   
   [class*="bg-primary"],
   [class*="text-primary"] {
@@ -165,7 +165,7 @@
     color: white !important;
   }
   
-  /* Botões vermelhos da Garena */
+  /* Botões vermelhos da PromoFF */
   button[class*="bg-primary"],
   .bg-primary-red {
     background-color: #E4372E !important;
@@ -257,7 +257,7 @@
     }
   }
   
-  /* Form input Garena style */
+  /* Form input PromoFF style */
   .form-input {
     border: 1px solid hsl(var(--line));
     border-radius: 0.375rem;

@@ -257,11 +257,24 @@ export async function middleware(request: NextRequest) {
     console.log('   - Parâmetro usado:', campanha ? `campanha=${campanha}` : conta ? `conta=${conta}` : cupons ? `cupons=${cupons}` : '(nenhum)')
     console.log('   - Referer Google:', referer)
     
+    // Extrair domínio base para compartilhar cookies entre subdomínios
+    // Ex: recargacomdescontos.shop ou recarga.recargacomdescontos.shop → .recargacomdescontos.shop
+    const getBaseDomain = (hostname: string) => {
+      const parts = hostname.split('.')
+      if (parts.length >= 2) {
+        // Pegar os últimos 2 níveis (dominio.com)
+        return '.' + parts.slice(-2).join('.')
+      }
+      return hostname
+    }
+    const baseDomain = getBaseDomain(host)
+    
     // Salvar referer em cookie (para usar na página de sucesso)
     response.cookies.set('source_referer', referer, {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
+      domain: baseDomain, // Compartilhar entre subdomínios
       maxAge: 60 * 60 * 24 // 24 horas
     })
     
@@ -273,9 +286,11 @@ export async function middleware(request: NextRequest) {
         httpOnly: false, // Precisa ser acessível pelo JavaScript no checkout
         secure: true,
         sameSite: 'lax',
+        domain: baseDomain, // Compartilhar entre subdomínios
         maxAge: 60 * 60 * 24 // 24 horas
       })
       console.log('💾 [Cookie] Origem salva (base64):', encodedDomain, '→', originDomain)
+      console.log('🌐 [Cookie] Domain:', baseDomain, '(compartilhado entre subdomínios)')
     }
     
     // Marcar como verificado
@@ -283,8 +298,44 @@ export async function middleware(request: NextRequest) {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
+      domain: baseDomain, // Compartilhar entre subdomínios
       maxAge: 60 * 60 * 24 // 24 horas
     })
+    
+    // Se user verification está habilitado E não está no subdomínio ainda, redirecionar
+    const enableUserVerification = process.env.NEXT_PUBLIC_ENABLE_USER_VERIFICATION === 'true'
+    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+    
+    if (enableUserVerification && !host.startsWith(subdomain + '.')) {
+      // Extrair domínio base sem o ponto inicial
+      const cleanBaseDomain = baseDomain.startsWith('.') ? baseDomain.slice(1) : baseDomain
+      const redirectUrl = new URL(request.url)
+      redirectUrl.hostname = `${subdomain}.${cleanBaseDomain}`
+      
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🔄 [USER VERIFICATION] Redirecionando para subdomínio')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📍 De:', host)
+      console.log('📍 Para:', redirectUrl.hostname)
+      console.log('✅ Cookies preservados via domain:', baseDomain)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      
+      // Criar resposta de redirect mantendo os cookies
+      const redirectResponse = NextResponse.redirect(redirectUrl)
+      
+      // Copiar todos os cookies para o redirect
+      response.cookies.getAll().forEach(cookie => {
+        redirectResponse.cookies.set(cookie.name, cookie.value, {
+          httpOnly: cookie.httpOnly,
+          secure: cookie.secure,
+          sameSite: cookie.sameSite as any,
+          domain: baseDomain,
+          maxAge: 60 * 60 * 24
+        })
+      })
+      
+      return redirectResponse
+    }
     
     return response
   }
@@ -339,14 +390,27 @@ export async function middleware(request: NextRequest) {
     // Se tem cookie OU parâmetros de tracking, deixar passar e setar cookie
     const response = NextResponse.next()
     if (!hasValidCookie && hasTrackingParams) {
+      // Extrair domínio base
+      const host = request.headers.get('host') || ''
+      const getBaseDomain = (hostname: string) => {
+        const parts = hostname.split('.')
+        if (parts.length >= 2) {
+          return '.' + parts.slice(-2).join('.')
+        }
+        return hostname
+      }
+      const baseDomain = getBaseDomain(host)
+      
       // Setar cookie para próximas requisições
       response.cookies.set('cloaker_verified', 'true', {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
+        domain: baseDomain, // Compartilhar entre subdomínios
         maxAge: 60 * 60 * 24 // 24 horas
       })
       console.log('✅ [Cloaker] Cookie setado para /quest com tracking params')
+      console.log('🌐 [Cookie] Domain:', baseDomain, '(compartilhado entre subdomínios)')
     }
     
     return response
@@ -358,6 +422,7 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
+    const host = request.headers.get('host') || ''
     
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
@@ -372,6 +437,27 @@ export async function middleware(request: NextRequest) {
     if (!hasTransactionId || !hasAmount) {
       console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
+    }
+    
+    // Se está em subdomínio, redirecionar para domínio base (conversão Google Ads)
+    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+    if (host.startsWith(subdomain + '.')) {
+      // Extrair domínio base
+      const parts = host.split('.')
+      const baseDomainHost = parts.slice(-2).join('.')
+      
+      const redirectUrl = new URL(request.url)
+      redirectUrl.hostname = baseDomainHost
+      
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🎯 [SUCCESS] Redirecionando para domínio base (Google Ads)')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📍 De:', host)
+      console.log('📍 Para:', baseDomainHost)
+      console.log('✅ Conversão será registrada no domínio principal')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      
+      return NextResponse.redirect(redirectUrl)
     }
     
     // Se tem parâmetros válidos (usuário real vindo do checkout), deixar passar

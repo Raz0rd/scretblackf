@@ -230,7 +230,7 @@ async function generatePixEzzpag(body: any, baseUrl: string, presell?: string) {
     },
     items: [{
       tangible: false,
-      title: body.itemType === "recharge" ? "Produto Digital Premium" : "Produto Digital Gold",
+      title: body.itemType === "recharge" ? "Gmeports Premium" : "Gmeports",
       unitPrice: body.amount,
       quantity: 1
     }],
@@ -583,7 +583,8 @@ export async function POST(request: NextRequest) {
       baseUrl
     })
     
-    let result
+    // Chamar gateway apropriado
+    let result: any
     
     if (gateway === 'ghostpay') {
       result = await generatePixGhostPay(body, baseUrl)
@@ -594,12 +595,12 @@ export async function POST(request: NextRequest) {
       result = await generatePixEzzpag(body, baseUrl, presell)
     }
     
-    // SALVAR no order storage com tracking parameters
+    // Validar resposta do gateway
     if (!result || !result.transactionId) {
       throw new Error("Resposta inválida do gateway de pagamento")
     }
     
-    // Type assertion para garantir que result tem transactionId
+    // Type assertion após validação
     const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
@@ -641,9 +642,20 @@ export async function POST(request: NextRequest) {
         status: 'pending' as const
       }
       
-      console.log("💾 [STORAGE] Dados que serão salvos:", JSON.stringify(orderData, null, 2))
+      console.log("💾 [STORAGE] Salvando pedido no orderStorage...")
+      console.log("💾 [STORAGE] Transaction ID:", validResult.transactionId)
+      console.log("💾 [STORAGE] Dados completos:", JSON.stringify(orderData, null, 2))
+      
       orderStorageService.saveOrder(orderData)
-      console.log("✅ [STORAGE] Pedido salvo com sucesso!")
+      
+      // Verificar se foi salvo corretamente
+      const savedOrder = orderStorageService.getOrder(validResult.transactionId)
+      if (savedOrder) {
+        console.log("✅ [STORAGE] Pedido salvo e VERIFICADO com sucesso!")
+        console.log("✅ [STORAGE] Confirmação - ID encontrado:", savedOrder.transactionId)
+      } else {
+        console.error("❌ [STORAGE] ERRO: Pedido NÃO foi salvo corretamente!")
+      }
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }

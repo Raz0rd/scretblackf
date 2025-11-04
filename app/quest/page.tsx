@@ -688,7 +688,7 @@ export default function HomePage() {
 
           {/* Footer */}
           <div className="pb-4">
-            <p className="text-center text-sm text-gray-600">© Garena Online. Todos os direitos reservados.</p>
+            <p className="text-center text-sm text-gray-600">© PromoFFGames Online. Todos os direitos reservados.</p>
           </div>
         </div>
       </div>
@@ -2370,20 +2370,20 @@ export default function HomePage() {
               <div className="w-full border border-yellow-600/30 bg-yellow-600/10 rounded-md p-3 mb-2">
                 <p className="text-yellow-200 text-xs leading-relaxed">
                   <strong>⚠️ AVISO IMPORTANTE:</strong> Este site é uma plataforma independente de recarga. 
-                  Não somos afiliados, associados ou patrocinados pela Garena, Free Fire, Delta Force, Haikyu ou qualquer outra empresa de jogos. 
+                  Não somos afiliados, associados ou patrocinados pela PromoFFGames, Free Fire, Delta Force, Haikyu ou qualquer outra empresa de jogos. 
                   Todos os nomes de jogos, marcas e logotipos são propriedade de seus respectivos donos. 
                   Atuamos apenas como intermediários para facilitar recargas de jogos.
                 </p>
               </div>
               
               <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
-                <div className="md:text-start">© 2025 Garena Online. Todos os direitos reservados.</div>
+                <div className="md:text-start">© 2025 PromoFFGames Online. Todos os direitos reservados.</div>
                 <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
-                  <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
+                  <button onClick={() => {}} className="transition-opacity hover:opacity-100 hover:text-white cursor-pointer">FAQ</button>
                   <div className="h-3 w-px bg-white/30"></div>
-                  <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
+                  <button onClick={() => router.push(mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade')} className="transition-opacity hover:opacity-100 hover:text-white cursor-pointer">Termos e Condições</button>
                   <div className="h-3 w-px bg-white/30"></div>
-                  <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
+                  <button onClick={() => router.push(mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade')} className="transition-opacity hover:opacity-100 hover:text-white cursor-pointer">Política de Privacidade</button>
                 </div>
               </div>
             </div>

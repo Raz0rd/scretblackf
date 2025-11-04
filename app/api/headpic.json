@@ -5900,7 +5900,7 @@
         "Type": "DEBRIS",
         "collectionType": "NONE",
         "name": "Free Fire Brazilian League",
-        "desc": "Free Fire Brazilian League (LBFF) is Garena's premier Free Fire competition in Brazil. \\n\\nThe champions of LBFF will represent the Brazil region as the first seed, and will compete in the FFWS Finals.\\n\\nThe 2nd placed team in LBFF will represent the Brazil region as the second seed, and will compete in the FFWS Play-ins.",
+        "desc": "Free Fire Brazilian League (LBFF) is PromoFF's premier Free Fire competition in Brazil. \\n\\nThe champions of LBFF will represent the Brazil region as the first seed, and will compete in the FFWS Finals.\\n\\nThe 2nd placed team in LBFF will represent the Brazil region as the second seed, and will compete in the FFWS Play-ins.",
         "Icon": "FFWS_UI_Card_LBFF_BR",
         "Rare": "NONE",
         "IsUnique": true,
@@ -166578,7 +166578,7 @@
         "collectionType": "NONE",
         "name": "GW2018 Bundle (Female)",
         "desc": "Open to receive all the items in the bundle!",
-        "Icon": "Icon_GarenaStarFemalePackage",
+        "Icon": "Icon_PromoFFStarFemalePackage",
         "Rare": "Blue",
         "IsUnique": false,
         "IconInAB": "Icon_In_CDN"
@@ -166589,7 +166589,7 @@
         "collectionType": "NONE",
         "name": "GW2018 Bundle",
         "desc": "Open to receive all the items in the bundle!",
-        "Icon": "Icon_GarenaStarMalePackage",
+        "Icon": "Icon_PromoFFStarMalePackage",
         "Rare": "Blue",
         "IsUnique": false,
         "IconInAB": "Icon_In_CDN"
@@ -173486,7 +173486,7 @@
         "collectionType": "NONE",
         "name": "GW2018 Bundle (Female)",
         "desc": "Open to receive all the items in the bundle!",
-        "Icon": "Icon_GarenaStarFemalePackage",
+        "Icon": "Icon_PromoFFStarFemalePackage",
         "Rare": "Blue",
         "IsUnique": false,
         "IconInAB": "Icon_In_CDN"
@@ -173497,7 +173497,7 @@
         "collectionType": "NONE",
         "name": "GW2018 Bundle",
         "desc": "Open to receive all the items in the bundle!",
-        "Icon": "Icon_GarenaStarMalePackage",
+        "Icon": "Icon_PromoFFStarMalePackage",
         "Rare": "Blue",
         "IsUnique": false,
         "IconInAB": "Icon_In_CDN"

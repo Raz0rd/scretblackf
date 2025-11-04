@@ -21,19 +21,34 @@ interface OrderData {
   utmifyPaidSent?: boolean // Flag específica para status paid
 }
 
-// Armazenamento em memória (temporário)
-const orderStorage = new Map<string, OrderData>()
+// SOLUÇÃO: Usar globalThis para persistir entre hot-reloads do Next.js
+// Isso garante que o storage não seja perdido durante desenvolvimento
+declare global {
+  var orderStorageMap: Map<string, OrderData> | undefined
+}
+
+// Armazenamento em memória (persistente entre hot-reloads)
+const orderStorage = global.orderStorageMap || new Map<string, OrderData>()
+
+// Salvar referência no global para persistir
+if (!global.orderStorageMap) {
+  global.orderStorageMap = orderStorage
+  console.log('🔥 [ORDER-STORAGE] Inicializado com persistência global')
+}
 
 export const orderStorageService = {
   // Salvar pedido
   saveOrder: (orderData: OrderData) => {
-    //console.log("[v0] Order Storage - Saving order:", orderData.orderId)
+    console.log(`📦 [ORDER-STORAGE] Salvando pedido: ${orderData.orderId}`)
     orderStorage.set(orderData.orderId, orderData)
     
     // Se tiver transactionId, também indexar por ele
     if (orderData.transactionId) {
       orderStorage.set(orderData.transactionId, orderData)
+      console.log(`📦 [ORDER-STORAGE] Indexado também por transactionId: ${orderData.transactionId}`)
     }
+    
+    console.log(`📦 [ORDER-STORAGE] Total de pedidos no storage: ${orderStorage.size}`)
     
     // Limpar pedidos antigos (mais de 24 horas)
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -46,12 +61,17 @@ export const orderStorageService = {
 
   // Buscar pedido por orderId ou transactionId
   getOrder: (id: string): OrderData | null => {
+    console.log(`🔍 [ORDER-STORAGE] Buscando pedido: ${id}`)
+    console.log(`🔍 [ORDER-STORAGE] Total no storage: ${orderStorage.size}`)
+    
     const order = orderStorage.get(id)
     if (order) {
-      //console.log("[v0] Order Storage - Order found:", order.orderId)
+      console.log(`✅ [ORDER-STORAGE] Pedido encontrado: ${order.orderId}`)
       return order
     }
-    //console.log("[v0] Order Storage - Order not found:", id)
+    
+    console.log(`❌ [ORDER-STORAGE] Pedido NÃO encontrado: ${id}`)
+    console.log(`📋 [ORDER-STORAGE] IDs disponíveis:`, Array.from(orderStorage.keys()))
     return null
   },
 

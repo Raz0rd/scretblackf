@@ -53,7 +53,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Cores customizadas da Garena
+        // Cores customizadas da PromoFF
         line: "hsl(var(--line))",
         "bg-base": "hsl(var(--bg-base))",
         "text-title": "hsl(var(--text-title))",

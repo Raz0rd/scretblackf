@@ -891,7 +891,7 @@
     },
     {
       "timestamp": "2025-10-31T04:09:15.454Z",
-      "path": "/images/garena-logo.png",
+      "path": "/images/PromoFF-logo.png",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
       "ip": "::1",
       "referer": "http://localhost:3000/checkout?type=special&value=Assinatura+Semanal&price=14.99&bonus=0&playerId=&payment=PIX&app=100067",
@@ -5753,7 +5753,7 @@
     "/.well-known/appspecific/com.chrome.devtools.json": 18,
     "/manifest.json": 17,
     "/checkout": 2,
-    "/images/garena-logo.png": 1,
+    "/images/PromoFF-logo.png": 1,
     "/images/icon.webp": 16,
     "/images/Pacote%20Coelh%C3%A3o.png": 1,
     "/images/sombraRoxa.png": 1,

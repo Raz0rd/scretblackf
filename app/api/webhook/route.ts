@@ -303,7 +303,7 @@ export async function POST(request: NextRequest) {
         products: [
           {
             id: `recarga-${transactionId}`,
-            name: "Recarga Free Fire",
+            name: "Recarga Premium FF",
             planId: null,
             planName: null,
             quantity: 1,
