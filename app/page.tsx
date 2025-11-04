@@ -213,18 +213,6 @@ export default function HomePage() {
   // Evitar problemas de hidratação
   useEffect(() => {
     console.log('🔧 [MOUNT] useEffect de montagem executando...')
-    
-    // 🛡️ Verificar se o cloaker redirecionou para cupons (detectar pelo conteúdo)
-    if (typeof window !== 'undefined') {
-      const isCuponsPage = document.querySelector('meta[name="page-type"]')?.getAttribute('content') === 'cupons'
-      console.log('🔧 [MOUNT] isCuponsPage:', isCuponsPage)
-      
-      if (isCuponsPage) {
-        console.log('❌ [HomePage] Página de cupons detectada - não renderizar')
-        return
-      }
-    }
-    
     console.log('✅ [MOUNT] Setando mounted = true')
     setMounted(true)
   }, [])
