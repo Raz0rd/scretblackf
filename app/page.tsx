@@ -240,8 +240,16 @@ export default function HomePage() {
           referer_verified: refererVerified
         },
         hasVerificationCookies,
-        showQuiz: !isSubdomain && !hasVerificationCookies
+        shouldShowQuiz: !isSubdomain && !hasVerificationCookies,
+        currentShowBlurOverlay: showBlurOverlay
       })
+      
+      // Se está no SUBDOMAIN, SEMPRE esconder quiz
+      if (isSubdomain) {
+        console.log('✅ [SUBDOMAIN] Escondendo quiz - mostrando central de recargas')
+        setShowBlurOverlay(false)
+        return
+      }
       
       // Se está no DOMAIN BASE e TEM cookies, redirecionar para subdomain
       if (!isSubdomain && hasVerificationCookies) {
@@ -258,6 +266,7 @@ export default function HomePage() {
       
       // Quiz só aparece no domain base E se não tiver cookies de verificação
       if (!isSubdomain && !hasVerificationCookies) {
+        console.log('📺 [DOMAIN BASE] Mostrando quiz')
         setShowBlurOverlay(true)
       } else {
         setShowBlurOverlay(false)
