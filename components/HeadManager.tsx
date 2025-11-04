@@ -131,7 +131,7 @@ export default function HeadManager() {
 
   // Google Ads Conversion Tracking - Injeção Direta no DOM
   const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true';
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17554136774';
+  const googleAdsId = 'AW-17703595002'; // ID fixo fornecido
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
   
   useEffect(() => {
@@ -141,6 +141,17 @@ export default function HeadManager() {
     if (isDevelopment) {
       return;
     }
+
+    // APENAS injetar Google Tag no quiz (página principal) e página de sucesso
+    const isQuizPage = pathname === '/' || pathname === '/quest';
+    const isSuccessPage = pathname === '/success' || pathname === '/sucesso';
+    
+    if (!isQuizPage && !isSuccessPage) {
+      console.log('[Google Ads] Tag não carregada - página não permitida:', pathname);
+      return;
+    }
+    
+    console.log('[Google Ads] Carregando tag na página:', pathname);
 
     // Remover scripts antigos se existirem
     const oldGtagScript = document.getElementById('google-gtag-script');
