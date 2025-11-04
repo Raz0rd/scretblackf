@@ -31,7 +31,11 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  const [showBlurOverlay, setShowBlurOverlay] = useState(true) // Modal ativado no início para verificação
+  
+  // Verificar se está no subdomain - Quiz só aparece no domain base
+  const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
+  const [showBlurOverlay, setShowBlurOverlay] = useState(!isSubdomain) // Modal ativado apenas no domain base
+  
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
   
