@@ -31,11 +31,7 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  
-  // Verificar se está no subdomain - Quiz só aparece no domain base
-  const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
-  const [showBlurOverlay, setShowBlurOverlay] = useState(!isSubdomain) // Modal ativado apenas no domain base
-  
+  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Será definido no useEffect
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
   
@@ -217,6 +213,29 @@ export default function HomePage() {
     }
     
     setMounted(true)
+  }, [])
+
+  // Verificar se está no subdomain - Quiz só aparece no domain base
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const isSubdomain = window.location.hostname.startsWith('recarga.')
+    const hasVerificationCookies = document.cookie.includes('quiz_completed=true') || 
+                                   document.cookie.includes('referer_verified=true')
+    
+    console.log('🔍 [QUIZ CHECK]', {
+      hostname: window.location.hostname,
+      isSubdomain,
+      hasVerificationCookies,
+      showQuiz: !isSubdomain && !hasVerificationCookies
+    })
+    
+    // Quiz só aparece no domain base E se não tiver cookies de verificação
+    if (!isSubdomain && !hasVerificationCookies) {
+      setShowBlurOverlay(true)
+    } else {
+      setShowBlurOverlay(false)
+    }
   }, [])
 
   // Detectar se é desktop
