@@ -217,62 +217,18 @@ export default function HomePage() {
     setMounted(true)
   }, [])
 
-  // Controlar exibição do quiz e redirecionamento
+  // Controlar exibição do quiz (SEM SUBDOMAIN - tudo no mesmo domínio)
   useEffect(() => {
     if (typeof window === 'undefined') return
     
     const hostname = window.location.hostname
-    // Detectar se é subdomain verificando se começa com 'recarga.'
-    const isSubdomain = hostname.startsWith('recarga.')
     
     console.log('🎯 [QUIZ CONTROL]', {
       hostname,
-      isSubdomain,
       currentShowBlurOverlay: showBlurOverlay
     })
     
-    // Se está no SUBDOMAIN, verificar cookies e NUNCA mostrar quiz
-    if (isSubdomain) {
-      console.log('✅ [SUBDOMAIN] Forçando showBlurOverlay = false')
-      setShowBlurOverlay(false)
-      
-      // Verificar se tem cookies válidos
-      const getCookie = (name: string): string | null => {
-        const value = `; ${document.cookie}`
-        const parts = value.split(`; ${name}=`)
-        if (parts.length === 2) {
-          const cookieValue = parts.pop()?.split(';').shift()
-          return cookieValue || null
-        }
-        return null
-      }
-      
-      const quizCompleted = getCookie('quiz_completed') === 'true'
-      const refererVerified = getCookie('referer_verified') === 'true'
-      const hasVerificationCookies = quizCompleted || refererVerified
-      
-      console.log('🍪 [SUBDOMAIN COOKIES CHECK]', {
-        quizCompleted,
-        refererVerified,
-        hasVerificationCookies
-      })
-      
-      // Se NÃO tem cookies válidos, redirecionar para domain base
-      if (!hasVerificationCookies) {
-        console.log('❌ [SUBDOMAIN] Sem cookies válidos - redirecionando para domain base')
-        const baseDomain = hostname.replace('recarga.', '')
-        const baseUrl = `${window.location.protocol}//${baseDomain}${window.location.pathname}${window.location.search}`
-        
-        console.log('🔄 [REDIRECT] De:', hostname, 'Para:', baseUrl)
-        window.location.replace(baseUrl)
-      }
-      
-      return
-    }
-    
-    // ============================================
-    // DOMAIN BASE: Verificar cookies e redirecionar se necessário
-    // ============================================
+    // Verificar cookies de validação
     const getCookie = (name: string): string | null => {
       const value = `; ${document.cookie}`
       const parts = value.split(`; ${name}=`)
@@ -293,21 +249,15 @@ export default function HomePage() {
       hasVerificationCookies
     })
     
-    // Se tem cookies válidos, redirecionar IMEDIATAMENTE para subdomain
+    // Se TEM cookies válidos, NÃO mostrar quiz (ir direto para central de recargas)
     if (hasVerificationCookies) {
-      console.log('🔄 [DOMAIN BASE] Tem cookies válidos - redirecionando para subdomain')
-      const subdomain = 'recarga'
-      const subdomainUrl = `${window.location.protocol}//${subdomain}.${hostname}${window.location.pathname}${window.location.search}`
-      
-      console.log('🔄 [REDIRECT] De:', hostname, 'Para:', subdomainUrl)
-      
-      // Redirecionar IMEDIATAMENTE
-      window.location.replace(subdomainUrl)
+      console.log('✅ [VALIDATED] Usuário validado - mostrando central de recargas')
+      setShowBlurOverlay(false)
       return
     }
     
-    // Se não tem cookies, mostrar quiz
-    console.log('📺 [DOMAIN BASE] Sem cookies - mostrando quiz')
+    // Se NÃO tem cookies, mostrar quiz
+    console.log('📺 [NOT VALIDATED] Sem validação - mostrando quiz')
     setShowBlurOverlay(true)
   }, [])
 
@@ -436,25 +386,19 @@ export default function HomePage() {
   }
 
   const handleAcceptReward = () => {
-    // Salvar cookie de quiz completado para compartilhar entre domínios
+    // Salvar cookie de quiz completado
     const currentHost = window.location.hostname
-    const baseDomain = currentHost.replace('recarga.', '') // Remove subdomain se existir
     
-    // Configurar cookie para funcionar em todos os subdomínios
-    const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+    // Configurar cookie
+    const cookieOptions = `path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
     document.cookie = `quiz_completed=true; ${cookieOptions}`
     
-    console.log('🍪 [QUIZ COMPLETED] Cookie definido para:', `.${baseDomain}`)
+    console.log('🍪 [QUIZ COMPLETED] Cookie definido')
     console.log('   - quiz_completed=true')
+    console.log('🎁 [REWARD] Recompensa aceita - fechando quiz')
     
-    // Redirecionar para subdomain após aceitar recompensa
-    const subdomain = 'recarga'
-    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-    
-    console.log('🎁 [REWARD] Recompensa aceita - redirecionando para subdomain')
-    console.log('🔄 [REDIRECT] Para:', subdomainUrl)
-    
-    window.location.href = subdomainUrl
+    // Fechar quiz e mostrar central de recargas
+    setShowBlurOverlay(false)
   }
 
   const handleSkipQuiz = () => {
@@ -724,19 +668,10 @@ export default function HomePage() {
         setShowBlurOverlay(false) // Fecha o modal após login
         
         // Salvar cookie de quiz completado
-        const currentHost = window.location.hostname
-        const baseDomain = currentHost.replace('recarga.', '')
-        const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+        const cookieOptions = `path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
         document.cookie = `quiz_completed=true; ${cookieOptions}`
         
-        console.log('🍪 [LOGIN] Cookie definido para:', `.${baseDomain}`)
-        
-        // Redirecionar para subdomain após login
-        const subdomain = 'recarga'
-        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-        setTimeout(() => {
-          window.location.href = subdomainUrl
-        }, 500)
+        console.log('🍪 [LOGIN] Cookie definido - quiz completado')
       }, 1500)
       return
     }
@@ -764,19 +699,10 @@ export default function HomePage() {
             }
             
             // Salvar cookie de quiz completado
-            const currentHost = window.location.hostname
-            const baseDomain = currentHost.replace('recarga.', '')
-            const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure`
+            const cookieOptions = `path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`
             document.cookie = `quiz_completed=true; ${cookieOptions}`
             
-            console.log('🍪 [LOGIN] Cookie definido para:', `.${baseDomain}`)
-            
-            // Redirecionar para subdomain após login
-            const subdomain = 'recarga'
-            const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-            setTimeout(() => {
-              window.location.href = subdomainUrl
-            }, 500)
+            console.log('🍪 [LOGIN] Cookie definido - quiz completado')
           }
         } else {
           setIsLoggedIn(false)
@@ -992,64 +918,42 @@ export default function HomePage() {
     return null
   }
 
-  // Verificar se está no subdomain
-  const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
-  console.log('🌐 [SUBDOMAIN CHECK]', { isSubdomain, hostname: typeof window !== 'undefined' ? window.location.hostname : 'SSR' })
-
   console.log('📺 [RENDER CHECK]', {
-    isSubdomain,
     showBlurOverlay,
-    willShowQuiz: !isSubdomain && showBlurOverlay
+    willShowQuiz: showBlurOverlay
   })
 
   // ============================================
-  // DOMAIN BASE SEM QUIZ: Aguardando redirecionamento ou carregamento
+  // SEMPRE RENDERIZAR: Central de recargas (com ou sem quiz)
   // ============================================
-  if (!isSubdomain && !showBlurOverlay) {
-    console.log('⏳ [RENDER] DOMAIN BASE - Aguardando (redirecionando ou carregando quiz)...')
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <p className="text-gray-500">Carregando...</p>
-      </div>
-    )
-  }
-
-  // ============================================
-  // DOMAIN BASE COM QUIZ: Renderizar APENAS o QUIZ
-  // ============================================
-  if (!isSubdomain && showBlurOverlay) {
-    console.log('🎮 [RENDER] DOMAIN BASE - Renderizando APENAS QUIZ')
-    return (
-      <div className="min-h-screen bg-white flex flex-col">
+  console.log('🏪 [RENDER] Renderizando CENTRAL DE RECARGAS', { quizVisivel: showBlurOverlay })
+  
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
+      
+      {/* QUIZ MODAL - Aparece sobre a página quando showBlurOverlay = true */}
+      {showBlurOverlay && (
         <ArenaQuizModal
-            quizStep={quizStep}
-            currentQuestion={currentQuestion}
-            timeLeft={timeLeft}
-            quizQuestions={quizQuestions}
-            quizProfiles={quizProfiles}
-            quizResult={quizResult}
-            playerId={playerId}
-            isLoading={isLoading}
-            loginError={loginError}
-            onStartQuiz={handleStartQuiz}
-            onQuizAnswer={handleQuizAnswer}
-            onAcceptReward={handleAcceptReward}
-            onSkipQuiz={handleSkipQuiz}
-            onLogin={handleLogin}
-            onPlayerIdChange={setPlayerId}
-            setShowSocialError={setShowSocialError}
-          />
-      </div>
-    )
-  }
-
-  // ============================================
-  // SUBDOMAIN: Renderizar APENAS CENTRAL DE RECARGAS
-  // ============================================
-  if (isSubdomain) {
-    console.log('🏪 [RENDER] SUBDOMAIN - Renderizando APENAS CENTRAL DE RECARGAS')
-    return (
-      <div className="min-h-screen bg-white flex flex-col">
+          quizStep={quizStep}
+          currentQuestion={currentQuestion}
+          timeLeft={timeLeft}
+          quizQuestions={quizQuestions}
+          quizProfiles={quizProfiles}
+          quizResult={quizResult}
+          playerId={playerId}
+          isLoading={isLoading}
+          loginError={loginError}
+          onStartQuiz={handleStartQuiz}
+          onQuizAnswer={handleQuizAnswer}
+          onAcceptReward={handleAcceptReward}
+          onSkipQuiz={handleSkipQuiz}
+          onLogin={handleLogin}
+          onPlayerIdChange={setPlayerId}
+          setShowSocialError={setShowSocialError}
+        />
+      )}
+      
+      {/* CENTRAL DE RECARGAS - Sempre renderizada */}
         
         {/* REMOVER MODAL ANTIGO - Substituído pelo Quiz */}
         {false && showBlurOverlay && (
@@ -2751,11 +2655,4 @@ export default function HomePage() {
         )}
       </div>
     )
-  }
-
-  // ============================================
-  // FALLBACK: Nunca deveria chegar aqui
-  // ============================================
-  console.error('❌ [RENDER] FALLBACK INESPERADO - Verificar lógica!')
-  return null
 }
