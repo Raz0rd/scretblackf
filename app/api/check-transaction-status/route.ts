@@ -113,8 +113,8 @@ export async function POST(request: NextRequest) {
 
     // Escolher gateway baseado na variável de ambiente
     const gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
-    console.log(`[CHECK-STATUS] Gateway selecionado: ${gateway.toUpperCase()}`)
-    console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
+    
+    // Log simplificado (1 linha apenas)
 
     // Verificar se já processamos esta transação como paid
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
@@ -150,11 +150,11 @@ export async function POST(request: NextRequest) {
     }
 
     const currentStatus = transactionData.status
-    // Mapear status de diferentes gateways
-    // Ezzpag: waiting_payment, paid, approved, canceled, refunded
-    // Umbrela: WAITING_PAYMENT, PAID
     const isNowPaid = currentStatus === 'paid' || currentStatus === 'approved' || currentStatus === 'PAID'
     const isWaitingPayment = currentStatus === 'waiting_payment' || currentStatus === 'WAITING_PAYMENT'
+    
+    // Log simplificado: apenas 1 linha
+    console.log(`[POLLING] ${transactionId} → ${currentStatus.toUpperCase()}`)
 
     // Se status é paid, verificar se já foi processado pelo webhook
     if (isNowPaid) {
@@ -373,9 +373,6 @@ export async function POST(request: NextRequest) {
 
     // Se status é waiting_payment/pending, enviar para UTMify (primeira vez)
     if (isWaitingPayment) {
-      console.log(`[CHECK-STATUS] Status é PENDING - verificando se já foi enviado`)
-      
-      // Buscar transação no storage
       const storedOrder = orderStorageService.getOrder(transactionId)
       
       // PROTEÇÃO: Verificar se já enviou pending para UTMify
@@ -385,10 +382,6 @@ export async function POST(request: NextRequest) {
       
       // Se já enviou nos últimos 5 minutos, ignorar
       if (lastPendingSent && (now - lastPendingSent) < 5 * 60 * 1000) {
-        const timeDiff = ((now - lastPendingSent) / 1000).toFixed(0)
-        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado para UTMify - IGNORANDO`)
-        console.log(`   - Transaction ID: ${transactionId}`)
-        console.log(`   - Último envio: ${timeDiff}s atrás`)
         return NextResponse.json({
           success: true,
           status: 'pending',
@@ -399,7 +392,6 @@ export async function POST(request: NextRequest) {
       
       // Verificar também no storage
       if (storedOrder && storedOrder.utmifySent) {
-        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado (storage) - IGNORANDO`)
         return NextResponse.json({
           success: true,
           status: 'pending',
@@ -408,15 +400,10 @@ export async function POST(request: NextRequest) {
         })
       }
       
-      console.log(`✅ [CHECK-STATUS] Primeira vez enviando PENDING - prosseguindo`)
-      
-      // Se não encontrar, usar UTMs vazios (null) - UTMify aceita
+      // Recuperar UTMs do storage
       let trackingParameters: Record<string, any> = {}
       if (storedOrder && storedOrder.trackingParameters) {
         trackingParameters = storedOrder.trackingParameters
-        console.log(`[CHECK-STATUS] UTMs recuperados do storage`)
-      } else {
-        console.log(`⚠️ [CHECK-STATUS] Sem UTMs no storage - enviando com valores null`)
       }
       
       // Marcar como enviado ANTES de enviar (evita race condition)
@@ -488,16 +475,6 @@ export async function POST(request: NextRequest) {
               isTest: process.env.UTMIFY_TEST_MODE === 'true'
             }
             
-            console.log(`📤 [CHECK-STATUS] Enviando PENDING para UTMify:`)
-            console.log(`   - Order ID: ${utmifyData.orderId}`)
-            console.log(`   - Status: ${utmifyData.status}`)
-            console.log(`   - Valor: R$ ${(utmifyData.products[0].priceInCents / 100).toFixed(2)}`)
-            console.log(`   - Cliente: ${utmifyData.customer.name}`)
-            console.log(`   - Email: ${utmifyData.customer.email}`)
-            console.log(`   - GCLID: ${utmifyData.trackingParameters.gclid || 'N/A'}`)
-            console.log(`   - GAD Source: ${utmifyData.trackingParameters.gad_source || 'N/A'}`)
-            console.log(`   - GBraid: ${utmifyData.trackingParameters.gbraid || 'N/A'}`)
-            
             const utmifyResponse = await fetch(`${baseUrl}/api/utmify-track`, {
               method: "POST",
               headers: {
@@ -507,8 +484,6 @@ export async function POST(request: NextRequest) {
             })
             
             if (utmifyResponse.ok) {
-              console.log(`✅ [CHECK-STATUS] PENDING enviado para UTMify com sucesso`)
-              
               // Marcar como enviado no storage
               if (storedOrder) {
                 orderStorageService.saveOrder({
@@ -516,11 +491,9 @@ export async function POST(request: NextRequest) {
                   utmifySent: true
                 })
               }
-            } else {
-              console.error(`❌ [CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, utmifyResponse.status)
             }
           } catch (error) {
-            console.error(`[CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, error)
+            // Silencioso
           }
         }
       

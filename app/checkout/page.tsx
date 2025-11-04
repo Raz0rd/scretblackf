@@ -97,6 +97,7 @@ export default function CheckoutPage() {
   // Get URL parameters
   const itemType = searchParams.get("type") || searchParams.get("itemType") || "recharge"
   const itemValue = searchParams.get("value") || searchParams.get("itemValue") || "1.060"
+  const testMode = searchParams.get("test") === "gads2024" // Param secreto para teste
   const itemBonus = searchParams.get("bonus") || "0"
   const playerId = searchParams.get("playerId") || ""
   const price = searchParams.get("price") || "14.24"
@@ -982,6 +983,28 @@ export default function CheckoutPage() {
     }
   }
 
+  // Função de teste para simular redirect para success
+  const handleTestConversion = () => {
+    if (!pixData) return
+    
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin
+    const successUrl = new URL(`${baseUrl}/success`)
+    
+    // Adicionar params necessários
+    successUrl.searchParams.set('transactionId', pixData.transactionId)
+    successUrl.searchParams.set('amount', (getFinalPrice() * 100).toString())
+    successUrl.searchParams.set('playerName', playerName)
+    successUrl.searchParams.set('itemType', itemType)
+    successUrl.searchParams.set('game', currentGame)
+    successUrl.searchParams.set('itemValue', itemValue)
+    
+    console.log('🧪 [TEST] Redirecionando para success com conversão Google Ads')
+    console.log('   - URL:', successUrl.toString())
+    
+    // Redirecionar
+    window.location.href = successUrl.toString()
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
 
@@ -1253,10 +1276,20 @@ export default function CheckoutPage() {
                             setTimeout(() => setIsCopied(false), 2000)
                           }
                         }}
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-6 h-11 text-base font-bold w-full"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-4 h-11 text-base font-bold w-full"
                       >
                         {isCopied ? 'Copiado!' : 'Copiar Código'}
                       </button>
+
+                      {/* Botão de Teste (apenas com param secreto) */}
+                      {testMode && (
+                        <button
+                          onClick={handleTestConversion}
+                          className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-yellow-500 text-black hover:bg-yellow-600 px-4 py-2 mb-6 h-11 text-base font-bold w-full"
+                        >
+                          🧪 Testar Conversão Google Ads
+                        </button>
+                      )}
 
                       {/* Timer/Alerta */}
                       <div role="alert" className="relative rounded-lg border p-4 bg-blue-50 border-blue-200 text-left w-full mb-4">
