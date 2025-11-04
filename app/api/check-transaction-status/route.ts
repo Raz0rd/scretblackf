@@ -256,7 +256,7 @@ export async function POST(request: NextRequest) {
           
           const utmifyData = {
             orderId: transactionId.toString(),
-            platform: "RecarGames",
+            platform: "GMePortsFF",
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
             createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
@@ -273,7 +273,7 @@ export async function POST(request: NextRequest) {
             products: [
               {
                 id: `recarga-${transactionId}`,
-                name: "Recarga Free Fire",
+                name: "GMePorts",
                 planId: null,
                 planName: null,
                 quantity: 1,
@@ -373,10 +373,42 @@ export async function POST(request: NextRequest) {
 
     // Se status é waiting_payment/pending, enviar para UTMify (primeira vez)
     if (isWaitingPayment) {
-      console.log(`[CHECK-STATUS] Status é PENDING - enviando para UTMify`)
+      console.log(`[CHECK-STATUS] Status é PENDING - verificando se já foi enviado`)
       
       // Buscar transação no storage
       const storedOrder = orderStorageService.getOrder(transactionId)
+      
+      // PROTEÇÃO: Verificar se já enviou pending para UTMify
+      const pendingKey = `${transactionId}-pending`
+      const lastPendingSent = processedConversions.get(pendingKey)
+      const now = Date.now()
+      
+      // Se já enviou nos últimos 5 minutos, ignorar
+      if (lastPendingSent && (now - lastPendingSent) < 5 * 60 * 1000) {
+        const timeDiff = ((now - lastPendingSent) / 1000).toFixed(0)
+        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado para UTMify - IGNORANDO`)
+        console.log(`   - Transaction ID: ${transactionId}`)
+        console.log(`   - Último envio: ${timeDiff}s atrás`)
+        return NextResponse.json({
+          success: true,
+          status: 'pending',
+          message: 'Aguardando pagamento',
+          alreadySent: true
+        })
+      }
+      
+      // Verificar também no storage
+      if (storedOrder && storedOrder.utmifySent) {
+        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado (storage) - IGNORANDO`)
+        return NextResponse.json({
+          success: true,
+          status: 'pending',
+          message: 'Aguardando pagamento',
+          alreadySent: true
+        })
+      }
+      
+      console.log(`✅ [CHECK-STATUS] Primeira vez enviando PENDING - prosseguindo`)
       
       // Se não encontrar, usar UTMs vazios (null) - UTMify aceita
       let trackingParameters: Record<string, any> = {}
@@ -387,28 +419,12 @@ export async function POST(request: NextRequest) {
         console.log(`⚠️ [CHECK-STATUS] Sem UTMs no storage - enviando com valores null`)
       }
       
-      // Verificar se já enviou pending para UTMify (pelo webhook ou check-status anterior)
-      if (storedOrder && storedOrder.utmifySent) {
-        console.log(`⚠️ [CHECK-STATUS] PENDING já enviado para UTMify - IGNORADO`)
-        return NextResponse.json({
-          success: true,
-          status: 'pending',
-          message: 'Aguardando pagamento',
-          alreadySent: true
-        })
-      }
+      // Marcar como enviado ANTES de enviar (evita race condition)
+      processedConversions.set(pendingKey, now)
       
-      const pendingKey = `${transactionId}-pending`
-      const lastPendingSent = processedConversions.get(pendingKey)
-      const now = Date.now()
-      
-      if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME) {
-        // Marcar como enviado
-        processedConversions.set(pendingKey, now)
-        
-        // Enviar para UTMify
-        const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
-        if (utmifyEnabled) {
+      // Enviar para UTMify
+      const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
+      if (utmifyEnabled) {
           try {
             const protocol = request.headers.get('x-forwarded-proto') || 'https'
             const host = request.headers.get('host')
@@ -507,10 +523,24 @@ export async function POST(request: NextRequest) {
             console.error(`[CHECK-STATUS] Erro ao enviar PENDING para UTMify:`, error)
           }
         }
-      }
+      
+      // Retornar status atual (sem processar)
+      return NextResponse.json({
+        success: true,
+        status: currentStatus,
+        message: `Status atual: ${currentStatus}`,
+        transactionData: {
+          id: transactionData.id,
+          status: transactionData.status,
+          amount: transactionData.amount,
+          paidAt: transactionData.paidAt,
+          customer: transactionData.customer.name
+        },
+        needsProcessing: false
+      })
     }
     
-    // Retornar status atual (sem processar)
+    // Retornar status atual para outros casos
     return NextResponse.json({
       success: true,
       status: currentStatus,
@@ -520,9 +550,8 @@ export async function POST(request: NextRequest) {
         status: transactionData.status,
         amount: transactionData.amount,
         paidAt: transactionData.paidAt,
-        customer: transactionData.customer.name
-      },
-      needsProcessing: false
+        customer: transactionData.customer?.name || 'N/A'
+      }
     })
 
   } catch (error) {
