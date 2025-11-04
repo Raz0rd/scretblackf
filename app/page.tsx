@@ -31,7 +31,7 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Será definido no useEffect
+  const [showBlurOverlay, setShowBlurOverlay] = useState(true) // Começa TRUE, depois verifica
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
   
@@ -242,6 +242,19 @@ export default function HomePage() {
         hasVerificationCookies,
         showQuiz: !isSubdomain && !hasVerificationCookies
       })
+      
+      // Se está no DOMAIN BASE e TEM cookies, redirecionar para subdomain
+      if (!isSubdomain && hasVerificationCookies) {
+        const currentHost = window.location.hostname
+        const parts = currentHost.split('.')
+        const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
+        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
+        
+        console.log('🔄 [AUTO-REDIRECT] Usuário verificado no domain base → redirecionando para subdomain')
+        window.location.href = subdomainUrl
+        return
+      }
       
       // Quiz só aparece no domain base E se não tiver cookies de verificação
       if (!isSubdomain && !hasVerificationCookies) {
@@ -885,12 +898,14 @@ export default function HomePage() {
     return null
   }
 
+  // Verificar se está no subdomain
+  const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
+
   if (showPurchasePage) {
-    return (
-      <div className="min-h-screen bg-white flex flex-col">
-        
-        {/* Quiz Arena de Fogo */}
-        {showBlurOverlay && (
+    // Se está no domain base E não tem cookies, mostrar APENAS o quiz
+    if (!isSubdomain && showBlurOverlay) {
+      return (
+        <div className="min-h-screen bg-white flex flex-col">
           <ArenaQuizModal
             quizStep={quizStep}
             currentQuestion={currentQuestion}
@@ -909,8 +924,14 @@ export default function HomePage() {
             onPlayerIdChange={setPlayerId}
             setShowSocialError={setShowSocialError}
           />
-        )}
+        </div>
+      )
+    }
 
+    // Caso contrário (subdomain OU domain base com cookies), mostrar central de recargas
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        
         {/* REMOVER MODAL ANTIGO - Substituído pelo Quiz */}
         {false && showBlurOverlay && (
           <div 
