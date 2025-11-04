@@ -42,9 +42,15 @@ export function trackPurchase(transactionId: string, value: number) {
   }
 
   try {
-    // Pegar ID de conversão do .env ou usar padrão
-    const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17554136774';
-    const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'S9KKCL7Qo6obEMa9u7JB';
+    // Pegar ID de conversão do .env
+    const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
+    const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL;
+    
+    if (!googleAdsId || !conversionLabel) {
+      console.error('[Google Ads] ❌ NEXT_PUBLIC_GOOGLE_ADS_ID ou NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL não configurado no .env');
+      return;
+    }
+    
     const conversionId = `${googleAdsId}/${conversionLabel}`;
     
     console.log('[Google Ads] 🎯 Disparando conversão: Compra');
