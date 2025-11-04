@@ -237,10 +237,13 @@ export default function HomePage() {
     }
     
     // Se está no DOMAIN BASE, verificar cookies
-    const getCookie = (name: string) => {
+    const getCookie = (name: string): string | null => {
       const value = `; ${document.cookie}`
       const parts = value.split(`; ${name}=`)
-      if (parts.length === 2) return parts.pop()?.split(';').shift()
+      if (parts.length === 2) {
+        const cookieValue = parts.pop()?.split(';').shift()
+        return cookieValue || null
+      }
       return null
     }
     
@@ -286,10 +289,13 @@ export default function HomePage() {
     
     const checkUserLogin = async () => {
       // Função para pegar cookie
-      const getCookie = (name: string) => {
+      const getCookie = (name: string): string | null => {
         const value = `; ${document.cookie}`
         const parts = value.split(`; ${name}=`)
-        if (parts.length === 2) return parts.pop()?.split(';').shift()
+        if (parts.length === 2) {
+          const cookieValue = parts.pop()?.split(';').shift()
+          return cookieValue || null
+        }
         return null
       }
       
@@ -763,7 +769,7 @@ export default function HomePage() {
     const utmParams = getUtmObject()
 
     if (selectedRechargeValue) {
-      const priceData = calculatePrice(selectedRechargeValue)
+      const priceData = calculatePrice(selectedRechargeValue!)
       const params = new URLSearchParams({
         type: "recharge",
         value: selectedRechargeValue,
@@ -786,8 +792,8 @@ export default function HomePage() {
       
       router.push(`/checkout?${params.toString()}`)
     } else if (selectedSpecialOffer) {
-      const price = getSpecialOfferPrice(selectedSpecialOffer)
-      const bonus = getSpecialOfferBonus(selectedSpecialOffer)
+      const price = getSpecialOfferPrice(selectedSpecialOffer!)
+      const bonus = getSpecialOfferBonus(selectedSpecialOffer!)
       const params = new URLSearchParams({
         type: "special",
         value: selectedSpecialOffer,
@@ -1916,8 +1922,8 @@ export default function HomePage() {
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
                   <span className="items-center inline-flex font-bold text-white">
-                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
-                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
+                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace('.', ',') : 
+                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
@@ -1936,11 +1942,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {calculatePrice(selectedRechargeValue).bonus}
+                      {calculatePrice(selectedRechargeValue!).bonus}
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -1956,7 +1962,7 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {getSpecialOfferBonus(selectedSpecialOffer)}
+                      {getSpecialOfferBonus(selectedSpecialOffer!)}
                     </span>
                   </div>
                 )}
@@ -1992,8 +1998,8 @@ export default function HomePage() {
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
                   <span className="items-center inline-flex font-bold text-white">
-                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
-                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
+                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace('.', ',') : 
+                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
@@ -2012,11 +2018,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {calculatePrice(selectedRechargeValue).bonus}
+                      {calculatePrice(selectedRechargeValue!).bonus}
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2032,7 +2038,7 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {getSpecialOfferBonus(selectedSpecialOffer)}
+                      {getSpecialOfferBonus(selectedSpecialOffer!)}
                     </span>
                   </div>
                 )}
@@ -2068,8 +2074,8 @@ export default function HomePage() {
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
                   <span className="items-center inline-flex font-bold text-white">
-                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
-                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
+                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace('.', ',') : 
+                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
@@ -2088,11 +2094,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {calculatePrice(selectedRechargeValue).bonus}
+                      {calculatePrice(selectedRechargeValue!).bonus}
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2108,7 +2114,7 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {getSpecialOfferBonus(selectedSpecialOffer)}
+                      {getSpecialOfferBonus(selectedSpecialOffer!)}
                     </span>
                   </div>
                 )}
@@ -2144,8 +2150,8 @@ export default function HomePage() {
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
                   <span className="items-center inline-flex font-bold text-white">
-                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
-                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
+                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace('.', ',') : 
+                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
@@ -2164,11 +2170,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {calculatePrice(selectedRechargeValue).bonus}
+                      {calculatePrice(selectedRechargeValue!).bonus}
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2184,7 +2190,7 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {getSpecialOfferBonus(selectedSpecialOffer)}
+                      {getSpecialOfferBonus(selectedSpecialOffer!)}
                     </span>
                   </div>
                 )}
@@ -2220,8 +2226,8 @@ export default function HomePage() {
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
                   <span className="items-center inline-flex font-bold text-white">
-                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
-                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
+                    R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace('.', ',') : 
+                         selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
@@ -2240,11 +2246,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {calculatePrice(selectedRechargeValue).bonus}
+                      {calculatePrice(selectedRechargeValue!).bonus}
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2260,7 +2266,7 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      {getSpecialOfferBonus(selectedSpecialOffer)}
+                      {getSpecialOfferBonus(selectedSpecialOffer!)}
                     </span>
                   </div>
                 )}
@@ -2289,7 +2295,7 @@ export default function HomePage() {
                       )}
                       <span>
                         {selectedRechargeValue 
-                          ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue).bonus
+                          ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue!).bonus
                           : selectedSpecialOffer
                         }
                       </span>
@@ -2327,9 +2333,9 @@ export default function HomePage() {
                           />
                           <div className="font-medium text-white">
                             {selectedRechargeValue 
-                              ? calculatePrice(selectedRechargeValue).bonus
+                              ? calculatePrice(selectedRechargeValue!).bonus
                               : selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce')
-                                ? getSpecialOfferBonus(selectedSpecialOffer)
+                                ? getSpecialOfferBonus(selectedSpecialOffer!)
                                 : 0
                             }
                           </div>
@@ -2359,18 +2365,18 @@ export default function HomePage() {
                         : selectedSpecialOffer
                       }
                     </span>
-                    {selectedRechargeValue && calculatePrice(selectedRechargeValue).bonus > 0 && (
-                      <span className="text-white/50 text-xs">+ {calculatePrice(selectedRechargeValue).bonus}</span>
+                    {selectedRechargeValue && calculatePrice(selectedRechargeValue!).bonus > 0 && (
+                      <span className="text-white/50 text-xs">+ {calculatePrice(selectedRechargeValue!).bonus}</span>
                     )}
-                    {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
-                      <span className="text-white/50 text-xs">+ {getSpecialOfferBonus(selectedSpecialOffer)}</span>
+                    {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                      <span className="text-white/50 text-xs">+ {getSpecialOfferBonus(selectedSpecialOffer!)}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-1 text-xs">
                     <span className="font-medium text-white/70">Total:</span>
                     <span className="font-bold text-destructive">
                       R$ {selectedRechargeValue 
-                        ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace(".", ",")
+                        ? calculatePrice(selectedRechargeValue!).price.toFixed(2).replace(".", ",")
                         : getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace(".", ",")
                       }
                     </span>
@@ -2412,11 +2418,11 @@ export default function HomePage() {
                         src={currentConfig.coinIcon}
                         style={{ color: "transparent" }}
                       />
-                      <span dir="ltr">{selectedRechargeValue.replace(/\./g, '')} {calculatePrice(selectedRechargeValue).bonus > 0 ? `+ ${calculatePrice(selectedRechargeValue).bonus}` : ''}</span>
+                      <span dir="ltr">{selectedRechargeValue.replace(/\./g, '')} {calculatePrice(selectedRechargeValue!).bonus > 0 ? `+ ${calculatePrice(selectedRechargeValue!).bonus}` : ''}</span>
                     </div>
                     <div className="mt-2 flex items-center gap-1 text-base/none md:text-end md:text-lg/none">
                       <span className="font-medium text-white/70">Total:</span>
-                      <span className="font-bold text-destructive">R$ {calculatePrice(selectedRechargeValue).price.toFixed(2).replace(".", ",")}</span>
+                      <span className="font-bold text-destructive">R$ {calculatePrice(selectedRechargeValue!).price.toFixed(2).replace(".", ",")}</span>
                     </div>
                   </>
                 ) : (
@@ -2424,7 +2430,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none text-white">
                       <span dir="ltr">{selectedSpecialOffer}</span>
                     </div>
-                    {(selectedGame === 'haikyu' || selectedGame === 'deltaforce') && selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
+                    {(selectedGame === 'haikyu' || selectedGame === 'deltaforce') && selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                       <div className="mt-1 flex items-center gap-1 text-sm/none md:text-base/none text-red-500">
                         <span>+ Bônus</span>
                         <img 
@@ -2439,7 +2445,7 @@ export default function HomePage() {
                           src={currentConfig.coinIcon}
                           style={{ color: "transparent" }}
                         />
-                        <span>{getSpecialOfferBonus(selectedSpecialOffer)}</span>
+                        <span>{getSpecialOfferBonus(selectedSpecialOffer!)}</span>
                       </div>
                     )}
                     <div className="mt-2 flex items-center gap-1 text-base/none md:text-end md:text-lg/none">
@@ -2644,51 +2650,15 @@ export default function HomePage() {
     )
   }
 
-  
-
-  return (
-    <>
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Carregando...</h2>
-          <p className="text-gray-600">Preparando sua experiência de recarga</p>
-        </div>
-      </div>
-
-        {/* Modal de Login Social Indisponível */}
-        {showSocialError && (
-          <div className="fixed inset-0 bg-black/50 z-[10000] flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-xl max-w-sm w-full mx-4 p-6">
-              <div className="text-center">
-           
-                <p className="text-sm text-gray-700 mb-6 leading-relaxed">
-                  Estamos com instabilidade neste tipo de login. Por favor, use o login com ID do jogador.
-                </p>
-                <button
-                  onClick={() => setShowSocialError(false)}
-                  className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-      {/* Modal de Login Obrigatório */}
-      {console.log('[HomePage] LoginModal state:', { authLoading, isAuthenticated, shouldShow: !authLoading && !isAuthenticated })}
-      <LoginModal 
-        isOpen={!authLoading && !isAuthenticated} 
-        onSuccess={login}
-      />
-    </>
-    )
-  }
-
   // ============================================
   // FALLBACK: Domain base sem quiz (redirecionando...)
   // ============================================
-  console.log('⏳ [RENDER] FALLBACK - Aguardando redirecionamento...')
-  return null
+  return (
+    <>
+      {console.log('⏳ [RENDER] FALLBACK - Aguardando redirecionamento...')}
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">Carregando...</p>
+      </div>
+    </>
+  ) 
 }
