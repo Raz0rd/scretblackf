@@ -220,12 +220,26 @@ export default function HomePage() {
     if (typeof window === 'undefined') return
     
     const isSubdomain = window.location.hostname.startsWith('recarga.')
-    const hasVerificationCookies = document.cookie.includes('quiz_completed=true') || 
-                                   document.cookie.includes('referer_verified=true')
+    
+    // Verificar cookies de forma mais robusta
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`
+      const parts = value.split(`; ${name}=`)
+      if (parts.length === 2) return parts.pop()?.split(';').shift()
+      return null
+    }
+    
+    const quizCompleted = getCookie('quiz_completed') === 'true'
+    const refererVerified = getCookie('referer_verified') === 'true'
+    const hasVerificationCookies = quizCompleted || refererVerified
     
     console.log('🔍 [QUIZ CHECK]', {
       hostname: window.location.hostname,
       isSubdomain,
+      cookies: {
+        quiz_completed: quizCompleted,
+        referer_verified: refererVerified
+      },
       hasVerificationCookies,
       showQuiz: !isSubdomain && !hasVerificationCookies
     })
