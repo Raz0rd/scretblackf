@@ -78,7 +78,9 @@ export async function middleware(request: NextRequest) {
       
       // Redirecionar para domain base
       const parts = host.split('.')
-      const baseDomainHost = parts.slice(-2).join('.')
+      // Se tem 3 ou mais partes (recarga.gmeports.com.br), pegar as últimas 3
+      // Se tem 2 partes (gmeports.com.br), manter as 2
+      const baseDomainHost = parts.length >= 3 ? parts.slice(-3).join('.') : parts.join('.')
       const redirectUrl = new URL(request.url)
       redirectUrl.hostname = baseDomainHost
       
