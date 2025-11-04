@@ -10,6 +10,14 @@ import { useAuth } from '@/hooks/useAuth';
 import ArenaQuizModal from '@/components/arena-quiz-modal';
 
 export default function HomePage() {
+  // Log IMEDIATO para debug
+  if (typeof window !== 'undefined') {
+    console.log('🚀 [HOMEPAGE] Componente carregado!', {
+      hostname: window.location.hostname,
+      pathname: window.location.pathname
+    })
+  }
+  
   const { isAuthenticated, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)
   const [, setShowLeadMessage] = useState(false)
