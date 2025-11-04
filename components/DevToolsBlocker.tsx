@@ -4,19 +4,9 @@ import { useEffect } from 'react'
 
 export function DevToolsBlocker() {
   useEffect(() => {
-    // Verificar se está em produção E se não é localhost
-    const isProduction = process.env.NODE_ENV === 'production'
-    const isLocalhost = typeof window !== 'undefined' && 
-                        (window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1')
-    
-    // Em desenvolvimento OU localhost, não bloquear (para facilitar debug)
-    if (!isProduction || isLocalhost) {
-      console.log('[DevTools] Proteção desativada em desenvolvimento/localhost')
-      return
-    }
-    
-    console.log('[DevTools] 🔒 Proteção ativada - F12, Clique Direito e Console')
+    // PROTEÇÃO DESATIVADA PERMANENTEMENTE
+    console.log('[DevTools] ✅ Proteção desativada - DevTools liberado')
+    return
 
     // Função para expulsar para 404
     const expelUser = () => {
