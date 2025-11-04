@@ -31,7 +31,9 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  const [showBlurOverlay, setShowBlurOverlay] = useState(true) // Começa TRUE, depois verifica
+  // Verificar subdomain logo no início
+  const isSubdomainInitial = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
+  const [showBlurOverlay, setShowBlurOverlay] = useState(!isSubdomainInitial) // FALSE no subdomain, TRUE no base
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
   
@@ -215,10 +217,18 @@ export default function HomePage() {
     setMounted(true)
   }, [])
 
-  // Verificar se está no subdomain - Quiz só aparece no domain base
+  // Redirecionar para subdomain se estiver no domain base com cookies
   useEffect(() => {
     if (typeof window === 'undefined') return
     
+    const isSubdomain = window.location.hostname.startsWith('recarga.')
+    
+    // Se está no SUBDOMAIN, não fazer nada (já está correto)
+    if (isSubdomain) {
+      return
+    }
+    
+    // Se está no DOMAIN BASE, verificar cookies
     const getCookie = (name: string) => {
       const value = `; ${document.cookie}`
       const parts = value.split(`; ${name}=`)
@@ -226,63 +236,19 @@ export default function HomePage() {
       return null
     }
     
-    const checkQuizVisibility = () => {
-      const isSubdomain = window.location.hostname.startsWith('recarga.')
-      const quizCompleted = getCookie('quiz_completed') === 'true'
-      const refererVerified = getCookie('referer_verified') === 'true'
-      const hasVerificationCookies = quizCompleted || refererVerified
-      
-      console.log('🔍 [QUIZ CHECK]', {
-        hostname: window.location.hostname,
-        isSubdomain,
-        cookies: {
-          quiz_completed: quizCompleted,
-          referer_verified: refererVerified
-        },
-        hasVerificationCookies,
-        shouldShowQuiz: !isSubdomain && !hasVerificationCookies,
-        currentShowBlurOverlay: showBlurOverlay
-      })
-      
-      // Se está no SUBDOMAIN, SEMPRE esconder quiz
-      if (isSubdomain) {
-        console.log('✅ [SUBDOMAIN] Escondendo quiz - mostrando central de recargas')
-        setShowBlurOverlay(false)
-        return
-      }
-      
-      // Se está no DOMAIN BASE e TEM cookies, redirecionar para subdomain
-      if (!isSubdomain && hasVerificationCookies) {
-        const currentHost = window.location.hostname
-        const parts = currentHost.split('.')
-        const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
-        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-        
-        console.log('🔄 [AUTO-REDIRECT] Usuário verificado no domain base → redirecionando para subdomain')
-        window.location.href = subdomainUrl
-        return
-      }
-      
-      // Quiz só aparece no domain base E se não tiver cookies de verificação
-      if (!isSubdomain && !hasVerificationCookies) {
-        console.log('📺 [DOMAIN BASE] Mostrando quiz')
-        setShowBlurOverlay(true)
-      } else {
-        setShowBlurOverlay(false)
-      }
-    }
+    const quizCompleted = getCookie('quiz_completed') === 'true'
+    const refererVerified = getCookie('referer_verified') === 'true'
+    const hasVerificationCookies = quizCompleted || refererVerified
     
-    // Verificar imediatamente
-    checkQuizVisibility()
-    
-    // Verificar a cada 500ms por 5 segundos (para pegar cookies que chegam depois)
-    const interval = setInterval(checkQuizVisibility, 500)
-    const timeout = setTimeout(() => clearInterval(interval), 5000)
-    
-    return () => {
-      clearInterval(interval)
-      clearTimeout(timeout)
+    // Se tem cookies, redirecionar para subdomain
+    if (hasVerificationCookies) {
+      const currentHost = window.location.hostname
+      const parts = currentHost.split('.')
+      const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
+      const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+      const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
+      
+      window.location.href = subdomainUrl
     }
   }, [])
 
@@ -911,16 +877,8 @@ export default function HomePage() {
   const isSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
 
   if (showPurchasePage) {
-    // Debug log
-    console.log('🎯 [RENDER]', {
-      isSubdomain,
-      showBlurOverlay,
-      showQuiz: !isSubdomain && showBlurOverlay
-    })
-    
-    // Se está no domain base E não tem cookies, mostrar APENAS o quiz
+    // Se está no domain base E showBlurOverlay é true, mostrar APENAS o quiz
     if (!isSubdomain && showBlurOverlay) {
-      console.log('📺 [RENDER] Renderizando APENAS quiz (domain base sem cookies)')
       return (
         <div className="min-h-screen bg-white flex flex-col">
           <ArenaQuizModal
@@ -946,7 +904,6 @@ export default function HomePage() {
     }
 
     // Caso contrário (subdomain OU domain base com cookies), mostrar central de recargas
-    console.log('📺 [RENDER] Renderizando central de recargas')
     return (
       <div className="min-h-screen bg-white flex flex-col">
         
