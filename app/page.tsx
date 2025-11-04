@@ -31,9 +31,7 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  // Verificar subdomain logo no início
-  const isSubdomainInitial = typeof window !== 'undefined' && window.location.hostname.startsWith('recarga.')
-  const [showBlurOverlay, setShowBlurOverlay] = useState(!isSubdomainInitial) // FALSE no subdomain, TRUE no base
+  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Começa FALSE, depois verifica
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
   
@@ -217,14 +215,15 @@ export default function HomePage() {
     setMounted(true)
   }, [])
 
-  // Redirecionar para subdomain se estiver no domain base com cookies
+  // Controlar exibição do quiz
   useEffect(() => {
     if (typeof window === 'undefined') return
     
     const isSubdomain = window.location.hostname.startsWith('recarga.')
     
-    // Se está no SUBDOMAIN, não fazer nada (já está correto)
+    // Se está no SUBDOMAIN, NUNCA mostrar quiz
     if (isSubdomain) {
+      setShowBlurOverlay(false)
       return
     }
     
@@ -249,7 +248,11 @@ export default function HomePage() {
       const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
       
       window.location.href = subdomainUrl
+      return
     }
+    
+    // Se não tem cookies, mostrar quiz
+    setShowBlurOverlay(true)
   }, [])
 
   // Detectar se é desktop
