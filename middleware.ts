@@ -54,82 +54,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // ============================================
-  // 🔓 VERIFICAÇÃO DE COOKIES (Subdomain ↔ Domain Base)
+  // 🔓 ACESSO LIVRE - SEM VERIFICAÇÕES
   // ============================================
   
-  // Verificar se usuário já passou pela verificação inicial
-  const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
-  const hasQuizCompleted = request.cookies.get('quiz_completed')?.value === 'true'
-  
-  // Log de debug dos cookies
-  console.log('🍪 [COOKIES]', {
-    referer_verified: alreadyVerified,
-    quiz_completed: hasQuizCompleted,
-    pathname,
-    host
-  })
-  
-  // Verificar se está no subdomain
-  const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-  const isSubdomain = host.startsWith(subdomain + '.')
-  
-  // BYPASS: Permitir acesso direto ao checkout (usuário vem de anúncio direto)
-  const isCheckoutPage = pathname === '/checkout' || pathname.startsWith('/checkout/')
-  const hasTestParam = request.nextUrl.searchParams.get('test') === 'gads2024'
-  
-  // Se está no SUBDOMAIN, EXIGIR verificação (exceto checkout direto)
-  if (isSubdomain) {
-    if (!alreadyVerified && !hasQuizCompleted && !isCheckoutPage) {
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('🚫 [SUBDOMAIN] ACESSO BLOQUEADO - NÃO VERIFICADO')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.log('📍 Host:', host)
-      console.log('🔒 Motivo: Tentativa de acessar subdomain sem verificação')
-      console.log('⚠️  Ação: Redirecionando para domain base')
-      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
-      
-      // Redirecionar para domain base (remover subdomain)
-      const parts = host.split('.')
-      // recarga.gmeports.com.br → ['recarga', 'gmeports', 'com', 'br'] (4 partes)
-      // Remover a primeira parte (subdomain) e juntar o resto
-      const baseDomainHost = parts.length > 2 ? parts.slice(1).join('.') : parts.join('.')
-      
-      const protocol = request.headers.get('x-forwarded-proto') || 'https'
-      const redirectUrl = `${protocol}://${baseDomainHost}${pathname}`
-      
-      console.log('🔄 [REDIRECT] De:', host, '→ Parts:', parts)
-      console.log('🔄 [REDIRECT] Para:', redirectUrl)
-      
-      return NextResponse.redirect(redirectUrl)
-    }
-    
-    // Se verificado, liberar acesso no subdomain
-    console.log('✅ [SUBDOMAIN] Usuário verificado - liberando acesso')
-    console.log('   - Cookie referer_verified:', alreadyVerified)
-    console.log('   - Cookie quiz_completed:', hasQuizCompleted)
-    console.log('   - Rota:', pathname)
-    return NextResponse.next()
-  }
-  
-  // Se está no DOMAIN BASE e já verificado, liberar
-  if (alreadyVerified || hasQuizCompleted) {
-    console.log('✅ [DOMAIN BASE] Usuário verificado - liberando acesso')
-    console.log('   - Cookie referer_verified:', alreadyVerified)
-    console.log('   - Cookie quiz_completed:', hasQuizCompleted)
-    console.log('   - Rota:', pathname)
-    return NextResponse.next()
-  }
-  
-  // ============================================
-  // 🔓 PROTEÇÕES DESABILITADAS - ACESSO LIVRE
-  // ============================================
-  
-  // Liberar acesso total sem verificação de referer
-  console.log('✅ [MIDDLEWARE] Acesso livre - proteções desabilitadas')
-  console.log('   - Rota:', pathname)
-  
-  // Pular TODAS as verificações de referer/UTMs
-  // Apenas liberar acesso
+  // Liberar acesso total - sem verificação de cookies, referer ou subdomain
+  // Controle de acesso é feito no client-side via cookies
   return NextResponse.next()
 }
 
