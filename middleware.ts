@@ -90,14 +90,14 @@ export async function middleware(request: NextRequest) {
       
       // Redirecionar para domain base (remover subdomain)
       const parts = host.split('.')
-      // Se tem 3 partes (recarga.gmeports.com.br), pegar as últimas 2 (gmeports.com.br)
-      // Se tem 4 partes (recarga.gmeports.com.br), pegar as últimas 3 (gmeports.com.br)
-      const baseDomainHost = parts.length >= 3 ? parts.slice(-2).join('.') : parts.join('.')
+      // recarga.gmeports.com.br → ['recarga', 'gmeports', 'com', 'br'] (4 partes)
+      // Remover a primeira parte (subdomain) e juntar o resto
+      const baseDomainHost = parts.length > 2 ? parts.slice(1).join('.') : parts.join('.')
       
       const protocol = request.headers.get('x-forwarded-proto') || 'https'
       const redirectUrl = `${protocol}://${baseDomainHost}${pathname}`
       
-      console.log('🔄 [REDIRECT] De:', host)
+      console.log('🔄 [REDIRECT] De:', host, '→ Parts:', parts)
       console.log('🔄 [REDIRECT] Para:', redirectUrl)
       
       return NextResponse.redirect(redirectUrl)

@@ -215,7 +215,7 @@ export default function HomePage() {
     setMounted(true)
   }, [])
 
-  // Controlar exibição do quiz
+  // Controlar exibição do quiz e redirecionamento
   useEffect(() => {
     if (typeof window === 'undefined') return
     
@@ -246,19 +246,23 @@ export default function HomePage() {
     const refererVerified = getCookie('referer_verified') === 'true'
     const hasVerificationCookies = quizCompleted || refererVerified
     
-    // Se tem cookies, redirecionar para subdomain
+    // Se tem cookies, redirecionar IMEDIATAMENTE para subdomain
     if (hasVerificationCookies) {
+      console.log('🔄 [DOMAIN BASE] Tem cookies - redirecionando para subdomain')
       const currentHost = window.location.hostname
-      const parts = currentHost.split('.')
-      const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
       const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-      const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
+      // Adicionar subdomain no início do hostname atual
+      const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
       
-      window.location.href = subdomainUrl
+      console.log('🔄 [REDIRECT] De:', currentHost, 'Para:', subdomainUrl)
+      
+      // Redirecionar IMEDIATAMENTE
+      window.location.replace(subdomainUrl)
       return
     }
     
     // Se não tem cookies, mostrar quiz
+    console.log('📺 [DOMAIN BASE] Sem cookies - mostrando quiz')
     setShowBlurOverlay(true)
   }, [])
 
@@ -274,49 +278,56 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', checkIsDesktop)
   }, [])
 
-  // Verificar se usuário já está logado
+  // Verificar se usuário já está logado (via COOKIES, não localStorage)
   useEffect(() => {
     if (typeof window === 'undefined') return
     
     const checkUserLogin = async () => {
-      const storedUserData = localStorage.getItem('userData')
-      const userAuthenticated = localStorage.getItem('user_authenticated')
-      const user_data = localStorage.getItem('user_data')
-      const verificationData = localStorage.getItem('verificationData')
+      // Função para pegar cookie
+      const getCookie = (name: string) => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop()?.split(';').shift()
+        return null
+      }
       
-      // Se tem qualquer dado de autenticação, considerar como logado
-      if ((storedUserData && userAuthenticated === 'true') || user_data || verificationData) {
-        try {
-          const userData = JSON.parse(storedUserData || user_data || '{}')
-          
-          // Verificar se não é o usuário "LOGADO" (inválido)
-          if (userData.nickname && userData.nickname !== 'LOGADO') {
-            setIsLoggedIn(true)
-            setUserData(userData)
-            setShowBlurOverlay(false) // Fechar modal se usuário já está logado
+      // Verificar cookies de verificação (compartilhados entre domínios)
+      const quizCompleted = getCookie('quiz_completed') === 'true'
+      const refererVerified = getCookie('referer_verified') === 'true'
+      const hasVerificationCookies = quizCompleted || refererVerified
+      
+      console.log('🔐 [LOGIN CHECK]', {
+        quizCompleted,
+        refererVerified,
+        hasVerificationCookies
+      })
+      
+      // Se tem cookies de verificação, considerar como verificado
+      if (hasVerificationCookies) {
+        // Tentar pegar dados do localStorage (pode estar vazio no subdomain)
+        const storedUserData = localStorage.getItem('userData')
+        const user_data = localStorage.getItem('user_data')
+        
+        if (storedUserData || user_data) {
+          try {
+            const userData = JSON.parse(storedUserData || user_data || '{}')
             
-            // Carregar avatar se existir
-            if (userData.headPic) {
-              await fetchAvatarInfo(userData.headPic)
+            if (userData.nickname && userData.nickname !== 'LOGADO') {
+              setIsLoggedIn(true)
+              setUserData(userData)
+              
+              // Carregar avatar se existir
+              if (userData.headPic) {
+                await fetchAvatarInfo(userData.headPic)
+              }
             }
-          } else {
-            // Limpar dados inválidos
-            localStorage.removeItem('userData')
-            localStorage.removeItem('user_authenticated')
-            setIsLoggedIn(false)
-            setUserData(null)
-            // Modal permanece aberto para login
+          } catch (error) {
+            console.error('[HomePage] Erro ao carregar dados do usuário:', error)
           }
-        } catch (error) {
-          console.error('[HomePage] Erro ao carregar dados do usuário:', error)
-          setIsLoggedIn(false)
-          setUserData(null)
-          // Modal permanece aberto para login
         }
-      } else {
-        setIsLoggedIn(false)
-        setUserData(null)
-        // Modal permanece aberto para login
+        
+        // Mesmo sem dados no localStorage, se tem cookies, está verificado
+        console.log('✅ [LOGIN CHECK] Usuário verificado via cookies')
       }
     }
     
