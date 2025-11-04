@@ -221,10 +221,12 @@ export default function HomePage() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    const isSubdomain = window.location.hostname.startsWith('recarga.')
+    const hostname = window.location.hostname
+    // Detectar se é subdomain verificando se começa com 'recarga.'
+    const isSubdomain = hostname.startsWith('recarga.')
     
     console.log('🎯 [QUIZ CONTROL]', {
-      hostname: window.location.hostname,
+      hostname,
       isSubdomain,
       currentShowBlurOverlay: showBlurOverlay
     })
@@ -236,7 +238,9 @@ export default function HomePage() {
       return
     }
     
-    // Se está no DOMAIN BASE, verificar cookies
+    // ============================================
+    // DOMAIN BASE: Verificar cookies e redirecionar se necessário
+    // ============================================
     const getCookie = (name: string): string | null => {
       const value = `; ${document.cookie}`
       const parts = value.split(`; ${name}=`)
@@ -251,15 +255,19 @@ export default function HomePage() {
     const refererVerified = getCookie('referer_verified') === 'true'
     const hasVerificationCookies = quizCompleted || refererVerified
     
-    // Se tem cookies, redirecionar IMEDIATAMENTE para subdomain
+    console.log('🍪 [COOKIES CHECK]', {
+      quizCompleted,
+      refererVerified,
+      hasVerificationCookies
+    })
+    
+    // Se tem cookies válidos, redirecionar IMEDIATAMENTE para subdomain
     if (hasVerificationCookies) {
-      console.log('🔄 [DOMAIN BASE] Tem cookies - redirecionando para subdomain')
-      const currentHost = window.location.hostname
-      const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-      // Adicionar subdomain no início do hostname atual
-      const subdomainUrl = `${window.location.protocol}//${subdomain}.${currentHost}/`
+      console.log('🔄 [DOMAIN BASE] Tem cookies válidos - redirecionando para subdomain')
+      const subdomain = 'recarga'
+      const subdomainUrl = `${window.location.protocol}//${subdomain}.${hostname}${window.location.pathname}${window.location.search}`
       
-      console.log('🔄 [REDIRECT] De:', currentHost, 'Para:', subdomainUrl)
+      console.log('🔄 [REDIRECT] De:', hostname, 'Para:', subdomainUrl)
       
       // Redirecionar IMEDIATAMENTE
       window.location.replace(subdomainUrl)
@@ -937,7 +945,19 @@ export default function HomePage() {
   })
 
   // ============================================
-  // DOMAIN BASE: Renderizar APENAS o QUIZ
+  // DOMAIN BASE SEM QUIZ: Aguardando redirecionamento ou carregamento
+  // ============================================
+  if (!isSubdomain && !showBlurOverlay) {
+    console.log('⏳ [RENDER] DOMAIN BASE - Aguardando (redirecionando ou carregando quiz)...')
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <p className="text-gray-500">Carregando...</p>
+      </div>
+    )
+  }
+
+  // ============================================
+  // DOMAIN BASE COM QUIZ: Renderizar APENAS o QUIZ
   // ============================================
   if (!isSubdomain && showBlurOverlay) {
     console.log('🎮 [RENDER] DOMAIN BASE - Renderizando APENAS QUIZ')
@@ -2676,14 +2696,8 @@ export default function HomePage() {
   }
 
   // ============================================
-  // FALLBACK: Domain base sem quiz (redirecionando...)
+  // FALLBACK: Nunca deveria chegar aqui
   // ============================================
-  return (
-    <>
-      {console.log('⏳ [RENDER] FALLBACK - Aguardando redirecionamento...')}
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Carregando...</p>
-      </div>
-    </>
-  ) 
+  console.error('❌ [RENDER] FALLBACK INESPERADO - Verificar lógica!')
+  return null
 }
