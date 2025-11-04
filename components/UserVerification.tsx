@@ -162,36 +162,8 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     localStorage.setItem('quizCompleted', 'true')
     localStorage.setItem('quizCompletedAt', new Date().toISOString())
     
-    // Extrair domínio base para compartilhar cookie
-    const currentHost = window.location.hostname
-    const parts = currentHost.split('.')
-    const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
-    
-    // Salvar cookies para compartilhar entre subdomain e domain base
-    const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
-    document.cookie = `quiz_completed=true; ${cookieOptions}`
-    document.cookie = `referer_verified=true; ${cookieOptions}`
-    
-    console.log('🍪 [QUIZ] Cookies definidos para domínio:', `.${baseDomain}`)
-    console.log('   - quiz_completed=true')
-    console.log('   - referer_verified=true')
-    
-    // Redirecionar para subdomain (página de recarga)
-    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-    
-    // Se já está no subdomain, ir para home
-    if (currentHost.startsWith(subdomain + '.')) {
-      window.location.href = '/'
-      return
-    }
-    
-    // Construir URL do subdomain (raiz = página de recarga)
-    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
-    
-    console.log('🔄 [QUIZ] Redirecionando para página de recarga:', subdomainUrl)
-    
-    // Redirecionar
-    window.location.href = subdomainUrl
+    // Ir para o modal de verificação de ID (não redireciona ainda)
+    setStep('verification')
   }
 
   // Verificar se o quiz já foi completado
@@ -270,11 +242,29 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       localStorage.setItem('terms_accepted', 'true')
       localStorage.setItem('terms_accepted_at', Date.now().toString())
       
+      // Extrair domínio base para compartilhar cookies
+      const currentHost = window.location.hostname
+      const parts = currentHost.split('.')
+      const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
+      
+      // Salvar cookies para compartilhar entre subdomain e domain base
+      const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+      document.cookie = `quiz_completed=true; ${cookieOptions}`
+      document.cookie = `referer_verified=true; ${cookieOptions}`
+      
+      console.log('🍪 [VERIFICAÇÃO] Cookies definidos para domínio:', `.${baseDomain}`)
+      console.log('   - quiz_completed=true')
+      console.log('   - referer_verified=true')
+      
       setStep('loading')
       
-      // Finalizar verificação após delay (3 segundos para mostrar a promoção)
+      // Redirecionar para subdomain após 3 segundos
       setTimeout(() => {
-        onVerificationComplete()
+        const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+        const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
+        
+        console.log('🔄 [VERIFICAÇÃO] Redirecionando para página de recarga:', subdomainUrl)
+        window.location.href = subdomainUrl
       }, 3000)
       
     } catch (err) {
