@@ -167,24 +167,28 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     const parts = currentHost.split('.')
     const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
     
-    // Salvar cookie para compartilhar entre subdomain e domain base
-    document.cookie = `quiz_completed=true; path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+    // Salvar cookies para compartilhar entre subdomain e domain base
+    const cookieOptions = `path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+    document.cookie = `quiz_completed=true; ${cookieOptions}`
+    document.cookie = `referer_verified=true; ${cookieOptions}`
     
-    console.log('🍪 [QUIZ] Cookie definido para domínio:', `.${baseDomain}`)
+    console.log('🍪 [QUIZ] Cookies definidos para domínio:', `.${baseDomain}`)
+    console.log('   - quiz_completed=true')
+    console.log('   - referer_verified=true')
     
-    // Redirecionar para subdomain
+    // Redirecionar para subdomain (página de recarga)
     const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
     
-    // Se já está no subdomain, não redirecionar
+    // Se já está no subdomain, ir para home
     if (currentHost.startsWith(subdomain + '.')) {
-      setStep('verification')
+      window.location.href = '/'
       return
     }
     
-    // Construir URL do subdomain
-    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}${window.location.pathname}${window.location.search}`
+    // Construir URL do subdomain (raiz = página de recarga)
+    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}/`
     
-    console.log('🔄 [QUIZ] Redirecionando para subdomain:', subdomainUrl)
+    console.log('🔄 [QUIZ] Redirecionando para página de recarga:', subdomainUrl)
     
     // Redirecionar
     window.location.href = subdomainUrl

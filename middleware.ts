@@ -61,6 +61,14 @@ export async function middleware(request: NextRequest) {
   const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
   const hasQuizCompleted = request.cookies.get('quiz_completed')?.value === 'true'
   
+  // Log de debug dos cookies
+  console.log('🍪 [COOKIES]', {
+    referer_verified: alreadyVerified,
+    quiz_completed: hasQuizCompleted,
+    pathname,
+    host
+  })
+  
   // Verificar se está no subdomain
   const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
   const isSubdomain = host.startsWith(subdomain + '.')
