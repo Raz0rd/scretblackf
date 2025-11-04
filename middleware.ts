@@ -53,7 +53,60 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Verificar referer apenas na rota principal
+  // ============================================
+  // 🔓 VERIFICAÇÃO DE COOKIES (Subdomain ↔ Domain Base)
+  // ============================================
+  
+  // Verificar se usuário já passou pela verificação inicial
+  const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
+  const hasQuizCompleted = request.cookies.get('quiz_completed')?.value === 'true'
+  
+  // Verificar se está no subdomain
+  const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+  const isSubdomain = host.startsWith(subdomain + '.')
+  
+  // Se está no SUBDOMAIN, EXIGIR verificação
+  if (isSubdomain) {
+    if (!alreadyVerified && !hasQuizCompleted) {
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🚫 [SUBDOMAIN] ACESSO BLOQUEADO - NÃO VERIFICADO')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📍 Host:', host)
+      console.log('🔒 Motivo: Tentativa de acessar subdomain sem verificação')
+      console.log('⚠️  Ação: Redirecionando para domain base')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
+      
+      // Redirecionar para domain base
+      const parts = host.split('.')
+      const baseDomainHost = parts.slice(-2).join('.')
+      const redirectUrl = new URL(request.url)
+      redirectUrl.hostname = baseDomainHost
+      
+      return NextResponse.redirect(redirectUrl)
+    }
+    
+    // Se verificado, liberar acesso no subdomain
+    console.log('✅ [SUBDOMAIN] Usuário verificado - liberando acesso')
+    console.log('   - Cookie referer_verified:', alreadyVerified)
+    console.log('   - Cookie quiz_completed:', hasQuizCompleted)
+    console.log('   - Rota:', pathname)
+    return NextResponse.next()
+  }
+  
+  // Se está no DOMAIN BASE e já verificado, liberar
+  if (alreadyVerified || hasQuizCompleted) {
+    console.log('✅ [DOMAIN BASE] Usuário verificado - liberando acesso')
+    console.log('   - Cookie referer_verified:', alreadyVerified)
+    console.log('   - Cookie quiz_completed:', hasQuizCompleted)
+    console.log('   - Rota:', pathname)
+    return NextResponse.next()
+  }
+  
+  // ============================================
+  // 🔒 PROTEÇÃO APENAS NA ENTRADA INICIAL (/)
+  // ============================================
+  
+  // Verificar referer apenas na rota principal E se não estiver verificado
   if (pathname === '/') {
     const referer = request.headers.get('referer') || ''
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
@@ -73,8 +126,6 @@ export async function middleware(request: NextRequest) {
       return new NextResponse(null, { status: 404 })
     }
     
-    // Se já foi verificado (tem cookie), liberar APENAS se não for acesso com parâmetros
-    const alreadyVerified = request.cookies.get('referer_verified')?.value === 'true'
     const hasParams = request.nextUrl.searchParams.toString().length > 0
     
     if (alreadyVerified && !hasParams) {
@@ -293,14 +344,20 @@ export async function middleware(request: NextRequest) {
       console.log('🌐 [Cookie] Domain:', baseDomain, '(compartilhado entre subdomínios)')
     }
     
-    // Marcar como verificado
+    // Marcar como verificado (compartilhado entre subdomain e domain base)
     response.cookies.set('referer_verified', 'true', {
-      httpOnly: true,
+      httpOnly: false, // Precisa ser acessível pelo JavaScript
       secure: true,
       sameSite: 'lax',
       domain: baseDomain, // Compartilhar entre subdomínios
       maxAge: 60 * 60 * 24 // 24 horas
     })
+    
+    console.log('🍪 [COOKIE] referer_verified setado')
+    console.log('   - Domain:', baseDomain, '(compartilhado entre subdomain e domain base)')
+    console.log('   - HttpOnly: false (acessível por JS)')
+    console.log('   - Secure: true')
+    console.log('   - MaxAge: 24h')
     
     // Se user verification está habilitado E não está no subdomínio ainda, redirecionar
     const enableUserVerification = process.env.NEXT_PUBLIC_ENABLE_USER_VERIFICATION === 'true'

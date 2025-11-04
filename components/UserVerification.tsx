@@ -161,6 +161,10 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     // Salvar no localStorage que o quiz foi completado
     localStorage.setItem('quizCompleted', 'true')
     localStorage.setItem('quizCompletedAt', new Date().toISOString())
+    
+    // Salvar cookie para compartilhar entre subdomain e domain base
+    document.cookie = `quiz_completed=true; path=/; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+    
     setStep('verification')
   }
 
