@@ -9,14 +9,15 @@ import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
 import ArenaQuizModal from '@/components/arena-quiz-modal';
 
+// Log GLOBAL - executa ao carregar o módulo
+console.log('📦 [MODULE] app/page.tsx carregado!')
+
 export default function HomePage() {
   // Log IMEDIATO para debug
-  if (typeof window !== 'undefined') {
-    console.log('🚀 [HOMEPAGE] Componente carregado!', {
-      hostname: window.location.hostname,
-      pathname: window.location.pathname
-    })
-  }
+  console.log('🚀 [HOMEPAGE] Componente HomePage renderizando!', {
+    hostname: typeof window !== 'undefined' ? window.location.hostname : 'SSR',
+    pathname: typeof window !== 'undefined' ? window.location.pathname : 'SSR'
+  })
   
   const { isAuthenticated, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)

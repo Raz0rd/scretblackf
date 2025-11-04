@@ -1,9 +1,9 @@
 /**
  * Lista de IPs de bots bloqueados
  * Gerado automaticamente por scripts/update-bot-ips.js
- * Última atualização: 2025-11-02T04:32:30.526Z
+ * Última atualização: 2025-11-04T20:01:50.431Z
  * 
- * GoogleBot: 2025-10-31T15:46:09.000000
+ * GoogleBot: 2025-11-04T15:46:30.000000
  * BingBot: 2024-01-03T10:00:00.121331
  */
 
