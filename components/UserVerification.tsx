@@ -165,7 +165,27 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     // Salvar cookie para compartilhar entre subdomain e domain base
     document.cookie = `quiz_completed=true; path=/; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
     
-    setStep('verification')
+    // Redirecionar para subdomain
+    const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
+    const currentHost = window.location.hostname
+    const parts = currentHost.split('.')
+    
+    // Se já está no subdomain, não redirecionar
+    if (currentHost.startsWith(subdomain + '.')) {
+      setStep('verification')
+      return
+    }
+    
+    // Construir URL do subdomain
+    // Se tem 3+ partes (gmeports.com.br), pegar últimas 3
+    // Se tem 2 partes (gmeports.com), pegar últimas 2
+    const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
+    const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}${window.location.pathname}${window.location.search}`
+    
+    console.log('🔄 [QUIZ] Redirecionando para subdomain:', subdomainUrl)
+    
+    // Redirecionar
+    window.location.href = subdomainUrl
   }
 
   // Verificar se o quiz já foi completado
