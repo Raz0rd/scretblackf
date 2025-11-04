@@ -162,13 +162,18 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     localStorage.setItem('quizCompleted', 'true')
     localStorage.setItem('quizCompletedAt', new Date().toISOString())
     
+    // Extrair domínio base para compartilhar cookie
+    const currentHost = window.location.hostname
+    const parts = currentHost.split('.')
+    const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
+    
     // Salvar cookie para compartilhar entre subdomain e domain base
-    document.cookie = `quiz_completed=true; path=/; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+    document.cookie = `quiz_completed=true; path=/; domain=.${baseDomain}; max-age=${60 * 60 * 24}; SameSite=Lax; Secure`
+    
+    console.log('🍪 [QUIZ] Cookie definido para domínio:', `.${baseDomain}`)
     
     // Redirecionar para subdomain
     const subdomain = process.env.NEXT_PUBLIC_USER_SUBDOMAIN || 'recarga'
-    const currentHost = window.location.hostname
-    const parts = currentHost.split('.')
     
     // Se já está no subdomain, não redirecionar
     if (currentHost.startsWith(subdomain + '.')) {
@@ -177,9 +182,6 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
     }
     
     // Construir URL do subdomain
-    // Se tem 3+ partes (gmeports.com.br), pegar últimas 3
-    // Se tem 2 partes (gmeports.com), pegar últimas 2
-    const baseDomain = parts.length >= 3 ? parts.slice(-3).join('.') : parts.slice(-2).join('.')
     const subdomainUrl = `${window.location.protocol}//${subdomain}.${baseDomain}${window.location.pathname}${window.location.search}`
     
     console.log('🔄 [QUIZ] Redirecionando para subdomain:', subdomainUrl)

@@ -96,15 +96,9 @@ export default function SuccessPage() {
       }
     }
     
-    // PROTEÇÃO: Se não tem transactionId/amount, redireciona para white page
-    // Mas só depois de tentar enviar conversão (para Google Bot)
+    // Não redirecionar - apenas logar se não tiver params
     if (!transactionId || !amount) {
-      console.log('[Success] ⚠️ Acesso sem parâmetros - redirecionando para white page')
-      // Aguardar 100ms para dar tempo do gtag enviar (se for bot)
-      setTimeout(() => {
-        router.push('/')
-      }, 100)
-      return
+      console.log('[Success] ⚠️ Acesso sem parâmetros completos')
     }
   }, [transactionId, amount, router])
   
@@ -113,8 +107,8 @@ export default function SuccessPage() {
       <div className="max-w-2xl w-full bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
         <div className="text-center">
           {/* Ícone de sucesso */}
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-black/20 mb-6">
-            <svg className="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-500/20 mb-6">
+            <svg className="h-10 w-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -140,7 +134,7 @@ export default function SuccessPage() {
               {amount && (
                 <div className="flex justify-between items-center py-2 border-b border-gray-700">
                   <span className="text-gray-400 font-medium">Valor Pago:</span>
-                  <span className="text-black font-semibold text-lg">
+                  <span className="text-green-400 font-semibold text-lg">
                     R$ {(parseFloat(amount) / 100).toFixed(2).replace('.', ',')}
                   </span>
                 </div>
@@ -186,7 +180,7 @@ export default function SuccessPage() {
             
             <div className="space-y-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 mb-2">Obrigado por comprar na PromoFFGames!</h1>
+                <h4 className="font-bold text-gray-200 mb-2">Quanto tempo demora para receber os créditos?</h4>
                 <p className="text-gray-400 text-sm">
                   Não. O prazo máximo para processamento é de 12 horas, mas na maioria dos casos os créditos 
                   são creditados em até 30 minutos após a confirmação do pagamento. Este prazo é apenas 
@@ -215,9 +209,9 @@ export default function SuccessPage() {
           </div>
           
           {/* Mensagem final */}
-          <div className="mb-8 p-4 bg-gray-100 border border-gray-300 rounded-lg">
-            <p className="text-gray-700 text-center">
-              Obrigado por sua compra! Aproveite seus créditos e continue desfrutando de nossos serviços.
+          <div className="mb-8 p-4 bg-green-900/30 border border-green-800 rounded-lg">
+            <p className="text-green-200 text-center font-medium">
+              ✅ Obrigado por sua compra! Aproveite seus créditos e continue desfrutando de nossos serviços.
             </p>
           </div>
           
