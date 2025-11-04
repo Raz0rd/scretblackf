@@ -131,7 +131,7 @@ export default function HeadManager() {
 
   // Google Ads Conversion Tracking - Injeção Direta no DOM
   const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true';
-  const googleAdsId = 'AW-17703595002'; // ID fixo fornecido
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17703595002'; // Fallback para o ID atual
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
   
   useEffect(() => {
