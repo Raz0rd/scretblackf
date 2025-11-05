@@ -73,11 +73,18 @@ echo -e "   Repositório: ${YELLOW}$REPO_URL${NC}"
 echo -e "   Branch: ${YELLOW}$BRANCH${NC}"
 echo -e "   Diretório: ${YELLOW}$PROJECT_DIR${NC}"
 echo ""
-read -p "Continuar? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "${RED}❌ Instalação cancelada${NC}"
-    exit 1
+
+# Só pedir confirmação se não estiver sendo executado via pipe
+if [ -t 0 ]; then
+    read -p "Continuar? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "${RED}❌ Instalação cancelada${NC}"
+        exit 1
+    fi
+else
+    echo -e "${GREEN}✅ Iniciando instalação automática...${NC}"
+    sleep 2
 fi
 
 # 1. Verificar se Node.js está instalado
