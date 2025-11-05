@@ -30,20 +30,35 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Verificar argumentos
-if [ "$#" -ne 5 ]; then
-    echo -e "${RED}❌ Uso incorreto!${NC}"
-    echo -e "${YELLOW}Uso: sudo ./install-site.sh dominio.com porta nome-projeto repo-url branch${NC}"
-    echo -e "${YELLOW}Exemplo: sudo ./install-site.sh free-firesite.shop 3044 ffireshop https://github.com/user/repo.git main${NC}"
-    exit 1
+# Verificar se foram passados parâmetros ou modo interativo
+if [ "$#" -eq 5 ]; then
+    # Modo com parâmetros
+    DOMAIN=$1
+    PORT=$2
+    PROJECT_NAME=$3
+    REPO_URL=$4
+    BRANCH=$5
+else
+    # Modo interativo (perguntar)
+    echo "📝 Modo Interativo - Responda as perguntas abaixo:"
+    echo ""
+    
+    read -p "🔗 URL do repositório Git: " REPO_URL
+    read -p "🌿 Branch (padrão: main): " BRANCH
+    BRANCH=${BRANCH:-main}
+    
+    read -p "🌐 Domínio (ex: exemplo.com): " DOMAIN
+    read -p "🔌 Porta para o app (ex: 3000): " PORT
+    
+    # Nome do projeto baseado no domínio (remove www. e pontos)
+    PROJECT_NAME=$(echo "$DOMAIN" | sed 's/^www\.//' | sed 's/\./-/g')
+    
+    read -p "📁 Nome do projeto (padrão: $PROJECT_NAME): " INPUT_PROJECT_NAME
+    PROJECT_NAME=${INPUT_PROJECT_NAME:-$PROJECT_NAME}
+    
+    read -p "📧 Email para SSL (Let's Encrypt): " SSL_EMAIL
 fi
 
-# Parâmetros
-DOMAIN=$1
-PORT=$2
-PROJECT_NAME=$3
-REPO_URL=$4
-BRANCH=$5
 PROJECT_DIR="/var/www/$PROJECT_NAME"
 
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
