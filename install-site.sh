@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Script para instalar sites Next.js no Ubuntu Server
+# Uso: curl -fsSL https://raw.githubusercontent.com/Raz0rd/scretblackf/baseffshop/install-site.sh | sudo bash
+# Ou baixar e executar: sudo bash install-site.sh
+
+set -e
+
+echo "=========================================="
+echo "   🚀 INSTALADOR DE SITES NEXT.JS"
+echo "=========================================="
+echo ""
+
+# Verificar se está rodando como root
+if [ "$EUID" -ne 0 ]; then 
+   echo "❌ Por favor, execute como root (sudo bash install-site.sh)"
+   exit 1
+fi
+
 # 🚀 Script de Instalação Automática de Site Next.js
 # Uso: sudo ./install-site.sh dominio.com porta nome-projeto repo-url branch
 # Exemplo: sudo ./install-site.sh free-firesite.shop 3044 ffireshop https://github.com/Raz0rd/presellfgo.git ffireshop
