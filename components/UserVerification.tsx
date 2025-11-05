@@ -345,31 +345,31 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   if (step === 'loading') {
     return (
       <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
-        background: 'linear-gradient(135deg, #000000 0%, #1a0000 25%, #330000 50%, #1a0000 75%, #000000 100%)'
+        background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%)'
       }}>
         {/* Efeitos de fundo */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Círculos decorativos */}
-          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-red-600/20 to-orange-600/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-orange-600/20 to-red-600/10 rounded-full blur-3xl" />
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 to-blue-600/10 rounded-full blur-3xl" />
         </div>
         
         <div className="flex items-center justify-center min-h-screen p-4 relative z-10">
           <div className="text-center max-w-md">
             {/* Logo/Ícone */}
             <div className="relative inline-block mb-8">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center shadow-2xl border-4 border-white/20">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-2xl border-4 border-white/20">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
               </div>
               {/* Spinner ao redor */}
-              <div className="absolute inset-0 border-4 border-transparent border-t-orange-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-transparent border-t-cyan-500 rounded-full animate-spin"></div>
             </div>
 
             {/* Mensagem Principal */}
-            <div className="bg-black/40 backdrop-blur-sm rounded-xl p-6 border-2 border-red-600/30 mb-6">
+            <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/30 mb-6">
               <h2 className="text-2xl font-bold mb-3 text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                 ✅ Verificação Concluída!
               </h2>
@@ -410,41 +410,25 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] overflow-hidden cursor-fire" style={{
-      background: 'linear-gradient(135deg, #000000 0%, #1a0000 25%, #330000 50%, #1a0000 75%, #000000 100%)'
+    <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%)'
     }}>
-      {/* Efeitos de fundo - Fogo */}
+      {/* Efeitos de fundo - Azul suave */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Efeito de fogo animado */}
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: 'radial-gradient(circle at 50% 100%, #FF3C00 0%, transparent 50%)',
-          animation: 'pulse 3s ease-in-out infinite'
+        {/* Efeito de luz suave animado */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(circle at 50% 50%, #60a5fa 0%, transparent 70%)',
+          animation: 'pulse 4s ease-in-out infinite'
         }} />
         
-        {/* Partículas de fogo */}
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={`fire-${i}`}
-            className="absolute text-2xl opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float-fire ${Math.random() * 3 + 2}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 3}s`
-            }}
-          >
-            🔥
-          </div>
-        ))}
-        
-        {/* Círculos decorativos de fogo */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-red-600/20 to-orange-600/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-orange-600/20 to-red-600/10 rounded-full blur-3xl" />
+        {/* Círculos decorativos azuis */}
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 to-blue-600/10 rounded-full blur-3xl" />
       </div>
 
-      {/* Pulsos de fogo do centro */}
+      {/* Pulso de luz suave do centro */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-red-600/10 via-orange-600/10 to-yellow-600/10 animate-pulse-slow"></div>
+        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-blue-600/10 animate-pulse-slow"></div>
       </div>
 
       <style jsx global>{`
@@ -483,42 +467,41 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       <div className="relative flex items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-md">
           
-          {/* Tela Inicial - ARENA DE FOGO */}
+          {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-gradient-to-br from-black via-red-950 to-black rounded-2xl shadow-2xl border-2 border-red-600 overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-32 bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/30" />
-                <h1 className="relative text-3xl font-black text-white text-center drop-shadow-2xl" style={{ fontFamily: 'Impact, Arial Black, sans-serif', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-                  🔥 ARENA DE FOGO 🔥
+              <div className="relative h-32 bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+                <h1 className="relative text-3xl font-bold text-white text-center drop-shadow-lg">
+                  ✨ Descubra Seu Perfil
                 </h1>
               </div>
 
               {/* Conteúdo */}
               <div className="p-8 text-center">
-                <div className="text-6xl mb-4">🏆</div>
+                <div className="text-6xl mb-4">🎮</div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  DESCUBRA SEU PERFIL DE JOGADOR!
+                  Qual é o seu estilo de jogo?
                 </h2>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  Responda 5 perguntas rápidas e descubra qual é o seu verdadeiro estilo de jogo no Free Fire.
+                <p className="text-slate-300 mb-6 leading-relaxed text-sm">
+                  Responda 5 perguntas rápidas e descubra qual é o seu verdadeiro perfil de jogador.
                 </p>
                 
-                <div className="bg-red-900/30 border border-red-600/50 rounded-lg p-4 mb-6">
-                  <p className="text-yellow-400 font-bold text-lg mb-2">
-                    🎁 RECOMPENSA EXCLUSIVA
+                <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-400/30 rounded-2xl p-5 mb-6 backdrop-blur-sm">
+                  <p className="text-blue-300 font-bold text-lg mb-2">
+                    🎁 Recompensa Exclusiva
                   </p>
-                  <p className="text-white text-sm">
-                    Ao completar o quiz, você ganha <span className="font-black text-yellow-400">70% DE DESCONTO</span> na sua recarga!
+                  <p className="text-slate-200 text-sm">
+                    Complete o quiz e ganhe <span className="font-bold text-blue-400">70% de desconto</span> na sua recarga!
                   </p>
                 </div>
 
                 <button
                   onClick={handleInitialCheck}
-                  className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-black text-lg py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50 border-2 border-white/30"
-                  style={{ fontFamily: 'Impact, Arial Black, sans-serif', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-lg py-4 px-8 rounded-2xl transition-all duration-200 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02]"
                 >
-                  COMEÇAR AGORA 🔥
+                  Começar Agora ✨
                 </button>
 
                 {/* Links de Termos e Políticas */}
@@ -571,25 +554,38 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                   <p className="mb-3">
                     <strong>4. Transações Seguras:</strong> Garantimos 100% de segurança em todas as transações através de sistemas criptografados de última geração. Seus dados financeiros são protegidos pelos mais altos padrões de segurança.
                   </p>
+                  <p className="mb-3">
+                    <strong>5. Validade da Oferta:</strong> O desconto de 70% é válido para recargas e não pode ser combinado com outras promoções. Esta oferta está sujeita à disponibilidade e pode ser encerrada a qualquer momento sem aviso prévio.
+                  </p>
+                  <p className="mb-3">
+                    <strong>6. Uso Único:</strong> Este cupom é válido para uso único por usuário e não pode ser transferido.
+                  </p>
+                  <p className="mb-3">
+                    <strong>7. Conformidade:</strong> Esta promoção está em conformidade com as políticas do Google Ads e regulamentações aplicáveis. Todas as ofertas seguem as diretrizes de publicidade digital.
+                  </p>
 
                   <h4 className="font-bold text-gray-800 mb-2 mt-4">🔒 POLÍTICA DE PRIVACIDADE</h4>
                   <p className="mb-3">
-                    <strong>5. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.
+                    <strong>8. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.
                   </p>
                   <p className="mb-3">
-                    <strong>6. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.
+                    <strong>9. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.
                   </p>
                   <p className="mb-3">
-                    <strong>7. Cookies e Rastreamento:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.
+                    <strong>10. Cookies e Rastreamento:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.
                   </p>
                   <p className="mb-3">
-                    <strong>8. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.
+                    <strong>11. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.
                   </p>
                   <p className="mb-3">
-                    <strong>9. Suporte 24h:</strong> Nossa equipe está disponível 24 horas para esclarecer dúvidas sobre privacidade, termos de uso ou questões técnicas.
+                    <strong>12. Suporte 24h:</strong> Nossa equipe está disponível 24 horas para esclarecer dúvidas sobre privacidade, termos de uso ou questões técnicas.
                   </p>
-                  <p>
-                    <strong>10. Atualizações:</strong> Estes termos podem ser atualizados periodicamente. Usuários serão notificados sobre mudanças importantes por email ou no site.
+                  <p className="mb-3">
+                    <strong>13. Atualizações:</strong> Estes termos podem ser atualizados periodicamente. Usuários serão notificados sobre mudanças importantes por email ou no site.
+                  </p>
+                  
+                  <p className="text-xs text-gray-500 mt-4 italic">
+                    Ao participar desta promoção, você concorda com estes termos e condições.
                   </p>
 
                   <div className="bg-green-50 border-l-4 border-green-500 p-3 mt-4">
@@ -653,21 +649,21 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela do QUIZ */}
           {step === 'quiz' && (
-            <div className="bg-gradient-to-br from-black via-red-950 to-black rounded-2xl shadow-2xl border-2 border-red-600 overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
               {/* Progress Bar */}
-              <div className="h-2 bg-black">
+              <div className="h-1.5 bg-slate-950">
                 <div 
-                  className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300"
                   style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
                 />
               </div>
 
               {/* Header */}
-              <div className="bg-gradient-to-r from-red-500 to-orange-500 p-4 flex justify-between items-center">
-                <div className="text-white font-bold" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 p-4 flex justify-between items-center">
+                <div className="text-white font-semibold">
                   Pergunta {currentQuestion + 1}/{quizQuestions.length}
                 </div>
-                <div className="bg-black/50 px-4 py-2 rounded-full text-white font-bold flex items-center gap-2" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>
+                <div className="bg-black/30 px-4 py-2 rounded-full text-white font-semibold flex items-center gap-2 backdrop-blur-sm">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
                   </svg>
@@ -680,12 +676,12 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 {isTransitioning ? (
                   // Loading entre perguntas
                   <div className="flex flex-col items-center justify-center py-20">
-                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mb-4"></div>
-                    <p className="text-white font-bold">Próxima pergunta...</p>
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-cyan-500 border-t-transparent mb-4"></div>
+                    <p className="text-white font-semibold">Próxima pergunta...</p>
                   </div>
                 ) : (
                   <div className="animate-fade-in">
-                    <h3 className="text-2xl font-bold text-white mb-6 text-center">
+                    <h3 className="text-xl font-bold text-white mb-6 text-center leading-relaxed">
                       {quizQuestions[currentQuestion].question}
                     </h3>
 
@@ -696,9 +692,9 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                           key={index}
                           onClick={() => handleQuizAnswer(index)}
                           disabled={isTransitioning}
-                          className="w-full bg-gradient-to-r from-red-900/50 to-orange-900/50 hover:from-red-600 hover:to-orange-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 border-2 border-red-600/30 hover:border-white/50 text-left hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full bg-gradient-to-r from-slate-800/50 to-slate-700/50 hover:from-blue-600 hover:to-cyan-500 text-white font-medium py-4 px-6 rounded-2xl transition-all duration-200 border border-slate-600/30 hover:border-blue-400/50 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <span className="text-yellow-400 font-black mr-3">{String.fromCharCode(65 + index)}.</span>
+                          <span className="text-blue-400 font-bold mr-3">{String.fromCharCode(65 + index)}.</span>
                           {option.text}
                         </button>
                       ))}
@@ -711,13 +707,13 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela de RESULTADO */}
           {step === 'result' && (
-            <div className="bg-gradient-to-br from-black via-red-950 to-black rounded-2xl shadow-2xl border-2 border-red-600 overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
               {/* Header com animação */}
-              <div className="relative h-28 bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-black/30" />
+              <div className="relative h-28 bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
                 <div className="relative text-center py-3">
                   <div className="text-3xl mb-1">{quizProfiles[quizResult]?.emoji}</div>
-                  <h2 className="text-base font-bold text-white drop-shadow-2xl" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                  <h2 className="text-base font-bold text-white drop-shadow-lg">
                     SEU PERFIL
                   </h2>
                 </div>
@@ -725,33 +721,29 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
               {/* Resultado */}
               <article className="p-8 text-center" role="main" aria-label="Resultado do Quiz">
-                <section className="bg-black/40 rounded-lg p-4 mb-6" aria-labelledby="profile-title">
-                  <h1 id="profile-title" className="text-lg font-bold text-yellow-400 mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-                    {quizProfiles[quizResult]?.title}
-                  </h1>
-                  <p className="text-white text-sm leading-relaxed" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}>
-                    {quizProfiles[quizResult]?.description}
-                  </p>
-                </section>
+                <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-4">
+                  {quizProfiles[quizResult]?.title}
+                </h3>
+                <p className="text-slate-300 text-base mb-8 leading-relaxed">
+                  {quizProfiles[quizResult]?.description}
+                </p>
 
                 {/* Recompensa */}
-                <div className="bg-gradient-to-br from-orange-600 via-yellow-600 to-orange-600 rounded-xl p-5 mb-6 border-3 border-yellow-400 shadow-xl" style={{ boxShadow: '0 0 20px rgba(251, 191, 36, 0.4)' }}>
+                <div className="bg-gradient-to-r from-blue-600/20 to-cyan-500/20 rounded-2xl p-6 mb-6 border border-blue-400/30 backdrop-blur-sm">
                   <div className="text-4xl mb-2">🎁</div>
-                  <h4 className="text-2xl font-black text-white mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-                    PARABÉNS!
+                  <h4 className="text-2xl font-bold text-white mb-2">
+                    Parabéns!
                   </h4>
-                  <p className="text-white font-bold text-base mb-3" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}>
+                  <p className="text-slate-200 font-medium text-base mb-3">
                     Você desbloqueou
                   </p>
-                  <div className="bg-white/20 backdrop-blur-sm rounded-lg py-2 px-4 mb-3 border-2 border-white/40">
-                    <div className="text-4xl font-black text-white" style={{ fontFamily: 'Impact, Arial Black, sans-serif', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-                      70% OFF
-                    </div>
+                  <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-3">
+                    70% OFF
                   </div>
-                  <p className="text-white font-bold text-sm mb-1" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}>
-                    Desconto exclusivo para a Arena de Fogo!
+                  <p className="text-slate-300 text-sm">
+                    Desconto exclusivo na sua recarga!
                   </p>
-                  <p className="text-yellow-100 text-xs font-bold" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
+                  <p className="text-blue-300 text-xs mt-2 font-medium">
                     ⏰ Válido por 24 horas
                   </p>
                 </div>
@@ -759,18 +751,15 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 <div className="flex justify-center">
                   <button
                     onClick={handleAcceptReward}
-                    className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold text-base py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-red-600/50 border-2 border-white/40 hover:scale-[1.02]"
-                    style={{ 
-                      textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
-                    }}
+                    className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-lg py-5 px-8 rounded-2xl transition-all duration-200 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02]"
                     aria-label="Resgatar desconto de 70% exclusivo"
                   >
-                    RESGATAR MEU DESCONTO
+                    Resgatar Meu Desconto ✨
                   </button>
                 </div>
 
-                <p className="text-gray-400 text-xs mt-4">
-                  #FreeFire #ArenaDeFogoFF #DesafioDeFogo
+                <p className="text-slate-500 text-xs mt-4">
+                  #Gaming #Quiz #Desconto
                 </p>
               </article>
             </div>
@@ -778,23 +767,23 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela de Verificação */}
           {step === 'verification' && (
-            <div className="bg-gradient-to-br from-black via-red-950 to-black rounded-2xl shadow-2xl border-2 border-red-600 overflow-hidden">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-24 bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/30" />
-                <h2 className="relative text-xl font-bold text-white text-center drop-shadow-2xl" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-                  🔒 VERIFICAÇÃO DE USUÁRIO
+              <div className="relative h-24 bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+                <h2 className="relative text-xl font-bold text-white text-center drop-shadow-lg">
+                  🎯 Validar Identidade
                 </h2>
               </div>
 
               <div className="p-8">
-                <p className="text-gray-300 text-sm mb-6 text-center">
+                <p className="text-slate-300 text-sm mb-6 text-center">
                   Insira seu ID de jogador para confirmar que você é um usuário real
                 </p>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-bold mb-2 text-yellow-400">
+                    <label className="block text-sm font-semibold mb-2 text-blue-300">
                       ⚡ ID do Jogador * (apenas números)
                     </label>
                     <input
@@ -802,25 +791,25 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                       value={playerId}
                       onChange={(e) => setPlayerId(e.target.value.replace(/[^0-9]/g, ''))}
                       placeholder="Digite seu ID do jogo (ex: 5435431)"
-                      className="w-full px-4 py-3 bg-black/40 border-2 border-red-600/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                       disabled={isLoading}
                       maxLength={15}
                     />
                   </div>
                   
-                  <div className="bg-red-900/30 border-2 border-red-600/50 rounded-lg p-4">
-                    <p className="text-sm text-yellow-400 font-bold mb-2">
+                  <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-400/30 rounded-2xl p-4 backdrop-blur-sm">
+                    <p className="text-sm text-blue-300 font-bold mb-2">
                       ⚠️ Importante:
                     </p>
-                    <p className="text-xs text-gray-300 mb-2">
+                    <p className="text-xs text-slate-300 mb-2">
                       Digite seu ID real do jogo! IDs falsos ou inválidos não passarão na verificação.
                     </p>
-                    <p className="text-xs text-gray-400 mb-3">
-                      📍 Encontre seu ID em: <span className="text-white font-bold">Configurações → Informações Básicas → ID do Jogador</span>
+                    <p className="text-xs text-slate-400 mb-3">
+                      📍 Encontre seu ID em: <span className="text-white font-semibold">Configurações → Informações Básicas → ID do Jogador</span>
                     </p>
                     <button
                       onClick={() => setShowTutorial(true)}
-                      className="text-xs text-orange-400 hover:text-orange-300 underline font-bold"
+                      className="text-xs text-cyan-400 hover:text-cyan-300 underline font-semibold"
                     >
                       📖 Ver tutorial completo de como encontrar seu ID
                     </button>
@@ -830,8 +819,8 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
               {error && (
                 <div className="px-8 pb-4">
-                  <div className="bg-red-900/50 border-2 border-red-500 rounded-lg p-3 text-center">
-                    <p className="text-red-300 text-sm font-bold">{error}</p>
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-3 text-center">
+                    <p className="text-red-400 text-sm font-semibold">{error}</p>
                   </div>
                 </div>
               )}
@@ -840,12 +829,11 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 <button
                   onClick={handleVerification}
                   disabled={isLoading || !playerId.trim()}
-                  className={`w-full font-bold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center ${
+                  className={`w-full font-bold py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center ${
                     isLoading || !playerId.trim()
-                      ? 'bg-gray-700 text-gray-500 cursor-not-allowed border-2 border-gray-600'
-                      : 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white border-2 border-white/40 shadow-lg hover:shadow-red-600/50'
+                      ? 'bg-slate-700 text-slate-500 cursor-not-allowed border border-slate-600'
+                      : 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02]'
                   }`}
-                  style={!isLoading && playerId.trim() ? { textShadow: '2px 2px 4px rgba(0,0,0,0.8)' } : {}}
                 >
                   {isLoading ? (
                     <>
@@ -853,7 +841,7 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                       Verificando...
                     </>
                   ) : (
-                    'Verificar'
+                    'Verificar ✨'
                   )}
                 </button>
               </div>

@@ -76,7 +76,7 @@ export default function ArenaQuizModal({
       >
         {/* Efeito de fogo animado */}
         <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: 'radial-gradient(circle at 50% 100%, #FF3C00 0%, transparent 50%)',
+          backgroundImage: 'radial-gradient(circle at 50% 100%, #b3a29dff 0%, transparent 50%)',
           animation: 'pulse 3s ease-in-out infinite'
         }} />
       </div>
@@ -92,7 +92,7 @@ export default function ArenaQuizModal({
               <div className="relative h-32 bg-gradient-to-r from-red-600 to-orange-600 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/20" />
                 <h1 className="relative text-3xl font-black text-white text-center drop-shadow-lg" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>
-                  🔥 ARENA DE FOGO 🔥
+                 ARENA DE FOGO 
                 </h1>
                 <button 
                   onClick={onSkipQuiz}
@@ -128,7 +128,7 @@ export default function ArenaQuizModal({
                   className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-black text-lg py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-600/50 border-2 border-white/20"
                   style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}
                 >
-                  COMEÇAR AGORA 🔥
+                  COMEÇAR AGORA 
                 </button>
 
                 <button

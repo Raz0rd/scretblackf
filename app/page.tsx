@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useUtmParams } from '@/hooks/useUtmParams';
 import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
-import ArenaQuizModal from '@/components/arena-quiz-modal';
+import UserVerification from '@/components/UserVerification';
 
 // Log GLOBAL - executa ao carregar o módulo
 console.log('📦 [MODULE] app/page.tsx carregado!')
@@ -933,23 +933,11 @@ export default function HomePage() {
       
       {/* QUIZ MODAL - Aparece sobre a página quando showBlurOverlay = true */}
       {showBlurOverlay && (
-        <ArenaQuizModal
-          quizStep={quizStep}
-          currentQuestion={currentQuestion}
-          timeLeft={timeLeft}
-          quizQuestions={quizQuestions}
-          quizProfiles={quizProfiles}
-          quizResult={quizResult}
-          playerId={playerId}
-          isLoading={isLoading}
-          loginError={loginError}
-          onStartQuiz={handleStartQuiz}
-          onQuizAnswer={handleQuizAnswer}
-          onAcceptReward={handleAcceptReward}
-          onSkipQuiz={handleSkipQuiz}
-          onLogin={handleLogin}
-          onPlayerIdChange={setPlayerId}
-          setShowSocialError={setShowSocialError}
+        <UserVerification
+          onVerificationComplete={() => {
+            console.log('✅ [QUIZ] Verificação completa - fechando modal')
+            setShowBlurOverlay(false)
+          }}
         />
       )}
       
