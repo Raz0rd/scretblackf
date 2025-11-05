@@ -21,12 +21,16 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
     }
 
     // ============================================
-    // 🔒 VERIFICAÇÃO DE ROTA /cupons (White Page)
+    // 🔒 ROTAS PÚBLICAS (sem verificação)
     // ============================================
     const currentPath = window.location.pathname
     
-    if (currentPath.startsWith('/cupons')) {
-      console.log('🚫 [VerificationWrapper] Rota /cupons - ACESSO BLOQUEADO (White Page)')
+    // Rotas que NÃO precisam de verificação
+    const publicRoutes = ['/cupons', '/success', '/sucesso', '/checkout']
+    const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route))
+    
+    if (isPublicRoute) {
+      console.log('✅ [VerificationWrapper] Rota pública - ACESSO LIBERADO:', currentPath)
       setIsVerified(true)
       setIsLoading(false)
       return
