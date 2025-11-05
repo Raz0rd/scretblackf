@@ -16,6 +16,13 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   const [showTutorial, setShowTutorial] = useState(false)
   const [showTermsModal, setShowTermsModal] = useState(false)
   const [showPrivacyModal, setShowPrivacyModal] = useState(false)
+
+  // Função para tocar som ao clicar
+  const playClickSound = () => {
+    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGe77OeeSwwPUKXh8LdjHAU7k9jyz3ksBS1+zPLaizsKGGS56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHgU7k9jy0HksBSx+zPDajDsKF2O56+mjUBELTKXi8bllHg==')
+    audio.volume = 0.3
+    audio.play().catch(() => {})
+  }
   
   // Estados do Quiz Arena de Fogo
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -97,7 +104,7 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   }
 
   const handleInitialCheck = () => {
-    setStep('quiz')
+    setStep('verification')
   }
 
   const handleAcceptTerms = () => {
@@ -411,24 +418,24 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
-      background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%)'
+      background: 'linear-gradient(135deg, #0a1f1a 0%, #0f2f27 50%, #0a1f1a 100%)'
     }}>
-      {/* Efeitos de fundo - Azul suave */}
+      {/* Efeitos de fundo - Verde/Esmeralda */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Efeito de luz suave animado */}
         <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, #60a5fa 0%, transparent 70%)',
+          backgroundImage: 'radial-gradient(circle at 50% 50%, #10b981 0%, transparent 70%)',
           animation: 'pulse 4s ease-in-out infinite'
         }} />
         
-        {/* Círculos decorativos azuis */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 to-blue-600/10 rounded-full blur-3xl" />
+        {/* Círculos decorativos verde/esmeralda */}
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-emerald-600/20 to-teal-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-teal-500/20 to-emerald-600/10 rounded-full blur-3xl" />
       </div>
 
       {/* Pulso de luz suave do centro */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-blue-600/10 via-cyan-500/10 to-blue-600/10 animate-pulse-slow"></div>
+        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-emerald-600/10 via-teal-500/10 to-emerald-600/10 animate-pulse-slow"></div>
       </div>
 
       <style jsx global>{`
@@ -448,11 +455,18 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes spin-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
         .animate-pulse-slow {
           animation: pulse-slow 4s ease-in-out infinite;
         }
         .animate-fade-in {
           animation: fade-in 0.4s ease-out;
+        }
+        .animate-spin-reverse {
+          animation: spin-reverse 1s linear infinite;
         }
         .cursor-fire,
         .cursor-fire * {
@@ -469,55 +483,77 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
           
           {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-32 bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-                <h1 className="relative text-3xl font-bold text-white text-center drop-shadow-lg">
-                  ✨ Descubra Seu Perfil
+              <div className="relative h-32 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-500/10 to-black/30" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)] animate-pulse"></div>
+                <h1 className="relative text-3xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-3">
+                  <span className="text-4xl">💎</span>
+                  <span>Bem-vindo!</span>
+                  <span className="text-4xl">💎</span>
                 </h1>
               </div>
 
               {/* Conteúdo */}
               <div className="p-8 text-center">
-                <div className="text-6xl mb-4">🎮</div>
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Qual é o seu estilo de jogo?
+                {/* Elemento CSS Animado Customizado */}
+                <div className="relative w-24 h-24 mx-auto mb-6">
+                  {/* Círculo externo girando */}
+                  <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-400 border-r-teal-400 animate-spin"></div>
+                  {/* Círculo do meio girando reverso */}
+                  <div className="absolute inset-2 rounded-full border-4 border-transparent border-b-teal-400 border-l-green-400 animate-spin-reverse"></div>
+                  {/* Círculo interno pulsante */}
+                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 animate-pulse shadow-lg shadow-emerald-500/50"></div>
+                  {/* Estrela central */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-3xl animate-bounce" style={{ animationDelay: '0.2s' }}>⭐</div>
+                  </div>
+                </div>
+                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 mb-4">
+                  Acesse Ofertas Exclusivas
                 </h2>
-                <p className="text-slate-300 mb-6 leading-relaxed text-sm">
-                  Responda 5 perguntas rápidas e descubra qual é o seu verdadeiro perfil de jogador.
+                <p className="text-emerald-100 mb-6 leading-relaxed text-base">
+                  Valide sua identidade e tenha acesso a descontos especiais e bônus exclusivos!
                 </p>
                 
-                <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-400/30 rounded-2xl p-5 mb-6 backdrop-blur-sm">
-                  <p className="text-blue-300 font-bold text-lg mb-2">
-                    🎁 Recompensa Exclusiva
+                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-2xl p-6 mb-6 backdrop-blur-md shadow-2xl shadow-emerald-500/30">
+                  <p className="text-emerald-300 font-bold text-xl mb-3 flex items-center justify-center gap-2">
+                    <span className="text-3xl">🎁</span>
+                    <span>Recompensa Exclusiva</span>
+                    <span className="text-3xl">🎁</span>
                   </p>
-                  <p className="text-slate-200 text-sm">
-                    Complete o quiz e ganhe <span className="font-bold text-blue-400">70% de desconto</span> na sua recarga!
+                  <p className="text-emerald-50 text-base leading-relaxed">
+                    Valide sua conta e ganhe <span className="font-bold text-teal-300 text-lg">70% de desconto</span> na sua recarga!
                   </p>
                 </div>
 
                 <button
                   onClick={handleInitialCheck}
-                  className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-lg py-4 px-8 rounded-2xl transition-all duration-200 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02]"
+                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold text-lg py-4 px-8 rounded-2xl transition-all duration-300 shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300 relative overflow-hidden group"
                 >
-                  Começar Agora ✨
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    <span className="text-2xl">🚀</span>
+                    <span>Começar Agora</span>
+                    <span className="text-2xl">✨</span>
+                  </span>
                 </button>
 
                 {/* Links de Termos e Políticas */}
-                <div className="mt-4 text-center text-xs text-gray-400">
-                  <p className="mb-2">Ao continuar, você concorda com nossos</p>
+                <div className="mt-4 text-center text-xs">
+                  <p className="mb-2 text-emerald-300">Ao continuar, você concorda com nossos</p>
                   <div className="flex items-center justify-center gap-3">
                     <button 
                       onClick={() => setShowTermsModal(true)}
-                      className="text-gray-300 hover:text-white underline transition-colors"
+                      className="text-teal-300 hover:text-emerald-200 underline transition-colors font-semibold"
                     >
                       Termos de Uso
                     </button>
-                    <span className="text-gray-600">•</span>
+                    <span className="text-emerald-500">•</span>
                     <button 
                       onClick={() => setShowPrivacyModal(true)}
-                      className="text-gray-300 hover:text-white underline transition-colors"
+                      className="text-teal-300 hover:text-emerald-200 underline transition-colors font-semibold"
                     >
                       Política de Privacidade
                     </button>
@@ -767,49 +803,56 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela de Verificação */}
           {step === 'verification' && (
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-blue-500/20 overflow-hidden backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-24 bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-                <h2 className="relative text-xl font-bold text-white text-center drop-shadow-lg">
-                  🎯 Validar Identidade
+              <div className="relative h-24 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-500/10 to-black/30" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)] animate-pulse"></div>
+                <h2 className="relative text-xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-2">
+                  <span className="text-2xl">🔐</span>
+                  <span>Validar Identidade</span>
+                  <span className="text-2xl">🔐</span>
                 </h2>
               </div>
 
               <div className="p-8">
-                <p className="text-slate-300 text-sm mb-6 text-center">
+                <p className="text-emerald-100 text-sm mb-6 text-center">
                   Insira seu ID de jogador para confirmar que você é um usuário real
                 </p>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold mb-2 text-blue-300">
-                      ⚡ ID do Jogador * (apenas números)
+                    <label className="block text-base font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center gap-2">
+                      <span className="text-xl">🎮</span>
+                      <span>ID do Jogador</span>
+                      <span className="text-xs text-emerald-300 font-normal">(apenas números)</span>
                     </label>
                     <input
                       type="text"
                       value={playerId}
                       onChange={(e) => setPlayerId(e.target.value.replace(/[^0-9]/g, ''))}
                       placeholder="Digite seu ID do jogo (ex: 5435431)"
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                      className="w-full px-5 py-4 bg-gradient-to-r from-emerald-900/60 to-teal-900/60 border-2 border-emerald-500/40 rounded-2xl text-white text-lg font-bold placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 hover:border-emerald-400/70 transition-all duration-300 shadow-lg shadow-emerald-900/20"
                       disabled={isLoading}
                       maxLength={15}
                     />
                   </div>
                   
-                  <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-400/30 rounded-2xl p-4 backdrop-blur-sm">
-                    <p className="text-sm text-blue-300 font-bold mb-2">
-                      ⚠️ Importante:
+                  <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-2xl p-5 backdrop-blur-md shadow-lg shadow-emerald-500/20">
+                    <p className="text-sm text-emerald-300 font-bold mb-3 flex items-center gap-2">
+                      <span className="text-lg">⭐</span>
+                      <span>Importante:</span>
                     </p>
-                    <p className="text-xs text-slate-300 mb-2">
-                      Digite seu ID real do jogo! IDs falsos ou inválidos não passarão na verificação.
+                    <p className="text-sm text-emerald-50 mb-3 leading-relaxed">
+                      Digite seu <span className="text-teal-300 font-bold">ID REAL</span> do jogo! IDs falsos ou inválidos não passarão na verificação.
                     </p>
-                    <p className="text-xs text-slate-400 mb-3">
-                      📍 Encontre seu ID em: <span className="text-white font-semibold">Configurações → Informações Básicas → ID do Jogador</span>
+                    <p className="text-xs text-emerald-100 mb-3 bg-emerald-900/40 rounded-lg p-2 border border-emerald-500/30">
+                      📍 <span className="text-teal-300 font-semibold">Encontre seu ID em:</span><br/>
+                      <span className="text-white font-bold ml-4">Configurações → Informações Básicas → ID do Jogador</span>
                     </p>
                     <button
                       onClick={() => setShowTutorial(true)}
-                      className="text-xs text-cyan-400 hover:text-cyan-300 underline font-semibold"
+                      className="text-sm text-teal-300 hover:text-emerald-200 underline font-bold flex items-center gap-1"
                     >
                       📖 Ver tutorial completo de como encontrar seu ID
                     </button>
@@ -829,19 +872,26 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 <button
                   onClick={handleVerification}
                   disabled={isLoading || !playerId.trim()}
-                  className={`w-full font-bold py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center ${
+                  className={`w-full font-bold text-lg py-5 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center relative overflow-hidden group ${
                     isLoading || !playerId.trim()
-                      ? 'bg-slate-700 text-slate-500 cursor-not-allowed border border-slate-600'
-                      : 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.02]'
+                      ? 'bg-slate-700 text-slate-500 cursor-not-allowed border-2 border-slate-600'
+                      : 'bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300'
                   }`}
                 >
+                  {!isLoading && !(!playerId.trim()) && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  )}
                   {isLoading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                      Verificando...
+                      <div className="animate-spin rounded-full h-5 w-5 border-3 border-white border-t-transparent mr-3"></div>
+                      <span className="animate-pulse">Verificando...</span>
                     </>
                   ) : (
-                    'Verificar ✨'
+                    <>
+                      <span className="text-2xl mr-2">🚀</span>
+                      <span className="relative z-10">Verificar Identidade</span>
+                      <span className="text-2xl ml-2">✨</span>
+                    </>
                   )}
                 </button>
               </div>
@@ -853,14 +903,17 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
       {/* Modal de Termos de Uso */}
       {showTermsModal && (
-        <div className="fixed inset-0 z-[10000] bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-red-600">
+        <div className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={playClickSound}>
+          <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-emerald-500/50">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-white">📋 Termos de Uso</h3>
+              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 -m-6 p-6 rounded-t-2xl">
+                <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span className="text-3xl">📜</span>
+                  <span>Termos de Uso</span>
+                </h3>
                 <button 
-                  onClick={() => setShowTermsModal(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  onClick={() => { playClickSound(); setShowTermsModal(false); }}
+                  className="text-white hover:text-emerald-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -868,25 +921,25 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 </button>
               </div>
               
-              <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
-                <p><strong className="text-white">1. Aceitação dos Termos:</strong> Ao aceitar estes termos, você concorda com todas as condições de uso deste site oficial de recargas e nossa política de privacidade.</p>
+              <div className="space-y-4 text-emerald-100 text-sm leading-relaxed">
+                <p><strong className="text-teal-300 text-base">1. Aceitação dos Termos:</strong> Ao aceitar estes termos, você concorda com todas as condições de uso deste site oficial de recargas e nossa política de privacidade.</p>
                 
-                <p><strong className="text-white">2. Usuários Verificados:</strong> Este site é exclusivo para jogadores reais e verificados. É terminantemente proibido o uso de bots, sistemas automatizados ou contas falsas.</p>
+                <p><strong className="text-teal-300 text-base">2. Usuários Verificados:</strong> Este site é exclusivo para jogadores reais e verificados. É terminantemente proibido o uso de bots, sistemas automatizados ou contas falsas.</p>
                 
-                <p><strong className="text-white">3. Ofertas Exclusivas:</strong> Usuários verificados têm acesso a descontos especiais, promoções exclusivas e bônus. As ofertas são limitadas e sujeitas a disponibilidade.</p>
+                <p><strong className="text-teal-300 text-base">3. Ofertas Exclusivas:</strong> Usuários verificados têm acesso a descontos especiais, promoções exclusivas e bônus. As ofertas são limitadas e sujeitas a disponibilidade.</p>
                 
-                <p><strong className="text-white">4. Transações Seguras:</strong> Garantimos 100% de segurança em todas as transações através de sistemas criptografados de última geração.</p>
+                <p><strong className="text-teal-300 text-base">4. Transações Seguras:</strong> Garantimos 100% de segurança em todas as transações através de sistemas criptografados de última geração.</p>
                 
-                <p><strong className="text-white">5. Responsabilidade:</strong> O usuário é responsável por manter suas credenciais seguras e por todas as atividades realizadas em sua conta.</p>
+                <p><strong className="text-teal-300 text-base">5. Responsabilidade:</strong> O usuário é responsável por manter suas credenciais seguras e por todas as atividades realizadas em sua conta.</p>
                 
-                <p><strong className="text-white">6. Modificações:</strong> Reservamos o direito de modificar estes termos a qualquer momento. Usuários serão notificados sobre mudanças importantes.</p>
+                <p><strong className="text-teal-300 text-base">6. Modificações:</strong> Reservamos o direito de modificar estes termos a qualquer momento. Usuários serão notificados sobre mudanças importantes.</p>
               </div>
               
               <button 
-                onClick={() => setShowTermsModal(false)}
-                className="mt-6 w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                onClick={() => { playClickSound(); setShowTermsModal(false); }}
+                className="mt-6 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.02]"
               >
-                Entendi
+                ✅ Entendi
               </button>
             </div>
           </div>
@@ -895,14 +948,17 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
       {/* Modal de Política de Privacidade */}
       {showPrivacyModal && (
-        <div className="fixed inset-0 z-[10000] bg-black/70 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-red-600">
+        <div className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={playClickSound}>
+          <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-emerald-500/50">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-white">🔒 Política de Privacidade</h3>
+              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 -m-6 p-6 rounded-t-2xl">
+                <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <span className="text-3xl">🔐</span>
+                  <span>Política de Privacidade</span>
+                </h3>
                 <button 
-                  onClick={() => setShowPrivacyModal(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  onClick={() => { playClickSound(); setShowPrivacyModal(false); }}
+                  className="text-white hover:text-emerald-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -910,25 +966,25 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 </button>
               </div>
               
-              <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
-                <p><strong className="text-white">1. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.</p>
+              <div className="space-y-4 text-emerald-100 text-sm leading-relaxed">
+                <p><strong className="text-teal-300 text-base">1. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.</p>
                 
-                <p><strong className="text-white">2. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.</p>
+                <p><strong className="text-teal-300 text-base">2. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.</p>
                 
-                <p><strong className="text-white">3. Segurança:</strong> Utilizamos criptografia SSL/TLS e seguimos os mais altos padrões de segurança da indústria para proteger suas informações.</p>
+                <p><strong className="text-teal-300 text-base">3. Segurança:</strong> Utilizamos criptografia SSL/TLS e seguimos os mais altos padrões de segurança da indústria para proteger suas informações.</p>
                 
-                <p><strong className="text-white">4. Cookies:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.</p>
+                <p><strong className="text-teal-300 text-base">4. Cookies:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.</p>
                 
-                <p><strong className="text-white">5. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.</p>
+                <p><strong className="text-teal-300 text-base">5. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.</p>
                 
-                <p><strong className="text-white">6. Conformidade LGPD:</strong> Estamos em conformidade com a Lei Geral de Proteção de Dados (LGPD) e respeitamos todos os seus direitos de privacidade.</p>
+                <p><strong className="text-teal-300 text-base">6. Conformidade LGPD:</strong> Estamos em conformidade com a Lei Geral de Proteção de Dados (LGPD) e respeitamos todos os seus direitos de privacidade.</p>
               </div>
               
               <button 
-                onClick={() => setShowPrivacyModal(false)}
-                className="mt-6 w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+                onClick={() => { playClickSound(); setShowPrivacyModal(false); }}
+                className="mt-6 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.02]"
               >
-                Entendi
+                ✅ Entendi
               </button>
             </div>
           </div>
