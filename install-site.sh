@@ -106,8 +106,54 @@ else
     done
     
     # 2. Pedir porta
+    echo ""
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}📊 PORTAS EM USO NO SERVIDOR${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    
+    # Listar portas em uso por projetos PM2
+    if command -v pm2 &> /dev/null; then
+        echo ""
+        echo -e "${YELLOW}🔍 Projetos PM2 e suas portas:${NC}"
+        pm2 list | grep -E "online|stopped" | while read line; do
+            PROJECT=$(echo "$line" | awk '{print $2}')
+            if [ ! -z "$PROJECT" ] && [ "$PROJECT" != "name" ]; then
+                PROJECT_DIR="/var/www/$PROJECT"
+                if [ -f "$PROJECT_DIR/package.json" ]; then
+                    PORT_IN_USE=$(lsof -ti:3000-4000 -sTCP:LISTEN 2>/dev/null | xargs -I {} lsof -Pan -p {} -iTCP -sTCP:LISTEN 2>/dev/null | grep "$PROJECT_DIR" | grep -oP ':\K[0-9]+' | head -1)
+                    if [ ! -z "$PORT_IN_USE" ]; then
+                        echo -e "   ${GREEN}✓${NC} $PROJECT → Porta ${YELLOW}$PORT_IN_USE${NC}"
+                    fi
+                fi
+            fi
+        done
+    fi
+    
+    # Listar todas as portas em uso na faixa 3000-4000
+    echo ""
+    echo -e "${YELLOW}🔍 Portas ocupadas (3000-4000):${NC}"
+    USED_PORTS=$(ss -tlnp 2>/dev/null | grep -oP ':\K(3[0-9]{3}|4000)(?=\s)' | sort -n | uniq)
+    if [ -z "$USED_PORTS" ]; then
+        echo -e "   ${GREEN}Nenhuma porta em uso nesta faixa${NC}"
+    else
+        echo "$USED_PORTS" | while read port; do
+            PROCESS=$(lsof -ti:$port 2>/dev/null | xargs -I {} ps -p {} -o comm= 2>/dev/null | head -1)
+            echo -e "   ${RED}✗${NC} Porta ${YELLOW}$port${NC} - Processo: ${PROCESS:-desconhecido}"
+        done
+    fi
+    
+    # Sugerir próxima porta disponível
+    echo ""
+    NEXT_PORT=3000
+    while lsof -Pi :$NEXT_PORT -sTCP:LISTEN -t >/dev/null 2>&1; do
+        NEXT_PORT=$((NEXT_PORT + 1))
+    done
+    echo -e "${GREEN}💡 Sugestão: Próxima porta disponível é ${YELLOW}$NEXT_PORT${NC}"
+    echo ""
+    
     while true; do
-        read -p "🔌 Porta para o app (ex: 3000): " PORT
+        read -p "🔌 Porta para o app (sugestão: $NEXT_PORT): " PORT
+        PORT=${PORT:-$NEXT_PORT}
         
         if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1024 ] || [ "$PORT" -gt 65535 ]; then
             echo -e "${RED}❌ Porta inválida! Use um número entre 1024 e 65535${NC}"
@@ -116,9 +162,10 @@ else
         
         # Verificar se porta já está em uso
         if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
-            echo -e "${YELLOW}⚠️  Porta $PORT já está em uso!${NC}"
-            read -p "Usar outra porta? (s/N): " MUDAR_PORTA
-            if [[ "$MUDAR_PORTA" =~ ^[Ss]$ ]]; then
+            PROCESS=$(lsof -ti:$PORT 2>/dev/null | xargs -I {} ps -p {} -o comm= 2>/dev/null | head -1)
+            echo -e "${RED}❌ Porta $PORT já está em uso pelo processo: ${YELLOW}${PROCESS:-desconhecido}${NC}"
+            read -p "Tentar outra porta? (S/n): " MUDAR_PORTA
+            if [[ ! "$MUDAR_PORTA" =~ ^[Nn]$ ]]; then
                 continue
             fi
         else
