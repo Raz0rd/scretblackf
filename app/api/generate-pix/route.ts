@@ -712,7 +712,7 @@ export async function POST(request: NextRequest) {
     console.log("🔍 [STORAGE DEBUG] utmParams:", body.utmParams)
     
     try {
-      // Parse trackingParams se vier como string
+      
       let trackingParameters: any = {}
       if (body.trackingParams) {
         if (typeof body.trackingParams === 'string') {
