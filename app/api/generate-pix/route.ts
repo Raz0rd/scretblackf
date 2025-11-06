@@ -338,6 +338,11 @@ async function generatePixNitro(body: any, baseUrl: string) {
   // Extrair hostname para offer_hash
   const hostname = baseUrl.split('//')[1]?.split(':')[0] || 'localhost'
   const offerHash = hostname.split('.')[0].toUpperCase()
+  
+  // Extrair apenas o nome do domínio (sem www e extensão)
+  // Exemplos: www.algo.com.br → algo, www.algo2.shop → algo2
+  const domainParts = hostname.replace('www.', '').split('.')
+  const domainName = domainParts[0]
 
   const nitroPayload = {
     amount: body.amount,
@@ -369,7 +374,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
     ],
     installments: 12,
     expire_in_days: 1,
-    postback_url: `${baseUrl}/api/webhook`
+    postback_url: domainName
   }
   
   console.log("📦 [Nitro] PAYLOAD ENVIADO:", JSON.stringify(nitroPayload, null, 2))

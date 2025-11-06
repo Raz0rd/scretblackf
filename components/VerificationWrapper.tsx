@@ -30,7 +30,6 @@ export default function VerificationWrapper({ children }: VerificationWrapperPro
     const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route))
     
     if (isPublicRoute) {
-      console.log('✅ [VerificationWrapper] Rota pública - ACESSO LIBERADO:', currentPath)
       setIsVerified(true)
       setIsLoading(false)
       return

@@ -26,9 +26,12 @@ jobs:
           port: 22
           script: |
             cd /var/www/ffireshop
-            echo "🔄 Pulling latest changes..."
+            echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
-            git checkout origin/baseffshop -- app/api/generate-pix/route.ts app/api/check-transaction-status/route.ts lib/brazil-time.ts app/checkout/page.tsx
+            echo "📥 Updating only API files (keeping current page.tsx)..."
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
+            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
+            git checkout origin/baseffshop -- lib/brazil-time.ts
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -46,9 +49,12 @@ jobs:
           port: 22
           script: |
             cd /var/www/promocoes-qpon
-            echo "🔄 Pulling latest changes..."
+            echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
-            git checkout origin/baseffshop -- app/api/generate-pix/route.ts app/api/check-transaction-status/route.ts lib/brazil-time.ts app/checkout/page.tsx
+            echo "📥 Updating only API files (keeping current page.tsx)..."
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
+            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
+            git checkout origin/baseffshop -- lib/brazil-time.ts
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -56,6 +62,29 @@ jobs:
             echo "♻️ Restarting PM2..."
             pm2 restart promocoes-qpon
             echo "✅ Deploy completed for promocoes-qpon"
+
+      - name: Deploy to free-gamerecargas-site
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /var/www/free-gamerecargas-site
+            echo "🔄 Fetching latest changes from baseffshop..."
+            git fetch origin baseffshop
+            echo "📥 Updating only API files (keeping current page.tsx)..."
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
+            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
+            git checkout origin/baseffshop -- lib/brazil-time.ts
+            echo "📦 Installing dependencies..."
+            npm install --production
+            echo "🔨 Building..."
+            npm run build
+            echo "♻️ Restarting PM2..."
+            pm2 restart free-gamerecargas-site
+            echo "✅ Deploy completed for free-gamerecargas-site"
 
       - name: Notify Success
         if: success()
