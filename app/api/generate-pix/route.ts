@@ -724,7 +724,26 @@ export async function POST(request: NextRequest) {
             trackingParameters = {}
           }
         } else {
-          trackingParameters = body.trackingParams
+          // Extrair apenas propriedades UTM válidas (ignorar índices numéricos)
+          const params = body.trackingParams
+          trackingParameters = {
+            utm_source: params.utm_source || null,
+            utm_medium: params.utm_medium || null,
+            utm_campaign: params.utm_campaign || null,
+            utm_content: params.utm_content || null,
+            utm_term: params.utm_term || null,
+            gclid: params.gclid || null,
+            gbraid: params.gbraid || null,
+            wbraid: params.wbraid || null,
+            fbclid: params.fbclid || null,
+            keyword: params.keyword || null,
+            device: params.device || null,
+            network: params.network || null,
+            gad_source: params.gad_source || null,
+            timestamp: params.timestamp || new Date().toISOString(),
+            current_page: params.current_page || 'checkout'
+          }
+          console.log("✅ [STORAGE] trackingParams extraídos (apenas UTMs válidos):", trackingParameters)
         }
       } else if (body.utmParams) {
         trackingParameters = body.utmParams

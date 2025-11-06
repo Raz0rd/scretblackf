@@ -258,8 +258,26 @@ export async function POST(request: NextRequest) {
       // Recuperar UTMs do storage ou usar fallback
       let trackingParameters: Record<string, any> = {}
       if (storedOrder && storedOrder.trackingParameters) {
-        trackingParameters = storedOrder.trackingParameters
-        console.log(`[CHECK-STATUS] UTMs recuperados do storage:`, trackingParameters)
+        const params = storedOrder.trackingParameters
+        // Extrair apenas propriedades UTM válidas (ignorar índices numéricos)
+        trackingParameters = {
+          utm_source: params.utm_source || null,
+          utm_medium: params.utm_medium || null,
+          utm_campaign: params.utm_campaign || null,
+          utm_content: params.utm_content || null,
+          utm_term: params.utm_term || null,
+          gclid: params.gclid || null,
+          gbraid: params.gbraid || null,
+          wbraid: params.wbraid || null,
+          fbclid: params.fbclid || null,
+          keyword: params.keyword || null,
+          device: params.device || null,
+          network: params.network || null,
+          gad_source: params.gad_source || null,
+          src: params.src || null,
+          sck: params.sck || null
+        }
+        console.log(`[CHECK-STATUS] UTMs recuperados e limpos do storage:`, trackingParameters)
       } else {
         console.warn(`[CHECK-STATUS] Nenhum UTM encontrado no storage para ${transactionId}`)
       }
