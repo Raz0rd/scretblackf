@@ -34,8 +34,8 @@ jobs:
             git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
-            echo "🗑️ Removing unnecessary folders..."
-            rm -rf app/admin-simple app/debug
+            echo "🗑️ Removing unnecessary folders and cache..."
+            rm -rf app/admin-simple app/debug .next node_modules/.cache
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -61,8 +61,8 @@ jobs:
             git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
-            echo "🗑️ Removing unnecessary folders..."
-            rm -rf app/admin-simple app/debug
+            echo "🗑️ Removing unnecessary folders and cache..."
+            rm -rf app/admin-simple app/debug .next node_modules/.cache
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -88,8 +88,8 @@ jobs:
             git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
-            echo "🗑️ Removing unnecessary folders..."
-            rm -rf app/admin-simple app/debug
+            echo "🗑️ Removing unnecessary folders and cache..."
+            rm -rf app/admin-simple app/debug .next node_modules/.cache
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
