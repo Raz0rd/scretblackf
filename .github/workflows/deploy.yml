@@ -1,0 +1,86 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - baseffshop
+    paths-ignore:
+      - 'app/page.tsx'  # Ignorar página inicial
+      - 'components/UserVerification.tsx'  # Ignorar tema
+
+jobs:
+  deploy:
+    name: Deploy to Servers
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to gmeports-quiz
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /var/www/gmeports-quiz
+            echo "🔄 Pulling latest changes..."
+            git fetch origin baseffshop
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts app/api/check-transaction-status/route.ts lib/brazil-time.ts app/checkout/page.tsx
+            echo "📦 Installing dependencies..."
+            npm install --production
+            echo "🔨 Building..."
+            npm run build
+            echo "♻️ Restarting PM2..."
+            pm2 restart gmeports-quiz
+            echo "✅ Deploy completed for gmeports-quiz"
+
+      - name: Deploy to ffireshop
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /var/www/ffireshop
+            echo "🔄 Pulling latest changes..."
+            git fetch origin baseffshop
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts app/api/check-transaction-status/route.ts lib/brazil-time.ts app/checkout/page.tsx
+            echo "📦 Installing dependencies..."
+            npm install --production
+            echo "🔨 Building..."
+            npm run build
+            echo "♻️ Restarting PM2..."
+            pm2 restart ffireshop
+            echo "✅ Deploy completed for ffireshop"
+
+      - name: Deploy to promocoes-qpon
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /var/www/promocoes-qpon
+            echo "🔄 Pulling latest changes..."
+            git fetch origin baseffshop
+            git checkout origin/baseffshop -- app/api/generate-pix/route.ts app/api/check-transaction-status/route.ts lib/brazil-time.ts app/checkout/page.tsx
+            echo "📦 Installing dependencies..."
+            npm install --production
+            echo "🔨 Building..."
+            npm run build
+            echo "♻️ Restarting PM2..."
+            pm2 restart promocoes-qpon
+            echo "✅ Deploy completed for promocoes-qpon"
+
+      - name: Notify Success
+        if: success()
+        run: echo "🎉 Deploy completed successfully to all servers!"
+
+      - name: Notify Failure
+        if: failure()
+        run: echo "❌ Deploy failed! Check logs for details."
