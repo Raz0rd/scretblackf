@@ -319,7 +319,7 @@ export async function POST(request: NextRequest) {
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
             createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
-            approvedDate: getBrazilTimestamp(new Date(transactionData.paidAt)),
+            approvedDate: transactionData.paidAt ? getBrazilTimestamp(new Date(transactionData.paidAt)) : getBrazilTimestamp(new Date()),
             refundedAt: null,
             customer: {
               name: customerData.name || 'Cliente',
