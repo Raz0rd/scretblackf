@@ -548,6 +548,56 @@ export async function POST(request: NextRequest) {
       console.error("❌ [DEBUG] ERRO: Dados NÃO foram salvos no storage!")
     }
     
+    // ENVIAR para UTMify após gerar QR Code (status: waiting_payment)
+    const utmifyEnabled = process.env.UTMIFY_ENABLED === 'true'
+    console.log("🔍 [UTMIFY] UTMIFY_ENABLED:", utmifyEnabled)
+    
+    if (utmifyEnabled && savedOrder) {
+      try {
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        console.log("📤 [UTMIFY] Enviando status WAITING_PAYMENT após gerar QR Code")
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        
+        const utmifyResponse = await fetch(`${baseUrl}/api/send-to-utmify`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: savedOrder.orderId,
+            transactionId: savedOrder.transactionId,
+            amount: savedOrder.amount,
+            customerData: savedOrder.customerData,
+            trackingParameters: savedOrder.trackingParameters,
+            status: "pending" // Será convertido para waiting_payment no send-to-utmify
+          }),
+        })
+
+        if (utmifyResponse.ok) {
+          const utmifyData = await utmifyResponse.json()
+          console.log("✅ [UTMIFY] Status WAITING_PAYMENT enviado com sucesso!")
+          console.log("📊 [UTMIFY] Resposta:", JSON.stringify(utmifyData, null, 2))
+          
+          // Marcar como enviado no storage
+          orderStorageService.saveOrder({
+            ...savedOrder,
+            utmifySent: true,
+            utmifyWaitingSent: true
+          })
+          console.log("🔒 [UTMIFY] Marcado como enviado no storage")
+        } else {
+          const errorText = await utmifyResponse.text()
+          console.error("❌ [UTMIFY] Erro ao enviar:", utmifyResponse.status, errorText)
+        }
+        
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+      } catch (error) {
+        console.error("❌ [UTMIFY] Erro ao enviar para UTMify:", error)
+      }
+    } else {
+      console.log("ℹ️ [UTMIFY] Envio desabilitado ou pedido não encontrado")
+    }
+    
     return NextResponse.json(result)
   } catch (error) {
     console.error("💥 [GATEWAY] EXCEPTION:", error)

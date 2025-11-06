@@ -28,10 +28,11 @@ export async function POST(request: Request) {
     console.log("💰 [UTMify API] Amount original:", orderData.amount)
     console.log("💰 [UTMify API] Amount em centavos:", amountInCents)
     
-    // VALIDAÇÃO: Garantir que temos parâmetros UTM
+    // LOG: Informar sobre parâmetros UTM (mas enviar sempre)
     if (!orderData.trackingParameters || Object.keys(orderData.trackingParameters).length === 0) {
-      console.warn("⚠️ [UTMify API] ATENÇÃO: Nenhum parâmetro UTM encontrado!")
-      console.warn("⚠️ [UTMify API] Isso pode afetar o tracking. Verifique se os UTMs estão sendo capturados.")
+      console.log("ℹ️ [UTMify API] Nenhum parâmetro UTM encontrado - enviando mesmo assim")
+    } else {
+      console.log("✅ [UTMify API] Parâmetros UTM encontrados:", Object.keys(orderData.trackingParameters).filter(k => orderData.trackingParameters[k]))
     }
 
     // Preparar dados para UTMify no formato correto da documentação

@@ -19,6 +19,7 @@ interface OrderData {
   paidAt?: string
   utmifySent?: boolean // Flag para evitar duplicação de conversões
   utmifyPaidSent?: boolean // Flag específica para status paid
+  utmifyWaitingSent?: boolean // Flag específica para status waiting_payment
 }
 
 // Armazenamento em memória (temporário)
