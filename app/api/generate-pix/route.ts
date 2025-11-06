@@ -1,3 +1,4 @@
+// Deploy automático configurado via GitHub Actions
 import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
 import { getConfig, getEnvVar } from "./config"
