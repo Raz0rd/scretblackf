@@ -32,6 +32,10 @@ jobs:
             git checkout origin/baseffshop -- app/api/generate-pix/route.ts
             git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
             git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
+            git checkout origin/baseffshop -- components/VerificationWrapper.tsx
+            echo "🗑️ Removing unnecessary folders..."
+            rm -rf app/admin-simple app/debug
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -55,6 +59,10 @@ jobs:
             git checkout origin/baseffshop -- app/api/generate-pix/route.ts
             git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
             git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
+            git checkout origin/baseffshop -- components/VerificationWrapper.tsx
+            echo "🗑️ Removing unnecessary folders..."
+            rm -rf app/admin-simple app/debug
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
@@ -78,6 +86,10 @@ jobs:
             git checkout origin/baseffshop -- app/api/generate-pix/route.ts
             git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
             git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
+            git checkout origin/baseffshop -- components/VerificationWrapper.tsx
+            echo "🗑️ Removing unnecessary folders..."
+            rm -rf app/admin-simple app/debug
             echo "📦 Installing dependencies..."
             npm install --production
             echo "🔨 Building..."
