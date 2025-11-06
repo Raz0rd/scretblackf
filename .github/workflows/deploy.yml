@@ -29,9 +29,9 @@ jobs:
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
             echo "📥 Updating only API files (keeping current page.tsx)..."
-            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
-            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
-            git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- app/api/
+            git checkout origin/baseffshop -- lib/
+            git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
             echo "🗑️ Removing unnecessary folders..."
@@ -56,9 +56,9 @@ jobs:
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
             echo "📥 Updating only API files (keeping current page.tsx)..."
-            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
-            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
-            git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- app/api/
+            git checkout origin/baseffshop -- lib/
+            git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
             echo "🗑️ Removing unnecessary folders..."
@@ -83,9 +83,9 @@ jobs:
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
             echo "📥 Updating only API files (keeping current page.tsx)..."
-            git checkout origin/baseffshop -- app/api/generate-pix/route.ts
-            git checkout origin/baseffshop -- app/api/check-transaction-status/route.ts
-            git checkout origin/baseffshop -- lib/brazil-time.ts
+            git checkout origin/baseffshop -- app/api/
+            git checkout origin/baseffshop -- lib/
+            git checkout origin/baseffshop -- hooks/
             git checkout origin/baseffshop -- components/DevToolsBlocker.tsx
             git checkout origin/baseffshop -- components/VerificationWrapper.tsx
             echo "🗑️ Removing unnecessary folders..."
