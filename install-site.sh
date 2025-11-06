@@ -43,19 +43,104 @@ else
     echo "📝 Modo Interativo - Responda as perguntas abaixo:"
     echo ""
     
-    read -p "🔗 URL do repositório Git: " REPO_URL
-    read -p "🌿 Branch (padrão: main): " BRANCH
-    BRANCH=${BRANCH:-main}
+    # 1. Pedir domínio primeiro
+    while true; do
+        read -p "🌐 Domínio (ex: exemplo.com): " DOMAIN
+        
+        if [ -z "$DOMAIN" ]; then
+            echo -e "${RED}❌ Domínio não pode ser vazio!${NC}"
+            continue
+        fi
+        
+        # Verificar se domínio já existe no Nginx
+        if [ -f "/etc/nginx/sites-available/$DOMAIN" ]; then
+            echo ""
+            echo -e "${YELLOW}⚠️  ATENÇÃO: Domínio $DOMAIN já está configurado no servidor!${NC}"
+            echo ""
+            echo "Opções:"
+            echo "  1) Continuar mesmo assim (pode sobrescrever)"
+            echo "  2) Digitar outro domínio"
+            echo "  3) Cancelar instalação"
+            echo ""
+            read -p "Escolha uma opção (1/2/3): " OPCAO
+            
+            case $OPCAO in
+                1)
+                    echo -e "${YELLOW}⚠️  Continuando com domínio existente...${NC}"
+                    break
+                    ;;
+                2)
+                    continue
+                    ;;
+                3)
+                    echo -e "${RED}❌ Instalação cancelada${NC}"
+                    exit 0
+                    ;;
+                *)
+                    echo -e "${RED}❌ Opção inválida!${NC}"
+                    continue
+                    ;;
+            esac
+        fi
+        
+        # Verificar se domínio aponta para este servidor
+        echo -e "${BLUE}🔍 Verificando DNS do domínio...${NC}"
+        DOMAIN_IP=$(dig +short "$DOMAIN" | tail -n1)
+        SERVER_IP=$(curl -s ifconfig.me)
+        
+        if [ -n "$DOMAIN_IP" ] && [ "$DOMAIN_IP" != "$SERVER_IP" ]; then
+            echo ""
+            echo -e "${YELLOW}⚠️  AVISO: DNS do domínio não aponta para este servidor!${NC}"
+            echo -e "   Domínio aponta para: ${YELLOW}$DOMAIN_IP${NC}"
+            echo -e "   IP deste servidor: ${YELLOW}$SERVER_IP${NC}"
+            echo ""
+            read -p "Continuar mesmo assim? (s/N): " CONTINUAR_DNS
+            if [[ ! "$CONTINUAR_DNS" =~ ^[Ss]$ ]]; then
+                continue
+            fi
+        else
+            echo -e "${GREEN}✅ DNS configurado corretamente!${NC}"
+        fi
+        
+        break
+    done
     
-    read -p "🌐 Domínio (ex: exemplo.com): " DOMAIN
-    read -p "🔌 Porta para o app (ex: 3000): " PORT
+    # 2. Pedir porta
+    while true; do
+        read -p "🔌 Porta para o app (ex: 3000): " PORT
+        
+        if ! [[ "$PORT" =~ ^[0-9]+$ ]] || [ "$PORT" -lt 1024 ] || [ "$PORT" -gt 65535 ]; then
+            echo -e "${RED}❌ Porta inválida! Use um número entre 1024 e 65535${NC}"
+            continue
+        fi
+        
+        # Verificar se porta já está em uso
+        if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+            echo -e "${YELLOW}⚠️  Porta $PORT já está em uso!${NC}"
+            read -p "Usar outra porta? (s/N): " MUDAR_PORTA
+            if [[ "$MUDAR_PORTA" =~ ^[Ss]$ ]]; then
+                continue
+            fi
+        else
+            echo -e "${GREEN}✅ Porta $PORT disponível!${NC}"
+        fi
+        
+        break
+    done
     
-    # Nome do projeto baseado no domínio (remove www. e pontos)
+    # 3. Nome do projeto baseado no domínio
     PROJECT_NAME=$(echo "$DOMAIN" | sed 's/^www\.//' | sed 's/\./-/g')
-    
     read -p "📁 Nome do projeto (padrão: $PROJECT_NAME): " INPUT_PROJECT_NAME
     PROJECT_NAME=${INPUT_PROJECT_NAME:-$PROJECT_NAME}
     
+    # 4. Repositório e branch
+    read -p "🔗 URL do repositório Git (padrão: https://github.com/Raz0rd/scretblackf.git): " REPO_URL
+    REPO_URL=${REPO_URL:-https://github.com/Raz0rd/scretblackf.git}
+    
+    read -p "🌿 Branch (padrão: baseffshop): " BRANCH
+    BRANCH=${BRANCH:-baseffshop}
+    
+    # 5. Email para SSL
     read -p "📧 Email para SSL (Let's Encrypt): " SSL_EMAIL
 fi
 
