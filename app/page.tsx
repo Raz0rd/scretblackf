@@ -14,7 +14,10 @@ console.log('📦 [MODULE] app/page.tsx carregado!')
 
 export default function HomePage() {
   // Log IMEDIATO para debug
-
+  console.log('🚀 [HOMEPAGE] Componente HomePage renderizando!', {
+    hostname: typeof window !== 'undefined' ? window.location.hostname : 'SSR',
+    pathname: typeof window !== 'undefined' ? window.location.pathname : 'SSR'
+  })
   
   const { isAuthenticated, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)
@@ -40,6 +43,7 @@ export default function HomePage() {
   const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Começa FALSE, depois verifica
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>("PIX")
+  const [pendingPurchase, setPendingPurchase] = useState(false) // Flag para compra pendente após verificação
   
   // Estados do Quiz Arena de Fogo
   const [quizStep, setQuizStep] = useState<'intro' | 'quiz' | 'result' | 'reward' | 'validation'>('intro')
@@ -166,7 +170,7 @@ export default function HomePage() {
       specialOffers: [
         { id: 'semanal', name: 'Assinatura Semanal', image: '/images/semanal.png', description: 'Ganhe 60 diamantes agora e resgate 40 diamantes todos os dias no jogo, durante 7 dias! Você receberá 340 diamantes no total.' },
         { id: 'mensal', name: 'Assinatura Mensal', image: '/images/mensal.png', description: 'Ganhe 300 diamantes agora e resgate 50 diamantes todos os dias no jogo, durante 30 dias! Você receberá 1800 diamantes no total.' },
-        { id: 'booyah', name: 'Passe Booyah Premium Plus', image: '/images/boyahplus.png', description: '+ 5.600 diamantes de bônus!' },
+        { id: 'booyah', name: 'Passe Booyah Premium Plus', image: '/images/boyahplus.png', description: 'Ganhe todos os privilégios e recompensas do Booyah Pass Premium + recompensas exclusivas + 50 níveis do Booyah Pass instantaneamente + 5.600 diamantes de bônus!' },
         { id: 'nivel', name: 'Passe de Nível', image: '/images/passe-nivel.webp', description: 'Avance de nível e desbloqueie recompensas incríveis, incluindo skins exclusivas e diamantes.' }
       ]
     },
@@ -209,6 +213,8 @@ export default function HomePage() {
   
   // Evitar problemas de hidratação
   useEffect(() => {
+    console.log('🔧 [MOUNT] useEffect de montagem executando...')
+    console.log('✅ [MOUNT] Setando mounted = true')
     setMounted(true)
   }, [])
 
@@ -217,7 +223,11 @@ export default function HomePage() {
     if (typeof window === 'undefined') return
     
     const hostname = window.location.hostname
-
+    
+    console.log('🎯 [QUIZ CONTROL]', {
+      hostname,
+      currentShowBlurOverlay: showBlurOverlay
+    })
     
     // Verificar cookies de validação
     const getCookie = (name: string): string | null => {
@@ -234,15 +244,21 @@ export default function HomePage() {
     const refererVerified = getCookie('referer_verified') === 'true'
     const hasVerificationCookies = quizCompleted || refererVerified
     
-
+    console.log('🍪 [COOKIES CHECK]', {
+      quizCompleted,
+      refererVerified,
+      hasVerificationCookies
+    })
     
     // Se TEM cookies válidos, NÃO mostrar quiz (ir direto para central de recargas)
     if (hasVerificationCookies) {
+      console.log('✅ [VALIDATED] Usuário validado - mostrando central de recargas')
       setShowBlurOverlay(false)
       return
     }
     
     // Se NÃO tem cookies, mostrar quiz
+    console.log('📺 [NOT VALIDATED] Sem validação - mostrando quiz')
     setShowBlurOverlay(true)
   }, [])
 
@@ -278,7 +294,12 @@ export default function HomePage() {
       const quizCompleted = getCookie('quiz_completed') === 'true'
       const refererVerified = getCookie('referer_verified') === 'true'
       const hasVerificationCookies = quizCompleted || refererVerified
-
+      
+      console.log('🔐 [LOGIN CHECK]', {
+        quizCompleted,
+        refererVerified,
+        hasVerificationCookies
+      })
       
       // Se tem cookies de verificação, considerar como verificado
       if (hasVerificationCookies) {
@@ -305,6 +326,7 @@ export default function HomePage() {
         }
         
         // Mesmo sem dados no localStorage, se tem cookies, está verificado
+        console.log('✅ [LOGIN CHECK] Usuário verificado via cookies')
       }
     }
     
@@ -555,7 +577,7 @@ export default function HomePage() {
       310: { price: 10.99, bonus: 62 },
       520: { price: 14.9, bonus: 104 },
       2180: { price: 36.95, bonus: 2180 },   // DOBRO
-      5600: { price: 46.77, bonus: 5600 },   // DOBRO
+      5600: { price: 46.77, bonus: 1680 },
       15600: { price: 87.8, bonus: 5600 },
     }
 
@@ -585,7 +607,7 @@ export default function HomePage() {
 
   const getSpecialOfferBonus = (offer: string): number => {
     const bonusMap: { [key: string]: number } = {
-      // Free Fire
+      // Free Fire - Diamantes
       "Passe Booyah Premium Plus": 5600,
       // Haikyu - Diamantes Estelares
       "Especial de Recrutar Ultra I": 200,
@@ -757,7 +779,12 @@ export default function HomePage() {
   }
 
   const handleBuyNow = () => {
-    if (!isLoggedIn) return
+    if (!isLoggedIn) {
+      // Marcar que há uma compra pendente e abrir verificação
+      setPendingPurchase(true)
+      setShowBlurOverlay(true)
+      return
+    }
 
     // Obter parâmetros UTM
     const utmParams = getUtmObject()
@@ -892,15 +919,21 @@ export default function HomePage() {
   }
 
   // Evitar problemas de hidratação - não renderizar até estar montado
+  console.log('🔍 [MOUNTED CHECK]', { mounted })
   if (!mounted) {
+    console.log('⏳ [MOUNTED] Aguardando montagem...')
     return null
   }
 
-
+  console.log('📺 [RENDER CHECK]', {
+    showBlurOverlay,
+    willShowQuiz: showBlurOverlay
+  })
 
   // ============================================
   // SEMPRE RENDERIZAR: Central de recargas (com ou sem quiz)
   // ============================================
+  console.log('🏪 [RENDER] Renderizando CENTRAL DE RECARGAS', { quizVisivel: showBlurOverlay })
   
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -909,7 +942,17 @@ export default function HomePage() {
       {showBlurOverlay && (
         <UserVerification
           onVerificationComplete={() => {
+            console.log('✅ [QUIZ] Verificação completa - fechando modal')
             setShowBlurOverlay(false)
+            
+            // Se havia uma compra pendente, executar agora
+            if (pendingPurchase) {
+              setPendingPurchase(false)
+              // Aguardar um pouco para garantir que o modal fechou
+              setTimeout(() => {
+                handleBuyNow()
+              }, 100)
+            }
           }}
         />
       )}
@@ -1716,9 +1759,9 @@ export default function HomePage() {
                     </div>
                   )}
                   
-                  {/* Badge Hot - para 5600 diamantes do Free Fire */}
-                  {selectedGame === 'freefire' && value === '5.600' && (
-                    <div className="absolute top-2 right-2 bg-primary-red text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
+                  {/* Badge Hot - para 5.600 diamantes no Free Fire */}
+                  {value === '5.600' && selectedGame === 'freefire' && (
+                    <div className="absolute top-1 right-1 bg-primary-red text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
                       Hot
                     </div>
                   )}
@@ -1786,43 +1829,41 @@ export default function HomePage() {
                     )}
                   </div>
                   <div className="flex flex-col items-center justify-center gap-1 px-1.5 pb-1">
-                    <div className="text-center text-[11px] sm:text-sm leading-tight font-medium text-white line-clamp-2">
-                      {offer.name}
-                    </div>
-                    {/* Exibir bônus de diamantes para Passe Booyah Premium Plus */}
-                    {offer.name === 'Passe Booyah Premium Plus' && (
-                      <div className="flex items-center gap-1">
-                        <img
-                          alt="Diamante"
-                          loading="lazy"
-                          width="12"
-                          height="12"
-                          decoding="async"
-                          src="/images/point.webp"
-                          style={{ color: "transparent" }}
-                        />
-                        <span className="text-[10px] sm:text-xs font-bold text-[#E4372E]">+ 5.600</span>
+                    <div className="flex items-center justify-center gap-1">
+                      <div className="text-center text-sm sm:text-base leading-[20px] font-medium text-white line-clamp-2">
+                        {offer.name}
                       </div>
-                    )}
-                    {(selectedGame === 'haikyu' || selectedGame === 'freefire' || selectedGame === 'deltaforce') && offer.description && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setSelectedOfferInfo({
-                            name: offer.name,
-                            image: offer.image,
-                            description: offer.description
-                          })
-                          setShowOfferInfoModal(true)
-                        }}
-                        className="shrink-0 flex cursor-pointer relative"
-                      >
-                        <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-sm text-white/70 hover:text-white transition-colors">
-                          <path d="M44 26C44 23.7909 42.2091 22 40 22C37.7909 22 36 23.7909 36 26C36 28.2091 37.7909 30 40 30C42.2091 30 44 28.2091 44 26Z" fill="currentColor"></path>
-                          <path d="M43 54C43 55.6569 41.6569 57 40 57C38.3431 57 37 55.6569 37 54V37C37 35.3431 38.3431 34 40 34C41.6569 34 43 35.3431 43 37V54Z" fill="currentColor"></path>
-                          <path fillRule="evenodd" clipRule="evenodd" d="M5 25C5 13.9543 13.9543 5 25 5H55C66.0457 5 75 13.9543 75 25V55C75 66.0457 66.0457 75 55 75H25C13.9543 75 5 66.0457 5 55V25ZM25 11H55C62.732 11 69 17.268 69 25V55C69 62.732 62.732 69 55 69H25C17.268 69 11 62.732 11 55V25C11 17.268 17.268 11 25 11Z" fill="currentColor"></path>
-                        </svg>
-                      </button>
+                      {(selectedGame === 'haikyu' || selectedGame === 'freefire' || selectedGame === 'deltaforce') && offer.description && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedOfferInfo({
+                              name: offer.name,
+                              image: offer.image,
+                              description: offer.description
+                            })
+                            setShowOfferInfoModal(true)
+                          }}
+                          className="shrink-0 flex cursor-pointer relative"
+                        >
+                          <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-sm text-white/70 hover:text-white transition-colors">
+                            <path d="M44 26C44 23.7909 42.2091 22 40 22C37.7909 22 36 23.7909 36 26C36 28.2091 37.7909 30 40 30C42.2091 30 44 28.2091 44 26Z" fill="currentColor"></path>
+                            <path d="M43 54C43 55.6569 41.6569 57 40 57C38.3431 57 37 55.6569 37 54V37C37 35.3431 38.3431 34 40 34C41.6569 34 43 35.3431 43 37V54Z" fill="currentColor"></path>
+                            <path fillRule="evenodd" clipRule="evenodd" d="M5 25C5 13.9543 13.9543 5 25 5H55C66.0457 5 75 13.9543 75 25V55C75 66.0457 66.0457 75 55 75H25C13.9543 75 5 66.0457 5 55V25ZM25 11H55C62.732 11 69 17.268 69 25V55C69 62.732 62.732 69 55 69H25C17.268 69 11 62.732 11 55V25C11 17.268 17.268 11 25 11Z" fill="currentColor"></path>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {/* Mostrar 5600 diamantes para Passe Booyah Premium Plus */}
+                    {offer.name === 'Passe Booyah Premium Plus' && selectedGame === 'freefire' && (
+                      <div className="flex items-center gap-1 text-xs text-red-500 font-medium">
+                        <span>+ 5.600</span>
+                        <img 
+                          className="h-3 w-3 object-contain" 
+                          src={currentConfig.coinIcon}
+                          alt="Diamante"
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
@@ -1936,7 +1977,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2012,7 +2053,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2088,7 +2129,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2164,7 +2205,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2240,7 +2281,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 )}
-                {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
                     <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
                       + Bônus 
@@ -2286,9 +2327,7 @@ export default function HomePage() {
                       <span>
                         {selectedRechargeValue 
                           ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue!).bonus
-                          : selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0
-                            ? `${selectedSpecialOffer} + ${getSpecialOfferBonus(selectedSpecialOffer!)} diamantes`
-                            : selectedSpecialOffer
+                          : selectedSpecialOffer
                         }
                       </span>
                     </span>
@@ -2360,7 +2399,7 @@ export default function HomePage() {
                     {selectedRechargeValue && calculatePrice(selectedRechargeValue!).bonus > 0 && (
                       <span className="text-white/50 text-xs">+ {calculatePrice(selectedRechargeValue!).bonus}</span>
                     )}
-                    {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                    {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                       <span className="text-white/50 text-xs">+ {getSpecialOfferBonus(selectedSpecialOffer!)}</span>
                     )}
                   </div>
@@ -2422,7 +2461,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none text-white">
                       <span dir="ltr">{selectedSpecialOffer}</span>
                     </div>
-                    {(selectedGame === 'haikyu' || selectedGame === 'deltaforce') && selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
+                    {selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0 && (
                       <div className="mt-1 flex items-center gap-1 text-sm/none md:text-base/none text-red-500">
                         <span>+ Bônus</span>
                         <img 
@@ -2467,7 +2506,7 @@ export default function HomePage() {
               
               <button 
                 className="inline-flex items-center justify-center gap-1.5 rounded-md border border-[rgb(216,26,13)] py-1 px-5 text-center leading-none transition-colors bg-[rgb(216,26,13)] hover:bg-[rgb(205,18,20)] hover:border-[rgb(205,18,20)] text-white text-base font-bold h-11"
-                onClick={isLoggedIn ? handleBuyNow : () => setShowBlurOverlay(true)}
+                onClick={handleBuyNow}
               >
                 <span className="text-lg h-[18px] w-[18px]">
                   <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
