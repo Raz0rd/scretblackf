@@ -28,7 +28,10 @@ jobs:
             cd /var/www/ffireshop
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
-            echo "📥 Updating only API files (keeping current page.tsx)..."
+            echo "📥 Updating shared files (keeping current page.tsx)..."
+            # Remover pastas compartilhadas para forçar atualização completa
+            rm -rf app/api lib hooks
+            # Fazer checkout das pastas compartilhadas
             git checkout origin/baseffshop -- app/api/
             git checkout origin/baseffshop -- lib/
             git checkout origin/baseffshop -- hooks/
@@ -55,7 +58,10 @@ jobs:
             cd /var/www/promocoes-qpon
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
-            echo "📥 Updating only API files (keeping current page.tsx)..."
+            echo "📥 Updating shared files (keeping current page.tsx)..."
+            # Remover pastas compartilhadas para forçar atualização completa
+            rm -rf app/api lib hooks
+            # Fazer checkout das pastas compartilhadas
             git checkout origin/baseffshop -- app/api/
             git checkout origin/baseffshop -- lib/
             git checkout origin/baseffshop -- hooks/
@@ -82,7 +88,10 @@ jobs:
             cd /var/www/free-gamerecargas-site
             echo "🔄 Fetching latest changes from baseffshop..."
             git fetch origin baseffshop
-            echo "📥 Updating only API files (keeping current page.tsx)..."
+            echo "📥 Updating shared files (keeping current page.tsx)..."
+            # Remover pastas compartilhadas para forçar atualização completa
+            rm -rf app/api lib hooks
+            # Fazer checkout das pastas compartilhadas
             git checkout origin/baseffshop -- app/api/
             git checkout origin/baseffshop -- lib/
             git checkout origin/baseffshop -- hooks/
