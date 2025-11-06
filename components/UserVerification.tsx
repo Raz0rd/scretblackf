@@ -352,39 +352,39 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   if (step === 'loading') {
     return (
       <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
-        background: 'linear-gradient(135deg, #0a1f1a 0%, #0f2f27 50%, #0a1f1a 100%)'
+        background: 'linear-gradient(135deg, #1a0a1f 0%, #2a0f2f 50%, #1a0a1f 100%)'
       }}>
         {/* Efeitos de fundo */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Círculos decorativos */}
-          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-emerald-600/20 to-teal-500/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-teal-500/20 to-emerald-600/10 rounded-full blur-3xl" />
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-600/20 to-violet-500/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-violet-500/20 to-purple-600/10 rounded-full blur-3xl" />
         </div>
         
         <div className="flex items-center justify-center min-h-screen p-4 relative z-10">
           <div className="text-center max-w-md">
             {/* Logo/Ícone */}
             <div className="relative inline-block mb-8">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center shadow-2xl border-4 border-white/20">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-violet-500 flex items-center justify-center shadow-2xl border-4 border-white/20">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
               </div>
               {/* Spinner ao redor */}
-              <div className="absolute inset-0 border-4 border-transparent border-t-teal-400 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-transparent border-t-violet-400 rounded-full animate-spin"></div>
             </div>
 
             {/* Mensagem Principal */}
-            <div className="bg-emerald-900/60 backdrop-blur-sm rounded-2xl p-6 border border-emerald-500/30 mb-6">
+            <div className="bg-purple-900/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-500/30 mb-6">
               <h2 className="text-2xl font-bold mb-3 text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                 ✅ Verificação Concluída!
               </h2>
-              <p className="text-emerald-100 text-base mb-2">
+              <p className="text-purple-100 text-base mb-2">
                 Seu desconto foi ativado com sucesso
               </p>
-              <div className="flex items-center justify-center gap-2 text-teal-300 font-bold">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-teal-300 border-t-transparent"></div>
+              <div className="flex items-center justify-center gap-2 text-violet-300 font-bold">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-violet-300 border-t-transparent"></div>
                 <span>Redirecionando...</span>
               </div>
             </div>
@@ -418,24 +418,24 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
-      background: 'linear-gradient(135deg, #0a1f1a 0%, #0f2f27 50%, #0a1f1a 100%)'
+      background: 'linear-gradient(135deg, #1a0a1f 0%, #2a0f2f 50%, #1a0a1f 100%)'
     }}>
-      {/* Efeitos de fundo - Verde/Esmeralda */}
+      {/* Efeitos de fundo - Roxo/Púrpura */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Efeito de luz suave animado */}
         <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, #10b981 0%, transparent 70%)',
+          backgroundImage: 'radial-gradient(circle at 50% 50%, #a855f7 0%, transparent 70%)',
           animation: 'pulse 4s ease-in-out infinite'
         }} />
         
-        {/* Círculos decorativos verde/esmeralda */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-emerald-600/20 to-teal-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-teal-500/20 to-emerald-600/10 rounded-full blur-3xl" />
+        {/* Círculos decorativos roxo/púrpura */}
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-600/20 to-violet-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-violet-500/20 to-purple-600/10 rounded-full blur-3xl" />
       </div>
 
       {/* Pulso de luz suave do centro */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-emerald-600/10 via-teal-500/10 to-emerald-600/10 animate-pulse-slow"></div>
+        <div className="w-96 h-96 rounded-full bg-gradient-to-r from-purple-600/10 via-violet-500/10 to-purple-600/10 animate-pulse-slow"></div>
       </div>
 
       <style jsx global>{`
@@ -483,11 +483,11 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
           
           {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-purple-950 via-violet-950 to-purple-950 rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-purple-500/30 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-14 sm:h-20 md:h-24 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-500/10 to-black/30" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)] animate-pulse"></div>
+              <div className="relative h-14 sm:h-20 md:h-24 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-500/10 to-black/30" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.3),transparent_50%)] animate-pulse"></div>
                 <h1 className="relative text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-1.5 sm:gap-2 md:gap-3 px-2">
                   <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">💎</span>
                   <span>Bem-vindo!</span>
@@ -500,37 +500,37 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 {/* Elemento CSS Animado Customizado */}
                 <div className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-3 sm:mb-4 md:mb-6">
                   {/* Círculo externo girando */}
-                  <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-400 border-r-teal-400 animate-spin"></div>
+                  <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-400 border-r-violet-400 animate-spin"></div>
                   {/* Círculo do meio girando reverso */}
-                  <div className="absolute inset-2 rounded-full border-4 border-transparent border-b-teal-400 border-l-green-400 animate-spin-reverse"></div>
+                  <div className="absolute inset-2 rounded-full border-4 border-transparent border-b-violet-400 border-l-fuchsia-400 animate-spin-reverse"></div>
                   {/* Círculo interno pulsante */}
-                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 animate-pulse shadow-lg shadow-emerald-500/50"></div>
+                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-purple-500 to-violet-500 animate-pulse shadow-lg shadow-purple-500/50"></div>
                   {/* Estrela central */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-3xl animate-bounce" style={{ animationDelay: '0.2s' }}>⭐</div>
                   </div>
                 </div>
-                <h2 className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 mb-2 sm:mb-3 md:mb-4">
+                <h2 className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 mb-2 sm:mb-3 md:mb-4">
                   Acesse Ofertas Exclusivas
                 </h2>
-                <p className="text-emerald-100 mb-3 sm:mb-4 md:mb-5 lg:mb-6 leading-relaxed text-xs sm:text-sm md:text-base">
+                <p className="text-purple-100 mb-3 sm:mb-4 md:mb-5 lg:mb-6 leading-relaxed text-xs sm:text-sm md:text-base">
                   Valide sua identidade e tenha acesso a descontos especiais e bônus exclusivos!
                 </p>
                 
-                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 lg:p-6 mb-3 sm:mb-4 md:mb-5 lg:mb-6 backdrop-blur-md shadow-2xl shadow-emerald-500/30">
-                  <p className="text-emerald-300 font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl mb-2 sm:mb-3 flex items-center justify-center gap-1.5 sm:gap-2">
+                <div className="bg-gradient-to-br from-purple-500/20 via-violet-500/15 to-fuchsia-500/20 border-2 border-purple-400/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 lg:p-6 mb-3 sm:mb-4 md:mb-5 lg:mb-6 backdrop-blur-md shadow-2xl shadow-purple-500/30">
+                  <p className="text-purple-300 font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl mb-2 sm:mb-3 flex items-center justify-center gap-1.5 sm:gap-2">
                     <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl">🎁</span>
                     <span>Recompensa Exclusiva</span>
                     <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl">🎁</span>
                   </p>
-                  <p className="text-emerald-50 text-xs sm:text-sm md:text-base leading-relaxed">
-                    Valide sua conta e ganhe <span className="font-bold text-teal-300 text-sm sm:text-base md:text-lg">70% de desconto</span> na sua recarga!
+                  <p className="text-purple-50 text-xs sm:text-sm md:text-base leading-relaxed">
+                    Valide sua conta e ganhe <span className="font-bold text-violet-300 text-sm sm:text-base md:text-lg">70% de desconto</span> na sua recarga!
                   </p>
                 </div>
 
                 <button
                   onClick={handleInitialCheck}
-                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold text-sm sm:text-base md:text-lg py-2.5 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300 relative overflow-hidden group mb-2 sm:mb-3"
+                  className="w-full bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 hover:from-fuchsia-600 hover:via-purple-500 hover:to-violet-600 text-white font-bold text-sm sm:text-base md:text-lg py-2.5 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl shadow-purple-500/50 hover:shadow-violet-500/70 hover:scale-[1.05] border-2 border-purple-400/60 hover:border-violet-300 relative overflow-hidden group mb-2 sm:mb-3"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   <span className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3">
@@ -542,18 +542,18 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
                 {/* Links de Termos e Políticas */}
                 <div className="mt-2 sm:mt-3 md:mt-4 text-center text-[10px] sm:text-xs">
-                  <p className="mb-2 text-emerald-300">Ao continuar, você concorda com nossos</p>
+                  <p className="mb-2 text-purple-300">Ao continuar, você concorda com nossos</p>
                   <div className="flex items-center justify-center gap-3">
                     <button 
                       onClick={() => setShowTermsModal(true)}
-                      className="text-teal-300 hover:text-emerald-200 underline transition-colors font-semibold"
+                      className="text-violet-300 hover:text-purple-200 underline transition-colors font-semibold"
                     >
                       Termos de Uso
                     </button>
-                    <span className="text-emerald-500">•</span>
+                    <span className="text-purple-500">•</span>
                     <button 
                       onClick={() => setShowPrivacyModal(true)}
-                      className="text-teal-300 hover:text-emerald-200 underline transition-colors font-semibold"
+                      className="text-violet-300 hover:text-purple-200 underline transition-colors font-semibold"
                     >
                       Política de Privacidade
                     </button>
@@ -803,56 +803,56 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
 
           {/* Tela de Verificação */}
           {step === 'verification' && (
-            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-purple-950 via-violet-950 to-purple-950 rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-purple-500/30 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-24 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-500/10 to-black/30" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)] animate-pulse"></div>
-                <h2 className="relative text-xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-2">
-                  <span className="text-2xl">🔐</span>
+              <div className="relative h-16 sm:h-20 md:h-24 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-500/10 to-black/30" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.3),transparent_50%)] animate-pulse"></div>
+                <h2 className="relative text-base sm:text-lg md:text-xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-1.5 sm:gap-2 px-2">
+                  <span className="text-lg sm:text-xl md:text-2xl">🔐</span>
                   <span>Validar Identidade</span>
-                  <span className="text-2xl">🔐</span>
+                  <span className="text-lg sm:text-xl md:text-2xl">🔐</span>
                 </h2>
               </div>
 
-              <div className="p-8">
-                <p className="text-emerald-100 text-sm mb-6 text-center">
+              <div className="p-4 sm:p-6 md:p-8">
+                <p className="text-purple-100 text-sm mb-6 text-center">
                   Insira seu ID de jogador para confirmar que você é um usuário real
                 </p>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-base font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center gap-2">
+                    <label className="block text-base font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-400 flex items-center gap-2">
                       <span className="text-xl">🎮</span>
                       <span>ID do Jogador</span>
-                      <span className="text-xs text-emerald-300 font-normal">(apenas números)</span>
+                      <span className="text-xs text-purple-300 font-normal">(apenas números)</span>
                     </label>
                     <input
                       type="text"
                       value={playerId}
                       onChange={(e) => setPlayerId(e.target.value.replace(/[^0-9]/g, ''))}
                       placeholder="Digite seu ID do jogo (ex: 5435431)"
-                      className="w-full px-5 py-4 bg-gradient-to-r from-emerald-900/60 to-teal-900/60 border-2 border-emerald-500/40 rounded-2xl text-white text-lg font-bold placeholder-emerald-200 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-teal-400 hover:border-emerald-400/70 transition-all duration-300 shadow-lg shadow-emerald-900/20"
+                      className="w-full px-5 py-4 bg-gradient-to-r from-purple-900/60 to-violet-900/60 border-2 border-purple-500/40 rounded-2xl text-white text-lg font-bold placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-violet-400 hover:border-purple-400/70 transition-all duration-300 shadow-lg shadow-purple-900/20"
                       disabled={isLoading}
                       maxLength={15}
                     />
                   </div>
                   
-                  <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-2xl p-5 backdrop-blur-md shadow-lg shadow-emerald-500/20">
-                    <p className="text-sm text-emerald-300 font-bold mb-3 flex items-center gap-2">
+                  <div className="bg-gradient-to-br from-purple-500/20 via-violet-500/15 to-fuchsia-500/20 border-2 border-purple-400/50 rounded-2xl p-5 backdrop-blur-md shadow-lg shadow-purple-500/20">
+                    <p className="text-sm text-purple-300 font-bold mb-3 flex items-center gap-2">
                       <span className="text-lg">⭐</span>
                       <span>Importante:</span>
                     </p>
-                    <p className="text-sm text-emerald-50 mb-3 leading-relaxed">
-                      Digite seu <span className="text-teal-300 font-bold">ID REAL</span> do jogo! IDs falsos ou inválidos não passarão na verificação.
+                    <p className="text-sm text-purple-50 mb-3 leading-relaxed">
+                      Digite seu <span className="text-violet-300 font-bold">ID REAL</span> do jogo! IDs falsos ou inválidos não passarão na verificação.
                     </p>
-                    <p className="text-xs text-emerald-100 mb-3 bg-emerald-900/40 rounded-lg p-2 border border-emerald-500/30">
-                      📍 <span className="text-teal-300 font-semibold">Encontre seu ID em:</span><br/>
+                    <p className="text-xs text-purple-100 mb-3 bg-purple-900/40 rounded-lg p-2 border border-purple-500/30">
+                      📍 <span className="text-violet-300 font-semibold">Encontre seu ID em:</span><br/>
                       <span className="text-white font-bold ml-4">Configurações → Informações Básicas → ID do Jogador</span>
                     </p>
                     <button
                       onClick={() => setShowTutorial(true)}
-                      className="text-sm text-teal-300 hover:text-emerald-200 underline font-bold flex items-center gap-1"
+                      className="text-sm text-violet-300 hover:text-purple-200 underline font-bold flex items-center gap-1"
                     >
                       📖 Ver tutorial completo de como encontrar seu ID
                     </button>
@@ -875,7 +875,7 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                   className={`w-full font-bold text-lg py-5 px-8 rounded-2xl transition-all duration-300 flex items-center justify-center relative overflow-hidden group ${
                     isLoading || !playerId.trim()
                       ? 'bg-slate-700 text-slate-500 cursor-not-allowed border-2 border-slate-600'
-                      : 'bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300'
+                      : 'bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 hover:from-fuchsia-600 hover:via-purple-500 hover:to-violet-600 text-white shadow-2xl shadow-purple-500/50 hover:shadow-violet-500/70 hover:scale-[1.05] border-2 border-purple-400/60 hover:border-violet-300'
                   }`}
                 >
                   {!isLoading && !(!playerId.trim()) && (
@@ -904,16 +904,16 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       {/* Modal de Termos de Uso */}
       {showTermsModal && (
         <div className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={playClickSound}>
-          <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-emerald-500/50">
+          <div className="bg-gradient-to-br from-purple-950 via-violet-950 to-purple-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-500/50">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 -m-6 p-6 rounded-t-2xl">
+              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 -m-6 p-6 rounded-t-2xl">
                 <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                   <span className="text-3xl">📜</span>
                   <span>Termos de Uso</span>
                 </h3>
                 <button 
                   onClick={() => { playClickSound(); setShowTermsModal(false); }}
-                  className="text-white hover:text-emerald-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
+                  className="text-white hover:text-purple-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -921,23 +921,23 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 </button>
               </div>
               
-              <div className="space-y-4 text-emerald-100 text-sm leading-relaxed">
-                <p><strong className="text-teal-300 text-base">1. Aceitação dos Termos:</strong> Ao aceitar estes termos, você concorda com todas as condições de uso deste site oficial de recargas e nossa política de privacidade.</p>
+              <div className="space-y-4 text-purple-100 text-sm leading-relaxed">
+                <p><strong className="text-violet-300 text-base">1. Aceitação dos Termos:</strong> Ao aceitar estes termos, você concorda com todas as condições de uso deste site oficial de recargas e nossa política de privacidade.</p>
                 
-                <p><strong className="text-teal-300 text-base">2. Usuários Verificados:</strong> Este site é exclusivo para jogadores reais e verificados. É terminantemente proibido o uso de bots, sistemas automatizados ou contas falsas.</p>
+                <p><strong className="text-violet-300 text-base">2. Usuários Verificados:</strong> Este site é exclusivo para jogadores reais e verificados. É terminantemente proibido o uso de bots, sistemas automatizados ou contas falsas.</p>
                 
-                <p><strong className="text-teal-300 text-base">3. Ofertas Exclusivas:</strong> Usuários verificados têm acesso a descontos especiais, promoções exclusivas e bônus. As ofertas são limitadas e sujeitas a disponibilidade.</p>
+                <p><strong className="text-violet-300 text-base">3. Ofertas Exclusivas:</strong> Usuários verificados têm acesso a descontos especiais, promoções exclusivas e bônus. As ofertas são limitadas e sujeitas a disponibilidade.</p>
                 
-                <p><strong className="text-teal-300 text-base">4. Transações Seguras:</strong> Garantimos 100% de segurança em todas as transações através de sistemas criptografados de última geração.</p>
+                <p><strong className="text-violet-300 text-base">4. Transações Seguras:</strong> Garantimos 100% de segurança em todas as transações através de sistemas criptografados de última geração.</p>
                 
-                <p><strong className="text-teal-300 text-base">5. Responsabilidade:</strong> O usuário é responsável por manter suas credenciais seguras e por todas as atividades realizadas em sua conta.</p>
+                <p><strong className="text-violet-300 text-base">5. Responsabilidade:</strong> O usuário é responsável por manter suas credenciais seguras e por todas as atividades realizadas em sua conta.</p>
                 
-                <p><strong className="text-teal-300 text-base">6. Modificações:</strong> Reservamos o direito de modificar estes termos a qualquer momento. Usuários serão notificados sobre mudanças importantes.</p>
+                <p><strong className="text-violet-300 text-base">6. Modificações:</strong> Reservamos o direito de modificar estes termos a qualquer momento. Usuários serão notificados sobre mudanças importantes.</p>
               </div>
               
               <button 
                 onClick={() => { playClickSound(); setShowTermsModal(false); }}
-                className="mt-6 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.02]"
+                className="mt-6 w-full bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 hover:from-fuchsia-600 hover:via-purple-500 hover:to-violet-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-purple-500/50 hover:shadow-violet-500/70 hover:scale-[1.02]"
               >
                 ✅ Entendi
               </button>
@@ -949,16 +949,16 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       {/* Modal de Política de Privacidade */}
       {showPrivacyModal && (
         <div className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={playClickSound}>
-          <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-emerald-500/50">
+          <div className="bg-gradient-to-br from-purple-950 via-violet-950 to-purple-950 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-500/50">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 -m-6 p-6 rounded-t-2xl">
+              <div className="flex items-center justify-between mb-6 bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 -m-6 p-6 rounded-t-2xl">
                 <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                   <span className="text-3xl">🔐</span>
                   <span>Política de Privacidade</span>
                 </h3>
                 <button 
                   onClick={() => { playClickSound(); setShowPrivacyModal(false); }}
-                  className="text-white hover:text-emerald-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
+                  className="text-white hover:text-purple-200 transition-colors bg-white/10 hover:bg-white/20 rounded-lg p-2"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -966,23 +966,23 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                 </button>
               </div>
               
-              <div className="space-y-4 text-emerald-100 text-sm leading-relaxed">
-                <p><strong className="text-teal-300 text-base">1. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.</p>
+              <div className="space-y-4 text-purple-100 text-sm leading-relaxed">
+                <p><strong className="text-violet-300 text-base">1. Coleta de Dados:</strong> Coletamos apenas informações necessárias para processar suas recargas: ID do jogador, dados de pagamento e informações de contato. Não compartilhamos dados com terceiros.</p>
                 
-                <p><strong className="text-teal-300 text-base">2. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.</p>
+                <p><strong className="text-violet-300 text-base">2. Uso das Informações:</strong> Seus dados são utilizados exclusivamente para: processar recargas, enviar confirmações, oferecer suporte técnico e disponibilizar ofertas personalizadas.</p>
                 
-                <p><strong className="text-teal-300 text-base">3. Segurança:</strong> Utilizamos criptografia SSL/TLS e seguimos os mais altos padrões de segurança da indústria para proteger suas informações.</p>
+                <p><strong className="text-violet-300 text-base">3. Segurança:</strong> Utilizamos criptografia SSL/TLS e seguimos os mais altos padrões de segurança da indústria para proteger suas informações.</p>
                 
-                <p><strong className="text-teal-300 text-base">4. Cookies:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.</p>
+                <p><strong className="text-violet-300 text-base">4. Cookies:</strong> Utilizamos cookies para melhorar sua experiência, lembrar preferências e analisar o tráfego do site de forma anônima.</p>
                 
-                <p><strong className="text-teal-300 text-base">5. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.</p>
+                <p><strong className="text-violet-300 text-base">5. Direitos do Usuário:</strong> Você pode solicitar acesso, correção ou exclusão de seus dados a qualquer momento através do nosso suporte.</p>
                 
-                <p><strong className="text-teal-300 text-base">6. Conformidade LGPD:</strong> Estamos em conformidade com a Lei Geral de Proteção de Dados (LGPD) e respeitamos todos os seus direitos de privacidade.</p>
+                <p><strong className="text-violet-300 text-base">6. Conformidade LGPD:</strong> Estamos em conformidade com a Lei Geral de Proteção de Dados (LGPD) e respeitamos todos os seus direitos de privacidade.</p>
               </div>
               
               <button 
                 onClick={() => { playClickSound(); setShowPrivacyModal(false); }}
-                className="mt-6 w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.02]"
+                className="mt-6 w-full bg-gradient-to-r from-purple-600 via-violet-500 to-fuchsia-600 hover:from-fuchsia-600 hover:via-purple-500 hover:to-violet-600 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-purple-500/50 hover:shadow-violet-500/70 hover:scale-[1.02]"
               >
                 ✅ Entendi
               </button>
