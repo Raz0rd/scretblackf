@@ -350,7 +350,7 @@ export default function CheckoutPage() {
   const calculateDiamondDetails = (diamonds: string) => {
     const diamondCount = Number.parseInt(diamonds.replace(".", "").replace(",", ""))
     const bonusMap: { [key: number]: number } = {
-      100: 20, 310: 62, 520: 104, 1060: 212, 2180: 436, 5600: 1120, 15600: 3120,
+      100: 20, 310: 62, 520: 104, 2180: 436, 5600: 1120, 15600: 3120,
     }
     const bonus = bonusMap[diamondCount] || 0
     const total = diamondCount + bonus

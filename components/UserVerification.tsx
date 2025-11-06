@@ -352,39 +352,39 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
   if (step === 'loading') {
     return (
       <div className="fixed inset-0 z-[9999] overflow-hidden" style={{
-        background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%)'
+        background: 'linear-gradient(135deg, #0a1f1a 0%, #0f2f27 50%, #0a1f1a 100%)'
       }}>
         {/* Efeitos de fundo */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Círculos decorativos */}
-          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-600/20 to-cyan-500/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 to-blue-600/10 rounded-full blur-3xl" />
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-emerald-600/20 to-teal-500/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-teal-500/20 to-emerald-600/10 rounded-full blur-3xl" />
         </div>
         
         <div className="flex items-center justify-center min-h-screen p-4 relative z-10">
           <div className="text-center max-w-md">
             {/* Logo/Ícone */}
             <div className="relative inline-block mb-8">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-2xl border-4 border-white/20">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center shadow-2xl border-4 border-white/20">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                   <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
               </div>
               {/* Spinner ao redor */}
-              <div className="absolute inset-0 border-4 border-transparent border-t-cyan-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-transparent border-t-teal-400 rounded-full animate-spin"></div>
             </div>
 
             {/* Mensagem Principal */}
-            <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl p-6 border border-blue-500/30 mb-6">
+            <div className="bg-emerald-900/60 backdrop-blur-sm rounded-2xl p-6 border border-emerald-500/30 mb-6">
               <h2 className="text-2xl font-bold mb-3 text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                 ✅ Verificação Concluída!
               </h2>
-              <p className="text-gray-300 text-base mb-2">
+              <p className="text-emerald-100 text-base mb-2">
                 Seu desconto foi ativado com sucesso
               </p>
-              <div className="flex items-center justify-center gap-2 text-yellow-400 font-bold">
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-yellow-400 border-t-transparent"></div>
+              <div className="flex items-center justify-center gap-2 text-teal-300 font-bold">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-teal-300 border-t-transparent"></div>
                 <span>Redirecionando...</span>
               </div>
             </div>
@@ -483,22 +483,22 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
           
           {/* Tela Inicial */}
           {step === 'initial' && (
-            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-emerald-500/30 overflow-hidden backdrop-blur-xl">
               {/* Header */}
-              <div className="relative h-32 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
+              <div className="relative h-14 sm:h-20 md:h-24 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-teal-500/10 to-black/30" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.3),transparent_50%)] animate-pulse"></div>
-                <h1 className="relative text-3xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-3">
-                  <span className="text-4xl">💎</span>
+                <h1 className="relative text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-center drop-shadow-2xl flex items-center gap-1.5 sm:gap-2 md:gap-3 px-2">
+                  <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">💎</span>
                   <span>Bem-vindo!</span>
-                  <span className="text-4xl">💎</span>
+                  <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">💎</span>
                 </h1>
               </div>
 
               {/* Conteúdo */}
-              <div className="p-8 text-center">
+              <div className="p-3 sm:p-5 md:p-6 lg:p-8 text-center">
                 {/* Elemento CSS Animado Customizado */}
-                <div className="relative w-24 h-24 mx-auto mb-6">
+                <div className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-3 sm:mb-4 md:mb-6">
                   {/* Círculo externo girando */}
                   <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-400 border-r-teal-400 animate-spin"></div>
                   {/* Círculo do meio girando reverso */}
@@ -510,38 +510,38 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
                     <div className="text-3xl animate-bounce" style={{ animationDelay: '0.2s' }}>⭐</div>
                   </div>
                 </div>
-                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 mb-4">
+                <h2 className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 mb-2 sm:mb-3 md:mb-4">
                   Acesse Ofertas Exclusivas
                 </h2>
-                <p className="text-emerald-100 mb-6 leading-relaxed text-base">
+                <p className="text-emerald-100 mb-3 sm:mb-4 md:mb-5 lg:mb-6 leading-relaxed text-xs sm:text-sm md:text-base">
                   Valide sua identidade e tenha acesso a descontos especiais e bônus exclusivos!
                 </p>
                 
-                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-2xl p-6 mb-6 backdrop-blur-md shadow-2xl shadow-emerald-500/30">
-                  <p className="text-emerald-300 font-bold text-xl mb-3 flex items-center justify-center gap-2">
-                    <span className="text-3xl">🎁</span>
+                <div className="bg-gradient-to-br from-emerald-500/20 via-teal-500/15 to-green-500/20 border-2 border-emerald-400/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 lg:p-6 mb-3 sm:mb-4 md:mb-5 lg:mb-6 backdrop-blur-md shadow-2xl shadow-emerald-500/30">
+                  <p className="text-emerald-300 font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl mb-2 sm:mb-3 flex items-center justify-center gap-1.5 sm:gap-2">
+                    <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl">🎁</span>
                     <span>Recompensa Exclusiva</span>
-                    <span className="text-3xl">🎁</span>
+                    <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl">🎁</span>
                   </p>
-                  <p className="text-emerald-50 text-base leading-relaxed">
-                    Valide sua conta e ganhe <span className="font-bold text-teal-300 text-lg">70% de desconto</span> na sua recarga!
+                  <p className="text-emerald-50 text-xs sm:text-sm md:text-base leading-relaxed">
+                    Valide sua conta e ganhe <span className="font-bold text-teal-300 text-sm sm:text-base md:text-lg">70% de desconto</span> na sua recarga!
                   </p>
                 </div>
 
                 <button
                   onClick={handleInitialCheck}
-                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold text-lg py-4 px-8 rounded-2xl transition-all duration-300 shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300 relative overflow-hidden group"
+                  className="w-full bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600 hover:from-green-600 hover:via-emerald-500 hover:to-teal-600 text-white font-bold text-sm sm:text-base md:text-lg py-2.5 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl shadow-emerald-500/50 hover:shadow-teal-500/70 hover:scale-[1.05] border-2 border-emerald-400/60 hover:border-teal-300 relative overflow-hidden group mb-2 sm:mb-3"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    <span className="text-2xl">🚀</span>
+                  <span className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2 md:gap-3">
+                    <span className="text-base sm:text-lg md:text-xl lg:text-2xl">🚀</span>
                     <span>Começar Agora</span>
-                    <span className="text-2xl">✨</span>
+                    <span className="text-base sm:text-lg md:text-xl lg:text-2xl">✨</span>
                   </span>
                 </button>
 
                 {/* Links de Termos e Políticas */}
-                <div className="mt-4 text-center text-xs">
+                <div className="mt-2 sm:mt-3 md:mt-4 text-center text-[10px] sm:text-xs">
                   <p className="mb-2 text-emerald-300">Ao continuar, você concorda com nossos</p>
                   <div className="flex items-center justify-center gap-3">
                     <button 

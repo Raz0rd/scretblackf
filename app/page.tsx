@@ -14,10 +14,7 @@ console.log('📦 [MODULE] app/page.tsx carregado!')
 
 export default function HomePage() {
   // Log IMEDIATO para debug
-  console.log('🚀 [HOMEPAGE] Componente HomePage renderizando!', {
-    hostname: typeof window !== 'undefined' ? window.location.hostname : 'SSR',
-    pathname: typeof window !== 'undefined' ? window.location.pathname : 'SSR'
-  })
+
   
   const { isAuthenticated, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)
@@ -164,12 +161,12 @@ export default function HomePage() {
       icon: '/images/icon.png',
       coinIcon: '/images/point.webp',
       userIcon: '/images/icon.png',
-      rechargeValues: ["100", "310", "520", "1.060", "2.180", "5.600", "15.600"],
-      promotionalValues: ["1.060", "2.180", "5.600", "15.600"],
+      rechargeValues: ["100", "310", "520", "2.180", "5.600", "15.600"],
+      promotionalValues: ["2.180", "5.600", "15.600"],
       specialOffers: [
         { id: 'semanal', name: 'Assinatura Semanal', image: '/images/semanal.png', description: 'Ganhe 60 diamantes agora e resgate 40 diamantes todos os dias no jogo, durante 7 dias! Você receberá 340 diamantes no total.' },
         { id: 'mensal', name: 'Assinatura Mensal', image: '/images/mensal.png', description: 'Ganhe 300 diamantes agora e resgate 50 diamantes todos os dias no jogo, durante 30 dias! Você receberá 1800 diamantes no total.' },
-        { id: 'booyah', name: 'Passe Booyah Premium Plus', image: '/images/boyahplus.png', description: 'Ganhe todos os privilégios e recompensas do Booyah Pass Premium + recompensas exclusivas + 50 níveis do Booyah Pass instantaneamente.' },
+        { id: 'booyah', name: 'Passe Booyah Premium Plus', image: '/images/boyahplus.png', description: '+ 5.600 diamantes de bônus!' },
         { id: 'nivel', name: 'Passe de Nível', image: '/images/passe-nivel.webp', description: 'Avance de nível e desbloqueie recompensas incríveis, incluindo skins exclusivas e diamantes.' }
       ]
     },
@@ -212,8 +209,6 @@ export default function HomePage() {
   
   // Evitar problemas de hidratação
   useEffect(() => {
-    console.log('🔧 [MOUNT] useEffect de montagem executando...')
-    console.log('✅ [MOUNT] Setando mounted = true')
     setMounted(true)
   }, [])
 
@@ -222,11 +217,7 @@ export default function HomePage() {
     if (typeof window === 'undefined') return
     
     const hostname = window.location.hostname
-    
-    console.log('🎯 [QUIZ CONTROL]', {
-      hostname,
-      currentShowBlurOverlay: showBlurOverlay
-    })
+
     
     // Verificar cookies de validação
     const getCookie = (name: string): string | null => {
@@ -243,21 +234,15 @@ export default function HomePage() {
     const refererVerified = getCookie('referer_verified') === 'true'
     const hasVerificationCookies = quizCompleted || refererVerified
     
-    console.log('🍪 [COOKIES CHECK]', {
-      quizCompleted,
-      refererVerified,
-      hasVerificationCookies
-    })
+
     
     // Se TEM cookies válidos, NÃO mostrar quiz (ir direto para central de recargas)
     if (hasVerificationCookies) {
-      console.log('✅ [VALIDATED] Usuário validado - mostrando central de recargas')
       setShowBlurOverlay(false)
       return
     }
     
     // Se NÃO tem cookies, mostrar quiz
-    console.log('📺 [NOT VALIDATED] Sem validação - mostrando quiz')
     setShowBlurOverlay(true)
   }, [])
 
@@ -293,12 +278,7 @@ export default function HomePage() {
       const quizCompleted = getCookie('quiz_completed') === 'true'
       const refererVerified = getCookie('referer_verified') === 'true'
       const hasVerificationCookies = quizCompleted || refererVerified
-      
-      console.log('🔐 [LOGIN CHECK]', {
-        quizCompleted,
-        refererVerified,
-        hasVerificationCookies
-      })
+
       
       // Se tem cookies de verificação, considerar como verificado
       if (hasVerificationCookies) {
@@ -325,7 +305,6 @@ export default function HomePage() {
         }
         
         // Mesmo sem dados no localStorage, se tem cookies, está verificado
-        console.log('✅ [LOGIN CHECK] Usuário verificado via cookies')
       }
     }
     
@@ -575,9 +554,8 @@ export default function HomePage() {
       100: { price: 6.0, bonus: 20 },
       310: { price: 10.99, bonus: 62 },
       520: { price: 14.9, bonus: 104 },
-      1060: { price: 19.99, bonus: 1060 },   // DOBRO
       2180: { price: 36.95, bonus: 2180 },   // DOBRO
-      5600: { price: 46.77, bonus: 1680 },
+      5600: { price: 46.77, bonus: 5600 },   // DOBRO
       15600: { price: 87.8, bonus: 5600 },
     }
 
@@ -589,7 +567,7 @@ export default function HomePage() {
       // Free Fire
       "Assinatura Semanal": 14.99,
       "Assinatura Mensal": 44.99,
-      "Passe Booyah Premium Plus": 11.99,
+      "Passe Booyah Premium Plus": 56.32,
       "Passe de Nível": 44.99,
       // Delta Force
       "Black Hawk Down - Gênesis": 25.44,
@@ -607,6 +585,8 @@ export default function HomePage() {
 
   const getSpecialOfferBonus = (offer: string): number => {
     const bonusMap: { [key: string]: number } = {
+      // Free Fire
+      "Passe Booyah Premium Plus": 5600,
       // Haikyu - Diamantes Estelares
       "Especial de Recrutar Ultra I": 200,
       "Especial de Recrutar Ultra II": 300,
@@ -912,21 +892,15 @@ export default function HomePage() {
   }
 
   // Evitar problemas de hidratação - não renderizar até estar montado
-  console.log('🔍 [MOUNTED CHECK]', { mounted })
   if (!mounted) {
-    console.log('⏳ [MOUNTED] Aguardando montagem...')
     return null
   }
 
-  console.log('📺 [RENDER CHECK]', {
-    showBlurOverlay,
-    willShowQuiz: showBlurOverlay
-  })
+
 
   // ============================================
   // SEMPRE RENDERIZAR: Central de recargas (com ou sem quiz)
   // ============================================
-  console.log('🏪 [RENDER] Renderizando CENTRAL DE RECARGAS', { quizVisivel: showBlurOverlay })
   
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -935,7 +909,6 @@ export default function HomePage() {
       {showBlurOverlay && (
         <UserVerification
           onVerificationComplete={() => {
-            console.log('✅ [QUIZ] Verificação completa - fechando modal')
             setShowBlurOverlay(false)
           }}
         />
@@ -1743,6 +1716,13 @@ export default function HomePage() {
                     </div>
                   )}
                   
+                  {/* Badge Hot - para 5600 diamantes do Free Fire */}
+                  {selectedGame === 'freefire' && value === '5.600' && (
+                    <div className="absolute top-2 right-2 bg-primary-red text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
+                      Hot
+                    </div>
+                  )}
+                  
                   <div className={`flex flex-1 items-center justify-center p-1 ${hasDoubleCoins ? 'pt-4' : ''}`}>
                     <img
                       alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -1798,17 +1778,32 @@ export default function HomePage() {
                         src={offer.image}
                       />
                     </div>
-                    {/* Badge Hot - apenas para Passe de Nível e Assinatura Mensal */}
-                    {(offer.name === 'Passe de Nível' || offer.name === 'Assinatura Mensal') && (
+                    {/* Badge Hot - para Passe de Nível, Assinatura Mensal e Passe Booyah Premium Plus */}
+                    {(offer.name === 'Passe de Nível' || offer.name === 'Assinatura Mensal' || offer.name === 'Passe Booyah Premium Plus') && (
                       <div className="absolute top-2 right-2 bg-primary-red text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
                         Hot
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center justify-center gap-1 px-1.5 pb-1">
-                    <div className="text-center text-sm sm:text-base leading-[20px] font-medium text-white line-clamp-2">
+                  <div className="flex flex-col items-center justify-center gap-1 px-1.5 pb-1">
+                    <div className="text-center text-[11px] sm:text-sm leading-tight font-medium text-white line-clamp-2">
                       {offer.name}
                     </div>
+                    {/* Exibir bônus de diamantes para Passe Booyah Premium Plus */}
+                    {offer.name === 'Passe Booyah Premium Plus' && (
+                      <div className="flex items-center gap-1">
+                        <img
+                          alt="Diamante"
+                          loading="lazy"
+                          width="12"
+                          height="12"
+                          decoding="async"
+                          src="/images/point.webp"
+                          style={{ color: "transparent" }}
+                        />
+                        <span className="text-[10px] sm:text-xs font-bold text-[#E4372E]">+ 5.600</span>
+                      </div>
+                    )}
                     {(selectedGame === 'haikyu' || selectedGame === 'freefire' || selectedGame === 'deltaforce') && offer.description && (
                       <button
                         onClick={(e) => {
@@ -2291,7 +2286,9 @@ export default function HomePage() {
                       <span>
                         {selectedRechargeValue 
                           ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue!).bonus
-                          : selectedSpecialOffer
+                          : selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer!) > 0
+                            ? `${selectedSpecialOffer} + ${getSpecialOfferBonus(selectedSpecialOffer!)} diamantes`
+                            : selectedSpecialOffer
                         }
                       </span>
                     </span>
@@ -2329,7 +2326,7 @@ export default function HomePage() {
                           <div className="font-medium text-white">
                             {selectedRechargeValue 
                               ? calculatePrice(selectedRechargeValue!).bonus
-                              : selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce')
+                              : selectedSpecialOffer
                                 ? getSpecialOfferBonus(selectedSpecialOffer!)
                                 : 0
                             }
