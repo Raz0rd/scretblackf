@@ -365,6 +365,15 @@ export default function CheckoutPage() {
     setShowPixInline(true)
     setPixError("")
     
+    // Validar email antes de enviar
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email || !emailRegex.test(email)) {
+      setPixError("❌ Email inválido! Por favor, insira um email válido.")
+      setIsProcessingPayment(false)
+      setShowPixInline(false)
+      return
+    }
+    
     // Garantir que o telefone foi gerado
     if (!phone) {
       const randomData = generateRandomUserData()

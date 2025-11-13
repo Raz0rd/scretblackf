@@ -266,6 +266,14 @@ export default function ProductPage() {
     e.preventDefault()
     setIsLoading(true)
     
+    // Validar email antes de enviar
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      alert('❌ Email inválido!\n\nPor favor, insira um email válido.\n\n✓ Deve conter @ (exemplo: seuemail@gmail.com)\n✓ Não pode ter espaços\n✓ Deve ter um domínio válido (.com, .br, etc)')
+      setIsLoading(false)
+      return
+    }
+    
     try {
       const amountInCents = Math.round(product.price * 100)
       

@@ -1,5 +1,5 @@
 {
-  "totalAccess": 3470,
+  "totalAccess": 3473,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -27760,6 +27760,30 @@
       "ip": "::1",
       "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046823940",
       "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T16:53:27.096Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T16:53:48.380Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T16:54:03.627Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
     }
   ],
   "pathCounts": {
@@ -27794,7 +27818,7 @@
     "/images/products/1060-min.png": 81,
     "/images/products/2180-min.png": 60,
     "/images/products/5600-min.png": 61,
-    "/loja": 113,
+    "/loja": 116,
     "/produto/ff-1060": 99,
     "/produto/ff-calca": 18,
     "/images/products/norton.webp": 144,
