@@ -11,6 +11,12 @@ import { DevToolsBlocker } from "@/components/DevToolsBlocker"
 export const metadata: Metadata = {
   title: "Dimbux - Recarga de Diamantes Free Fire e Robux | Entrega Rápida",
   description: "Compre diamantes para Free Fire e Robux com segurança e entrega em até 5 minutos. Pagamento via PIX, preços promocionais e suporte 24/7. Loja oficial de recargas.",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
   keywords: [
     "comprar diamantes free fire",
     "recarga diamantes ff",

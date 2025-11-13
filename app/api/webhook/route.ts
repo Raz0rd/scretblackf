@@ -134,6 +134,19 @@ export async function POST(request: NextRequest) {
       origem
     })
 
+    // Atualizar status no orderStorage se for PAID
+    if (isPaid) {
+      const storedOrder = orderStorageService.getOrder(transactionId)
+      if (storedOrder) {
+        const updated = orderStorageService.updateOrderStatus(transactionId, 'paid')
+        if (updated) {
+          console.log(`✅ [WEBHOOK] Status atualizado no orderStorage: PAID`)
+        }
+      } else {
+        console.log(`⚠️ [WEBHOOK] Pedido não encontrado no orderStorage para atualizar`)
+      }
+    }
+
     if (isPaid || isWaitingPayment) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log(`💳 [WEBHOOK] Pagamento ${isPaid ? 'CONFIRMADO' : 'PENDENTE'}`)

@@ -116,10 +116,12 @@ export async function POST(request: NextRequest) {
     console.log(`[CHECK-STATUS] Gateway selecionado: ${gateway.toUpperCase()}`)
     console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
 
-    // Verificar se já processamos esta transação como paid
+    // PRIMEIRO: Verificar se existe no orderStorage
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
+    
+    // Se encontrou no storage E já está pago, retornar direto
     if (storedOrder && storedOrder.status === 'paid') {
-      console.log(`[CHECK-STATUS] Transação ${transactionId} já processada como paid`)
+      console.log(`[CHECK-STATUS] ✅ Transação ${transactionId} já processada como PAID no storage`)
       return NextResponse.json({
         success: true,
         status: 'paid',
@@ -128,7 +130,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Consultar API do gateway configurado
+    // Se NÃO encontrou no storage OU status não é paid, consultar gateway
     let transactionData
     
     try {
