@@ -14,6 +14,7 @@ interface OrderData {
     document: string
   }
   trackingParameters: TrackingParameters
+  productName?: string // Nome do produto (ex: "100 Diamantes", "eBook eSport Digital")
   createdAt: string
   status: 'pending' | 'paid' | 'cancelled' | 'failed'
   paidAt?: string

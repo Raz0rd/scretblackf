@@ -13,13 +13,32 @@ export function DevToolsBlocker() {
       return
     }
     
-    console.log('[DevTools] 🔒 Proteção ativada - F12, Clique Direito e Console')
+    // Função para mostrar mensagem de aviso
+    const showWarning = () => {
+      console.clear()
+      console.log('%c⚠️ ATENÇÃO - ACESSO NÃO AUTORIZADO ⚠️', 'color: #ff0000; font-size: 40px; font-weight: bold; text-shadow: 3px 3px 0 #000;')
+      console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #ff0000; font-weight: bold;')
+      console.log('%c🚨 SISTEMA DE SEGURANÇA ATIVO', 'color: #ff6600; font-size: 24px; font-weight: bold;')
+      console.log('%c', '')
+      console.log('%c⚡ Seu acesso está sendo monitorado', 'color: #ffff00; font-size: 18px; font-weight: bold;')
+      console.log('%c⚡ Tentativas de invasão serão reportadas', 'color: #ffff00; font-size: 18px; font-weight: bold;')
+      console.log('%c⚡ Seu IP e dados foram registrados', 'color: #ffff00; font-size: 18px; font-weight: bold;')
+      console.log('%c', '')
+      console.log('%c🔒 Este console é protegido por sistemas anti-fraude', 'color: #00ff00; font-size: 16px;')
+      console.log('%c🔒 Qualquer tentativa de manipulação será bloqueada', 'color: #00ff00; font-size: 16px;')
+      console.log('%c', '')
+      console.log('%c⛔ FECHE O DEVTOOLS IMEDIATAMENTE', 'color: #ff0000; font-size: 28px; font-weight: bold; text-shadow: 2px 2px 0 #000;')
+      console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #ff0000; font-weight: bold;')
+    }
+    
+    // Mostrar aviso inicial
+    showWarning()
 
     // 1. BLOQUEAR F12
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'F12') {
         e.preventDefault()
-        console.clear()
+        showWarning()
         return false
       }
     }
@@ -37,17 +56,17 @@ export function DevToolsBlocker() {
       return false
     }
 
-    // 3. LIMPAR CONSOLE (a cada 2 segundos)
-    const clearConsole = () => {
-      console.clear()
+    // 3. MOSTRAR AVISO (a cada 3 segundos)
+    const showWarningPeriodic = () => {
+      showWarning()
     }
 
     // Adicionar event listeners
     document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('contextmenu', handleContextMenu)
     
-    // Limpar console a cada 2 segundos
-    const consoleInterval = setInterval(clearConsole, 2000)
+    // Mostrar aviso a cada 3 segundos
+    const consoleInterval = setInterval(showWarningPeriodic, 3000)
 
     // Cleanup
     return () => {

@@ -608,12 +608,14 @@ export async function POST(request: NextRequest) {
           document: body.customer?.document?.number || ''
         },
         trackingParameters: body.trackingParams || {},
+        productName: body.itemValue || 'Produto Digital', // Salvar nome real do produto
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }
       
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
+      console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }

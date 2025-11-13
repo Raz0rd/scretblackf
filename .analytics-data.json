@@ -1,5 +1,5 @@
 {
-  "totalAccess": 3378,
+  "totalAccess": 3470,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -27024,18 +27024,754 @@
       "ip": "::1",
       "referer": "http://localhost:3000/_next/static/css/app/layout.css?v=1761872819964",
       "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.391Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.608Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.616Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.648Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.656Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.664Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.671Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.711Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.730Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046136407",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:16.736Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046136407",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:19.000Z",
+      "path": "/fonts/Metropolis-Medium-f3a73873.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046136407",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.382Z",
+      "path": "/meus-pedidos",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.531Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.536Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.542Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.548Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.553Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.573Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046141374",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.578Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:21.591Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046141374",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.292Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/meus-pedidos",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.378Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.384Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.409Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.416Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.423Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.439Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.455Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046165250",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.462Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046165250",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:45.478Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.120Z",
+      "path": "/blog",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.231Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.253Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.261Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.267Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.273Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.296Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046168113",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.302Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046168113",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:48.320Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.498Z",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/blog",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.578Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.583Z",
+      "path": "/images/products/banner.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.605Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.611Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.616Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.633Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.648Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046171474",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.654Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046171474",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:51.668Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.005Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.126Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.132Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.137Z",
+      "path": "/images/products/1060-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.143Z",
+      "path": "/images/products/2180-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.189Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046174999",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.194Z",
+      "path": "/images/products/5600-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.199Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046174999",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.230Z",
+      "path": "/images/products/robux_1500.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.235Z",
+      "path": "/images/products/robux_2700.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.241Z",
+      "path": "/images/products/robux-3600-o6_PR7Lu.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.258Z",
+      "path": "/images/products/robux-4500-CBGtdrYT.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.263Z",
+      "path": "/images/products/robux-10000-DH0988eb.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.313Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.339Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.354Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.365Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:02:55.375Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:44.073Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:51.935Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.068Z",
+      "path": "/.well-known/appspecific/com.chrome.devtools.json",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.076Z",
+      "path": "/images/products/LogoDimBuxBAckgroundFREE.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.119Z",
+      "path": "/images/products/2180-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.125Z",
+      "path": "/images/products/ANGELICAL.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.131Z",
+      "path": "/images/products/1060-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.161Z",
+      "path": "/images/products/5600-min.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.167Z",
+      "path": "/images/products/robux_1500.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.190Z",
+      "path": "/images/products/robux_2700.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.195Z",
+      "path": "/images/products/robux-3600-o6_PR7Lu.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.201Z",
+      "path": "/images/products/robux-4500-CBGtdrYT.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.226Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046291908",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.231Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046291908",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.257Z",
+      "path": "/images/products/robux-10000-DH0988eb.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.277Z",
+      "path": "/images/products/paymentMethods.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.295Z",
+      "path": "/images/products/norton.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.301Z",
+      "path": "/images/products/google%20Site%20Seguro.webp",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.319Z",
+      "path": "/images/products/reclameAqui.avif",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.326Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:04:52.345Z",
+      "path": "/images/products/backgroundFOOTER.png",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:13:32.467Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:13:43.956Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:19:26.021Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046823940",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T15:19:26.028Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763046823940",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 18,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 339,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 337,
-    "/": 224,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 347,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 345,
+    "/": 227,
     "/manifest.json": 9,
     "/icon-192x192.png": 8,
-    "/fonts/Metropolis-Medium-f3a73873.woff2": 115,
-    "/.well-known/appspecific/com.chrome.devtools.json": 138,
+    "/fonts/Metropolis-Medium-f3a73873.woff2": 116,
+    "/.well-known/appspecific/com.chrome.devtools.json": 140,
     "/icon-512x512.png": 3,
     "/images/products/ff-1050.png": 3,
     "/images/products/ff-calca-angelical.png": 3,
@@ -27048,28 +27784,28 @@
     "/images/products/roblox-4500.png": 4,
     "/images/products/roblox-7000.png": 4,
     "/images/products/roblox-10000.png": 4,
-    "/images/products/robux-10000-DH0988eb.webp": 61,
-    "/images/products/robux-4500-CBGtdrYT.webp": 59,
-    "/images/products/robux-3600-o6_PR7Lu.webp": 59,
-    "/images/products/robux_1500.webp": 59,
+    "/images/products/robux-10000-DH0988eb.webp": 63,
+    "/images/products/robux-4500-CBGtdrYT.webp": 61,
+    "/images/products/robux-3600-o6_PR7Lu.webp": 61,
+    "/images/products/robux_1500.webp": 61,
     "/images/products/roblox_800_robux.webp": 49,
-    "/images/products/robux_2700.webp": 59,
-    "/images/products/ANGELICAL.png": 62,
-    "/images/products/1060-min.png": 79,
-    "/images/products/2180-min.png": 58,
-    "/images/products/5600-min.png": 59,
-    "/loja": 109,
+    "/images/products/robux_2700.webp": 61,
+    "/images/products/ANGELICAL.png": 64,
+    "/images/products/1060-min.png": 81,
+    "/images/products/2180-min.png": 60,
+    "/images/products/5600-min.png": 61,
+    "/loja": 113,
     "/produto/ff-1060": 99,
     "/produto/ff-calca": 18,
-    "/images/products/norton.webp": 137,
-    "/images/products/paymentMethods.png": 137,
-    "/images/products/google%20Site%20Seguro.webp": 137,
-    "/images/products/reclameAqui.avif": 137,
+    "/images/products/norton.webp": 144,
+    "/images/products/paymentMethods.png": 144,
+    "/images/products/google%20Site%20Seguro.webp": 144,
+    "/images/products/reclameAqui.avif": 144,
     "/api/newsletter": 5,
     "/images/products/logoDimbux.png": 4,
-    "/images/products/banner.png": 51,
-    "/images/products/backgroundFOOTER.png": 139,
-    "/images/products/LogoDimBuxBAckgroundFREE.png": 100,
+    "/images/products/banner.png": 54,
+    "/images/products/backgroundFOOTER.png": 147,
+    "/images/products/LogoDimBuxBAckgroundFREE.png": 107,
     "/produto/rbx-4500": 1,
     "/api/generate-pix": 20,
     "/api/utmify": 1,
@@ -27087,8 +27823,8 @@
     "/produto/rbx-15000-bonus": 2,
     "/produto/rbx-10000": 6,
     "/produto/ff-5600": 1,
-    "/meus-pedidos": 9,
-    "/blog": 3,
+    "/meus-pedidos": 10,
+    "/blog": 4,
     "/promo": 1,
     "/images/icon.webp": 3,
     "/images/profile-icon.webp": 1,

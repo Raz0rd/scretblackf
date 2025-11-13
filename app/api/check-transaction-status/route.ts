@@ -253,7 +253,7 @@ export async function POST(request: NextRequest) {
             products: [
               {
                 id: `recarga-${transactionId}`,
-                name: "Recarga Free Fire",
+                name: storedOrder?.productName || "Recarga Free Fire",
                 planId: null,
                 planName: null,
                 quantity: 1,
@@ -410,7 +410,7 @@ export async function POST(request: NextRequest) {
                 products: [
                   {
                     id: `recarga-${transactionId}`,
-                    name: "Recarga Free Fire",
+                    name: storedOrder?.productName || "Recarga Free Fire",
                     planId: null,
                     planName: null,
                     quantity: 1,

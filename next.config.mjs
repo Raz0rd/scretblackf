@@ -61,11 +61,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://static.cloudflareinsights.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com",
               "img-src 'self' data: https: blob: https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net",
               "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com",
-              "connect-src 'self' https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://www.googletagmanager.com https://viacep.com.br https://region1.google-analytics.com https://region1.analytics.google.com https://ipinfo.io",
+              "connect-src 'self' https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://www.googletagmanager.com https://viacep.com.br https://region1.google-analytics.com https://region1.analytics.google.com https://ipinfo.io https://cloudflareinsights.com",
               "frame-src 'self' https://www.google.com https://www.googletagmanager.com https://streamable.com https://bid.g.doubleclick.net",
               "base-uri 'self'",
               "form-action 'self'",

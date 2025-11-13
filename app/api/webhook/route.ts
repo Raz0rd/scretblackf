@@ -201,7 +201,6 @@ export async function POST(request: NextRequest) {
           const storedOrder = orderStorageService.getOrder(transactionId) || orderStorageService.getOrder(orderId)
           if (storedOrder && storedOrder.trackingParameters) {
             trackingParameters = { ...trackingParameters, ...storedOrder.trackingParameters }
-            console.log("[v0] ✅ Recovered UTM parameters from order storage:", trackingParameters)
           } else {
             console.log("[v0] ❌ Nenhum pedido encontrado no order storage")
           }
