@@ -119,15 +119,23 @@ export async function POST(request: NextRequest) {
     // PRIMEIRO: Verificar se existe no orderStorage
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
-    // Se encontrou no storage E já está pago, retornar direto
+    // Se encontrou no storage E já está pago, verificar se já enviou para UTMify
     if (storedOrder && storedOrder.status === 'paid') {
-      console.log(`[CHECK-STATUS] ✅ Transação ${transactionId} já processada como PAID no storage`)
-      return NextResponse.json({
-        success: true,
-        status: 'paid',
-        message: 'Transação já processada como paid',
-        alreadyProcessed: true
-      })
+      console.log(`[CHECK-STATUS] ✅ Transação ${transactionId} já está PAID no storage`)
+      
+      // Verificar se já enviou PAID para UTMify
+      if (storedOrder.utmifyPaidSent) {
+        console.log(`[CHECK-STATUS] ✅ PAID já foi enviado para UTMify anteriormente`)
+        return NextResponse.json({
+          success: true,
+          status: 'paid',
+          message: 'Transação já processada como paid',
+          alreadyProcessed: true
+        })
+      }
+      
+      // Se NÃO enviou ainda, continuar para enviar PAID
+      console.log(`[CHECK-STATUS] ⚠️ PAID ainda não foi enviado para UTMify - continuando...`)
     }
 
     // Se NÃO encontrou no storage OU status não é paid, consultar gateway
