@@ -695,11 +695,21 @@ export default function CheckoutPage() {
     const totalPriceInCents = Math.round(totalPrice * 100)
     const commission = calculateCommission(totalPriceInCents)
     
+    // Gerar nome de produto para UTMify (mesma lógica do backend)
+    const generateProductName = (itemValue: string): string => {
+      // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
+      if (/^\d+\.?\d*$/.test(itemValue)) {
+        return `${itemValue} Dimas`
+      }
+      // Caso contrário, usar o valor direto (ex: "Poder do Fogo (3 unidades Restantes)")
+      return itemValue || 'Produto Digital'
+    }
+    
     // Criar produto único com valor total
     const products = [
       {
         id: `recarga-${transactionData.transactionId}`,
-        name: itemType === "recharge" ? `eBook eSport Digital Premium` : `eBook eSport Gold Edition`,
+        name: generateProductName(itemValue),
         planId: null,
         planName: null,
         quantity: 1,
