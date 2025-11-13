@@ -59,12 +59,18 @@ export function trackPurchase(transactionId: string, value: number) {
     console.log('[Google Ads] Transaction ID:', transactionId);
     console.log('[Google Ads] Valor: R$', value.toFixed(2));
     
-    window.gtag!('event', 'conversion', {
+    // Objeto exato que será enviado para o Google Ads
+    const conversionData = {
       'send_to': conversionId,
       'value': value,
       'currency': 'BRL',
       'transaction_id': transactionId
-    });
+    }
+    
+    console.log('📊 [Google Ads] DADOS EXATOS ENVIADOS:', JSON.stringify(conversionData, null, 2));
+    console.log('💰 [Google Ads] VALOR EXATO:', value, '(tipo:', typeof value, ')');
+    
+    window.gtag!('event', 'conversion', conversionData);
     
     console.log('[Google Ads] ✅ Conversão "Compra" enviada com sucesso');
   } catch (error) {
