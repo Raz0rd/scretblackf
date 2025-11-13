@@ -51,11 +51,29 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
 
   console.log("🌐 [GhostPay] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
 
+  // Extrair nome do domínio para o gateway (ex: www.algo1.com -> algo1)
+  const extractDomainName = (url: string): string => {
+    try {
+      const hostname = new URL(url).hostname
+      const parts = hostname.split('.')
+      // Se começa com www, pegar o próximo (indice 1)
+      if (parts[0] === 'www' && parts.length > 1) {
+        return parts[1]
+      }
+      // Caso contrário, pegar o primeiro
+      return parts[0]
+    } catch {
+      return 'produto'
+    }
+  }
+
   // Gerar email fake baseado no nome do usuário
   const generateFakeEmail = (name: string): string => {
     const cleanName = name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
     return `${cleanName}@gmail.com`
   }
+  
+  const domainName = extractDomainName(baseUrl)
 
   const ghostPayload = {
     amount: body.amount,
@@ -71,7 +89,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     },
     items: [
       {
-        title: body.itemType === "recharge" ? "eBook eSport Digital Premium" : "eBook eSport Gold Edition",
+        title: `Produto Digital ${domainName}`,
         unitPrice: body.amount,
         quantity: 1,
         tangible: false
@@ -139,11 +157,29 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
 
   console.log("🌐 [Ezzpag] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
 
+  // Extrair nome do domínio para o gateway (ex: www.algo1.com -> algo1)
+  const extractDomainName = (url: string): string => {
+    try {
+      const hostname = new URL(url).hostname
+      const parts = hostname.split('.')
+      // Se começa com www, pegar o próximo (indice 1)
+      if (parts[0] === 'www' && parts.length > 1) {
+        return parts[1]
+      }
+      // Caso contrário, pegar o primeiro
+      return parts[0]
+    } catch {
+      return 'produto'
+    }
+  }
+
   // Gerar email fake baseado no nome do usuário
   const generateFakeEmail = (name: string): string => {
     const cleanName = name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
     return `${cleanName}@icloud.com`
   }
+  
+  const domainName = extractDomainName(baseUrl)
 
   // Limpar telefone (somente números)
   const cleanPhone = (phone: string): string => {
@@ -214,7 +250,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     },
     items: [{
       tangible: false,
-      title: body.itemType === "recharge" ? "Produto Digital Premium" : "Produto Digital Gold",
+      title: `Produto Digital ${domainName}`,
       unitPrice: body.amount,
       quantity: 1
     }],
@@ -564,6 +600,16 @@ export async function POST(request: NextRequest) {
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
     try {
+      // Gerar nome de produto para UTMify
+      const generateProductName = (itemValue: string): string => {
+        // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
+        if (/^\d+\.?\d*$/.test(itemValue)) {
+          return `${itemValue} Dimas`
+        }
+        // Caso contrário, usar o valor direto (ex: "Poder do Fogo (3 unidades Restantes)")
+        return itemValue || 'Produto Digital'
+      }
+      
       const orderData = {
         orderId: validResult.transactionId,
         transactionId: validResult.transactionId,
@@ -575,7 +621,7 @@ export async function POST(request: NextRequest) {
           document: body.customer?.document?.number || ''
         },
         trackingParameters: body.trackingParams || {},
-        productName: body.itemValue || 'Produto Digital', // Salvar nome real do produto
+        productName: generateProductName(body.itemValue), // Gerar nome para UTMify
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }

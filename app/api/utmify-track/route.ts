@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const utmifyData = await request.json()
 
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('📊 [UTMIFY-TRACK] Recebendo conversão')
+    console.log('📊 [UTMIFY-TRACK] Enviando conversão')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('📋 Dados recebidos:')
     console.log('   - Order ID:', utmifyData.orderId)

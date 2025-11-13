@@ -63,3 +63,6 @@ vercel.json
 # Scripts de preparação
 prepare-github.js
 quiz-script-updated.js
+
+# Analytics data (arquivo local que muda constantemente)
+.analytics-data.json
