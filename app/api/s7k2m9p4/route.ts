@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 const ANALYTICS_FILE = path.join(process.cwd(), '.analytics-data.json')
-const ALLOWED_IPS = ['191.7.55.158', '127.0.0.1', 'localhost']
+const ALLOWED_IPS = ['191.7.55.158', '191.7.55.183', '127.0.0.1', 'localhost']
 
 interface AccessLog {
   timestamp: string
