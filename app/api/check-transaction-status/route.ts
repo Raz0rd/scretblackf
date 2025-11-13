@@ -195,7 +195,6 @@ export async function POST(request: NextRequest) {
       let trackingParameters = {}
       if (storedOrder && storedOrder.trackingParameters) {
         trackingParameters = storedOrder.trackingParameters
-        console.log(`[CHECK-STATUS] UTMs recuperados do storage:`, trackingParameters)
       } else {
         console.warn(`[CHECK-STATUS] Nenhum UTM encontrado no storage para ${transactionId}`)
       }
@@ -379,7 +378,6 @@ export async function POST(request: NextRequest) {
           let trackingParameters = {}
           if (storedOrder && storedOrder.trackingParameters) {
             trackingParameters = storedOrder.trackingParameters
-            console.log(`[CHECK-STATUS] UTMs recuperados do storage`)
           }
           
           // Enviar para UTMify
