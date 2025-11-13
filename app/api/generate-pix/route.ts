@@ -102,8 +102,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     body: JSON.stringify(ghostPayload),
   })
 
-  console.log("📡 [GhostPay] RESPONSE STATUS:", response.status)
-  console.log("📊 [GhostPay] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
+  // Response status: OK
 
   if (!response.ok) {
     const errorText = await response.text()
@@ -118,7 +117,6 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
   }
 
   const data = await response.json()
-  console.log("✅ [GhostPay] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
 
   // Extrair informações importantes da resposta GhostPay
   const transactionId = data.id || data.transaction_id || data.transactionId
@@ -252,8 +250,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     body: JSON.stringify(ezzpagPayload),
   })
 
-  console.log("📡 [Ezzpag] RESPONSE STATUS:", response.status)
-  console.log("📊 [Ezzpag] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
+  // Response status: OK
 
   if (!response.ok) {
     const errorText = await response.text()
@@ -304,7 +301,6 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
   }
 
   const data = await response.json()
-  console.log("✅ [Ezzpag] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
 
   // Extrair informações da resposta Ezzpag
   const transactionId = data.id?.toString()
@@ -482,8 +478,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
       body: JSON.stringify(umbrelaPayload),
     })
 
-    console.log("📡 [Umbrela] RESPONSE STATUS:", response.status)
-    console.log("📊 [Umbrela] RESPONSE HEADERS:", Object.fromEntries(response.headers.entries()))
+    // Response status: OK
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -507,7 +502,6 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     }
 
     const data = await response.json()
-    console.log("✅ [Umbrela] SUCCESS RESPONSE:", JSON.stringify(data, null, 2))
 
     // Extrair informações da resposta Umbrela
     const transactionId = data.data?.id

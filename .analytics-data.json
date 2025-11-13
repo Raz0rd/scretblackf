@@ -1,5 +1,5 @@
 {
-  "totalAccess": 3473,
+  "totalAccess": 3476,
   "logs": [
     {
       "timestamp": "2025-10-26T17:49:28.108Z",
@@ -27784,13 +27784,37 @@
       "ip": "::1",
       "referer": "http://localhost:3001/loja",
       "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T16:56:29.074Z",
+      "path": "/fonts/Metropolis-Bold-9a712a2c.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763052843615",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T16:56:29.081Z",
+      "path": "/fonts/Metropolis-Regular-e920e6b0.woff2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/_next/static/css/app/layout.css?v=1763052843615",
+      "query": ""
+    },
+    {
+      "timestamp": "2025-11-13T17:29:06.442Z",
+      "path": "/loja",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "ip": "::1",
+      "referer": "http://localhost:3001/loja",
+      "query": ""
     }
   ],
   "pathCounts": {
     "/sw.js": 18,
     "/s7k2m9p4": 2,
-    "/fonts/Metropolis-Regular-e920e6b0.woff2": 347,
-    "/fonts/Metropolis-Bold-9a712a2c.woff2": 345,
+    "/fonts/Metropolis-Regular-e920e6b0.woff2": 348,
+    "/fonts/Metropolis-Bold-9a712a2c.woff2": 346,
     "/": 227,
     "/manifest.json": 9,
     "/icon-192x192.png": 8,
@@ -27818,7 +27842,7 @@
     "/images/products/1060-min.png": 81,
     "/images/products/2180-min.png": 60,
     "/images/products/5600-min.png": 61,
-    "/loja": 116,
+    "/loja": 117,
     "/produto/ff-1060": 99,
     "/produto/ff-calca": 18,
     "/images/products/norton.webp": 144,
