@@ -49,14 +49,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     throw new Error("Configuração de API não encontrada")
   }
 
-  console.log("📤 [GhostPay] REQUEST BODY:", JSON.stringify(body, null, 2))
-  
-  // Log dos parâmetros UTM recebidos
-  console.log("🔗 [UTM PARAMS] Parâmetros recebidos para PIX:")
-  console.log("📊 [UTM PARAMS] UTM Source:", body.utmParams?.utm_source || 'N/A')
-  console.log("📊 [UTM PARAMS] Todos os UTMs:", JSON.stringify(body.utmParams || {}, null, 2))
-  
-  console.log("🌐 [GhostPay] URL dinâmica detectada:", baseUrl)
+  console.log("🌐 [GhostPay] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
 
   // Gerar email fake baseado no nome do usuário
   const generateFakeEmail = (name: string): string => {
@@ -89,9 +82,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
   // Criar auth Basic com base64
   const authString = Buffer.from(`${secretKey}:x`).toString('base64')
   
-  console.log("📦 [GhostPay] PAYLOAD ENVIADO:", JSON.stringify(ghostPayload, null, 2))
-  console.log("🎯 [GhostPay] URL:", "https://api.ghostspaysv2.com/functions/v1/transactions")
-  console.log("🔑 [GhostPay] Auth Token:", authString.substring(0, 10) + "...")
+  // Payload enviado para GhostPay
   
   const response = await fetch("https://api.ghostspaysv2.com/functions/v1/transactions", {
     method: "POST",
@@ -123,11 +114,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
   const pixCode = data.pix?.qrcode || data.pixCode || data.pix_code || data.code
   const qrCodeImage = data.qrCode || data.qr_code || data.qr_code_url || data.pix?.qr_code_url
   
-  console.log("🔍 [GhostPay] DADOS EXTRAÍDOS:", {
-    transactionId,
-    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
-    qrCodeImage: qrCodeImage ? "Presente" : "Ausente"
-  })
+  console.log("✅ [GhostPay] PIX gerado - ID:", transactionId)
 
   // Retornar apenas dados essenciais para o frontend (segurança)
   const normalizedResponse = {
@@ -150,8 +137,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     throw new Error("Configuração de API Ezzpag não encontrada")
   }
 
-  console.log("📤 [Ezzpag] REQUEST BODY:", JSON.stringify(body, null, 2))
-  console.log("🌐 [Ezzpag] URL dinâmica detectada:", baseUrl)
+  console.log("🌐 [Ezzpag] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
 
   // Gerar email fake baseado no nome do usuário
   const generateFakeEmail = (name: string): string => {
@@ -236,9 +222,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
     paymentMethod: 'pix'
   }
   
-  console.log("📦 [Ezzpag] PAYLOAD ENVIADO:", JSON.stringify(ezzpagPayload, null, 2))
-  console.log("🎯 [Ezzpag] URL:", "https://api.ezzypag.com.br/v1/transactions")
-  console.log("🔑 [Ezzpag] Auth Token:", authToken.substring(0, 10) + "...")
+  // Payload enviado para Ezzpag
   
   const response = await fetch("https://api.ezzypag.com.br/v1/transactions", {
     method: "POST",
@@ -306,11 +290,7 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
   const transactionId = data.id?.toString()
   const pixCode = data.pix?.qrcode
   
-  console.log("🔍 [Ezzpag] DADOS EXTRAÍDOS:", {
-    transactionId,
-    pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
-    status: data.status
-  })
+  console.log("✅ [Ezzpag] PIX gerado - ID:", transactionId)
 
   // Retornar apenas dados essenciais para o frontend (segurança)
   return {
@@ -344,8 +324,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     throw new Error("UMBRELA_API_KEY não configurado no servidor")
   }
 
-  console.log("📤 [Umbrela] REQUEST BODY:", JSON.stringify(body, null, 2))
-  console.log("🌐 [Umbrela] URL dinâmica detectada:", baseUrl)
+  console.log("🌐 [Umbrela] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
 
   // Gerar email fake baseado no nome do usuário
   const generateFakeEmail = (name: string): string => {
@@ -453,9 +432,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     ip: "0.0.0.0"
   }
   
-  console.log("📦 [Umbrela] PAYLOAD ENVIADO:", JSON.stringify(umbrelaPayload, null, 2))
-  console.log("🎯 [Umbrela] URL:", "https://api-gateway.umbrellapag.com/api/user/transactions")
-  console.log("🔑 [Umbrela] API Key:", apiKey.substring(0, 10) + "...")
+  // Payload enviado para Umbrela
   
   // Salvar debug em storage para Netlify
   const debugInfo = {
@@ -508,11 +485,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     const pixCode = data.data?.qrCode
     const qrCodeImage = data.data?.qrCode // Umbrela retorna QR Code direto no texto
     
-    console.log("🔍 [Umbrela] DADOS EXTRAÍDOS:", {
-      transactionId,
-      pixCode: pixCode ? `${pixCode.substring(0, 50)}...` : null,
-      status: data.data?.status
-    })
+    console.log("✅ [Umbrela] PIX gerado - ID:", transactionId)
     
     // Retornar apenas dados essenciais para o frontend (segurança)
     const normalizedResponse = {
@@ -615,13 +588,7 @@ export async function POST(request: NextRequest) {
     }
     
     // DEBUG: Verificar se dados foram salvos no storage
-    console.log("🔍 [DEBUG] Verificando se dados foram salvos no storage...")
-    const savedOrder = orderStorageService.getOrder(validResult.transactionId)
-    if (savedOrder) {
-      console.log("✅ [DEBUG] Dados salvos no storage:", JSON.stringify(savedOrder, null, 2))
-    } else {
-      console.error("❌ [DEBUG] ERRO: Dados NÃO foram salvos no storage!")
-    }
+    // Dados salvos no storage
     
     return NextResponse.json(validResult)
   } catch (error) {
