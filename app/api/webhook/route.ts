@@ -344,12 +344,13 @@ export async function POST(request: NextRequest) {
       }
 
       // ⚠️ IMPORTANTE: Webhook NÃO envia para UTMify
-      // O envio para UTMify é feito pelo POLLING (check-transaction-status)
-      // Webhook apenas armazena os dados no orderStorage
+      // O envio para UTMify é feito 100% pelo POLLING (check-transaction-status)
+      // Webhook apenas atualiza o orderStorage com status 'paid'
+      // O polling do frontend vai detectar a mudança e enviar para UTMify
       console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
       console.log(`📝 [WEBHOOK] Dados armazenados no orderStorage`)
-      console.log(`📝 [WEBHOOK] UTMify será notificado pelo POLLING`)
-      console.log(`📝 [WEBHOOK] Status: ${status}`)
+      console.log(`📝 [WEBHOOK] Status atualizado: ${status}`)
+      console.log(`📝 [WEBHOOK] UTMify será notificado pelo POLLING do frontend`)
       console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
 
       // Aqui você pode adicionar outras ações quando o pagamento for confirmado

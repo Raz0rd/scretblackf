@@ -130,13 +130,15 @@ export async function POST(request: NextRequest) {
     console.log(`[CHECK-STATUS] Gateway final: ${gateway.toUpperCase()}`)
     console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
     
-    // Se encontrou no storage E já está pago, verificar se já enviou para UTMify
+    // Se encontrou no storage E já está pago, NÃO retornar ainda
+    // Precisamos verificar o gateway e processar o PAID
     if (storedOrder && storedOrder.status === 'paid') {
       console.log(`[CHECK-STATUS] ✅ Transação ${transactionId} já está PAID no storage`)
       
       // Verificar se já enviou PAID para UTMify
       if (storedOrder.utmifyPaidSent) {
         console.log(`[CHECK-STATUS] ✅ PAID já foi enviado para UTMify anteriormente`)
+        console.log(`[CHECK-STATUS] Retornando status paid para o frontend`)
         return NextResponse.json({
           success: true,
           status: 'paid',
@@ -145,8 +147,9 @@ export async function POST(request: NextRequest) {
         })
       }
       
-      // Se NÃO enviou ainda, continuar para enviar PAID
-      console.log(`[CHECK-STATUS] ⚠️ PAID ainda não foi enviado para UTMify - continuando...`)
+      // Se NÃO enviou ainda, continuar para consultar gateway e enviar PAID
+      console.log(`[CHECK-STATUS] ⚠️ PAID ainda não foi enviado para UTMify`)
+      console.log(`[CHECK-STATUS] Continuando para enviar PAID...`)
     }
 
     // Se NÃO encontrou no storage OU status não é paid, consultar gateway
