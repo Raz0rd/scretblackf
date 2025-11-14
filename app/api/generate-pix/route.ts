@@ -642,6 +642,7 @@ export async function POST(request: NextRequest) {
         },
         trackingParameters: body.trackingParams || {},
         productName: generateProductName(body.itemValue), // Gerar nome para UTMify
+        gateway: gateway, // SALVAR QUAL GATEWAY FOI USADO! 🎯
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }

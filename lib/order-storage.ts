@@ -15,6 +15,7 @@ interface OrderData {
   }
   trackingParameters: TrackingParameters
   productName?: string // Nome do produto (ex: "100 Diamantes", "eBook eSport Digital")
+  gateway?: string // Gateway usado para gerar o PIX (ex: "ghostpay", "ezzpag", "umbrela")
   createdAt: string
   status: 'pending' | 'paid' | 'cancelled' | 'failed'
   paidAt?: string

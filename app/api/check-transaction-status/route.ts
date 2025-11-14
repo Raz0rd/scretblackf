@@ -111,13 +111,24 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    // Escolher gateway baseado na variável de ambiente
-    const gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
-    console.log(`[CHECK-STATUS] Gateway selecionado: ${gateway.toUpperCase()}`)
-    console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
-
-    // PRIMEIRO: Verificar se existe no orderStorage
+    // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
+    
+    // Usar gateway do storage OU da variável de ambiente
+    let gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
+    
+    if (storedOrder && storedOrder.gateway) {
+      gateway = storedOrder.gateway
+      console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gateway.toUpperCase()}`)
+    } else {
+      // Se não tem no storage, usar da env (mas pode estar errado)
+      const gateways = gateway.split(',').map(g => g.trim()).filter(g => g.length > 0)
+      gateway = gateways[0] || 'ezzpag'
+      console.log(`[CHECK-STATUS] ⚠️ Gateway não encontrado no storage, usando padrão: ${gateway.toUpperCase()}`)
+    }
+    
+    console.log(`[CHECK-STATUS] Gateway final: ${gateway.toUpperCase()}`)
+    console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
     
     // Se encontrou no storage E já está pago, verificar se já enviou para UTMify
     if (storedOrder && storedOrder.status === 'paid') {
