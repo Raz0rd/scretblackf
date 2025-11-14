@@ -4,7 +4,8 @@ import { getBrazilTimestamp } from "@/lib/brazil-time"
 
 // Cache para evitar processamento duplicado (em memória)
 const processedConversions = new Map<string, number>()
-const DEBOUNCE_TIME = 10000 // 10 segundos
+const DEBOUNCE_TIME = 10000 // 10 segundos para PAID
+const DEBOUNCE_TIME_PENDING = 300000 // 5 minutos para PENDING (evitar spam)
 
 // Função para consultar status no Ezzpag
 async function checkStatusEzzpag(transactionId: string) {
@@ -430,14 +431,17 @@ export async function POST(request: NextRequest) {
         // Email normal: enviar PENDING
         console.log(`[CHECK-STATUS] Email normal - Enviando PENDING para UTMify`)
         
-        // Verificar se já enviou pending
+        // Verificar se já enviou pending (com debounce de 5 minutos)
         const pendingKey = `${transactionId}-pending`
         const lastPendingSent = processedConversions.get(pendingKey)
         const now = Date.now()
         
-        if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME) {
+        if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME_PENDING) {
           // Marcar como enviado
           processedConversions.set(pendingKey, now)
+          
+          const timeSinceLastSent = lastPendingSent ? ((now - lastPendingSent) / 1000 / 60).toFixed(1) : 'primeira vez'
+          console.log(`[CHECK-STATUS] ⏰ Enviando PENDING (última vez: ${timeSinceLastSent} min atrás)`)
           
           // Recuperar UTMs do storage
           let trackingParameters = {}
@@ -542,7 +546,12 @@ export async function POST(request: NextRequest) {
             }
           }
         } else {
-          console.log(`[CHECK-STATUS] PENDING já enviado recentemente`)
+          const timeSinceLastSent = ((now - lastPendingSent) / 1000 / 60).toFixed(1)
+          const timeRemaining = ((DEBOUNCE_TIME_PENDING - (now - lastPendingSent)) / 1000 / 60).toFixed(1)
+          console.log(`⏸️ [CHECK-STATUS] PENDING já enviado recentemente`)
+          console.log(`   - Enviado há: ${timeSinceLastSent} min`)
+          console.log(`   - Próximo envio em: ${timeRemaining} min`)
+          console.log(`   - Debounce: ${DEBOUNCE_TIME_PENDING / 1000 / 60} min`)
         }
       }
     }
