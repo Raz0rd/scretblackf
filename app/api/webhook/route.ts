@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     const origem = isEzzpag ? 'Ezzpag' : isUmbrela ? 'Umbrela' : isNitro ? 'Nitro' : isGhostPay ? 'GhostPay' : 'Outro'
     
     // Log resumido com informações essenciais
-    console.log('📥 [WEBHOOK] Recebido:', {
+    console.log('📥 [WEBHOOK] Recebido (apenas para atualizar storage - conversões via polling):', {
       id: transactionId.substring(0, 8) + '...',
       status: status.toUpperCase(),
       valor: `R$ ${(transaction.amount / 100).toFixed(2)}`,
