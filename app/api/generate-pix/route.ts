@@ -42,14 +42,22 @@ export async function OPTIONS(request: NextRequest) {
 // Função para gerar PIX via GhostPay
 async function generatePixGhostPay(body: any, baseUrl: string) {
   const secretKey = process.env.GHOSTPAY_API_KEY
-  console.log("\n👻 [GhostPay] Verificando autenticação:", secretKey ? "✓ Token presente" : "✗ Token ausente")
+  const companyId = process.env.GHOSTPAY_COMPANY_ID
   
-  if (!secretKey) {
-    console.error("❌ [GhostPay] GHOSTPAY_API_KEY não configurado")
+  console.log("\n👻 [GhostPay] Verificando autenticação:")
+  console.log("   - SECRET_KEY:", secretKey ? "✓ Presente" : "✗ Ausente")
+  console.log("   - COMPANY_ID:", companyId ? "✓ Presente" : "✗ Ausente")
+  
+  if (!secretKey || !companyId) {
+    console.error("❌ [GhostPay] GHOSTPAY_API_KEY e GHOSTPAY_COMPANY_ID são obrigatórios")
     throw new Error("Configuração de API não encontrada")
   }
 
   console.log("🌐 [GhostPay] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
+  
+  // Criar auth Basic com base64 (SECRET_KEY:COMPANY_ID)
+  const authString = Buffer.from(`${secretKey}:${companyId}`).toString('base64')
+  console.log("🔐 [GhostPay] Auth Basic gerado (SECRET_KEY:COMPANY_ID)")
 
   // Extrair nome do domínio para o gateway (ex: www.algo1.com -> algo1)
   const extractDomainName = (url: string): string => {
@@ -97,10 +105,7 @@ async function generatePixGhostPay(body: any, baseUrl: string) {
     ]
   }
   
-  // Criar auth Basic com base64
-  const authString = Buffer.from(`${secretKey}:x`).toString('base64')
-  
-  // Payload enviado para GhostPay
+  // Usar authString já criado acima (SECRET_KEY:COMPANY_ID)
   
   const response = await fetch("https://api.ghostspaysv2.com/functions/v1/transactions", {
     method: "POST",
@@ -543,12 +548,27 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
 export async function POST(request: NextRequest) {
   try {
     const config = getConfig()
-    const gateway = config.paymentGateway
+    
+    // Randomizar gateway se houver múltiplos configurados
+    let gateway = config.paymentGateway
+    const gateways = gateway.split(',').map(g => g.trim()).filter(g => g.length > 0)
     
     console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     console.log("🚀 [GATEWAY] Iniciando geração de PIX")
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    console.log("🎯 [GATEWAY] Gateway selecionado:", gateway)
+    
+    if (gateways.length > 1) {
+      // Escolher gateway aleatório
+      const randomIndex = Math.floor(Math.random() * gateways.length)
+      gateway = gateways[randomIndex]
+      console.log("🎲 [GATEWAY] Múltiplos gateways detectados:", gateways)
+      console.log("🎯 [GATEWAY] Gateway sorteado:", gateway)
+    } else {
+      gateway = gateways[0] || 'ezzpag'
+      console.log("🎯 [GATEWAY] Gateway único configurado:", gateway)
+    }
+    
+    console.log("🎯 [GATEWAY] Gateway final selecionado:", gateway.toUpperCase())
     
     // Debug de variáveis de ambiente
     console.log("🔑 [ENV] PAYMENT_GATEWAY:", config.paymentGateway)
