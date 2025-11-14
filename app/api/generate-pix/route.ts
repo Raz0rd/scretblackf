@@ -342,6 +342,96 @@ async function generatePixEzzpag(body: any, baseUrl: string) {
   }
 }
 
+// Função para gerar PIX via Nitro Pagamentos
+async function generatePixNitro(body: any, baseUrl: string) {
+  const apiKey = process.env.NITRO_API_KEY
+  
+  console.log("\n⚡ [Nitro] Verificando autenticação:")
+  console.log("   - API_KEY:", apiKey ? "✓ Presente" : "✗ Ausente")
+  
+  if (!apiKey) {
+    console.error("❌ [Nitro] NITRO_API_KEY não configurado")
+    throw new Error("Configuração de API não encontrada")
+  }
+
+  console.log("🌐 [Nitro] Gerando PIX - Valor: R$", (body.amount / 100).toFixed(2))
+  
+  // Gerar email fake se necessário
+  const generateFakeEmail = (name: string): string => {
+    const cleanName = name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
+    return `${cleanName}@gmail.com`
+  }
+  
+  const customerCPF = body.customer.document.number || body.customer.document
+  const customerEmail = body.customer.email || generateFakeEmail(body.customer.name)
+  
+  // Payload Nitro
+  const nitroPayload = {
+    amount: (body.amount / 100).toFixed(2), // Nitro usa valor em reais (string)
+    customer_name: body.customer.name,
+    customer_cpf: customerCPF,
+    customer_email: customerEmail,
+    customer_phone: body.customer.phone || "11999999999",
+    description: `Recarga - ${body.itemValue || 'Produto Digital'}`,
+    external_id: `ORDER-${Date.now()}`, // ID único para rastreamento
+    webhook_url: `${baseUrl}/api/webhook`
+  }
+  
+  console.log("📤 [Nitro] Payload:", JSON.stringify(nitroPayload, null, 2))
+  
+  const response = await fetch(`https://api.nitropagamentos.com/api/public/v1/transactions?api_token=${apiKey}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(nitroPayload)
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error("❌ [Nitro] ERROR RESPONSE:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText,
+    })
+    
+    return NextResponse.json({
+      error: "Erro ao processar pagamento. Tente novamente.",
+      debug: {
+        responseStatus: response.status,
+        responseBody: errorText,
+        apiUrl: "https://api.nitropagamentos.com/api/public/v1/transactions",
+        timestamp: new Date().toISOString(),
+      }
+    }, { status: response.status })
+  }
+
+  const nitroResponse = await response.json()
+  console.log("✅ [Nitro] Resposta recebida:", JSON.stringify(nitroResponse, null, 2))
+
+  // Extrair dados da resposta Nitro
+  const transactionId = nitroResponse.id || nitroResponse.transaction_id
+  const pixCode = nitroResponse.pix_qr_code || nitroResponse.qr_code
+  const qrCodeBase64 = nitroResponse.pix_qr_code_base64 || nitroResponse.qr_code_base64
+
+  if (!transactionId || !pixCode) {
+    console.error("❌ [Nitro] Resposta inválida - faltando dados obrigatórios")
+    throw new Error("Resposta inválida da API Nitro")
+  }
+
+  console.log("✅ [Nitro] PIX gerado com sucesso!")
+  console.log("   - Transaction ID:", transactionId)
+  console.log("   - PIX Code:", pixCode.substring(0, 50) + "...")
+
+  return {
+    transactionId: transactionId.toString(),
+    pixCode: pixCode,
+    qrCode: qrCodeBase64 || pixCode,
+    success: true
+  }
+}
+
 // Função para gerar PIX via Umbrela
 async function generatePixUmbrela(body: any, baseUrl: string) {
   const config = getConfig()
@@ -605,6 +695,8 @@ export async function POST(request: NextRequest) {
       result = await generatePixGhostPay(body, baseUrl)
     } else if (gateway === 'umbrela') {
       result = await generatePixUmbrela(body, baseUrl)
+    } else if (gateway === 'nitro') {
+      result = await generatePixNitro(body, baseUrl)
     } else {
       // Padrão: Ezzpag
       result = await generatePixEzzpag(body, baseUrl)

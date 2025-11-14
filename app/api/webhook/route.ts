@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { orderStorageService } from '@/lib/order-storage'
 import { getBrazilTimestamp } from '@/lib/brazil-time'
 
-// Interface genérica para transações (Ezzpag, Umbrela, etc)
+// Interface genérica para transações (Ezzpag, Umbrela, Nitro, GhostPay, etc)
 interface Transaction {
   id: string | number
   tenantId?: string
@@ -20,6 +20,7 @@ interface Transaction {
   metadata?: string | null
   ip?: string | null
   externalRef?: string | null
+  external_id?: string | null // Nitro
   secureId?: string
   secureUrl?: string
   createdAt: string
@@ -123,7 +124,9 @@ export async function POST(request: NextRequest) {
     // Detectar origem do webhook
     const isEzzpag = !body.data?.postbackUrl && body.data?.secureUrl?.includes('ezzypag')
     const isUmbrela = webhookUrl.includes('umbrela') || body.data?.postbackUrl?.includes('umbrela')
-    const origem = isEzzpag ? 'Ezzpag' : isUmbrela ? 'Umbrela' : 'Outro'
+    const isNitro = webhookUrl.includes('nitropagamentos') || body.data?.external_id?.includes('ORDER-')
+    const isGhostPay = body.data?.companyId !== undefined // GhostPay envia companyId
+    const origem = isEzzpag ? 'Ezzpag' : isUmbrela ? 'Umbrela' : isNitro ? 'Nitro' : isGhostPay ? 'GhostPay' : 'Outro'
     
     // Log resumido com informações essenciais
     console.log('📥 [WEBHOOK] Recebido:', {
