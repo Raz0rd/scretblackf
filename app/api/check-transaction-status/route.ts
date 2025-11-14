@@ -299,13 +299,21 @@ export async function POST(request: NextRequest) {
           const customerData = transactionData.customer || {}
           const documentNumber = customerData.document?.number || customerData.document || 'N/A'
           
+          // Usar createdAt do storage ou data atual
+          const createdAtDate = storedOrder?.createdAt 
+            ? new Date(storedOrder.createdAt)
+            : (transactionData.createdAt ? new Date(transactionData.createdAt) : new Date())
+          
+          // approvedDate é a data atual (quando confirmamos o pagamento)
+          const approvedDate = new Date()
+          
           const utmifyData = {
             orderId: transactionId.toString(),
             platform: "RecarGames",
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
-            createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
-            approvedDate: getBrazilTimestamp(new Date(transactionData.paidAt)),
+            createdAt: createdAtDate.toISOString().replace('T', ' ').substring(0, 19),
+            approvedDate: approvedDate.toISOString().replace('T', ' ').substring(0, 19),
             refundedAt: null,
             customer: {
               name: customerData.name || 'Cliente',
