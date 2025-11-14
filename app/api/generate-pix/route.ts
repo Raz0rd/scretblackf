@@ -427,8 +427,8 @@ async function generatePixNitro(body: any, baseUrl: string) {
       }
     ],
     installments: 1,
-    expire_in_days: 1,
-    postback_url: `${baseUrl}/api/webhook`
+    expire_in_days: 1
+    // postback_url removido - trabalhamos com polling no frontend
   }
   
   console.log("📤 [Nitro] Payload:", JSON.stringify(nitroPayload, null, 2))
@@ -464,10 +464,10 @@ async function generatePixNitro(body: any, baseUrl: string) {
   const nitroResponse = await response.json()
   console.log("✅ [Nitro] Resposta recebida:", JSON.stringify(nitroResponse, null, 2))
 
-  // Extrair dados da resposta Nitro
-  const transactionId = nitroResponse.id || nitroResponse.transaction_id
-  const pixCode = nitroResponse.pix_qr_code || nitroResponse.qr_code
-  const qrCodeBase64 = nitroResponse.pix_qr_code_base64 || nitroResponse.qr_code_base64
+  // Extrair dados da resposta Nitro (estrutura: { id, hash, pix: { pix_qr_code } })
+  const transactionId = nitroResponse.hash || nitroResponse.id?.toString()
+  const pixCode = nitroResponse.pix?.pix_qr_code || nitroResponse.pix_qr_code || nitroResponse.qr_code
+  const qrCodeBase64 = nitroResponse.pix?.qr_code_base64 || nitroResponse.pix_qr_code_base64 || nitroResponse.qr_code_base64
 
   if (!transactionId || !pixCode) {
     console.error("❌ [Nitro] Resposta inválida - faltando dados obrigatórios")
