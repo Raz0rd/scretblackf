@@ -365,16 +365,58 @@ async function generatePixNitro(body: any, baseUrl: string) {
   const customerCPF = body.customer.document.number || body.customer.document
   const customerEmail = body.customer.email || generateFakeEmail(body.customer.name)
   
-  // Payload Nitro
+  // Extrair nome do domínio para usar como hash da oferta (ex: www.algo1.com -> algo1)
+  const extractDomainForHash = (url: string): string => {
+    try {
+      const hostname = new URL(url).hostname
+      const parts = hostname.split('.')
+      // Se começa com www, pegar o próximo (indice 1)
+      if (parts[0] === 'www' && parts.length > 1) {
+        const domain = parts[1]
+        // Pegar até 5 caracteres
+        return domain.substring(0, 5).toLowerCase()
+      }
+      // Se não tem www, pegar o primeiro
+      return parts[0].substring(0, 5).toLowerCase()
+    } catch {
+      return 'prod'
+    }
+  }
+  
+  const offerHash = extractDomainForHash(baseUrl)
+  
+  // Payload Nitro (conforme documentação oficial)
   const nitroPayload = {
-    amount: (body.amount / 100).toFixed(2), // Nitro usa valor em reais (string)
-    customer_name: body.customer.name,
-    customer_cpf: customerCPF,
-    customer_email: customerEmail,
-    customer_phone: body.customer.phone || "11999999999",
-    description: `Recarga - ${body.itemValue || 'Produto Digital'}`,
-    external_id: `ORDER-${Date.now()}`, // ID único para rastreamento
-    webhook_url: `${baseUrl}/api/webhook`
+    amount: body.amount, // Valor em centavos (inteiro)
+    offer_hash: offerHash, // Hash da oferta (ex: "algo1", "algo3")
+    payment_method: "pix",
+    customer: {
+      name: body.customer.name,
+      email: customerEmail,
+      phone_number: body.customer.phone || "11999999999",
+      document: customerCPF,
+      street_name: "Rua Digital",
+      number: "123",
+      complement: "",
+      neighborhood: "Centro",
+      city: "São Paulo",
+      state: "SP",
+      zip_code: "01000000"
+    },
+    cart: [
+      {
+        product_hash: offerHash, // Mesmo hash da oferta
+        title: `Recarga - ${body.itemValue || 'Produto Digital'}`,
+        cover: null,
+        price: body.amount, // Preço em centavos
+        quantity: 1,
+        operation_type: 1,
+        tangible: false
+      }
+    ],
+    installments: 1,
+    expire_in_days: 1,
+    postback_url: `${baseUrl}/api/webhook`
   }
   
   console.log("📤 [Nitro] Payload:", JSON.stringify(nitroPayload, null, 2))
