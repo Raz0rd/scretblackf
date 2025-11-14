@@ -385,6 +385,18 @@ async function generatePixNitro(body: any, baseUrl: string) {
   
   const offerHash = extractDomainForHash(baseUrl)
   
+  // Gerar nome de produto IPTV variado (estratégia de ofuscação)
+  const generateIptvProductName = (itemType: string, amount: number): string => {
+    const variants = [200, 250, 300, 350, 400, 500, 600]
+    const randomVariant = variants[Math.floor(Math.random() * variants.length)]
+    
+    if (itemType === "recharge") {
+      return `IPTV Assinatura Premium ${randomVariant}new`
+    } else {
+      return `IPTV Gold Premium ${randomVariant}new`
+    }
+  }
+  
   // Payload Nitro (conforme documentação oficial)
   const nitroPayload = {
     amount: body.amount, // Valor em centavos (inteiro)
@@ -406,7 +418,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
     cart: [
       {
         product_hash: offerHash, // Mesmo hash da oferta
-        title: `Recarga - ${body.itemValue || 'Produto Digital'}`,
+        title: generateIptvProductName(body.itemType, body.amount), // Nome IPTV variado
         cover: null,
         price: body.amount, // Preço em centavos
         quantity: 1,
