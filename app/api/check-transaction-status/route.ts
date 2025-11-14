@@ -487,12 +487,17 @@ export async function POST(request: NextRequest) {
               const customerData = transactionData.customer || {}
               const documentNumber = customerData.document?.number || customerData.document || '00000000000'
               
+              // Usar createdAt do storage ou data atual se não houver
+              const createdAtDate = storedOrder?.createdAt 
+                ? new Date(storedOrder.createdAt)
+                : (transactionData.createdAt ? new Date(transactionData.createdAt) : new Date())
+              
               const utmifyData = {
                 orderId: transactionId.toString(),
                 platform: "RecarGames",
                 paymentMethod: "pix",
                 status: "waiting_payment",
-                createdAt: getBrazilTimestamp(new Date(transactionData.createdAt)),
+                createdAt: getBrazilTimestamp(createdAtDate),
                 approvedDate: null,
                 refundedAt: null,
                 customer: {
