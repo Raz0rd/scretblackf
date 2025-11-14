@@ -431,7 +431,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
     // postback_url removido - trabalhamos com polling no frontend
   }
   
-  console.log("📤 [Nitro] Payload:", JSON.stringify(nitroPayload, null, 2))
+  // console.log("📤 [Nitro] Payload:", JSON.stringify(nitroPayload, null, 2))
   
   const response = await fetch(`https://api.nitropagamentos.com/api/public/v1/transactions?api_token=${apiKey}`, {
     method: "POST",
@@ -462,7 +462,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
   }
 
   const nitroResponse = await response.json()
-  console.log("✅ [Nitro] Resposta recebida:", JSON.stringify(nitroResponse, null, 2))
+  // console.log("✅ [Nitro] Resposta recebida:", JSON.stringify(nitroResponse, null, 2))
 
   // Extrair dados da resposta Nitro (estrutura: { id, hash, pix: { pix_qr_code } })
   const transactionId = nitroResponse.hash || nitroResponse.id?.toString()

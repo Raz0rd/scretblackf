@@ -375,6 +375,35 @@ export async function POST(request: NextRequest) {
             console.log(`[CHECK-STATUS] 📊 Resposta UTMify:`, JSON.stringify(utmifyResult, null, 2))
             utmifySuccess = true
             
+            // Log especial para Google Ads - APENAS para status PAID com gclid
+            if (utmifyData.trackingParameters?.gclid) {
+              console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+              console.log('🎯 [GOOGLE ADS] Conversão PAID enviada!')
+              console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+              console.log('📤 [DADOS ENVIADOS PARA GOOGLE ADS]:')
+              console.log('   - Order ID:', utmifyData.orderId)
+              console.log('   - Status:', utmifyData.status.toUpperCase())
+              console.log('   - Valor: R$', (utmifyData.products?.[0]?.priceInCents / 100).toFixed(2))
+              console.log('   - Moeda: BRL')
+              console.log('   - Cliente:', utmifyData.customer?.name)
+              console.log('   - Email:', utmifyData.customer?.email)
+              console.log('')
+              console.log('📊 [PARÂMETROS DE CONVERSÃO]:')
+              console.log('   - gclid:', utmifyData.trackingParameters.gclid)
+              console.log('   - gad_source:', utmifyData.trackingParameters.gad_source || 'N/A')
+              console.log('   - gbraid:', utmifyData.trackingParameters.gbraid || 'N/A')
+              console.log('   - wbraid:', utmifyData.trackingParameters.wbraid || 'N/A')
+              console.log('   - utm_source:', utmifyData.trackingParameters.utm_source || 'N/A')
+              console.log('   - utm_campaign:', utmifyData.trackingParameters.utm_campaign || 'N/A')
+              console.log('   - utm_medium:', utmifyData.trackingParameters.utm_medium || 'N/A')
+              console.log('')
+              console.log('✅ [RESULTADO]:')
+              console.log('   - UTMify processou e enviará para Google Ads')
+              console.log('   - Conversão será visível no Google Ads em 24-48h')
+              console.log('   - Verifique em: Google Ads > Conversões > Todas as conversões')
+              console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+            }
+            
             // Marcar como enviado no storage para evitar duplicação futura
             if (storedOrder) {
               orderStorageService.saveOrder({
@@ -440,8 +469,8 @@ export async function POST(request: NextRequest) {
           // Marcar como enviado
           processedConversions.set(pendingKey, now)
           
-          const timeSinceLastSent = lastPendingSent ? ((now - lastPendingSent) / 1000 / 60).toFixed(1) : 'primeira vez'
-          console.log(`[CHECK-STATUS] ⏰ Enviando PENDING (última vez: ${timeSinceLastSent} min atrás)`)
+          const timeSinceLastSent = lastPendingSent ? `${((now - lastPendingSent) / 1000 / 60).toFixed(1)} min atrás` : 'primeira vez'
+          console.log(`[CHECK-STATUS] ⏰ Enviando PENDING (última vez: ${timeSinceLastSent})`)
           
           // Recuperar UTMs do storage
           let trackingParameters = {}
@@ -539,7 +568,10 @@ export async function POST(request: NextRequest) {
                   })
                 }
               } else {
+                const errorText = await utmifyResponse.text()
                 console.error(`[CHECK-STATUS] ❌ Erro ao enviar PENDING:`, utmifyResponse.status)
+                console.error(`[CHECK-STATUS] 📄 Detalhes do erro:`, errorText)
+                console.error(`[CHECK-STATUS] 📦 Payload enviado:`, JSON.stringify(utmifyData, null, 2))
               }
             } catch (error) {
               console.error(`[CHECK-STATUS] Erro ao enviar PENDING:`, error)
