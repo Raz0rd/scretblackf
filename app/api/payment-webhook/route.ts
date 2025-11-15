@@ -160,6 +160,7 @@ export async function POST(request: NextRequest) {
               gclid: null,
               gad_source: null,
               gbraid: null,
+              wbraid: null,
               ...webhookData.trackingParameters
             },
             createdAt: new Date().toISOString(),

@@ -347,7 +347,8 @@ export async function POST(request: NextRequest) {
               device: (trackingParameters as any)?.device || null,
               network: (trackingParameters as any)?.network || null,
               gad_source: (trackingParameters as any)?.gad_source || null,
-              gbraid: (trackingParameters as any)?.gbraid || null
+              gbraid: (trackingParameters as any)?.gbraid || null,
+              wbraid: (trackingParameters as any)?.wbraid || null
             },
             commission: {
               totalPriceInCents: transactionData.amount,
@@ -357,15 +358,24 @@ export async function POST(request: NextRequest) {
             isTest: process.env.UTMIFY_TEST_MODE === 'true'
           }
 
-          console.log(`[CHECK-STATUS] 📤 Enviando PAID para UTMify:`)
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+          console.log(`📤 [CHECK-STATUS] ENVIANDO PAID PARA UTMIFY`)
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+          console.log(`📊 Dados da Transação:`)
           console.log(`   - Order ID: ${utmifyData.orderId}`)
           console.log(`   - Status: ${utmifyData.status}`)
           console.log(`   - Valor: R$ ${(utmifyData.products[0].priceInCents / 100).toFixed(2)}`)
           console.log(`   - Cliente: ${utmifyData.customer.name}`)
           console.log(`   - Email: ${utmifyData.customer.email}`)
+          console.log(``)
+          console.log(`🎯 Parâmetros de Rastreamento (Google Ads):`)
           console.log(`   - GCLID: ${utmifyData.trackingParameters.gclid || 'N/A'}`)
           console.log(`   - GAD Source: ${utmifyData.trackingParameters.gad_source || 'N/A'}`)
           console.log(`   - GBraid: ${utmifyData.trackingParameters.gbraid || 'N/A'}`)
+          console.log(`   - UTM Source: ${utmifyData.trackingParameters.utm_source || 'N/A'}`)
+          console.log(`   - UTM Campaign: ${utmifyData.trackingParameters.utm_campaign || 'N/A'}`)
+          console.log(`   - UTM Medium: ${utmifyData.trackingParameters.utm_medium || 'N/A'}`)
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
 
           // Enviar diretamente para API do UTMify
           const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {

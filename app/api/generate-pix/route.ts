@@ -765,6 +765,8 @@ export async function POST(request: NextRequest) {
     const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
+    console.log("📊 [STORAGE] UTMs recebidos do frontend:", JSON.stringify(body.trackingParams || {}, null, 2))
+    
     try {
       // Gerar nome de produto para UTMify
       const generateProductName = (itemValue: string): string => {
@@ -796,6 +798,12 @@ export async function POST(request: NextRequest) {
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
       console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
+      console.log("🎯 [STORAGE] UTMs salvos no orderStorage:")
+      console.log("   - gclid:", orderData.trackingParameters.gclid || 'N/A')
+      console.log("   - gad_source:", orderData.trackingParameters.gad_source || 'N/A')
+      console.log("   - gbraid:", orderData.trackingParameters.gbraid || 'N/A')
+      console.log("   - utm_source:", orderData.trackingParameters.utm_source || 'N/A')
+      console.log("   - utm_campaign:", orderData.trackingParameters.utm_campaign || 'N/A')
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }
