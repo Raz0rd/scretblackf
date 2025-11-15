@@ -143,14 +143,6 @@ export default function UserVerification({ onVerificationComplete }: UserVerific
       // Se chegou aqui, status é 200 - verificar se dados são válidos
       const gameData = await response.json()
 
-      // Verificar se o usuário tem nickname "LOGADO" (não é válido)
-      if (gameData?.success && gameData?.data?.basicInfo?.nickname === 'LOGADO') {
-        return {
-          valid: false,
-          message: 'ID inválido! Este não é um usuário real. Digite seu ID verdadeiro do jogo.'
-        }
-      }
-
       // Verificar se os dados são válidos e tem nickname real
       if (!gameData?.success || !gameData?.data?.basicInfo?.nickname) {
         return {

@@ -170,8 +170,7 @@ export default function HomePage() {
         try {
           const userData = JSON.parse(storedUserData || user_data || '{}')
           
-          // Verificar se não é o usuário "LOGADO" (inválido)
-          if (userData.nickname && userData.nickname !== 'LOGADO') {
+          if (userData.nickname) {
             setIsLoggedIn(true)
             setUserData(userData)
             setShowBlurOverlay(false) // Fechar modal se usuário já está logado
@@ -480,7 +479,7 @@ export default function HomePage() {
 
       if (response.ok && data.success) {
         if (data.data && data.data.basicInfo && data.data.basicInfo.nickname) {
-          if (data.data.basicInfo.nickname === "LOGADO" || response.status !== 200) {
+          if (response.status !== 200) {
             setIsLoggedIn(false)
             setLoginError("Login inválido. Verifique seu ID de jogador.")
           } else {
