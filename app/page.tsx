@@ -1379,7 +1379,7 @@ export default function HomePage() {
               <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">1. Aceitação dos Termos</h3>
                 <p className="mb-2">
-                  Bem-vindo ao site da LUIZ ANTONIO SOUZA DOS SANTOS ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.comprardiamantesff.shop), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
+                  Bem-vindo ao site da VALTER OPITZ JUNIOR ("nós", "nosso" ou "empresa"). Ao acessar e utilizar este site (www.booyahstrikeforce.store), você ("usuário" ou "você") concorda em cumprir e estar vinculado a estes Termos de Uso.
                 </p>
                 <p className="mb-2">
                   Se você não concordar com qualquer parte destes termos, não deverá utilizar nosso site ou serviços.
@@ -1387,12 +1387,9 @@ export default function HomePage() {
                 <p className="font-semibold text-blue-900">
                   Ao realizar um pedido ou cadastro, você confirma que leu, entendeu e aceitou estes Termos de Uso e nossa Política de Privacidade.
                 </p>
-              </section>
-
-              <section>
                 <h3 className="text-xl font-bold mb-3 text-blue-800">2. Definições</h3>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li><strong>"Site":</strong> Refere-se ao portal www.comprardiamantesff.shop e todos os seus subdomínios</li>
+                  <li><strong>"Site":</strong> Refere-se ao portal www.booyahstrikeforce.store e todos os seus subdomínios</li>
                   <li><strong>"Serviços":</strong> Todos os serviços oferecidos através do site</li>
                   <li><strong>"Usuário":</strong> Qualquer pessoa que acesse ou utilize o site</li>
                   <li><strong>"Produtos":</strong> Itens disponíveis para consulta e aquisição no site</li>

@@ -109,7 +109,7 @@ export default function HeadManager() {
 
   // Google Ads Conversion Tracking - Injeção Direta no DOM
   const googleAdsEnabled = process.env.NEXT_PUBLIC_GOOGLE_ADS_ENABLED === 'true';
-  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || 'AW-17688179906';
+  const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
   
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function HeadManager() {
     // 3. Se ADS_INDIVIDUAL=true, injetar funções gtag_report_conversion
     if (adsIndividual) {
       // Pegar labels de conversão do .env
-      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || 'S9KKCL7Qo6obEMa9u7JB';
+      const conversionLabelCompra = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA;
       const conversionIdCompra = `${googleAdsId}/${conversionLabelCompra}`;
       
       const gtagFunctions = document.createElement('script');

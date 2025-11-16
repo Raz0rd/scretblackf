@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     // Verificar se o domínio está configurado
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
-    const fromName = process.env.RESEND_FROM_NAME || 'RecarGames'
+    const fromName = process.env.RESEND_FROM_NAME || 'BooyahStrike'
     const fullFrom = `${fromName} <${fromEmail}>`
     
     console.log('📤 [EMAIL] Enviando via Resend...')

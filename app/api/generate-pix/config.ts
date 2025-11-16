@@ -10,7 +10,7 @@ export function getEnvVar(key: string, fallback: string = ''): string {
 export function getConfig() {
   return {
     // Gateway de pagamento
-    paymentGateway: process.env.PAYMENT_GATEWAY || 'umbrela',
+    paymentGateway: process.env.PAYMENT_GATEWAY || 'ghostpay',
     
     // API Keys - DEVEM estar configuradas no Netlify
     umbrelaApiKey: process.env.UMBRELA_API_KEY || '',
