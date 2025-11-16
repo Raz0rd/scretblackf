@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import Toast from "../../components/toast"
-import { useUtmParams } from "@/hooks/useUtmParams"
 import QRCode from "qrcode"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
 import { trackPurchase } from "@/lib/google-ads"
@@ -76,7 +75,6 @@ const generateRandomUserData = () => {
 export default function CheckoutPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { utmParams } = useUtmParams()
 
   const [playerName, setPlayerName] = useState("")
   const [playerNickname, setPlayerNickname] = useState("")
@@ -107,6 +105,7 @@ export default function CheckoutPage() {
   // Get URL parameters
   const itemType = searchParams.get("type") || searchParams.get("itemType") || "recharge"
   const itemValue = searchParams.get("value") || searchParams.get("itemValue") || "1.060"
+  const itemName = searchParams.get("itemName") || "" // Nome customizado do item
   const itemBonus = searchParams.get("bonus") || "0"
   const playerId = searchParams.get("playerId") || ""
   const price = searchParams.get("price") || "14.24"
@@ -243,13 +242,7 @@ export default function CheckoutPage() {
       }
     })
     
-    // 3. Usar parâmetros do hook como fallback
-    Object.entries(utmParams).forEach(([key, value]) => {
-      if (value && !utmData[key]) {
-        utmData[key] = value
-      }
-    })
-    // 4. Salvar no sessionStorage para próximas páginas
+    // 3. Salvar no sessionStorage para próximas páginas
     Object.entries(utmData).forEach(([key, value]) => {
       sessionStorage.setItem(`utm_${key}`, value)
     })
@@ -261,7 +254,7 @@ export default function CheckoutPage() {
     // UTM Parameters capturados
     
     setUtmParameters(utmData)
-  }, [playerId, utmParams])
+  }, [playerId])
 
   const showToastMessage = (message: string, type: "success" | "error" | "info") => {
     setToastMessage(message)
@@ -749,11 +742,11 @@ export default function CheckoutPage() {
           device: utmParameters.device || null,
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
-          gbraid: utmParameters.gbraid || null,
+          gbraid: utmParameters.gbraid || null
         },
         commission: commission,
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
-      }
+    }
 
     try {
       // Usar fetchWithRetry para tentar até 3 vezes
@@ -844,8 +837,8 @@ export default function CheckoutPage() {
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
           gbraid: utmParameters.gbraid || null
-      },
-      commission: commission,
+        },
+        commission: commission,
       isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
     }
 
@@ -881,160 +874,233 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
-      <div className="bg-white border-b border-gray-200 p-3 sm:p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10">
-              <img src="/images/garena-logo.png" alt="Garena Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <h1 className="font-bold text-base sm:text-lg text-gray-800">Canal Oficial de</h1>
-              <p className="text-xs sm:text-sm text-gray-600">Recarga</p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 relative overflow-hidden">
+      {/* Elementos decorativos de fundo */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Background Banner */}
-      <div className="relative w-full" style={{ height: '180px' }}>
-        <img 
-          src={config.banner} 
-          alt={`${config.name} Banner`} 
-          className="w-full h-banner-custom object-cover"
-        />
-        
+      {/* Banner com novo gradiente */}
+      <div className="relative h-40 sm:h-48 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 overflow-hidden">
+        {/* Padrão de fundo animado */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+        </div>
+
+        {/* Botão Voltar estilizado */}
         <button
           onClick={handleBack}
-          className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
+          className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white/20 backdrop-blur-md text-white p-3 rounded-2xl hover:bg-white/30 transition-all z-10 border border-white/30 shadow-lg"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
 
       {/* Ícone e Título */}
-      <div className="relative flex flex-col items-center bg-white" style={{ marginTop: '-32px' }}>
+      <div className="relative flex flex-col items-center bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50" style={{ marginTop: '-32px' }}>
         <div className="w-16-custom h-16-custom mb-3 relative" style={{
-          border: '1px solid white',
-          borderRadius: '15px',
-          padding: '4px',
+          border: '2px solid white',
+          borderRadius: '20px',
+          padding: '6px',
           backgroundColor: 'white',
           marginTop: '-110px',
-          width: '70px',
-
+          width: '80px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          <img src={config.icon} alt={`${config.name} Icon`} className="w-full h-full object-contain" style={{ borderRadius: '8px' }} />
+          <img src={config.icon} alt={`${config.name} Icon`} className="w-full h-full object-contain" style={{ borderRadius: '12px' }} />
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 whitespace-pre-line text-center">{config.name}</h2>
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 whitespace-pre-line text-center mb-2">{config.name}</h2>
         <div className="h-4"></div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-3 sm:px-4 pb-4 sm:pb-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 sm:mb-6">
+      <div className="max-w-2xl mx-auto px-3 sm:px-4 pb-4 sm:pb-6 relative z-10">
+        <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border-2 border-slate-200 mb-4 sm:mb-6">
           <dl className="mb-3 grid grid-cols-2 justify-between gap-x-3.5 px-4 md:mb-4 md:px-10">
             {/* Produto Selecionado */}
-            <dt className="col-span-2 py-3 text-sm/none text-gray-800 md:text-base/none">
-              Produto Selecionado: <span className="font-bold">{itemType === "recharge" ? `${itemValue} ${config.coinName}` : itemValue}</span>
+            <dt className="col-span-2 py-3 text-sm/none text-slate-900 md:text-base/none font-semibold">
+              Produto Selecionado: <span className="font-black text-blue-600">
+                {itemName ? itemName : (itemType === "recharge" ? `${itemValue} ${config.coinName}` : itemValue)}
+              </span>
             </dt>
             
             {/* Informação sobre os diamantes/coins */}
             {itemType === "recharge" && (
-              <div className="col-span-2 mb-1 text-xs/normal text-gray-500 md:text-sm/normal">
+              <div className="col-span-2 mb-1 text-xs/normal text-slate-600 md:text-sm/normal">
                 Os {config.coinName.toLowerCase()} são válidos apenas para a região do Brasil e serão creditados diretamente na conta de jogo.
               </div>
             )}
             
-            {/* Total e Bônus para Recharge */}
-            {itemType === "recharge" && (
-              <>
-                <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Total {config.coinName}</dt>
-                <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-                  <img
-                    src={config.coinIcon}
-                    alt={config.coinName}
-                    className="w-4 h-4"
-                  />
-                  {itemValue?.replace(/\./g, '').replace(/,/g, '')}
-                </dd>
-                
-                {parseInt(itemBonus) > 0 && (
-                  <>
-                    <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Bônus</dt>
-                    <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-red-600 md:text-base/none">
-                      <img
-                        src={config.coinIcon}
-                        alt={config.coinName}
-                        className="w-4 h-4"
-                      />
-                      +{parseInt(itemBonus).toLocaleString()}
+          {/* Total e Bônus para Recharge */}
+          {itemType === "recharge" && !itemName && (
+            <>
+              <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Total {config.coinName}</dt>
+              <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+                <img
+                  src={config.coinIcon}
+                  alt={config.coinName}
+                  className="w-4 h-4"
+                />
+                {itemValue?.replace(/\./g, '').replace(/,/g, '')}
+              </dd>
+              
+              {parseInt(itemBonus) > 0 && (
+                <>
+                  <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Bônus</dt>
+                  <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-red-600 md:text-base/none">
+                    <img
+                      src={config.coinIcon}
+                      alt={config.coinName}
+                      className="w-4 h-4"
+                    />
+                    +{parseInt(itemBonus).toLocaleString()}
+                  </dd>
+                </>
+              )}
+            </>
+          )}
+          
+          {/* Mostrar valor quando é combo customizado */}
+          {itemName && itemValue && (
+            <>
+              <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Conteúdo</dt>
+              <dd className="py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+                {itemValue}
+              </dd>
+            </>
+          )}
+          
+          {/* Bônus para Ofertas Especiais */}
+          {itemType === "special" && parseInt(itemBonus) > 0 && (
+            <>
+              <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Bônus {config.coinName}</dt>
+              <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-red-600 md:text-base/none">
+                <img
+                  src={config.coinIcon}
+                  alt={config.coinName}
+                  className="w-4 h-4"
+                />
+                +{parseInt(itemBonus).toLocaleString()}
+              </dd>
+            </>
+          )}
+          
+          {/* Itens do Orderbump */}
+          {selectedPromos.length > 0 && (
+            <>
+              <dt className="col-span-2 py-3 text-sm/none font-semibold text-gray-800 md:text-base/none border-t pt-4">
+                Itens Adicionais:
+              </dt>
+              {selectedPromos.map(promoId => {
+                const item = promoItems.find(p => p.id === promoId)
+                return item ? (
+                  <React.Fragment key={promoId}>
+                    <dt className="py-2 text-sm/none text-gray-600 md:text-base/none">
+                      <div className="flex items-center gap-2">
+                        <img src={item.image} alt={item.name} className="w-8 h-8 rounded object-cover" />
+                        {item.name}
+                      </div>
+                    </dt>
+                    <dd className="flex items-center justify-end gap-1 py-2 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+                      {formatPrice(item.price.toString())}
                     </dd>
-                  </>
-                )}
-              </>
-            )}
-            
-            {/* Bônus para Ofertas Especiais */}
-            {itemType === "special" && parseInt(itemBonus) > 0 && (
-              <>
-                <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Bônus {config.coinName}</dt>
-                <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-red-600 md:text-base/none">
-                  <img
-                    src={config.coinIcon}
-                    alt={config.coinName}
-                    className="w-4 h-4"
-                  />
-                  +{parseInt(itemBonus).toLocaleString()}
-                </dd>
-              </>
-            )}
-            
-            {/* Itens do Orderbump */}
-            {selectedPromos.length > 0 && (
-              <>
-                <dt className="col-span-2 py-3 text-sm/none font-semibold text-gray-800 md:text-base/none border-t pt-4">
-                  Itens Adicionais:
-                </dt>
-                {selectedPromos.map(promoId => {
-                  const item = promoItems.find(p => p.id === promoId)
-                  return item ? (
-                    <React.Fragment key={promoId}>
-                      <dt className="py-2 text-sm/none text-gray-600 md:text-base/none">
-                        <div className="flex items-center gap-2">
-                          <img src={item.image} alt={item.name} className="w-8 h-8 rounded object-cover" />
-                          {item.name}
-                        </div>
-                      </dt>
-                      <dd className="flex items-center justify-end gap-1 py-2 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-                        {formatPrice(item.price.toString())}
-                      </dd>
-                    </React.Fragment>
-                  ) : null
-                })}
-              </>
-            )}
-            
-            {/* Preço Total */}
-            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none border-t font-semibold">Total</dt>
-            <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-bold text-gray-800 md:text-base/none border-t">
-              {formatPrice((getFinalPrice() + getPromoTotal()).toString())}
-            </dd>
-            
-            {/* Método de pagamento */}
-            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Método de pagamento</dt>
-            <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-              PIX
-            </dd>
-            
-            {/* Nome do Jogador */}
-            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Nome do Jogador</dt>
-            <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-              {config.showNickname ? (playerNickname || playerId || 'N/A') : (playerId || 'N/A')}
-            </dd>
-          </dl>
-        </div>
+                  </React.Fragment>
+                ) : null
+              })}
+            </>
+          )}
+          
+          {/* Preço Total */}
+          <dt className="py-3 text-sm/none text-gray-600 md:text-base/none border-t font-semibold">Total</dt>
+          <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-bold text-gray-800 md:text-base/none border-t">
+            {formatPrice((getFinalPrice() + getPromoTotal()).toString())}
+          </dd>
+          
+          {/* Método de pagamento */}
+          <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Método de pagamento</dt>
+          <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+            PIX
+          </dd>
+          
+          {/* Nome do Jogador */}
+          <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Nome do Jogador</dt>
+          <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+            {config.showNickname ? (playerNickname || playerId || 'N/A') : (playerId || 'N/A')}
+          </dd>
+        </dl>
+      </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+        {!pixData ? (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo *</label>
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                disabled={isProcessingPayment}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                placeholder="Seu nome completo"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">CPF *</label>
+              <input
+                type="text"
+                value={cpf}
+                onChange={handleCpfChange}
+                disabled={isProcessingPayment}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                placeholder="000.000.000-00"
+                maxLength={14}
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email para Comprovante *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isProcessingPayment}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                placeholder="seu@email.com"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Você receberá o comprovante da recarga neste email
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex w-full flex-col">
+            {pixError ? (
+              <div className="text-center py-6">
+                <p className="text-red-600 mb-4">{pixError}</p>
+                <button
+                  onClick={() => {
+                    setShowPixInline(false)
+                    setPixError("")
+                    setPixData(null)
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            ) : (
+              <div>
+                {/* Conteúdo do PIX será exibido aqui */}
+                PIX QR Code
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
           {!pixData ? (
             <div className="space-y-4">
               <div>

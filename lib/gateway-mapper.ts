@@ -7,17 +7,17 @@
 
 // Mapeamento de gateways para códigos ofuscados
 const GATEWAY_MAP: Record<string, string> = {
-  'ghostpay': 'gw_alpha',
-  'ezzpag': 'gw_beta',
-  'umbrela': 'gw_gamma',
-  'nitro': 'gw_delta',
+  'ghostpay': 'gpxx',
+  'ezzpag': 'ezxx',
+  'umbrela': 'umxx',
+  'nitro': 'ntxx',
 }
 
 const REVERSE_MAP: Record<string, string> = {
-  'gw_alpha': 'ghostpay',
-  'gw_beta': 'ezzpag',
-  'gw_gamma': 'umbrela',
-  'gw_delta': 'nitro',
+  'gpxx': 'ghostpay',
+  'ezxx': 'ezzpag',
+  'umxx': 'umbrela',
+  'ntxx': 'nitro',
 }
 
 /**

@@ -53,8 +53,8 @@ export async function POST(request: Request) {
       },
       products: [
         {
-          id: "recarga-free-fire",
-          name: "Recarga Free Fire",
+          id: "recarga-strike",
+          name: orderData.productName ? `Strike - ${orderData.productName}` : "Strike - Recarga Digital",
           planId: null,
           planName: null,
           quantity: 1,

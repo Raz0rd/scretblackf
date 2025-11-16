@@ -21,16 +21,22 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-lg">
+    <nav className="fixed top-[36px] left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 cursor-pointer -ml-8">
-            <img 
-              src="/images/products/LogoDimBuxBAckgroundFREE.png" 
-              alt="Dimbux" 
-              className="h-[5rem] w-auto"
-            />
+          <a href="/" className="flex items-center gap-2 cursor-pointer group">
+            <div className="relative">
+              <div className="flex items-center">
+                <span className="text-3xl font-black text-red-600 tracking-tight">
+                  Booyah
+                </span>
+                <span className="text-3xl font-black text-black tracking-tight">
+                  Strike
+                </span>
+              </div>
+              <div className="absolute -bottom-1 left-0 right-0 h-1 bg-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
+            </div>
           </a>
 
           {/* Desktop Menu */}

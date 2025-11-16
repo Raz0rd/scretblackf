@@ -13,6 +13,7 @@ import FAQ from '@/components/FAQ'
 import Shop from '@/components/Shop'
 import HowToRedeem from '@/components/HowToRedeem'
 import Footer from '@/components/Footer'
+import ComplianceFooter from '@/components/ComplianceFooter'
 
 interface AddressData {
   cep: string
@@ -264,6 +265,13 @@ export default function HomePage() {
   }
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #13141F 0%, #191A23 76.1%, #1E1F2A 100%)' }}>
+      {/* Aviso de Segurança - Topo Fixo */}
+      <div className="fixed top-0 left-0 right-0 bg-blue-600 z-[60] py-2 px-4 shadow-lg">
+        <p className="text-center text-xs sm:text-sm text-white font-medium">
+          🛡️ <strong>Plataforma independente de créditos digitais.</strong> Não solicitamos senha, login nem dados sensíveis.
+        </p>
+      </div>
+
       {/* Rede Neural Abstrata */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         {/* Pontos de conexão */}
@@ -299,39 +307,46 @@ export default function HomePage() {
       <Navbar />
 
       {/* Main Content */}
-      <main className="pt-16">
-      {/* Hero Section com Banner */}
-      <section id="hero" className="relative bg-gradient-to-b from-slate-900 to-slate-800 text-white overflow-hidden">
-        {/* Banner de fundo */}
-        <div className="relative w-full h-[500px] md:h-[600px]">
+      <main className="pt-[88px]">
+      {/* Hero Section com Banner - Novo Design */}
+      <section id="hero" className="relative bg-black text-white overflow-hidden">
+        {/* Elementos decorativos animados */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
+
+        {/* Banner de fundo com overlay */}
+        <div className="relative w-full min-h-[600px] md:min-h-[700px] flex items-center">
           <img 
             src="/images/products/banner.png" 
-            alt="Dimbux Banner" 
-            className="absolute inset-0 w-full h-full object-cover"
+            alt="BooyahStrike Banner" 
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
           />
           
-          {/* Overlay para melhor legibilidade */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+          {/* Overlay gradiente */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/70"></div>
           
           {/* Conteúdo sobre o banner */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/30 border border-blue-400/50 rounded-full mb-6 backdrop-blur-sm">
-                  <Shield className="w-4 h-4 text-blue-300" />
-                  <span className="text-sm font-semibold text-blue-200">Plataforma Segura e Confiável</span>
+          <div className="relative z-10 w-full">
+            <div className="container mx-auto px-4 py-12 md:py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                {/* Badge animado */}
+                <div className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 rounded-full mb-8 shadow-2xl shadow-red-500/50 animate-bounce">
+                  <Shield className="w-5 h-5 text-white" />
+                  <span className="text-sm md:text-base font-bold text-white">🔒 PLATAFORMA 100% SEGURA</span>
                 </div>
 
-                <h1 className="text-6xl md:text-8xl font-black mb-4 text-white drop-shadow-2xl" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', letterSpacing: '0.05em' }}>
-                  DIMBUX
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 text-white drop-shadow-2xl">
+                  BooyahStrike
                 </h1>
-                <p className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent drop-shadow-lg" style={{ fontFamily: 'Impact, "Arial Black", sans-serif' }}>
-                  Mais Dimas, mais Robux, mais diversão!
+                <p className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-red-600">
+                  💎 Mais Dimas, mais Robux, mais diversão! 🎮
                 </p>
-                <p className="text-lg md:text-xl text-slate-200 mb-8 max-w-xl drop-shadow-md">
+                <p className="text-base sm:text-lg md:text-xl text-white mb-10 max-w-2xl mx-auto leading-relaxed px-4">
                   A forma mais rápida, segura e confiável de adquirir diamantes Free Fire e Robux. 
-                  Entrega instantânea e suporte 24/7.
+                  <span className="block mt-2 text-red-500 font-bold">⚡ Entrega instantânea • 🛡️ Suporte 24/7</span>
                 </p>
               </div>
             </div>
@@ -342,50 +357,44 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto text-center">
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            {/* CTA Buttons - Novo Design */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 px-4">
               <a 
                 href="/loja"
-                className="relative px-8 py-4 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 overflow-hidden group shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:shadow-[0_0_50px_rgba(6,182,212,0.8)]"
+                className="relative px-8 sm:px-10 py-5 bg-red-600 hover:bg-red-700 text-white font-black rounded-2xl transition-all transform hover:scale-110 active:scale-95 flex items-center justify-center gap-3 overflow-hidden group shadow-2xl shadow-red-500/50 text-lg sm:text-xl"
               >
-                {/* Glow effect permanente */}
-                <div className="absolute inset-0 bg-cyan-400/10 rounded-lg animate-pulse"></div>
-                
-                {/* Brilho animado no hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                
-                {/* Borda brilhante cyan */}
-                <div className="absolute inset-0 rounded-lg border-2 border-cyan-400/60"></div>
+                {/* Brilho animado */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 
                 {/* Conteúdo */}
-                <ShoppingCart className="w-5 h-5 relative z-10 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">Ver Loja</span>
+                <ShoppingCart className="w-6 h-6 relative z-10 animate-pulse" />
+                <span className="relative z-10">🛒 VER LOJA AGORA</span>
               </a>
               <button 
                 onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold rounded-lg transition-all"
+                className="px-8 sm:px-10 py-5 bg-white hover:bg-gray-100 border-2 border-white text-black font-bold rounded-2xl transition-all transform hover:scale-105 text-lg sm:text-xl"
               >
-                Fale Conosco
+                💬 Fale Conosco
               </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
-              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-blue-400 mb-1">10k+</div>
-                <div className="text-sm text-slate-300">Clientes Satisfeitos</div>
+            {/* Stats - Novo Design */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto px-4">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border-2 border-white/30 hover:border-red-600 transition-all transform hover:scale-105 hover:-translate-y-2 shadow-xl">
+                <div className="text-3xl sm:text-4xl font-black text-red-600 mb-2 animate-pulse">10k+</div>
+                <div className="text-xs sm:text-sm text-white font-semibold">Clientes Satisfeitos</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-cyan-400 mb-1">24/7</div>
-                <div className="text-sm text-slate-300">Suporte Online</div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border-2 border-white/30 hover:border-red-600 transition-all transform hover:scale-105 hover:-translate-y-2 shadow-xl">
+                <div className="text-3xl sm:text-4xl font-black text-red-600 mb-2 animate-pulse">24/7</div>
+                <div className="text-xs sm:text-sm text-white font-semibold">Suporte Online</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-green-400 mb-1">5min</div>
-                <div className="text-sm text-slate-300">Entrega Média</div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border-2 border-white/30 hover:border-red-600 transition-all transform hover:scale-105 hover:-translate-y-2 shadow-xl">
+                <div className="text-3xl sm:text-4xl font-black text-red-600 mb-2 animate-pulse">5min</div>
+                <div className="text-xs sm:text-sm text-white font-semibold">Entrega Média</div>
               </div>
-              <div className="bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">4.9★</div>
-                <div className="text-sm text-slate-300">Avaliação</div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border-2 border-white/30 hover:border-red-600 transition-all transform hover:scale-105 hover:-translate-y-2 shadow-xl">
+                <div className="text-3xl sm:text-4xl font-black text-red-600 mb-2 animate-pulse">4.9★</div>
+                <div className="text-xs sm:text-sm text-white font-semibold">Avaliação</div>
               </div>
             </div>
 
@@ -400,6 +409,155 @@ export default function HomePage() {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Ranking dos Jogadores */}
+      <section className="py-20 bg-black relative overflow-hidden">
+        {/* Elementos decorativos */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-2xl mx-auto">
+            {/* Título do Ranking */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-3 mb-4">
+                <Award className="w-8 h-8 text-red-600 animate-pulse" />
+                <h2 className="text-4xl md:text-5xl font-black text-white">
+                  RANKING DOS JOGADORES
+                </h2>
+                <Award className="w-8 h-8 text-red-600 animate-pulse" />
+              </div>
+              <p className="text-white text-lg">🏆 Top compradores do mês</p>
+            </div>
+
+            {/* Lista do Ranking */}
+            <div className="space-y-4">
+              {/* #1 */}
+              <div className="group relative bg-red-600/20 backdrop-blur-xl rounded-2xl p-5 border-4 border-red-600 shadow-2xl shadow-red-500/50 hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-3xl font-black text-white bg-red-600 rounded-xl w-14 h-14 flex items-center justify-center shadow-lg">
+                      #1
+                    </div>
+                    <div>
+                      <div className="text-xl font-black text-white">VitorGamer</div>
+                      <div className="text-sm text-gray-300">Vitor Silva</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-black text-white">R$ 2.145,90</div>
+                    <div className="text-xs text-gray-300">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* #2 */}
+              <div className="group relative bg-white/10 backdrop-blur-xl rounded-2xl p-5 border-2 border-white/60 shadow-xl hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-2xl font-black text-white bg-black rounded-xl w-12 h-12 flex items-center justify-center shadow-lg">
+                      #2
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-white">RafaelPro</div>
+                      <div className="text-sm text-gray-300">Rafael Santos</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-black text-white">R$ 1.890,50</div>
+                    <div className="text-xs text-gray-300">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* #3 */}
+              <div className="group relative bg-white/10 backdrop-blur-xl rounded-2xl p-5 border-2 border-white/60 shadow-xl hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-2xl font-black text-white bg-black rounded-xl w-12 h-12 flex items-center justify-center shadow-lg">
+                      #3
+                    </div>
+                    <div>
+                      <div className="text-lg font-bold text-white">ThiagoFF</div>
+                      <div className="text-sm text-gray-300">Thiago Oliveira</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-black text-white">R$ 1.675,80</div>
+                    <div className="text-xs text-gray-300">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* #4 */}
+              <div className="group relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/40 shadow-lg hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-xl font-bold text-white bg-black rounded-xl w-10 h-10 flex items-center justify-center">
+                      #4
+                    </div>
+                    <div>
+                      <div className="text-base font-bold text-white">CamilaGamer</div>
+                      <div className="text-xs text-gray-400">Camila Ferreira</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-white">R$ 1.520,40</div>
+                    <div className="text-xs text-gray-400">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* #5 */}
+              <div className="group relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/40 shadow-lg hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-xl font-bold text-white bg-black rounded-xl w-10 h-10 flex items-center justify-center">
+                      #5
+                    </div>
+                    <div>
+                      <div className="text-base font-bold text-white">LucasTop</div>
+                      <div className="text-xs text-gray-400">Lucas Almeida</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-white">R$ 1.205,00</div>
+                    <div className="text-xs text-gray-400">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* #6 */}
+              <div className="group relative bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/40 shadow-lg hover:scale-105 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-xl font-bold text-white bg-black rounded-xl w-10 h-10 flex items-center justify-center">
+                      #6
+                    </div>
+                    <div>
+                      <div className="text-base font-bold text-white">BrunoGG</div>
+                      <div className="text-xs text-gray-400">Bruno Carvalho</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold text-white">R$ 1.380,60</div>
+                    <div className="text-xs text-gray-400">Total gasto</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Nota no rodapé */}
+            <div className="mt-8 text-center">
+              <p className="text-gray-400 text-sm">
+                ⚡ Ranking atualizado em tempo real • Seja o próximo no topo!
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -485,7 +643,7 @@ export default function HomePage() {
               </p>
               <div className="flex justify-center items-center gap-4">
                 <Mail className="w-6 h-6 text-blue-400" />
-                <p className="text-lg text-white">contato_loja@comprardiamantesff.shop</p>
+                <p className="text-lg text-white">contato@booyahstrikeforce.store</p>
               </div>
             </div>
           </div>
@@ -694,91 +852,6 @@ export default function HomePage() {
       <Newsletter />
 
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Informações da Empresa */}
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
-              {/* Sobre */}
-              <div>
-                <h3 className="text-xl font-bold mb-4">Comprar Diamantes FF</h3>
-                <p className="text-slate-300 text-sm mb-4">
-                  Plataforma líder em venda de diamantes para Free Fire. Segurança, rapidez e confiabilidade em cada transação.
-                </p>
-                <div className="flex items-center gap-2 mb-2">
-                  <Mail className="w-4 h-4 text-blue-400" />
-                  <a href="mailto:contato_loja@comprardiamantesff.shop" className="text-slate-300 hover:text-white text-sm">
-                    contato_loja@comprardiamantesff.shop
-                  </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-blue-400" />
-                  <a href="tel:+5511945622020" className="text-slate-300 hover:text-white text-sm">
-                    (11) 94562-2020
-                  </a>
-                </div>
-              </div>
-
-              {/* Dados da Empresa */}
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Informações Legais</h4>
-                <div className="space-y-2 text-sm text-slate-300">
-                  <p>
-                    <span className="font-semibold text-white">Razão Social:</span><br />
-                    AMANDA IZABEL DUTRA DA SILVA
-                  </p>
-                  <p>
-                    <span className="font-semibold text-white">CNPJ:</span><br />
-                    60.730.759/0001-51
-                  </p>
-                  <p className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
-                    <span>
-                      Avenida Santo Amaro, 765<br />
-                      Vila Nova Conceição - São Paulo/SP<br />
-                      CEP: 04505-001
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Links Úteis */}
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Links Úteis</h4>
-                <div className="space-y-2">
-                  <button 
-                    onClick={() => setShowPrivacyModal(true)}
-                    className="block text-slate-300 hover:text-white transition-colors text-sm text-left"
-                  >
-                    → Política de Privacidade
-                  </button>
-                  <button 
-                    onClick={() => setShowTermsModal(true)}
-                    className="block text-slate-300 hover:text-white transition-colors text-sm text-left"
-                  >
-                    → Termos de Uso
-                  </button>
-                  <a 
-                    href="#sobre" 
-                    className="block text-slate-300 hover:text-white transition-colors text-sm"
-                  >
-                    → Sobre Nós
-                  </a>
-                  <a 
-                    href="#contato" 
-                    className="block text-slate-300 hover:text-white transition-colors text-sm"
-                  >
-                    → Contato
-                  </a>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </footer>
 
       {/* Footer Profissional */}
       <Footer />
@@ -1254,7 +1327,7 @@ export default function HomePage() {
                   <p className="mb-2">Para questões sobre esta política ou exercer seus direitos:</p>
                   <p className="mb-1"><strong>AMANDA IZABEL DUTRA DA SILVA</strong></p>
                   <p className="mb-1">Encarregado de Proteção de Dados (DPO)</p>
-                  <p className="mb-1">📧 E-mail: contato_loja@comprardiamantesff.shop</p>
+                  <p className="mb-1">📧 E-mail: contato@booyahstrikeforce.store</p>
                   <p className="mb-1">📞 Telefone: (11) 94562-2020</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mt-3 text-sm text-slate-600">
@@ -1508,7 +1581,7 @@ export default function HomePage() {
                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
                   <p className="mb-2">Para questões sobre estes Termos de Uso ou nossos serviços:</p>
                   <p className="mb-1"><strong>AMANDA IZABEL DUTRA DA SILVA</strong></p>
-                  <p className="mb-1">📧 E-mail: contato_loja@comprardiamantesff.shop</p>
+                  <p className="mb-1">📧 E-mail: contato@booyahstrikeforce.store</p>
                   <p className="mb-1">📞 Telefone: (11) 94562-2020</p>
                   <p className="mb-1">📍 Endereço: Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA - CEP: 44001-000</p>
                   <p className="mb-1">🕐 Horário de atendimento: Segunda a Sexta, das 9h às 18h</p>
@@ -1518,6 +1591,9 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Footer de Compliance */}
+      <ComplianceFooter />
       </div>
     </div>
   )

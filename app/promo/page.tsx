@@ -2539,6 +2539,13 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Aviso de Segurança - Topo */}
+      <div className="bg-blue-50 border-b border-blue-200 py-2 px-4">
+        <p className="text-center text-xs text-blue-800">
+          🛡️ <strong>Plataforma independente de créditos digitais.</strong> Não solicitamos senha, login nem dados sensíveis.
+        </p>
+      </div>
+
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>

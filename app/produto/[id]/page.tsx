@@ -190,7 +190,7 @@ export default function ProductPage() {
         const headPic = basicInfo.headPic || '902000306'
         
         // Buscar informações do avatar usando nossa API
-        let avatarUrl = '/images/products/LogoDimBuxBAckgroundFREE.png' // Fallback
+        let avatarUrl = '/images/products/LogoDimBuxBAckgroundFREE.png' // Fallback DIMBUX BooyahStrike
         try {
           const avatarResponse = await fetch(`/api/get-avatar?headPicId=${headPic}`)
           if (avatarResponse.ok) {

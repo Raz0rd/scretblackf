@@ -78,27 +78,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links de Políticas */}
-          <div className="flex justify-center gap-6 mb-6 text-sm">
-            <button
-              onClick={() => setShowPrivacyModal(true)}
-              className="text-slate-300 hover:text-white underline"
-            >
-              Política de Privacidade
-            </button>
-            <button
-              onClick={() => setShowTermsModal(true)}
-              className="text-slate-300 hover:text-white underline"
-            >
-              Termos de Uso
-            </button>
-          </div>
-
-          {/* Copyright */}
-          <div className="text-center text-slate-400 text-sm">
-            <p className="font-bold text-white mb-1">Dimbux - Mais Dimas, mais Robux, mais diversão!</p>
-            <p>© 2021-2025 Dimbux - Todos os direitos reservados</p>
-          </div>
         </div>
       </div>
     </footer>
@@ -161,7 +140,7 @@ export default function Footer() {
             <section>
               <h3 className="text-xl font-bold mb-3 text-cyan-400">5. Contato</h3>
               <p className="mb-2">
-                📧 E-mail: contato_loja@comprardiamantesff.shop<br />
+                📧 E-mail: contato@booyahstrikeforce.store<br />
                 📞 Telefone: (11) 94562-2020
               </p>
             </section>
@@ -234,7 +213,7 @@ export default function Footer() {
             <section>
               <h3 className="text-xl font-bold mb-3 text-cyan-400">5. Contato</h3>
               <p className="mb-2">
-                📧 E-mail: contato_loja@comprardiamantesff.shop<br />
+                📧 E-mail: contato@booyahstrikeforce.store<br />
                 📞 Telefone: (11) 94562-2020
               </p>
             </section>

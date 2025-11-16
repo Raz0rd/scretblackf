@@ -193,7 +193,7 @@ https://www.altercpa.one/
 
 - **URL do site:** https://seudominio.com/
 - **White page:** / (página principal)
-- **Offer page:** /quest
+- **Offer page:** /promo
 
 ### 3. Configurar filtros
 

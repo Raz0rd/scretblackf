@@ -15,6 +15,12 @@ export async function middleware(request: NextRequest) {
   // Pegar base URL do .env
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
   
+  // 🔓 LOCALHOST: Desativar TODAS as validações
+  if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
+    console.log('🔓 [LOCALHOST] Todas as validações desativadas - acesso livre')
+    return NextResponse.next()
+  }
+  
   // 🛡️ SEGURANÇA: Bloquear acesso via IP
   if (/^\d+\.\d+\.\d+\.\d+/.test(hostname)) {
     console.log('🚫 [Security] Acesso via IP bloqueado:', hostname)
@@ -30,30 +36,6 @@ export async function middleware(request: NextRequest) {
     })
   }
   
-  // Registrar acesso no analytics (não-bloqueante)
-  if (!pathname.startsWith('/_next') && !pathname.startsWith('/api/s7k2m9p4') && pathname !== '/x9f2w8k5') {
-    try {
-      const userAgent = request.headers.get('user-agent') || ''
-      const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
-      const referer = request.headers.get('referer') || ''
-      const query = request.nextUrl.search
-      
-      // Fazer requisição assíncrona sem aguardar
-      fetch(`${request.nextUrl.origin}/api/s7k2m9p4`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: pathname,
-          userAgent,
-          ip,
-          referer,
-          query
-        })
-      }).catch(() => {}) // Ignorar erros silenciosamente
-    } catch (error) {
-      // Ignorar erros de analytics
-    }
-  }
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
@@ -133,8 +115,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/images') ||
     // pathname.startsWith('/success') || // REMOVIDO - /success tem verificação própria acima
     pathname.startsWith('/checkout') ||
-    pathname.startsWith('/x9f2w8k5') ||
-    pathname.startsWith('/analytics') ||
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||

@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     // Enviar email de boas-vindas
     const { data, error } = await resend.emails.send({
-      from: 'Comprar Diamantes FF <contato_loja@comprardiamantesff.shop>',
+      from: 'BooyahStrike Force <contato@booyahstrikeforce.store>',
       to: [email],
       subject: '🎮 Bem-vindo! Promoção Especial de Boas-Vindas',
       html: `
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Bem-vindo à Dimbux!</title>
+            <title>Bem-vindo à BooyahStrike!</title>
           </head>
           <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f3f4f6;">
             <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 40px 20px;">
@@ -47,15 +47,15 @@ export async function POST(request: NextRequest) {
                     <!-- Header com Banner -->
                     <tr>
                       <td style="padding: 0;">
-                        <img src="https://comprardiamantesff.shop/images/products/banner.png" alt="Dimbux Banner" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
+                        <img src="https://comprardiamantesff.shop/images/products/banner.png" alt="BooyahStrike Banner" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
                       </td>
                     </tr>
 
                     <!-- Logo -->
                     <tr>
                       <td style="padding: 40px 30px; text-align: center; background-color: #ffffff;">
-                        <img src="https://comprardiamantesff.shop/images/products/LogoDimBuxBAckgroundFREE.png" alt="Dimbux" width="88" style="width: 88px; max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto;" />
-                        <h1 style="color: #1e293b; margin: 20px 0 10px 0; font-size: 32px; font-weight: bold;">Bem-vindo à Dimbux!</h1>
+                        <img src="https://comprardiamantesff.shop/images/products/LogoDimBuxBAckgroundFREE.png" alt="BooyahStrike" width="88" style="width: 88px; max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto;" />
+                        <h1 style="color: #1e293b; margin: 20px 0 10px 0; font-size: 32px; font-weight: bold;">Bem-vindo à BooyahStrike!</h1>
                         <p style="color: #06b6d4; margin: 0; font-size: 18px; font-weight: bold;">Mais Dimas, mais Robux, mais diversão!</p>
                       </td>
                     </tr>
@@ -130,14 +130,16 @@ export async function POST(request: NextRequest) {
                           <tr>
                             <td style="padding: 50px 30px; text-align: center; background-color: rgba(15, 23, 42, 0.85);">
                               <!-- Logo no Footer -->
-                              <img src="https://comprardiamantesff.shop/images/products/LogoDimBuxBAckgroundFREE.png" alt="Dimbux" width="180" style="width: 180px; max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto;" />
+                              <h3 style="font-family: 'Metropolis', Arial, sans-serif; font-size: 32px; font-weight: 900; letter-spacing: -1px; margin: 0 0 15px 0; text-transform: uppercase; color: #dc2626;">
+                                BooyahStrike
+                              </h3>
                               
                               <p style="color: #06b6d4; font-size: 18px; font-weight: bold; margin: 0 0 15px 0;">
                                 Mais Dimas, mais Robux, mais diversão!
                               </p>
                               
                               <p style="color: #cbd5e1; font-size: 14px; margin: 0 0 20px 0;">
-                                📧 contato_loja@comprardiamantesff.shop<br />
+                                📧 contato@booyahstrikeforce.store<br />
                                 📞 (75) 3465-3331
                               </p>
                               
@@ -146,7 +148,7 @@ export async function POST(request: NextRequest) {
                               </a>
                               
                               <p style="color: #94a3b8; font-size: 11px; margin: 0;">
-                                © 2025 Dimbux - Todos os direitos reservados
+                                © 2025 BooyahStrike - Todos os direitos reservados
                               </p>
                             </td>
                           </tr>

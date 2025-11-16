@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
+import { decodeGateway } from "@/lib/gateway-mapper"
 
 // Cache para evitar processamento duplicado (em memória)
 const processedConversions = new Map<string, number>()
@@ -39,17 +40,18 @@ async function checkStatusEzzpag(transactionId: string) {
 
 // Função para consultar status no GhostPay
 async function checkStatusGhostPay(transactionId: string) {
-  const ghostpayUrl = `https://api.ghostspaysv2.com/functions/v1/transactions/${transactionId}`
+  const ghostpayUrl = `https://api.ghostpay.com.br/api/v1/transaction/${transactionId}`
   const secretKey = process.env.GHOSTPAY_API_KEY
+  const companyId = process.env.GHOSTPAY_COMPANY_ID
 
-  if (!secretKey) {
-    throw new Error("GHOSTPAY_API_KEY não configurado")
+  if (!secretKey || !companyId) {
+    throw new Error("GHOSTPAY_API_KEY ou GHOSTPAY_COMPANY_ID não configurado")
   }
 
   console.log(`[GhostPay] Consultando: ${ghostpayUrl}`)
 
-  // Criar auth Basic com base64
-  const authString = Buffer.from(`${secretKey}:x`).toString('base64')
+  // Criar auth Basic com SECRET_KEY:COMPANY_ID
+  const authString = Buffer.from(`${secretKey}:${companyId}`).toString('base64')
 
   const response = await fetch(ghostpayUrl, {
     method: "GET",
@@ -61,6 +63,8 @@ async function checkStatusGhostPay(transactionId: string) {
 
   if (!response.ok) {
     console.error(`[GhostPay] Erro na API: ${response.status}`)
+    const errorText = await response.text()
+    console.error(`[GhostPay] Resposta de erro:`, errorText)
     throw new Error(`Erro na API GhostPay: ${response.status}`)
   }
 
@@ -131,6 +135,106 @@ async function checkStatusUmbrela(transactionId: string) {
   return transactionData
 }
 
+// Método GET para polling do frontend
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const transactionId = searchParams.get('transactionId')
+    
+    if (!transactionId) {
+      return NextResponse.json({
+        success: false,
+        error: "transactionId é obrigatório"
+      }, { status: 400 })
+    }
+
+    console.log(`🔍 [CHECK-STATUS-GET] Verificando status: ${transactionId}`)
+
+    // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
+    const storedOrder = orderStorageService.getOrder(transactionId.toString())
+    
+    if (!storedOrder) {
+      console.error(`[CHECK-STATUS-GET] ❌ Pedido não encontrado no storage: ${transactionId}`)
+      return NextResponse.json({
+        success: false,
+        error: 'Pedido não encontrado',
+        status: 'pending'
+      })
+    }
+
+    if (!storedOrder.gateway) {
+      console.error(`[CHECK-STATUS-GET] ❌ Gateway não encontrado no pedido: ${transactionId}`)
+      return NextResponse.json({
+        success: false,
+        error: 'Gateway não identificado',
+        status: 'pending'
+      })
+    }
+
+    // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
+    const gatewayCode = storedOrder.gateway
+    const gateway = decodeGateway(gatewayCode)
+    console.log(`[CHECK-STATUS-GET] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
+    
+    // Se já está pago no storage, retornar imediatamente
+    if (storedOrder && storedOrder.status === 'paid') {
+      console.log(`[CHECK-STATUS-GET] ✅ Transação já está PAID no storage`)
+      return NextResponse.json({
+        success: true,
+        status: 'paid',
+        message: 'Transação já processada como paid'
+      })
+    }
+
+    // Consultar gateway
+    let transactionData
+    
+    try {
+      if (gateway === 'ghostpay') {
+        transactionData = await checkStatusGhostPay(transactionId)
+      } else if (gateway === 'umbrela') {
+        transactionData = await checkStatusUmbrela(transactionId)
+      } else if (gateway === 'nitro') {
+        transactionData = await checkStatusNitro(transactionId)
+      } else {
+        transactionData = await checkStatusEzzpag(transactionId)
+      }
+    } catch (error) {
+      console.error(`[CHECK-STATUS-GET] Erro ao consultar gateway:`, error)
+      return NextResponse.json({
+        success: false,
+        error: 'Erro ao consultar status',
+        status: 'pending'
+      })
+    }
+
+    // Normalizar status
+    let currentStatus
+    if (gateway === 'nitro') {
+      currentStatus = transactionData.payment_status
+    } else {
+      currentStatus = transactionData.status
+    }
+    
+    const isNowPaid = currentStatus === 'paid' || currentStatus === 'approved' || currentStatus === 'PAID'
+    
+    console.log(`[CHECK-STATUS-GET] Status atual: ${currentStatus} (isPaid: ${isNowPaid})`)
+
+    return NextResponse.json({
+      success: true,
+      status: isNowPaid ? 'paid' : 'pending',
+      gateway
+    })
+  } catch (error) {
+    console.error(`[CHECK-STATUS-GET] Erro:`, error)
+    return NextResponse.json({
+      success: false,
+      error: 'Erro ao verificar status',
+      status: 'pending'
+    })
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { transactionId } = await request.json()
@@ -145,20 +249,26 @@ export async function POST(request: NextRequest) {
     // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
-    // Usar gateway do storage OU da variável de ambiente
-    let gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
-    
-    if (storedOrder && storedOrder.gateway) {
-      gateway = storedOrder.gateway
-      console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gateway.toUpperCase()}`)
-    } else {
-      // Se não tem no storage, usar da env (mas pode estar errado)
-      const gateways = gateway.split(',').map(g => g.trim()).filter(g => g.length > 0)
-      gateway = gateways[0] || 'ezzpag'
-      console.log(`[CHECK-STATUS] ⚠️ Gateway não encontrado no storage, usando padrão: ${gateway.toUpperCase()}`)
+    if (!storedOrder) {
+      console.error(`[CHECK-STATUS] ❌ Pedido não encontrado no storage: ${transactionId}`)
+      return NextResponse.json({
+        success: false,
+        error: "Pedido não encontrado"
+      }, { status: 404 })
     }
-    
-    console.log(`[CHECK-STATUS] Gateway final: ${gateway.toUpperCase()}`)
+
+    if (!storedOrder.gateway) {
+      console.error(`[CHECK-STATUS] ❌ Gateway não encontrado no pedido: ${transactionId}`)
+      return NextResponse.json({
+        success: false,
+        error: "Gateway não identificado"
+      }, { status: 400 })
+    }
+
+    // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
+    const gatewayCode = storedOrder.gateway
+    const gateway = decodeGateway(gatewayCode)
+    console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
     console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
     
     // Se encontrou no storage E já está pago, NÃO retornar ainda

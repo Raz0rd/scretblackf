@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     let subject = ''
     let htmlContent = ''
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://comprardiamantesff.shop'
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const unsubscribeUrl = `${baseUrl}/unsubscribe?email=${encodeURIComponent(email)}`
 
     // Template base com tema do site
@@ -47,14 +47,16 @@ export async function POST(request: NextRequest) {
                   <!-- Banner -->
                   <tr>
                     <td style="padding: 0;">
-                      <img src="${baseUrl}/images/products/banner.png" alt="Dimbux" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
+                      <img src="${baseUrl}/images/products/banner.png" alt="BooyahStrike" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
                     </td>
                   </tr>
 
                   <!-- Logo -->
                   <tr>
                     <td style="padding: 30px; text-align: center; background-color: #1e293b;">
-                      <img src="${baseUrl}/images/products/LogoDimBuxBAckgroundFREE.png" alt="Dimbux" width="120" style="width: 120px; max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+                      <h1 style="font-family: 'Metropolis', Arial, sans-serif; font-size: 36px; font-weight: 900; letter-spacing: -1px; margin: 0; text-transform: uppercase; color: #dc2626;">
+                        BooyahStrike
+                      </h1>
                     </td>
                   </tr>
 
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest) {
                               <td style="text-align: center; padding-bottom: 20px;">
                                 <h3 style="color: #06b6d4; margin: 0 0 15px 0; font-size: 18px; font-weight: bold;">AMANDA IZABEL DUTRA DA SILVA</h3>
                                 <p style="color: #94a3b8; margin: 5px 0; font-size: 14px;">CNPJ: 60.730.759/0001-51</p>
-                                <p style="color: #94a3b8; margin: 5px 0; font-size: 14px;">📧 contato_loja@comprardiamantesff.shop</p>
+                                <p style="color: #94a3b8; margin: 5px 0; font-size: 14px;">📧 contato@booyahstrikeforce.store</p>
                                 <p style="color: #94a3b8; margin: 5px 0; font-size: 14px;">📞 (11) 94562-2020</p>
                                 <p style="color: #94a3b8; margin: 5px 0; font-size: 14px;">📍 Avenida Santo Amaro, 765 - Vila Nova Conceição, São Paulo/SP</p>
                               </td>
@@ -83,7 +85,7 @@ export async function POST(request: NextRequest) {
                             <tr>
                               <td style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(148, 163, 184, 0.2);">
                                 <p style="color: #64748b; margin: 10px 0; font-size: 12px;">
-                                  © ${new Date().getFullYear()} Dimbux. Todos os direitos reservados.
+                                  © ${new Date().getFullYear()} BooyahStrike. Todos os direitos reservados.
                                 </p>
                                 <p style="margin: 10px 0;">
                                   <a href="${unsubscribeUrl}" style="color: #06b6d4; text-decoration: none; font-size: 12px;">Cancelar inscrição</a>
@@ -133,7 +135,7 @@ export async function POST(request: NextRequest) {
 
         <p style="color: #94a3b8; margin: 20px 0 0 0; font-size: 14px;">
           Atenciosamente,<br>
-          <strong style="color: #06b6d4;">Equipe Dimbux</strong>
+          <strong style="color: #06b6d4;">Equipe BooyahStrike</strong>
         </p>
       `)
     }
@@ -170,7 +172,7 @@ export async function POST(request: NextRequest) {
 
         <p style="color: #94a3b8; margin: 20px 0 0 0; font-size: 14px;">
           Obrigado pela confiança!<br>
-          <strong style="color: #06b6d4;">Equipe Dimbux</strong>
+          <strong style="color: #06b6d4;">Equipe BooyahStrike</strong>
         </p>
       `)
     }
@@ -216,14 +218,14 @@ export async function POST(request: NextRequest) {
 
         <p style="color: #94a3b8; margin: 20px 0 0 0; font-size: 14px;">
           Agradecemos sua compreensão,<br>
-          <strong style="color: #06b6d4;">Equipe Dimbux</strong>
+          <strong style="color: #06b6d4;">Equipe BooyahStrike</strong>
         </p>
       `)
     }
 
     // Enviar email
     const { data, error } = await resend.emails.send({
-      from: 'Dimbux <noreply@comprardiamantesff.shop>',
+      from: 'BooyahStrike <noreply@comprardiamantesff.shop>',
       to: [email],
       subject: subject,
       html: htmlContent,

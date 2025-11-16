@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
 import { getConfig, getEnvVar } from "./config"
+import { encodeGateway } from "@/lib/gateway-mapper"
 
 // Forçar Node.js runtime
 export const runtime = 'nodejs'
@@ -745,15 +746,22 @@ export async function POST(request: NextRequest) {
     
     let result
     
-    if (gateway === 'ghostpay') {
-      result = await generatePixGhostPay(body, baseUrl)
-    } else if (gateway === 'umbrela') {
-      result = await generatePixUmbrela(body, baseUrl)
-    } else if (gateway === 'nitro') {
+    // Usar apenas NitroPay e GhostPay
+    if (gateway === 'nitro') {
       result = await generatePixNitro(body, baseUrl)
+    } else if (gateway === 'ghostpay') {
+      result = await generatePixGhostPay(body, baseUrl)
     } else {
-      // Padrão: Ezzpag
-      result = await generatePixEzzpag(body, baseUrl)
+      // Padrão: randomizar entre Nitro e GhostPay
+      const defaultGateways = ['nitro', 'ghostpay']
+      const randomGateway = defaultGateways[Math.floor(Math.random() * defaultGateways.length)]
+      console.log("🎲 [GATEWAY] Gateway não especificado, randomizando:", randomGateway)
+      
+      if (randomGateway === 'nitro') {
+        result = await generatePixNitro(body, baseUrl)
+      } else {
+        result = await generatePixGhostPay(body, baseUrl)
+      }
     }
     
     // SALVAR no order storage com tracking parameters
@@ -790,7 +798,7 @@ export async function POST(request: NextRequest) {
         },
         trackingParameters: body.trackingParams || {},
         productName: generateProductName(body.itemValue), // Gerar nome para UTMify
-        gateway: gateway, // SALVAR QUAL GATEWAY FOI USADO! 🎯
+        gateway: encodeGateway(gateway), // SALVAR GATEWAY MAPEADO (ex: ghostpay -> gpxx) 🎯
         createdAt: new Date().toISOString(),
         status: 'pending' as const
       }
@@ -798,6 +806,7 @@ export async function POST(request: NextRequest) {
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
       console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
+      console.log("🔐 [STORAGE] Gateway salvo (mapeado):", encodeGateway(gateway))
       console.log("🎯 [STORAGE] UTMs salvos no orderStorage:")
       console.log("   - gclid:", orderData.trackingParameters.gclid || 'N/A')
       console.log("   - gad_source:", orderData.trackingParameters.gad_source || 'N/A')

@@ -103,7 +103,7 @@ export default function Newsletter() {
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in duration-300">
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-center">
+          <div className="relative bg-gradient-to-r from-red-600 to-black p-6 text-center">
             <button
               onClick={handleClose}
               className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
@@ -112,7 +112,7 @@ export default function Newsletter() {
             </button>
             
             <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8 text-cyan-400" />
+              <Mail className="w-8 h-8 text-red-400" />
             </div>
             
             <h2 className="text-2xl font-bold text-white mb-2">
@@ -130,7 +130,7 @@ export default function Newsletter() {
                 {/* Loader Animado */}
                 <div className="relative w-20 h-20 mx-auto mb-6">
                   <div className="absolute inset-0 border-4 border-slate-200 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-slate-900 rounded-full border-t-transparent animate-spin"></div>
+                  <div className="absolute inset-0 border-4 border-red-600 rounded-full border-t-transparent animate-spin"></div>
                 </div>
                 <p className="text-slate-700 font-medium">
                   Processando...
@@ -149,22 +149,22 @@ export default function Newsletter() {
                     placeholder="seu@email.com"
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all disabled:opacity-50"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full py-3 bg-gradient-to-r from-red-600 to-black hover:from-red-700 hover:to-gray-900 text-white font-bold rounded-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   <Send className="w-5 h-5" />
                   Quero meu desconto!
                 </button>
 
-                <p className="text-xs text-slate-500 text-center">
+                <p className="text-xs text-red-500 text-center">
                   Ao se cadastrar, você concorda com nossa Política de Privacidade<br />
-                  📧 Contato: <a href="mailto:contato_loja@comprardiamantesff.shop" className="text-cyan-600 hover:underline">contato_loja@comprardiamantesff.shop</a>
+                  📧 Contato: <a href="mailto:contato@booyahstrikeforce.store" className="text-red-600 hover:underline">contato@booyahstrikeforce.store</a>
                 </p>
               </form>
             ) : (
@@ -172,7 +172,7 @@ export default function Newsletter() {
                 {/* Animação de Sucesso */}
                 <div className="relative w-20 h-20 mx-auto mb-6">
                   {/* Círculo de fundo */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800 rounded-full animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-black rounded-full animate-pulse"></div>
                   
                   {/* Check animado */}
                   <svg className="absolute inset-0 w-full h-full" viewBox="0 0 52 52">
