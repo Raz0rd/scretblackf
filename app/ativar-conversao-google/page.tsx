@@ -19,7 +19,7 @@ export default function TestAdsPage() {
 
   // Pegar do .env
   const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || ''
-  const conversionLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL || ''
+  const conversionLabel = process.env.NEXT_PUBLIC_GTAG_CONVERSION_COMPRA || ''
 
   // Função para disparar conversão
   const gtag_report_conversion = () => {
