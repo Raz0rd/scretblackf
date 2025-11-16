@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -20,6 +18,9 @@ export async function POST(request: NextRequest) {
         message: 'RESEND_API_KEY não configurada'
       }, { status: 500 })
     }
+
+    // Inicializar Resend apenas quando a API key existe
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     // Verificar se o domínio está configurado
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
