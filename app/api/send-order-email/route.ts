@@ -224,8 +224,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Enviar email
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
+    const fromName = process.env.RESEND_FROM_NAME || 'BooyahStrike'
+    const fullFrom = `${fromName} <${fromEmail}>`
+    
     const { data, error } = await resend.emails.send({
-      from: 'BooyahStrike <noreply@comprardiamantesff.shop>',
+      from: fullFrom,
       to: [email],
       subject: subject,
       html: htmlContent,

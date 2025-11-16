@@ -47,14 +47,14 @@ export async function POST(request: NextRequest) {
                     <!-- Header com Banner -->
                     <tr>
                       <td style="padding: 0;">
-                        <img src="https://comprardiamantesff.shop/images/products/banner.png" alt="BooyahStrike Banner" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
+                        <img src="${process.env.NEXT_PUBLIC_BASE_URL}/images/products/banner.png" alt="BooyahStrike Banner" width="600" style="width: 100%; max-width: 600px; height: auto; display: block; border: 0;" />
                       </td>
                     </tr>
 
                     <!-- Logo -->
                     <tr>
                       <td style="padding: 40px 30px; text-align: center; background-color: #ffffff;">
-                        <img src="https://comprardiamantesff.shop/images/products/LogoDimBuxBAckgroundFREE.png" alt="BooyahStrike" width="88" style="width: 88px; max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto;" />
+                        <img src="${process.env.NEXT_PUBLIC_BASE_URL}/images/products/LogoDimBuxBAckgroundFREE.png" alt="BooyahStrike" width="88" style="width: 88px; max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto;" />
                         <h1 style="color: #1e293b; margin: 20px 0 10px 0; font-size: 32px; font-weight: bold;">Bem-vindo à BooyahStrike!</h1>
                         <p style="color: #06b6d4; margin: 0; font-size: 18px; font-weight: bold;">Mais Dimas, mais Robux, mais diversão!</p>
                       </td>
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
                         <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                           <tr>
                             <td align="center">
-                              <a href="https://comprardiamantesff.shop/loja" style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); color: white; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                              <a href="${process.env.NEXT_PUBLIC_BASE_URL}/loja" style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); color: white; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">
                                 🛒 Ver Loja Completa
                               </a>
                             </td>
@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
 
                     <!-- Footer com Background -->
                     <tr>
-                      <td style="padding: 0; background-image: url('https://comprardiamantesff.shop/images/products/backgroundFOOTER.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #0f172a;">
+                      <td style="padding: 0; background-image: url('${process.env.NEXT_PUBLIC_BASE_URL}/images/products/backgroundFOOTER.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #0f172a;">
                         <table width="100%" cellpadding="0" cellspacing="0">
                           <tr>
                             <td style="padding: 50px 30px; text-align: center; background-color: rgba(15, 23, 42, 0.85);">
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
                                 📞 (75) 3465-3331
                               </p>
                               
-                              <a href="https://comprardiamantesff.shop/unsubscribe?email=${encodeURIComponent(email)}" style="color: #94a3b8; font-size: 12px; text-decoration: underline; display: inline-block; margin-bottom: 15px;">
+                              <a href="${process.env.NEXT_PUBLIC_BASE_URL}/unsubscribe?email=${encodeURIComponent(email)}" style="color: #94a3b8; font-size: 12px; text-decoration: underline; display: inline-block; margin-bottom: 15px;">
                                 Cancelar inscrição
                               </a>
                               

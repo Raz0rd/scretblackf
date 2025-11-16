@@ -8,7 +8,7 @@ const blogPosts = [
     title: "Como Comprar Diamantes FF com Segurança em 2025",
     excerpt: "Guia completo sobre como adquirir diamantes para Free Fire de forma segura, evitando golpes e garantindo a melhor experiência.",
     date: "28 de Outubro, 2025",
-    author: "Equipe ComprarDiamantesFF",
+    author: "Equipe BooyahStrike",
     category: "Guias",
     image: "/images/blog-1.jpg"
   },
@@ -17,7 +17,7 @@ const blogPosts = [
     title: "Melhores Skins e Pacotes de Diamantes FF",
     excerpt: "Descubra quais são as skins mais procuradas e os melhores pacotes de diamantes disponíveis no Free Fire atualmente.",
     date: "25 de Outubro, 2025",
-    author: "Equipe ComprarDiamantesFF",
+    author: "Equipe BooyahStrike",
     category: "Dicas",
     image: "/images/blog-2.jpg"
   },
@@ -26,7 +26,7 @@ const blogPosts = [
     title: "Eventos Especiais Free Fire: Vale a Pena?",
     excerpt: "Análise completa dos eventos especiais do Free Fire e como aproveitar ao máximo seus diamantes durante essas promoções.",
     date: "20 de Outubro, 2025",
-    author: "Equipe ComprarDiamantesFF",
+    author: "Equipe BooyahStrike",
     category: "Análises",
     image: "/images/blog-3.jpg"
   }
