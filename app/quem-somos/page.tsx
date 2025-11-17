@@ -57,26 +57,25 @@ export default function QuemSomos() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-bold text-slate-900 mb-3">Informações Legais</h3>
-                  <p className="mb-2"><strong>Razão Social:</strong><br/>VALTER OPITZ JUNIOR</p>
-                  <p className="mb-2"><strong>CNPJ:</strong><br/>42.047.382/0001-51</p>
-                  <p className="mb-2"><strong>Nome Fantasia:</strong><br/>BooyahStrike</p>
+                  <p className="mb-2"><strong>Razão Social:</strong><br/>JULIA YOON SCAVASSA</p>
+                  <p className="mb-2"><strong>CNPJ:</strong><br/>57.667.691/0001-00</p>
+                  <p className="mb-2"><strong>Nome Fantasia:</strong><br/>Diamantes Profissional Jogos</p>
                 </div>
                 
                 <div>
                   <h3 className="font-bold text-slate-900 mb-3">Contato</h3>
-                  <p className="mb-2"><strong>Email:</strong><br/>contato@booyahstrikeforce.store</p>
-                  <p className="mb-2"><strong>Telefone:</strong><br/>(11) 94562-2020</p>
-                  <p className="mb-2"><strong>Site:</strong><br/>booyahstrikeforce.store</p>
+                  <p className="mb-2"><strong>Email:</strong><br/>contato@diamantesprofissionaljogos.store</p>
+                  <p className="mb-2"><strong>Site:</strong><br/>diamantesprofissionaljogos.store</p>
                 </div>
               </div>
 
               <div className="mt-6 pt-6 border-t border-slate-300">
                 <h3 className="font-bold text-slate-900 mb-3">Endereço</h3>
                 <p className="text-slate-700">
-                  R. Edson Luiz Favarin, 885<br/>
-                  Bairro Universitário<br/>
-                  Cascavel - PR<br/>
-                  CEP: 85.819-130
+                  Av Paes de Barros, 2370<br/>
+                  Parque da Mooca<br/>
+                  São Paulo - SP<br/>
+                  CEP: 03.149-000
                 </p>
               </div>
             </div>
@@ -87,10 +86,7 @@ export default function QuemSomos() {
             </p>
             <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-6 border border-red-200">
               <p className="text-slate-700 mb-2">
-                📧 <strong>Email:</strong> <a href="mailto:contato@booyahstrikeforce.store" className="text-red-600 hover:underline">contato@booyahstrikeforce.store</a>
-              </p>
-              <p className="text-slate-700">
-                📞 <strong>Telefone:</strong> <a href="tel:+5511945622020" className="text-red-600 hover:underline">(11) 94562-2020</a>
+                📧 <strong>Email:</strong> <a href="mailto:contato@diamantesprofissionaljogos.store" className="text-red-600 hover:underline">contato@diamantesprofissionaljogos.store</a>
               </p>
             </div>
           </div>

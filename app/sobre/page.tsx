@@ -132,13 +132,12 @@ export default function SobrePage() {
                 Informações da Empresa
               </h2>
               <div className="bg-slate-50 rounded-lg p-6 space-y-2">
-                <p><strong>Razão Social:</strong> VALTER OPITZ JUNIOR</p>
-                <p><strong>CNPJ:</strong> 45.123.456/0001-78</p>
-                <p><strong>Endereço:</strong> Rua das Tecnologias, 1234 - Centro, Feira de Santana/BA</p>
-                <p><strong>CEP:</strong> 44001-000</p>
-                <p><strong>E-mail:</strong> contato@booyahstrikeforce.store</p>
-                <p><strong>Telefone:</strong> (75) 3465-3331</p>
-                <p><strong>Horário:</strong> Segunda a Sexta, das 9h às 18h</p>
+                <p><strong>Razão Social:</strong> JULIA YOON SCAVASSA</p>
+                <p><strong>CNPJ:</strong> 57.667.691/0001-00</p>
+                <p><strong>Endereço:</strong> Av Paes de Barros, 2370 - Parque da Mooca</p>
+                <p><strong>Cidade:</strong> São Paulo - SP</p>
+                <p><strong>CEP:</strong> 03.149-000</p>
+                <p><strong>E-mail:</strong> contato@diamantesprofissionaljogos.store</p>
               </div>
             </section>
 

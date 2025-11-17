@@ -39,7 +39,21 @@ export async function middleware(request: NextRequest) {
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
-  const whitePageRoutes = ['/loja', '/unsubscribe', '/ativar-conversao-google', '/meus-pedidos', '/blog']
+  const whitePageRoutes = [
+    '/loja', 
+    '/unsubscribe', 
+    '/ativar-conversao-google', 
+    '/meus-pedidos', 
+    '/blog',
+    '/termos',
+    '/termos-de-uso',
+    '/privacidade',
+    '/politica-privacidade',
+    '/politica-de-privacidade',
+    '/reembolso',
+    '/politica-de-reembolso',
+    '/quem-somos'
+  ]
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/') || pathname.startsWith('/blog/')
   
   // Verificar domínio - ativar cloaker para o domínio configurado

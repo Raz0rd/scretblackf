@@ -22,7 +22,7 @@ export default function PoliticaDeReembolso() {
               Pedidos podem ser reembolsados <strong>enquanto não forem entregues</strong>.
             </p>
             <p className="text-slate-700 mb-4">
-              Se você deseja cancelar seu pedido antes da entrega dos créditos, entre em contato imediatamente através do email: <strong>contato@booyahstrikeforce.store</strong>
+              Se você deseja cancelar seu pedido antes da entrega dos créditos, entre em contato imediatamente através do email: <strong>contato@diamantesprofissionaljogos.store</strong>
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">2. Após a Entrega</h2>
@@ -66,7 +66,7 @@ export default function PoliticaDeReembolso() {
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">6. Como Solicitar Reembolso</h2>
             <p className="text-slate-700 mb-4">
-              Para solicitar reembolso, envie um email para <strong>contato@booyahstrikeforce.store</strong> com:
+              Para solicitar reembolso, envie um email para <strong>contato@diamantesprofissionaljogos.store</strong> com:
             </p>
             <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
               <li>Número do pedido</li>
@@ -88,12 +88,11 @@ export default function PoliticaDeReembolso() {
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">8. Contato</h2>
             <div className="bg-slate-100 rounded-lg p-4 text-slate-700">
-              <p className="mb-2"><strong>VALTER OPITZ JUNIOR</strong></p>
-              <p className="mb-1">CNPJ: 42.047.382/0001-51</p>
-              <p className="mb-1">Email: contato@booyahstrikeforce.store</p>
-              <p className="mb-1">Telefone: (11) 94562-2020</p>
-              <p className="mb-1">Endereço: R. Edson Luiz Favarin, 885 - Universitário</p>
-              <p>Cascavel - PR, CEP: 85.819-130</p>
+              <p className="mb-2"><strong>JULIA YOON SCAVASSA</strong></p>
+              <p className="mb-1">CNPJ: 57.667.691/0001-00</p>
+              <p className="mb-1">Email: contato@diamantesprofissionaljogos.store</p>
+              <p className="mb-1">Endereço: Av Paes de Barros, 2370 - Parque da Mooca</p>
+              <p>São Paulo - SP, CEP: 03.149-000</p>
             </div>
           </div>
 
