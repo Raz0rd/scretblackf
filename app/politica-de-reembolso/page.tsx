@@ -1,8 +1,8 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
 
 export const metadata = {
-  title: 'Política de Reembolso - BooyahStrike',
-  description: 'Política de reembolso da plataforma BooyahStrike'
+  title: 'Política de Reembolso',
+  description: 'Política de reembolso da plataforma'
 }
 
 export default function PoliticaDeReembolso() {

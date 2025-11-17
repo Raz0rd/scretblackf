@@ -1,8 +1,8 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
 
 export const metadata = {
-  title: 'Política de Privacidade - BooyahStrike',
-  description: 'Política de privacidade da plataforma BooyahStrike'
+  title: 'Política de Privacidade',
+  description: 'Política de privacidade da plataforma'
 }
 
 export default function PoliticaDePrivacidade() {

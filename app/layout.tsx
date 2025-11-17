@@ -16,14 +16,11 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "BooyahStrike - Recarga de Diamantes Free Fire e Robux | Entrega Rápida",
-  description: "Compre diamantes para Free Fire e Robux com segurança e entrega em até 5 minutos. Pagamento via PIX, preços promocionais e suporte 24/7. Loja oficial de recargas.",
+  title: "Recarga de Diamantes Free Fire | Entrega Rápida",
+  description: "Compre diamantes para Free Fire com segurança e entrega em até 5 minutos. Pagamento via PIX, preços promocionais e suporte 24/7. Loja oficial de recargas.",
   keywords: [
     "comprar diamantes free fire",
     "recarga diamantes ff",
-    "robux barato",
-    "comprar robux",
-    "BooyahStrike",
     "portal digital",
     "tecnologia",
     "serviços online",
@@ -51,10 +48,10 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "BooyahStrike - Recarga de Diamantes Free Fire e Robux",
-    description: "Compre diamantes para Free Fire e Robux com segurança. Entrega em até 5 minutos via PIX. Loja oficial de recargas.",
+    title: "Recarga de Diamantes Free Fire",
+    description: "Compre diamantes para Free Fire com segurança. Entrega em até 5 minutos via PIX. Loja oficial de recargas.",
     url: "/",
-    siteName: "BooyahStrike",
+    siteName: "Loja de Diamantes",
     locale: "pt_BR",
     type: "website",
     images: [
@@ -68,8 +65,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BooyahStrike - Recarga de Diamantes Free Fire e Robux",
-    description: "Compre diamantes para Free Fire e Robux com segurança. Entrega em até 5 minutos via PIX.",
+    title: "Recarga de Diamantes Free Fire",
+    description: "Compre diamantes para Free Fire com segurança. Entrega em até 5 minutos via PIX.",
     images: ["/images/twitter-card.jpg"],
   },
   icons: {

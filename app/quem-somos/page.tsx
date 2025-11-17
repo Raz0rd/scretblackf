@@ -1,8 +1,8 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
 
 export const metadata = {
-  title: 'Quem Somos - BooyahStrike',
-  description: 'Conheça a BooyahStrike - Plataforma de créditos digitais'
+  title: 'Quem Somos',
+  description: 'Conheça nossa plataforma de créditos digitais'
 }
 
 export default function QuemSomos() {

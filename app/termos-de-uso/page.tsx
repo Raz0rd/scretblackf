@@ -1,8 +1,8 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
 
 export const metadata = {
-  title: 'Termos de Uso - BooyahStrike',
-  description: 'Termos de uso da plataforma BooyahStrike'
+  title: 'Termos de Uso',
+  description: 'Termos de uso da plataforma'
 }
 
 export default function TermosDeUso() {
