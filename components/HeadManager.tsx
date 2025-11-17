@@ -113,12 +113,18 @@ export default function HeadManager() {
   const adsIndividual = process.env.NEXT_PUBLIC_ADS_INDIVIDUAL === 'true';
   
   useEffect(() => {
-    if (!mounted || typeof window === 'undefined' || !googleAdsEnabled) return;
+    if (!mounted || typeof window === 'undefined' || !googleAdsEnabled) {
+      console.log('🔴 [Google Ads] Não carregado:', { mounted, googleAdsEnabled, googleAdsId });
+      return;
+    }
 
     // Desabilitar no desenvolvimento
     if (isDevelopment) {
+      console.log('🔴 [Google Ads] Desabilitado em desenvolvimento');
       return;
     }
+
+    console.log('✅ [Google Ads] Carregando tag:', googleAdsId);
 
     // Remover scripts antigos se existirem
     const oldGtagScript = document.getElementById('google-gtag-script');
@@ -135,6 +141,7 @@ export default function HeadManager() {
     gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`;
     gtagScript.async = true;
     document.head.appendChild(gtagScript);
+    console.log('✅ [Google Ads] Script gtag.js injetado');
 
     // 2. Injetar inicialização do gtag
     const gtagInit = document.createElement('script');
