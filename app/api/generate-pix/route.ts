@@ -28,6 +28,27 @@ function getClientIp(req: NextRequest): string {
   return req.ip || 'unknown';
 }
 
+/**
+ * Extrai os 5 primeiros caracteres do domínio (sem www)
+ * Exemplo: www.loja1xxx.com.br → loja1
+ */
+function extractDomainPrefix(url: string): string {
+  // Remover protocolo se houver
+  let domain = url.replace(/^https?:\/\//, '')
+  
+  // Remover www. se houver
+  domain = domain.replace(/^www\./, '')
+  
+  // Pegar apenas o domínio (antes do primeiro /)
+  domain = domain.split('/')[0]
+  
+  // Pegar apenas o nome (antes do primeiro .)
+  domain = domain.split('.')[0]
+  
+  // Retornar os 5 primeiros caracteres
+  return domain.substring(0, 5).toLowerCase()
+}
+
 // Handle CORS preflight
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
@@ -368,34 +389,39 @@ async function generatePixNitro(body: any, baseUrl: string) {
   
   // Extrair nome do domínio para usar como hash da oferta (ex: www.algo1.com -> algo1)
   const extractDomainForHash = (url: string): string => {
-    try {
-      const hostname = new URL(url).hostname
-      const parts = hostname.split('.')
-      // Se começa com www, pegar o próximo (indice 1)
-      if (parts[0] === 'www' && parts.length > 1) {
-        const domain = parts[1]
-        // Pegar até 5 caracteres
-        return domain.substring(0, 5).toLowerCase()
-      }
-      // Se não tem www, pegar o primeiro
-      return parts[0].substring(0, 5).toLowerCase()
-    } catch {
-      return 'prod'
+    const hostname = new URL(url).hostname
+    const parts = hostname.split('.')
+    // Se começa com www, pegar o próximo (indice 1)
+    if (parts[0] === 'www' && parts.length > 1) {
+      const domain = parts[1]
+      // Pegar até 5 caracteres
+      return domain.substring(0, 5).toLowerCase()
     }
+    // Se não tem www, pegar o primeiro
+    return parts[0].substring(0, 5).toLowerCase()
   }
   
   const offerHash = extractDomainForHash(baseUrl)
   
-  // Gerar nome de produto IPTV variado (estratégia de ofuscação)
-  const generateIptvProductName = (itemType: string, amount: number): string => {
-    const variants = [200, 250, 300, 350, 400, 500, 600]
-    const randomVariant = variants[Math.floor(Math.random() * variants.length)]
+  /**
+   * Gerar nome de produto para gateway
+   * Formato: [prefixo domínio] [nome produto]
+   * Exemplo: loja1 15.600 dimas
+   */
+  const generateGatewayProductName = (itemValue: string, domainPrefix: string): string => {
+    // Gerar nome do produto baseado no itemValue
+    let productName = ''
     
-    if (itemType === "recharge") {
-      return `IPTV Assinatura Premium ${randomVariant}new`
+    // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
+    if (/^\d+\.?\d*$/.test(itemValue)) {
+      productName = `${itemValue} dimas`
     } else {
-      return `IPTV Gold Premium ${randomVariant}new`
+      // Caso contrário, usar o valor direto (ex: "Passe Booyah")
+      productName = itemValue || 'produto digital'
     }
+    
+    // Retornar: [domínio] [produto]
+    return `${domainPrefix} ${productName}`.toLowerCase()
   }
   
   // Payload Nitro (conforme documentação oficial)
@@ -419,7 +445,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
     cart: [
       {
         product_hash: offerHash, // Mesmo hash da oferta
-        title: generateIptvProductName(body.itemType, body.amount), // Nome IPTV variado
+        title: generateGatewayProductName(body.itemValue, offerHash), // Nome: [domínio] [produto]
         cover: null,
         price: body.amount, // Preço em centavos
         quantity: 1,
@@ -451,15 +477,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
       body: errorText,
     })
     
-    return NextResponse.json({
-      error: "Erro ao processar pagamento. Tente novamente.",
-      debug: {
-        responseStatus: response.status,
-        responseBody: errorText,
-        apiUrl: "https://api.nitropagamentos.com/api/public/v1/transactions",
-        timestamp: new Date().toISOString(),
-      }
-    }, { status: response.status })
+    throw new Error(`Erro na API Nitro: ${response.status} - ${errorText}`)
   }
 
   const nitroResponse = await response.json()
@@ -518,16 +536,39 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     return `${cleanName}@gmail.com`
   }
 
-  // Gerar nome de produto IPTV variado
-  const generateIptvProductName = (itemType: string, amount: number): string => {
-    const variants = [200, 250, 300, 350, 400, 500, 600]
-    const randomVariant = variants[Math.floor(Math.random() * variants.length)]
-    
-    if (itemType === "recharge") {
-      return `IPTV Assinatura Premium ${randomVariant}new`
-    } else {
-      return `IPTV Gold Premium ${randomVariant}new`
+  // Extrair nome do domínio para usar como hash da oferta (ex: www.algo1.com -> algo1)
+  const extractDomainForHash = (url: string): string => {
+    const hostname = new URL(url).hostname
+    const parts = hostname.split('.')
+    // Se começa com www, pegar o próximo (indice 1)
+    if (parts[0] === 'www' && parts.length > 1) {
+      const domain = parts[1]
+      // Pegar até 5 caracteres
+      return domain.substring(0, 5).toLowerCase()
     }
+    // Se não tem www, pegar o primeiro
+    return parts[0].substring(0, 5).toLowerCase()
+  }
+
+  /**
+   * Gerar nome de produto para gateway (Ezzpag)
+   * Formato: [prefixo domínio] [nome produto]
+   * Exemplo: loja1 15.600 dimas
+   */
+  const generateGatewayProductName = (itemValue: string, domainPrefix: string): string => {
+    // Gerar nome do produto baseado no itemValue
+    let productName = ''
+    
+    // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
+    if (/^\d+\.?\d*$/.test(itemValue)) {
+      productName = `${itemValue} dimas`
+    } else {
+      // Caso contrário, usar o valor direto (ex: "Passe Booyah")
+      productName = itemValue || 'produto digital'
+    }
+    
+    // Retornar: [domínio] [produto]
+    return `${domainPrefix} ${productName}`.toLowerCase()
   }
 
   // Endereços para uso aleatório
@@ -603,7 +644,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
       address: defaultAddress
     },
     items: [{
-      title: generateIptvProductName(body.itemType, body.amount),
+      title: generateGatewayProductName(body.itemValue, extractDomainForHash(baseUrl)),
       unitPrice: body.amount,
       quantity: 1,
       tangible: false,
@@ -652,16 +693,7 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
         headers: Object.fromEntries(response.headers.entries())
       })
       
-      // Retornar erro estruturado para debug no Netlify
-      return NextResponse.json({ 
-        error: "Erro na API Umbrela",
-        debug: {
-          ...debugInfo,
-          responseStatus: response.status,
-          responseBody: errorText,
-          apiUrl: "https://api-gateway.umbrellapag.com/api/user/transactions"
-        }
-      }, { status: 500 })
+      throw new Error(`Erro na API Umbrela: ${response.status} - ${errorText}`)
     }
 
     const data = await response.json()
@@ -769,26 +801,36 @@ export async function POST(request: NextRequest) {
       throw new Error("Resposta inválida do gateway de pagamento")
     }
     
-    // Type assertion para garantir que result tem transactionId
-    const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
-    
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
     console.log("📊 [STORAGE] UTMs recebidos do frontend:", JSON.stringify(body.trackingParams || {}, null, 2))
     
     try {
-      // Gerar nome de produto para UTMify
-      const generateProductName = (itemValue: string): string => {
+      // Extrair prefixo do domínio
+      const domainPrefix = extractDomainPrefix(baseUrl)
+      
+      /**
+       * Gerar nome de produto para UTMify
+       * Formato: [prefixo domínio] [nome produto]
+       * Exemplo: loja1 15.600 dimas
+       */
+      const generateProductName = (itemValue: string, prefix: string): string => {
+        let productName = ''
+        
         // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
         if (/^\d+\.?\d*$/.test(itemValue)) {
-          return `${itemValue} Dimas`
+          productName = `${itemValue} dimas`
+        } else {
+          // Caso contrário, usar o valor direto (ex: "Passe Booyah")
+          productName = itemValue || 'produto digital'
         }
-        // Caso contrário, usar o valor direto (ex: "Poder do Fogo (3 unidades Restantes)")
-        return itemValue || 'Produto Digital'
+        
+        // Retornar: [domínio] [produto]
+        return `${prefix} ${productName}`.toLowerCase()
       }
       
       const orderData = {
-        orderId: validResult.transactionId,
-        transactionId: validResult.transactionId,
+        orderId: result.transactionId,
+        transactionId: result.transactionId,
         amount: body.amount,
         customerData: {
           name: body.customer?.name || '',
@@ -797,7 +839,7 @@ export async function POST(request: NextRequest) {
           document: body.customer?.document?.number || ''
         },
         trackingParameters: body.trackingParams || {},
-        productName: generateProductName(body.itemValue), // Gerar nome para UTMify
+        productName: generateProductName(body.itemValue, domainPrefix), // Gerar nome para UTMify
         gateway: encodeGateway(gateway), // SALVAR GATEWAY MAPEADO (ex: ghostpay -> gpxx) 🎯
         createdAt: new Date().toISOString(),
         status: 'pending' as const
@@ -805,7 +847,8 @@ export async function POST(request: NextRequest) {
       
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
-      console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
+      console.log("📦 [STORAGE] Nome do produto salvo:", generateProductName(body.itemValue, domainPrefix))
+      console.log("📦 [STORAGE] Prefixo do domínio:", domainPrefix)
       console.log("🔐 [STORAGE] Gateway salvo (mapeado):", encodeGateway(gateway))
       console.log("🎯 [STORAGE] UTMs salvos no orderStorage:")
       console.log("   - gclid:", orderData.trackingParameters.gclid || 'N/A')
@@ -820,7 +863,7 @@ export async function POST(request: NextRequest) {
     // DEBUG: Verificar se dados foram salvos no storage
     // Dados salvos no storage
     
-    return NextResponse.json(validResult)
+    return NextResponse.json(result)
   } catch (error) {
     console.error("💥 [GATEWAY] ERRO:", error instanceof Error ? error.message : 'Unknown error')
     

@@ -114,7 +114,6 @@ export default function HeadManager() {
   
   useEffect(() => {
     if (!mounted || typeof window === 'undefined' || !googleAdsEnabled) {
-      console.log('🔴 [Google Ads] Não carregado:', { mounted, googleAdsEnabled, googleAdsId });
       return;
     }
 

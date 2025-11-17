@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
 const CLOAKER_CONFIG = {
-  url: `https://www.altercpa.one/fltr/${process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID || ''}`,
+  url: `https://www.altercpa.one/fltr/${process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID!}`,
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/promo'  // Página de oferta
 }
@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   
   // Pegar base URL do .env
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
   
   // 🔓 LOCALHOST: Desativar TODAS as validações
   if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {

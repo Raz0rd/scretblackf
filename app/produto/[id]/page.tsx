@@ -252,10 +252,10 @@ export default function ProductPage() {
         <div className="text-center">
           <h1 className="text-2xl text-white mb-4">Produto não encontrado</h1>
           <button
-            onClick={() => router.push('/loja')}
+            onClick={() => router.push('/')}
             className="px-6 py-3 bg-blue-500 text-white rounded-lg"
           >
-            Voltar para loja
+            Voltar para página inicial
           </button>
         </div>
       </div>
@@ -580,7 +580,7 @@ export default function ProductPage() {
       <header className="bg-slate-900 py-4 sticky top-0 z-50 border-b border-slate-800">
         <div className="container mx-auto px-4">
           <button
-            onClick={() => router.push('/loja')}
+            onClick={() => router.push('/')}
             className="flex items-center gap-2 text-slate-300 hover:text-white"
           >
             <ArrowLeft className="w-5 h-5" />

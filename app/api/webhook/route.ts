@@ -271,6 +271,12 @@ export async function POST(request: NextRequest) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('')
       
+      // Recuperar nome do produto do orderStorage
+      const storedOrder = orderStorageService.getOrder(transactionId)
+      const productName = storedOrder?.productName || "recarga digital"
+      
+      console.log('📦 [WEBHOOK] Nome do produto recuperado:', productName)
+      
       // Criar dados para enviar para UTMify no formato EXATO da documentação
       const utmifyData = {
         orderId,
@@ -291,7 +297,7 @@ export async function POST(request: NextRequest) {
         products: [
           {
             id: `recarga-${transactionId}`,
-            name: "Recarga Free Fire",
+            name: productName, // ✅ Nome do orderStorage
             planId: null,
             planName: null,
             quantity: 1,

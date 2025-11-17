@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://booyahstrikeforce.store'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
   return {
     rules: [
@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: [
           '/',
-          '/loja',
           '/produto/',
           '/unsubscribe',
           '/images/',
@@ -35,12 +34,12 @@ export default function robots(): MetadataRoute.Robots {
       // Bots de busca - whitepage completa
       {
         userAgent: 'Googlebot',
-        allow: ['/', '/loja', '/produto/', '/images/'],
+        allow: ['/', '/produto/', '/images/'],
         disallow: ['/api/', '/promo', '/checkout', '/success', '/testxxadsantihack'],
       },
       {
         userAgent: 'Bingbot',
-        allow: ['/', '/loja', '/produto/', '/images/'],
+        allow: ['/', '/produto/', '/images/'],
         disallow: ['/api/', '/promo', '/checkout', '/success', '/testxxadsantihack'],
       },
     ],

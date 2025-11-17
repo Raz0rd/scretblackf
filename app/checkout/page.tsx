@@ -695,14 +695,39 @@ export default function CheckoutPage() {
     const totalPriceInCents = Math.round(totalPrice * 100)
     const commission = calculateCommission(totalPriceInCents)
     
-    // Gerar nome de produto para UTMify (mesma lógica do backend)
+    /**
+     * Extrair prefixo do domínio (5 primeiros caracteres sem www)
+     * Exemplo: www.loja1xxx.com.br → loja1
+     */
+    const getDomainPrefix = (): string => {
+      let domain = window.location.hostname
+      // Remover www. se houver
+      domain = domain.replace(/^www\./, '')
+      // Pegar apenas o nome (antes do primeiro .)
+      domain = domain.split('.')[0]
+      // Retornar os 5 primeiros caracteres
+      return domain.substring(0, 5).toLowerCase()
+    }
+    
+    /**
+     * Gerar nome de produto para UTMify
+     * Formato: [prefixo domínio] [nome produto]
+     * Exemplo: loja1 15.600 dimas
+     */
     const generateProductName = (itemValue: string): string => {
+      const prefix = getDomainPrefix()
+      let productName = ''
+      
       // Se itemValue parece ser quantidade de diamantes (ex: "1.060", "2.180")
       if (/^\d+\.?\d*$/.test(itemValue)) {
-        return `${itemValue} Dimas`
+        productName = `${itemValue} dimas`
+      } else {
+        // Caso contrário, usar o valor direto (ex: "Passe Booyah")
+        productName = itemValue || 'produto digital'
       }
-      // Caso contrário, usar o valor direto (ex: "Poder do Fogo (3 unidades Restantes)")
-      return itemValue || 'Produto Digital'
+      
+      // Retornar: [domínio] [produto]
+      return `${prefix} ${productName}`.toLowerCase()
     }
     
     // Criar produto único com valor total

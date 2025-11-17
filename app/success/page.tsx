@@ -83,23 +83,67 @@ export default function SuccessPage() {
       if (!alreadySent) {
         try {
           const amountValue = parseFloat(amount)
-          if (amountValue > 0) {
-            trackPurchase(transactionId, amountValue / 100) // Converter de centavos para reais
-            localStorage.setItem(conversionKey, 'true')
-            console.log('[Success] ✅ Conversão Google Ads enviada (primeira vez):', { transactionId, amount: amountValue / 100 })
+          
+          if (isNaN(amountValue) || amountValue <= 0) {
+            console.error('[Success] ❌ Valor inválido recebido:', amount)
+            return
           }
+          
+          // ✅ Converter de centavos para reais e garantir 2 decimais
+          const valueInReais = parseFloat((amountValue / 100).toFixed(2))
+          
+          // ✅ Recuperar dados do usuário do localStorage para Enhanced Conversions
+          let userData: any = undefined
+          try {
+            const storedUserData = localStorage.getItem('user_data') || 
+                                 localStorage.getItem('userData') || 
+                                 localStorage.getItem('verificationData')
+            
+            if (storedUserData) {
+              const parsedData = JSON.parse(storedUserData)
+              
+              // Montar objeto userData para Enhanced Conversions
+              userData = {}
+              
+              if (parsedData.email) {
+                userData.email = parsedData.email
+              }
+              
+              if (parsedData.phone || parsedData.telefone) {
+                userData.phone_number = parsedData.phone || parsedData.telefone
+              }
+              
+              // Adicionar nome se disponível
+              if (parsedData.name || parsedData.nome) {
+                const fullName = parsedData.name || parsedData.nome
+                const nameParts = fullName.split(' ')
+                
+                userData.address = {
+                  first_name: nameParts[0],
+                  last_name: nameParts.slice(1).join(' ') || nameParts[0],
+                  country: 'BR'
+                }
+              }
+            }
+          } catch (error) {
+            // Erro ao recuperar dados do usuário
+          }
+          
+          // Disparar conversão com ou sem dados do usuário
+          trackPurchase(transactionId, valueInReais, userData)
+          
+          // Marcar como enviado
+          localStorage.setItem(conversionKey, 'true')
+          
         } catch (error) {
-          console.error('[Success] ❌ Erro ao enviar conversão:', error)
+          // Erro ao processar conversão
         }
-      } else {
-        console.log('[Success] ℹ️ Conversão já foi enviada anteriormente (não reenviando)')
       }
     }
     
     // PROTEÇÃO: Se não tem transactionId/amount, redireciona para white page
     // Mas só depois de tentar enviar conversão (para Google Bot)
     if (!transactionId || !amount) {
-      console.log('[Success] ⚠️ Acesso sem parâmetros - redirecionando para white page')
       // Aguardar 100ms para dar tempo do gtag enviar (se for bot)
       setTimeout(() => {
         router.push('/')

@@ -41,9 +41,6 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
-            <a href="/loja" className="text-slate-700 hover:text-blue-600 transition-colors font-semibold">
-              🛒 Loja
-            </a>
             <a href="/meus-pedidos" className="text-slate-700 hover:text-green-600 transition-colors font-semibold">
               📦 Meus Pedidos
             </a>
@@ -77,9 +74,6 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-200 bg-white">
             <div className="flex flex-col gap-3">
-              <a href="/loja" className="text-slate-700 hover:text-blue-600 transition-colors text-left py-2 font-semibold">
-                🛒 Loja
-              </a>
               <a href="/meus-pedidos" className="text-slate-700 hover:text-green-600 transition-colors text-left py-2 font-semibold">
                 📦 Meus Pedidos
               </a>
