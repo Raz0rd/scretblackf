@@ -40,7 +40,7 @@ async function checkStatusEzzpag(transactionId: string) {
 
 // Função para consultar status no GhostPay
 async function checkStatusGhostPay(transactionId: string) {
-  const ghostpayUrl = `https://api.ghostpay.com.br/api/v1/transaction/${transactionId}`
+  const ghostpayUrl = `https://api.ghostspaysv2.com/functions/v1/transactions/${transactionId}`
   const secretKey = process.env.GHOSTPAY_API_KEY
   const companyId = process.env.GHOSTPAY_COMPANY_ID
 
