@@ -158,6 +158,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  // 🤖 DETECTAR BOTS DO GOOGLE ANTES DE TUDO
+  // Bots devem SEMPRE ver white page, independente de cookies ou cloaker
+  const userAgent = request.headers.get('user-agent') || ''
+  const isGoogleBot = /googlebot|adsbot-google|google-ads|mediapartners-google/i.test(userAgent)
+  
+  if (isGoogleBot) {
+    console.log('🤖 [Cloaker] Google Bot detectado - mostrando white page (/) - User-Agent:', userAgent)
+    // Deixar passar normalmente - a rota / já é a white page
+    return NextResponse.next()
+  }
+
   // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /promo
   // Usuário real NUNCA deve ver white page novamente
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
