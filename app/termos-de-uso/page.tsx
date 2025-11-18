@@ -71,11 +71,11 @@ export default function TermosDeUso() {
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">7. Contato</h2>
             <div className="bg-slate-100 rounded-lg p-4 text-slate-700">
-              <p className="mb-2"><strong>JULIA YOON SCAVASSA</strong></p>
-              <p className="mb-1">CNPJ: 57.667.691/0001-00</p>
-              <p className="mb-1">Email: contato@diamantesprofissionaljogos.store</p>
-              <p className="mb-1">Endereço: Av Paes de Barros, 2370 - Parque da Mooca</p>
-              <p>São Paulo - SP, CEP: 03.149-000</p>
+              <p className="mb-2"><strong>JARDIELE DOS ANJOS LIMA</strong></p>
+              <p className="mb-1">CNPJ: 37.945.848/0001-01</p>
+              <p className="mb-1">Email: contato@gameprofissionaldigital.site</p>
+              <p className="mb-1">Endereço: R Principal da Quadra 6, S/N - Conj Residencial Nascimento Alves</p>
+              <p>Salgado - SE, CEP: 49.390-000</p>
             </div>
           </div>
 

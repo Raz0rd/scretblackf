@@ -132,12 +132,12 @@ export default function SobrePage() {
                 Informações da Empresa
               </h2>
               <div className="bg-slate-50 rounded-lg p-6 space-y-2">
-                <p><strong>Razão Social:</strong> JULIA YOON SCAVASSA</p>
-                <p><strong>CNPJ:</strong> 57.667.691/0001-00</p>
-                <p><strong>Endereço:</strong> Av Paes de Barros, 2370 - Parque da Mooca</p>
-                <p><strong>Cidade:</strong> São Paulo - SP</p>
-                <p><strong>CEP:</strong> 03.149-000</p>
-                <p><strong>E-mail:</strong> contato@diamantesprofissionaljogos.store</p>
+                <p><strong>Razão Social:</strong> JARDIELE DOS ANJOS LIMA</p>
+                <p><strong>CNPJ:</strong> 37.945.848/0001-01</p>
+                <p><strong>Endereço:</strong> R Principal da Quadra 6, S/N - Conj Residencial Nascimento Alves</p>
+                <p><strong>Cidade:</strong> Salgado - SE</p>
+                <p><strong>CEP:</strong> 49.390-000</p>
+                <p><strong>E-mail:</strong> contato@gameprofissionaldigital.site</p>
               </div>
             </section>
 

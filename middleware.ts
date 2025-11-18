@@ -87,12 +87,10 @@ export async function middleware(request: NextRequest) {
     
     // Se não tem cookie do cloaker, bloquear SEMPRE
     if (!hasValidCookie) {
-      console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
     // Se tem cookie válido, deixar passar
-    console.log('✅ [Cloaker] Acesso a /promo permitido (cookie válido)')
     return NextResponse.next()
   }
 
@@ -108,7 +106,6 @@ export async function middleware(request: NextRequest) {
     
     // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
     if (isGoogleBot) {
-      console.log('🤖 [Success] Google Bot detectado - permitindo acesso')
       return NextResponse.next()
     }
     
@@ -164,7 +161,6 @@ export async function middleware(request: NextRequest) {
   const isGoogleBot = /googlebot|adsbot-google|google-ads|mediapartners-google/i.test(userAgent)
   
   if (isGoogleBot) {
-    console.log('🤖 [Cloaker] Google Bot detectado - mostrando white page (/) - User-Agent:', userAgent)
     // Deixar passar normalmente - a rota / já é a white page
     return NextResponse.next()
   }

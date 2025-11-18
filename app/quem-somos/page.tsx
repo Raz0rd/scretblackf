@@ -57,25 +57,25 @@ export default function QuemSomos() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-bold text-slate-900 mb-3">Informações Legais</h3>
-                  <p className="mb-2"><strong>Razão Social:</strong><br/>JULIA YOON SCAVASSA</p>
-                  <p className="mb-2"><strong>CNPJ:</strong><br/>57.667.691/0001-00</p>
-                  <p className="mb-2"><strong>Nome Fantasia:</strong><br/>Diamantes Profissional Jogos</p>
+                  <p className="mb-2"><strong>Razão Social:</strong><br/>JARDIELE DOS ANJOS LIMA</p>
+                  <p className="mb-2"><strong>CNPJ:</strong><br/>37.945.848/0001-01</p>
+                  <p className="mb-2"><strong>Nome Fantasia:</strong><br/>Game Profissional Digital</p>
                 </div>
                 
                 <div>
                   <h3 className="font-bold text-slate-900 mb-3">Contato</h3>
-                  <p className="mb-2"><strong>Email:</strong><br/>contato@diamantesprofissionaljogos.store</p>
-                  <p className="mb-2"><strong>Site:</strong><br/>diamantesprofissionaljogos.store</p>
+                  <p className="mb-2"><strong>Email:</strong><br/>contato@gameprofissionaldigital.site</p>
+                  <p className="mb-2"><strong>Site:</strong><br/>gameprofissionaldigital.site</p>
                 </div>
               </div>
 
               <div className="mt-6 pt-6 border-t border-slate-300">
                 <h3 className="font-bold text-slate-900 mb-3">Endereço</h3>
                 <p className="text-slate-700">
-                  Av Paes de Barros, 2370<br/>
-                  Parque da Mooca<br/>
-                  São Paulo - SP<br/>
-                  CEP: 03.149-000
+                  R Principal da Quadra 6, S/N<br/>
+                  Conj Residencial Nascimento Alves - Zona Rural<br/>
+                  Salgado - SE<br/>
+                  CEP: 49.390-000
                 </p>
               </div>
             </div>
@@ -86,7 +86,7 @@ export default function QuemSomos() {
             </p>
             <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-6 border border-red-200">
               <p className="text-slate-700 mb-2">
-                📧 <strong>Email:</strong> <a href="mailto:contato@diamantesprofissionaljogos.store" className="text-red-600 hover:underline">contato@diamantesprofissionaljogos.store</a>
+                📧 <strong>Email:</strong> <a href="mailto:contato@gameprofissionaldigital.site" className="text-red-600 hover:underline">contato@gameprofissionaldigital.site</a>
               </p>
             </div>
           </div>
