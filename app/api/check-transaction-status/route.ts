@@ -153,28 +153,53 @@ export async function GET(request: NextRequest) {
     // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
-    if (!storedOrder) {
-      console.error(`[CHECK-STATUS-GET] ❌ Pedido não encontrado no storage: ${transactionId}`)
-      return NextResponse.json({
-        success: false,
-        error: 'Pedido não encontrado',
-        status: 'pending'
-      })
+    let gateway: string | undefined
+    
+    if (storedOrder && storedOrder.gateway) {
+      // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
+      const gatewayCode = storedOrder.gateway
+      gateway = decodeGateway(gatewayCode)
+      console.log(`[CHECK-STATUS-GET] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
+    } else {
+      // Se não encontrou no storage, tentar todos os gateways disponíveis
+      console.log(`[CHECK-STATUS-GET] ⚠️ Pedido não encontrado no storage, tentando todos os gateways...`)
+      const availableGateways = (process.env.PAYMENT_GATEWAY || 'ghostpay,nitro').split(',').map(g => g.trim())
+      
+      // Tentar cada gateway até encontrar a transação
+      for (const gw of availableGateways) {
+        try {
+          console.log(`[CHECK-STATUS-GET] 🔍 Tentando gateway: ${gw.toUpperCase()}`)
+          let testData
+          
+          if (gw === 'ghostpay') {
+            testData = await checkStatusGhostPay(transactionId)
+          } else if (gw === 'nitro') {
+            testData = await checkStatusNitro(transactionId)
+          } else if (gw === 'umbrela') {
+            testData = await checkStatusUmbrela(transactionId)
+          } else {
+            testData = await checkStatusEzzpag(transactionId)
+          }
+          
+          // Se chegou aqui, encontrou a transação neste gateway
+          gateway = gw
+          console.log(`[CHECK-STATUS-GET] ✅ Transação encontrada no gateway: ${gw.toUpperCase()}`)
+          break
+        } catch (error) {
+          console.log(`[CHECK-STATUS-GET] ❌ Transação não encontrada em ${gw.toUpperCase()}`)
+          continue
+        }
+      }
+      
+      if (!gateway) {
+        console.error(`[CHECK-STATUS-GET] ❌ Transação não encontrada em nenhum gateway`)
+        return NextResponse.json({
+          success: false,
+          error: 'Transação não encontrada',
+          status: 'pending'
+        })
+      }
     }
-
-    if (!storedOrder.gateway) {
-      console.error(`[CHECK-STATUS-GET] ❌ Gateway não encontrado no pedido: ${transactionId}`)
-      return NextResponse.json({
-        success: false,
-        error: 'Gateway não identificado',
-        status: 'pending'
-      })
-    }
-
-    // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
-    const gatewayCode = storedOrder.gateway
-    const gateway = decodeGateway(gatewayCode)
-    console.log(`[CHECK-STATUS-GET] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
     
     // Se já está pago no storage, retornar imediatamente
     if (storedOrder && storedOrder.status === 'paid') {
@@ -237,7 +262,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { transactionId } = await request.json()
+    const { transactionId, gateway: frontendGateway, pendingSentToUtmify } = await request.json()
     
     if (!transactionId) {
       return NextResponse.json({
@@ -249,26 +274,58 @@ export async function POST(request: NextRequest) {
     // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
-    if (!storedOrder) {
-      console.error(`[CHECK-STATUS] ❌ Pedido não encontrado no storage: ${transactionId}`)
-      return NextResponse.json({
-        success: false,
-        error: "Pedido não encontrado"
-      }, { status: 404 })
+    let gateway: string | undefined
+    
+    // Prioridade: 1) Gateway do frontend (localStorage), 2) Gateway do storage, 3) Tentar todos
+    if (frontendGateway) {
+      // Decodificar gateway ofuscado (ex: gpxx -> ghostpay)
+      gateway = decodeGateway(frontendGateway)
+      console.log(`[CHECK-STATUS] ✅ Gateway recebido do frontend: ${frontendGateway.toUpperCase()} -> ${gateway.toUpperCase()}`)
+    } else if (storedOrder && storedOrder.gateway) {
+      // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
+      const gatewayCode = storedOrder.gateway
+      gateway = decodeGateway(gatewayCode)
+      console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
+    } else {
+      // Se não encontrou no storage, tentar todos os gateways disponíveis
+      console.log(`[CHECK-STATUS] ⚠️ Pedido não encontrado no storage, tentando todos os gateways...`)
+      const availableGateways = (process.env.PAYMENT_GATEWAY || 'ghostpay,nitro').split(',').map(g => g.trim())
+      
+      // Tentar cada gateway até encontrar a transação
+      for (const gw of availableGateways) {
+        try {
+          console.log(`[CHECK-STATUS] 🔍 Tentando gateway: ${gw.toUpperCase()}`)
+          let testData
+          
+          if (gw === 'ghostpay') {
+            testData = await checkStatusGhostPay(transactionId)
+          } else if (gw === 'nitro') {
+            testData = await checkStatusNitro(transactionId)
+          } else if (gw === 'umbrela') {
+            testData = await checkStatusUmbrela(transactionId)
+          } else {
+            testData = await checkStatusEzzpag(transactionId)
+          }
+          
+          // Se chegou aqui, encontrou a transação neste gateway
+          gateway = gw
+          console.log(`[CHECK-STATUS] ✅ Transação encontrada no gateway: ${gw.toUpperCase()}`)
+          break
+        } catch (error) {
+          console.log(`[CHECK-STATUS] ❌ Transação não encontrada em ${gw.toUpperCase()}`)
+          continue
+        }
+      }
+      
+      if (!gateway) {
+        console.error(`[CHECK-STATUS] ❌ Transação não encontrada em nenhum gateway`)
+        return NextResponse.json({
+          success: false,
+          error: "Transação não encontrada"
+        }, { status: 404 })
+      }
     }
-
-    if (!storedOrder.gateway) {
-      console.error(`[CHECK-STATUS] ❌ Gateway não encontrado no pedido: ${transactionId}`)
-      return NextResponse.json({
-        success: false,
-        error: "Gateway não identificado"
-      }, { status: 400 })
-    }
-
-    // Decodificar gateway mapeado (ex: gpxx -> ghostpay)
-    const gatewayCode = storedOrder.gateway
-    const gateway = decodeGateway(gatewayCode)
-    console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gatewayCode} -> ${gateway.toUpperCase()}`)
+    
     console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
     
     // Se encontrou no storage E já está pago, NÃO retornar ainda
@@ -588,12 +645,17 @@ export async function POST(request: NextRequest) {
         // Email normal: enviar PENDING
         console.log(`[CHECK-STATUS] Email normal - Enviando PENDING para UTMify`)
         
-        // Verificar se já enviou pending (com debounce de 5 minutos)
-        const pendingKey = `${transactionId}-pending`
-        const lastPendingSent = processedConversions.get(pendingKey)
-        const now = Date.now()
-        
-        if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME_PENDING) {
+        // Verificar se já foi enviado (flag do localStorage do usuário)
+        if (pendingSentToUtmify) {
+          console.log(`[CHECK-STATUS] ✅ PENDING já foi enviado para UTMify anteriormente (localStorage)`)
+          // Não enviar novamente
+        } else {
+          // Verificar se já enviou pending (com debounce de 5 minutos)
+          const pendingKey = `${transactionId}-pending`
+          const lastPendingSent = processedConversions.get(pendingKey)
+          const now = Date.now()
+          
+          if (!lastPendingSent || (now - lastPendingSent) > DEBOUNCE_TIME_PENDING) {
           // Marcar como enviado
           processedConversions.set(pendingKey, now)
           
@@ -700,6 +762,14 @@ export async function POST(request: NextRequest) {
                     utmifySent: true
                   })
                 }
+                
+                // Retornar flag para o frontend salvar no localStorage
+                return NextResponse.json({
+                  success: true,
+                  status: currentStatus,
+                  message: `Status atual: ${currentStatus}`,
+                  pendingSentToUtmify: true // ✅ Flag para o frontend
+                })
               } else {
                 const errorText = await utmifyResponse.text()
                 console.error(`[CHECK-STATUS] ❌ Erro ao enviar PENDING:`, utmifyResponse.status)
@@ -709,16 +779,17 @@ export async function POST(request: NextRequest) {
             } catch (error) {
               console.error(`[CHECK-STATUS] Erro ao enviar PENDING:`, error)
             }
+          } else if (lastPendingSent) {
+            const timeSinceLastSent = ((now - lastPendingSent) / 1000 / 60).toFixed(1)
+            const timeRemaining = ((DEBOUNCE_TIME_PENDING - (now - lastPendingSent)) / 1000 / 60).toFixed(1)
+            console.log(`⏸️ [CHECK-STATUS] PENDING já enviado recentemente`)
+            console.log(`   - Enviado há: ${timeSinceLastSent} min`)
+            console.log(`   - Próximo envio em: ${timeRemaining} min`)
+            console.log(`   - Debounce: ${DEBOUNCE_TIME_PENDING / 1000 / 60} min`)
           }
-        } else {
-          const timeSinceLastSent = ((now - lastPendingSent) / 1000 / 60).toFixed(1)
-          const timeRemaining = ((DEBOUNCE_TIME_PENDING - (now - lastPendingSent)) / 1000 / 60).toFixed(1)
-          console.log(`⏸️ [CHECK-STATUS] PENDING já enviado recentemente`)
-          console.log(`   - Enviado há: ${timeSinceLastSent} min`)
-          console.log(`   - Próximo envio em: ${timeRemaining} min`)
-          console.log(`   - Debounce: ${DEBOUNCE_TIME_PENDING / 1000 / 60} min`)
         }
       }
+    }
     }
     
     // Retornar status atual (sem processar)

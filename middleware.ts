@@ -17,24 +17,16 @@ export async function middleware(request: NextRequest) {
   
   // 🔓 LOCALHOST: Desativar TODAS as validações
   if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
-    console.log('🔓 [LOCALHOST] Todas as validações desativadas - acesso livre')
     return NextResponse.next()
   }
   
   // 🛡️ SEGURANÇA: Bloquear acesso via IP
   if (/^\d+\.\d+\.\d+\.\d+/.test(hostname)) {
-    console.log('🚫 [Security] Acesso via IP bloqueado:', hostname)
     return NextResponse.redirect(new URL(baseUrl, request.url))
   }
   
   // ⚠️ MONITORAMENTO: Logar acessos sem Cloudflare (mas não bloquear)
   const cfRay = request.headers.get('cf-ray')
-  if (!cfRay && !hostname.includes('localhost')) {
-    console.log('⚠️ [Security] Acesso sem Cloudflare:', {
-      host: hostname,
-      ip: request.ip || request.headers.get('x-forwarded-for') || 'unknown'
-    })
-  }
   
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
@@ -62,7 +54,6 @@ export async function middleware(request: NextRequest) {
   
   // CLOAKER ATIVADO apenas para o domínio configurado
   if (!isTargetDomain) {
-    console.log(` [Cloaker] Domínio não é ${targetDomain} - desativado`)
     return NextResponse.next()
   }
   
@@ -70,13 +61,11 @@ export async function middleware(request: NextRequest) {
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
   if (!cloakerEnabled) {
-    console.log('🔓 [Cloaker] Desativado via env (NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)')
     return NextResponse.next()
   }
   
   // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
   if (isWhitePageRoute) {
-    console.log(`✅ [Whitepage] Rota "${pathname}" sempre acessível - sem cloaker`)
     return NextResponse.next()
   }
 
@@ -111,7 +100,6 @@ export async function middleware(request: NextRequest) {
     
     // Se não é bot e não tem parâmetros, redirecionar para white page
     if (!hasTransactionId || !hasAmount) {
-      console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
@@ -151,7 +139,6 @@ export async function middleware(request: NextRequest) {
   // Se não for rota raiz (/), redirecionar para / (white page)
   // Isso captura TODAS as rotas inválidas
   if (pathname !== '/') {
-    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para / (white page)`)
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -170,7 +157,6 @@ export async function middleware(request: NextRequest) {
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
   
   if (hasValidCookie) {
-    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /promo')
     return NextResponse.redirect(new URL('/promo', request.url))
   }
 
@@ -196,14 +182,6 @@ export async function middleware(request: NextRequest) {
       HTTP_SEC_CH_UA_PLATFORM: request.headers.get('sec-ch-ua-platform') || '',
     }
 
-    console.log('🔍 [Cloaker] Verificando acesso:', {
-      ip: serverData.HTTP_CF_CONNECTING_IP || serverData.REMOTE_ADDR,
-      userAgent: serverData.HTTP_USER_AGENT,
-      referer: serverData.HTTP_REFERER || 'direct',
-      queryString: serverData.QUERY_STRING,
-      url: request.nextUrl.pathname + request.nextUrl.search
-    })
-
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
     
@@ -224,23 +202,13 @@ export async function middleware(request: NextRequest) {
     if (responseText && responseText.trim()) {
       try {
         result = JSON.parse(responseText)
-        console.log('📥 [Cloaker] Resposta:', {
-          type: result.type,
-          result: result.result,
-          action: result.action,
-          reason: result.reason,
-          url: result.url,
-          referer: serverData.HTTP_REFERER || 'direct'
-        })
       } catch (e) {
-        console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
           url: baseUrl + '/'
         }
       }
     } else {
-      console.log('⚠️ [Cloaker] Resposta vazia - usando fallback (white)')
       // Fallback IGUAL ao PHP: se vazio, mostrar white page
       result = {
         type: 'white',
@@ -250,13 +218,11 @@ export async function middleware(request: NextRequest) {
 
     // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
-      console.log('🤖 [Cloaker] BOT detectado - mostrando white page (/)')
       // Deixar passar normalmente - a rota / já é a white page
       return NextResponse.next()
     }
 
     // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
-    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /promo')
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)

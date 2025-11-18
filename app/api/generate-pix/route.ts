@@ -402,6 +402,8 @@ async function generatePixNitro(body: any, baseUrl: string) {
   }
   
   const offerHash = extractDomainForHash(baseUrl)
+  console.log("🏷️ [Nitro] Offer Hash gerado:", offerHash)
+  console.log("🌐 [Nitro] Base URL:", baseUrl)
   
   /**
    * Gerar nome de produto para gateway
@@ -445,7 +447,7 @@ async function generatePixNitro(body: any, baseUrl: string) {
     cart: [
       {
         product_hash: offerHash, // Mesmo hash da oferta
-        title: generateGatewayProductName(body.itemValue, offerHash), // Nome: [domínio] [produto]
+        title: offerHash, // Título: apenas os 5 primeiros dígitos do domínio (sem www)
         cover: null,
         price: body.amount, // Preço em centavos
         quantity: 1,
@@ -481,7 +483,19 @@ async function generatePixNitro(body: any, baseUrl: string) {
   }
 
   const nitroResponse = await response.json()
-  // console.log("✅ [Nitro] Resposta recebida:", JSON.stringify(nitroResponse, null, 2))
+  console.log("📦 [Nitro] Resposta completa recebida:", JSON.stringify(nitroResponse, null, 2))
+
+  // Verificar se a transação falhou
+  if (nitroResponse.payment_status === 'failed') {
+    console.error("❌ [Nitro] Transação FALHOU na API Nitro")
+    console.error("❌ [Nitro] Payment Status:", nitroResponse.payment_status)
+    console.error("❌ [Nitro] Status Reason:", nitroResponse.status_reason || 'Não informado')
+    console.error("❌ [Nitro] Transaction ID:", nitroResponse.hash || nitroResponse.id)
+    console.error("❌ [Nitro] Offer Hash usado:", nitroResponse.offer?.hash)
+    console.error("❌ [Nitro] Product Hash:", nitroResponse.product?.hash)
+    console.error("❌ [Nitro] DICA: Verifique se o offer_hash e product_hash estão corretos na sua conta Nitro")
+    throw new Error(`Transação falhou na Nitro. Verifique se o título/hash do produto está cadastrado corretamente.`)
+  }
 
   // Extrair dados da resposta Nitro (estrutura: { id, hash, pix: { pix_qr_code } })
   const transactionId = nitroResponse.hash || nitroResponse.id?.toString()
@@ -490,7 +504,20 @@ async function generatePixNitro(body: any, baseUrl: string) {
 
   if (!transactionId || !pixCode) {
     console.error("❌ [Nitro] Resposta inválida - faltando dados obrigatórios")
-    throw new Error("Resposta inválida da API Nitro")
+    console.error("❌ [Nitro] Payment Status:", nitroResponse.payment_status)
+    console.error("❌ [Nitro] Debug - transactionId:", transactionId)
+    console.error("❌ [Nitro] Debug - pixCode:", pixCode)
+    console.error("❌ [Nitro] Debug - Estrutura recebida:", {
+      hasHash: !!nitroResponse.hash,
+      hasId: !!nitroResponse.id,
+      hasPix: !!nitroResponse.pix,
+      hasPixQrCode: !!nitroResponse.pix?.pix_qr_code,
+      hasDirectPixQrCode: !!nitroResponse.pix_qr_code,
+      hasQrCode: !!nitroResponse.qr_code,
+      paymentStatus: nitroResponse.payment_status,
+      keys: Object.keys(nitroResponse)
+    })
+    throw new Error("Resposta inválida da API Nitro - verifique os logs acima para detalhes")
   }
 
   console.log("✅ [Nitro] PIX gerado com sucesso!")
@@ -752,12 +779,7 @@ export async function POST(request: NextRequest) {
     console.log("🔑 [ENV] UMBRELA_API_KEY:", config.umbrelaApiKey ? "✓ Presente" : "❌ Ausente")
     console.log("🔑 [ENV] EZZPAG_API_AUTH:", process.env.EZZPAG_API_AUTH ? "✓ Presente" : "❌ Ausente")
     console.log("🔑 [ENV] NODE_ENV:", getEnvVar('NODE_ENV'))
-    console.log("🔧 [CONFIG] Debug completo:", {
-      isNetlify: config.isNetlify,
-      isProduction: config.isProduction,
-      hasUmbrelaKey: !!config.umbrelaApiKey,
-      hasEzzpagKey: !!process.env.EZZPAG_API_AUTH
-    })
+  
     
     const body = await request.json()
     
@@ -766,15 +788,6 @@ export async function POST(request: NextRequest) {
     const protocol = request.headers.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
     const baseUrl = `${protocol}://${host}`
     
-    // Debug detalhado da URL
-    console.log("🌐 [URL DEBUG] Headers recebidos:", {
-      host: request.headers.get('host'),
-      'x-forwarded-proto': request.headers.get('x-forwarded-proto'),
-      'x-real-ip': request.headers.get('x-real-ip'),
-      'cf-connecting-ip': request.headers.get('cf-connecting-ip'),
-      protocol,
-      baseUrl
-    })
     
     let result
     
@@ -863,7 +876,13 @@ export async function POST(request: NextRequest) {
     // DEBUG: Verificar se dados foram salvos no storage
     // Dados salvos no storage
     
-    return NextResponse.json(result)
+    // Adicionar gateway na resposta para o frontend salvar no localStorage
+    const responseWithGateway = {
+      ...result,
+      gateway: gateway // Adicionar qual gateway foi usado
+    }
+    
+    return NextResponse.json(responseWithGateway)
   } catch (error) {
     console.error("💥 [GATEWAY] ERRO:", error instanceof Error ? error.message : 'Unknown error')
     

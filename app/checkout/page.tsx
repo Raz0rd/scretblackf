@@ -9,6 +9,7 @@ import QRCode from "qrcode"
 import { getBrazilTimestamp } from "@/lib/brazil-time"
 import { trackPurchase } from "@/lib/google-ads"
 import { fetchWithRetry, saveFailedRequest } from "@/lib/retry-fetch"
+import { encodeGateway } from "@/lib/gateway-mapper"
 
 // Importar lista completa de CPFs e nomes
 import { FAKE_DATA } from "@/lib/fake-data"
@@ -97,6 +98,9 @@ export default function CheckoutPage() {
   const [qrCodeImage, setQrCodeImage] = useState("")
   const [timeLeft, setTimeLeft] = useState(15 * 60) // 15 minutos em segundos
   const [timerActive, setTimerActive] = useState(false)
+  const [isCheckingPayment, setIsCheckingPayment] = useState(false)
+  const [lastManualCheck, setLastManualCheck] = useState<number>(0)
+  const [canCheckManually, setCanCheckManually] = useState(true)
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'expired'>('pending')
   const [showPromoModal, setShowPromoModal] = useState(false)
   const [selectedPromos, setSelectedPromos] = useState<string[]>([])
@@ -441,13 +445,27 @@ export default function CheckoutPage() {
         
         setQrCodeImage(qrCodeImageData)
         
+        // Salvar transactionId no localStorage para recuperação posterior
+        localStorage.setItem('pendingTransaction', JSON.stringify({
+          transactionId: data.transactionId,
+          pixCode: data.pixCode,
+          qrCode: data.qrCode,
+          amount: Math.round(totalPrice * 100), // Arredondar para evitar decimais infinitos
+          gateway: encodeGateway(data.gateway), // Salvar gateway ofuscado
+          createdAt: new Date().toISOString(),
+          playerId: playerId,
+          itemType: itemType,
+          itemValue: itemValue,
+          game: currentGame
+        }))
+        
         // Iniciar timer de 15 minutos
         setTimeLeft(15 * 60)
         setTimerActive(true)
         
         // ✅ Enviar para UTMify com status PENDING (waiting_payment)
         sendToUtmify('pending', data).catch(err => {
-          console.error('[Checkout] Erro ao enviar PENDING para UTMify:', err)
+          // Erro silencioso
         })
         
       } else {
@@ -600,17 +618,93 @@ export default function CheckoutPage() {
     }
   }, [timerActive, timeLeft])
 
+  // Função para verificar status do pagamento manualmente
+  const checkPaymentStatus = async () => {
+    if (!pixData || isCheckingPayment || !canCheckManually) return
+    
+    setIsCheckingPayment(true)
+    setCanCheckManually(false)
+    setLastManualCheck(Date.now())
+    
+    // Reabilitar botão após 10 segundos
+    setTimeout(() => {
+      setCanCheckManually(true)
+    }, 10000)
+    
+    try {
+      // Recuperar gateway do localStorage
+      const pendingStr = localStorage.getItem('pendingTransaction')
+      let gateway = undefined
+      if (pendingStr) {
+        const pending = JSON.parse(pendingStr)
+        gateway = pending.gateway
+      }
+      
+      const response = await fetch('/api/check-transaction-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          transactionId: pixData.transactionId,
+          gateway: gateway // Passar gateway do localStorage
+        })
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        
+        if (data.success && data.status === 'paid') {
+          setPaymentStatus('paid')
+          setTimerActive(false)
+          
+          // Limpar transação do localStorage
+          localStorage.removeItem('pendingTransaction')
+          
+          // Calcular valor total da compra
+          const totalValue = getFinalPrice() + getPromoTotal()
+          
+          // Redirecionar para a página de sucesso
+          router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
+        }
+        // Não mostrar alerta se ainda estiver pendente - o polling automático cuida disso
+      } else if (response.status === 404) {
+        setTimerActive(false)
+        setErrorModalMessage('Transação não encontrada no sistema.')
+        setErrorModalType('404')
+        setShowErrorModal(true)
+      }
+    } catch (error) {
+      showToastMessage('Erro ao verificar pagamento. Tente novamente.', 'error')
+    } finally {
+      setIsCheckingPayment(false)
+    }
+  }
+
   // Polling para verificar status do pagamento a cada 10 segundos
   useEffect(() => {
     let statusInterval: NodeJS.Timeout
     
     if (pixData && paymentStatus === 'pending' && timerActive) {
-      statusInterval = setInterval(async () => {
+      // Fazer primeira verificação imediatamente
+      const checkStatus = async () => {
         try {
+          // Recuperar gateway e flag do localStorage
+          const pendingStr = localStorage.getItem('pendingTransaction')
+          let gateway = undefined
+          let pendingSentToUtmify = false
+          if (pendingStr) {
+            const pending = JSON.parse(pendingStr)
+            gateway = pending.gateway
+            pendingSentToUtmify = pending.pendingSentToUtmify || false
+          }
+          
           const response = await fetch('/api/check-transaction-status', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ transactionId: pixData.transactionId })
+            body: JSON.stringify({ 
+              transactionId: pixData.transactionId,
+              gateway: gateway, // Passar gateway do localStorage
+              pendingSentToUtmify: pendingSentToUtmify // Passar flag do localStorage
+            })
           })
           
           if (response.ok) {
@@ -620,12 +714,23 @@ export default function CheckoutPage() {
               setPaymentStatus('paid')
               setTimerActive(false)
               
+              // Limpar transação do localStorage
+              localStorage.removeItem('pendingTransaction')
+              
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
               
               // Redirecionar para a página de sucesso
               // O webhook já enviou UTMify PAID - aqui apenas redirecionamos
               router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
+            } else if (data.pendingSentToUtmify) {
+              // Marcar no localStorage que PENDING já foi enviado para UTMify
+              const pendingStr = localStorage.getItem('pendingTransaction')
+              if (pendingStr) {
+                const pending = JSON.parse(pendingStr)
+                pending.pendingSentToUtmify = true
+                localStorage.setItem('pendingTransaction', JSON.stringify(pending))
+              }
             }
           } else if (response.status === 404) {
             // Erro 404 - transação não encontrada, mostrar modal para atualizar
@@ -637,13 +742,108 @@ export default function CheckoutPage() {
         } catch (error) {
           // Erro silencioso no polling
         }
-      }, 10000) // Verificar a cada 10 segundos
+      }
+      
+      // Executar primeira verificação após 10 segundos
+      statusInterval = setInterval(checkStatus, 10000) // Verificar a cada 10 segundos
     }
     
     return () => {
       if (statusInterval) clearInterval(statusInterval)
     }
   }, [pixData, paymentStatus, timerActive])
+
+  // Detectar quando usuário volta para a página (visibilitychange)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && pixData && paymentStatus === 'pending' && timerActive) {
+        // Fazer verificação imediata quando usuário volta
+        checkPaymentStatus()
+      }
+    }
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [pixData, paymentStatus, timerActive])
+
+  // Recuperar transação pendente do localStorage ao carregar a página
+  useEffect(() => {
+    const recoverPendingTransaction = async () => {
+      try {
+        const pendingStr = localStorage.getItem('pendingTransaction')
+        if (!pendingStr) return
+        
+        const pending = JSON.parse(pendingStr)
+        const createdAt = new Date(pending.createdAt)
+        const now = new Date()
+        const minutesElapsed = (now.getTime() - createdAt.getTime()) / 1000 / 60
+        
+        // Se passou mais de 15 minutos, limpar
+        if (minutesElapsed > 15) {
+          localStorage.removeItem('pendingTransaction')
+          return
+        }
+        
+        // Verificar status imediatamente
+        const response = await fetch('/api/check-transaction-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            transactionId: pending.transactionId,
+            gateway: pending.gateway // Passar gateway salvo no localStorage
+          })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          
+          if (data.success && data.status === 'paid') {
+            localStorage.removeItem('pendingTransaction')
+            
+            // Redirecionar para success
+            router.push(`/success?transactionId=${pending.transactionId}&amount=${pending.amount}&playerName=${playerName}&itemType=${pending.itemType}&itemValue=${pending.itemValue}&game=${pending.game}`)
+          } else {
+            
+            // Restaurar dados do PIX
+            setPixData({
+              code: pending.pixCode,
+              qrCode: pending.qrCode,
+              transactionId: pending.transactionId
+            })
+            
+            // Gerar QR Code novamente
+            try {
+              const qrCodeImageData = await QRCode.toDataURL(pending.pixCode, {
+                width: 256,
+                margin: 1,
+                color: { dark: '#000000', light: '#ffffff' }
+              })
+              setQrCodeImage(qrCodeImageData)
+            } catch (error) {
+              if (pending.qrCode) {
+                setQrCodeImage(pending.qrCode)
+              }
+            }
+            
+            setShowPixInline(true)
+            
+            // Calcular tempo restante
+            const timeRemaining = Math.max(0, Math.floor((15 * 60) - (minutesElapsed * 60)))
+            setTimeLeft(timeRemaining)
+            setTimerActive(timeRemaining > 0)
+          }
+        } else {
+        }
+      } catch (error) {
+        // Erro silencioso
+      }
+    }
+    
+    // Executar apenas uma vez ao carregar a página
+    if (!pixData) {
+      recoverPendingTransaction()
+    }
+  }, []) // Executar apenas uma vez
 
 
   // Formatar tempo para exibição (MM:SS)
@@ -1201,9 +1401,30 @@ export default function CheckoutPage() {
                             setTimeout(() => setIsCopied(false), 2000)
                           }
                         }}
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-6 h-11 text-base font-bold w-full"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-3 h-11 text-base font-bold w-full"
                       >
                         {isCopied ? 'Copiado!' : 'Copiar Código'}
+                      </button>
+
+                      {/* Botão Verificar Pagamento */}
+                      <button
+                        onClick={checkPaymentStatus}
+                        disabled={isCheckingPayment || paymentStatus !== 'pending' || !canCheckManually}
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-blue-500 text-white hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed px-4 py-2 mb-6 h-11 text-base font-bold w-full"
+                      >
+                        {isCheckingPayment ? (
+                          <>
+                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Verificando...
+                          </>
+                        ) : !canCheckManually ? (
+                          '⏳ Aguarde...'
+                        ) : (
+                          '🔍 Verificar Pagamento'
+                        )}
                       </button>
 
                       {/* Timer/Alerta */}
@@ -1490,14 +1711,14 @@ export default function CheckoutPage() {
                 {errorModalType === '404' ? (
                   <button
                     onClick={() => window.location.reload()}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50"
                   >
                     Atualizar Página
                   </button>
                 ) : (
                   <button
                     onClick={() => setShowErrorModal(false)}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50"
                   >
                     Entendi
                   </button>
