@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from 'react'
-import { ArrowRight, Shield, CreditCard, CheckCircle, Loader2, AlertCircle } from "lucide-react"
+import { ArrowRight, Shield, CreditCard, CheckCircle } from "lucide-react"
 
 // Adicionar estilos de animação
 if (typeof document !== 'undefined') {
@@ -32,17 +31,9 @@ if (typeof document !== 'undefined') {
 }
 
 export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showMessage, setShowMessage] = useState(false)
-
   const handleContinue = () => {
-    setIsLoading(true)
-    
-    // Simular verificação de disponibilidade
-    setTimeout(() => {
-      setIsLoading(false)
-      setShowMessage(true)
-    }, 2000)
+    // Redirecionar para artigo da Free Fire Mania
+    window.location.href = 'https://www.freefiremania.com.br/noticia/recarga-free-fire-pet-agumon-e-bio-de-batalha-digimon-adventure-17-de-novembro-2025.html'
   }
 
   return (
@@ -116,38 +107,12 @@ export default function HomePage() {
           {/* CTA */}
           <button
             onClick={handleContinue}
-            disabled={isLoading || showMessage}
-            className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40"
+            className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40"
           >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Verificando disponibilidade...
-              </>
-            ) : (
-              <>
-                Continuar
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
+            Continuar
+            <ArrowRight className="w-5 h-5" />
           </button>
 
-          {/* Mensagem após loading */}
-          {showMessage && (
-            <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg animate-fade-in">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm text-amber-200 font-medium mb-1">
-                    Serviço Temporariamente Indisponível
-                  </p>
-                  <p className="text-xs text-slate-400">
-                    Estamos realizando manutenção em nossos sistemas. Por favor, tente novamente em alguns minutos ou entre em contato através dos nossos canais de atendimento.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Aviso de Segurança */}
           <div className="mt-6 p-4 bg-slate-700/50 border border-slate-600/50 rounded-lg">
