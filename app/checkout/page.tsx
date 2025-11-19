@@ -750,6 +750,9 @@ export default function CheckoutPage() {
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
           gbraid: utmParameters.gbraid || null,
+          wbraid: utmParameters.wbraid || null,
+          fbclid: utmParameters.fbclid || null,
+          msclkid: utmParameters.msclkid || null,
         },
         commission: commission,
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
@@ -843,7 +846,10 @@ export default function CheckoutPage() {
           device: utmParameters.device || null,
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
-          gbraid: utmParameters.gbraid || null
+          gbraid: utmParameters.gbraid || null,
+          wbraid: utmParameters.wbraid || null,
+          fbclid: utmParameters.fbclid || null,
+          msclkid: utmParameters.msclkid || null
       },
       commission: commission,
       isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
