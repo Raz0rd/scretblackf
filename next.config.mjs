@@ -18,6 +18,39 @@ const nextConfig = {
   // Security Headers
   async headers() {
     return [
+      // Configuração para /promo - SEM CSP (tracking livre)
+      {
+        source: '/promo/:path*',
+        headers: [
+          // Clickjacking Protection
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN', // Permitir iframe do próprio site
+          },
+          // Content Type Sniffing Protection
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          // XSS Protection
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          // Referrer Policy
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          // Cross-Origin-Opener-Policy (COOP)
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+          // ❌ SEM CSP - Tracking livre para UTMify
+        ],
+      },
+      // Configuração padrão para outras rotas - COM CSP
       {
         source: '/:path*',
         headers: [
