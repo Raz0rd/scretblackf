@@ -69,7 +69,7 @@ const nextConfig = {
               "frame-src 'self' https://www.google.com https://www.googletagmanager.com https://streamable.com https://bid.g.doubleclick.net",
               "base-uri 'self'",
               "form-action 'self'",
-              "frame-ancestors 'none'",
+              "frame-ancestors 'self' https://*.google.com https://*.googletagmanager.com https://*.doubleclick.net https://*.googleadservices.com",
               "object-src 'none'",
               "upgrade-insecure-requests",
             ].join('; '),
