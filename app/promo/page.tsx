@@ -10,7 +10,6 @@ import { useUtmParams } from '@/hooks/useUtmParams';
 import HeadManager from '@/components/HeadManager';
 import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
-import { trackNewLead } from '@/lib/cloaker-tracking';
 
 export default function HomePage() {
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
@@ -139,11 +138,7 @@ export default function HomePage() {
     
     // 🎯 Scripts UTMify agora estão no layout principal (app/layout.tsx)
     // Não precisa mais injetar aqui para evitar duplicação
-    
-    // 🎯 Cloaker: Rastrear novo lead ao acessar a página
-    trackNewLead().catch(err => {
-      console.error('[HomePage] Erro ao rastrear novo lead:', err)
-    })
+    // Cloaker funciona apenas no middleware - sem postback necessário
   }, [])
 
   // Detectar se é desktop
