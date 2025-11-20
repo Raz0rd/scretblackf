@@ -106,6 +106,7 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
+    const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
     
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
@@ -122,7 +123,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem parâmetros válidos (usuário real vindo do checkout), deixar passar
+    // Se não tem cookie do cloaker, bloquear (usuário tentando acessar direto)
+    if (!hasValidCookie) {
+      console.log('🚫 [Success] Acesso sem cookie do cloaker - redirecionando para /')
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+    
+    // Se tem parâmetros válidos E cookie do cloaker, deixar passar
+    console.log('✅ [Success] Acesso permitido (cookie válido + parâmetros)')
     return NextResponse.next()
   }
 
