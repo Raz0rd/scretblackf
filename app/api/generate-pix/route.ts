@@ -765,6 +765,7 @@ export async function POST(request: NextRequest) {
     const validResult = result as { transactionId: string; pixCode: string; qrCode: string; success: boolean }
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
+    console.log("💰 [STORAGE] Valor TOTAL (com promoções): R$", (body.amount / 100).toFixed(2))
     console.log("📊 [STORAGE] UTMs recebidos do frontend:", JSON.stringify(body.trackingParams || {}, null, 2))
     
     // Garantir que trackingParams seja um objeto válido
@@ -813,6 +814,9 @@ export async function POST(request: NextRequest) {
       orderStorageService.saveOrder(orderData)
       console.log("✅ [STORAGE] Pedido salvo com sucesso!")
       console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
+      console.log("💰 [STORAGE] Valores:")
+      console.log("   - Produto base: R$", (body.trackingParams?.price || 0))
+      console.log("   - Total com promoções: R$", (body.amount / 100).toFixed(2))
       console.log("🎯 [STORAGE] UTMs salvos no orderStorage:")
       console.log("   - gclid:", orderData.trackingParameters.gclid || 'N/A')
       console.log("   - gad_source:", orderData.trackingParameters.gad_source || 'N/A')
