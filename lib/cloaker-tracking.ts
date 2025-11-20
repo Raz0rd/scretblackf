@@ -6,7 +6,7 @@
  * - approve: Lead aprovado (pagamento confirmado)
  * - cancel: Lead cancelado (pagamento expirado/falhou)
  * 
- * IMPORTANTE: Usa API route (/api/cloaker-postback) para manter configurações no backend
+ * IMPORTANTE: Faz requisição direta do client para manter IP real do usuário
  */
 
 type CloakerStatus = 'new' | 'approve' | 'cancel'
@@ -20,37 +20,57 @@ interface CloakerPostbackOptions {
  * Verifica se o tracking do cloaker está habilitado
  */
 export function isCloakerTrackingEnabled(): boolean {
-  // Não enviar postbacks em modo desenvolvimento
-  if (process.env.NODE_ENV === 'development') {
-    return false
-  }
-  
+  if (typeof window === 'undefined') return false
+  if (process.env.NODE_ENV === 'development') return false
   return process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
 }
 
 /**
- * Envia postback para o sistema de cloaker via API route
+ * Extrai configurações do Filter ID
+ */
+function getCloakerConfig() {
+  const filterId = process.env.NEXT_PUBLIC_CLOAKER_FILTER_ID
+  if (!filterId) return null
+
+  const parts = filterId.split('-')
+  const uid = parts[parts.length - 1]
+  const campaignId = parts.slice(0, -1).join('-')
+
+  return {
+    apiUrl: 'https://www.altercpa.one/api/filter/postback.json',
+    campaignId,
+    uid
+  }
+}
+
+/**
+ * Envia postback para o sistema de cloaker (client-side para manter IP real)
  */
 export async function sendCloakerPostback(options: CloakerPostbackOptions): Promise<boolean> {
-  // Verificar se está habilitado
-  if (!isCloakerTrackingEnabled()) {
-    return false
-  }
+  if (!isCloakerTrackingEnabled()) return false
+
+  const config = getCloakerConfig()
+  if (!config) return false
 
   try {
-    // Chamar API route (backend) para enviar postback
-    const response = await fetch('/api/cloaker-postback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(options)
+    const url = new URL(config.apiUrl)
+    url.searchParams.set('id', config.campaignId)
+    url.searchParams.set('uid', config.uid)
+    url.searchParams.set('status', options.status)
+
+    if (options.status === 'approve' && options.payout) {
+      url.searchParams.set('payout', options.payout.toFixed(2))
+    }
+
+    // Fetch direto do client (mantém IP real do usuário)
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: { 'User-Agent': 'CloakerTracking/1.0' }
     })
 
     return response.ok
-  } catch (error) {
-    // Silencioso - não mostrar erro no console do client
-    return false
+  } catch {
+    return false // Silencioso - sem logs
   }
 }
 
