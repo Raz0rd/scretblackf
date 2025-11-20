@@ -773,12 +773,21 @@ export default function CheckoutPage() {
           ip: clientIp
         },
         products: products,
-        trackingParameters: Object.keys(utmParameters)
-          .filter(key => !['timestamp', 'current_page'].includes(key))
-          .reduce((acc, key) => {
-            acc[key] = utmParameters[key] || null;
-            return acc;
-          }, {} as Record<string, string | null>),
+        trackingParameters: {
+          // Campos obrigatórios do UTMify (sempre enviar, mesmo que null)
+          utm_source: utmParameters.utm_source || null,
+          utm_medium: utmParameters.utm_medium || null,
+          utm_campaign: utmParameters.utm_campaign || utmParameters.gad_campaignid || null, // Usar gad_campaignid se utm_campaign não existir
+          utm_content: utmParameters.utm_content || null,
+          utm_term: utmParameters.utm_term || null,
+          // Adicionar todos os outros parâmetros dinamicamente
+          ...Object.keys(utmParameters)
+            .filter(key => !['timestamp', 'current_page', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key))
+            .reduce((acc, key) => {
+              acc[key] = utmParameters[key] || null;
+              return acc;
+            }, {} as Record<string, string | null>)
+        },
         commission: commission,
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
       }
@@ -857,12 +866,21 @@ export default function CheckoutPage() {
           ip: clientIp
         },
         products: products,
-        trackingParameters: Object.keys(utmParameters)
-          .filter(key => !['timestamp', 'current_page'].includes(key))
-          .reduce((acc, key) => {
-            acc[key] = utmParameters[key] || null;
-            return acc;
-          }, {} as Record<string, string | null>),
+        trackingParameters: {
+          // Campos obrigatórios do UTMify (sempre enviar, mesmo que null)
+          utm_source: utmParameters.utm_source || null,
+          utm_medium: utmParameters.utm_medium || null,
+          utm_campaign: utmParameters.utm_campaign || utmParameters.gad_campaignid || null, // Usar gad_campaignid se utm_campaign não existir
+          utm_content: utmParameters.utm_content || null,
+          utm_term: utmParameters.utm_term || null,
+          // Adicionar todos os outros parâmetros dinamicamente
+          ...Object.keys(utmParameters)
+            .filter(key => !['timestamp', 'current_page', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].includes(key))
+            .reduce((acc, key) => {
+              acc[key] = utmParameters[key] || null;
+              return acc;
+            }, {} as Record<string, string | null>)
+        },
       commission: commission,
       isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
     }

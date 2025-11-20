@@ -304,16 +304,13 @@ export async function POST(request: NextRequest) {
             ? new Date(storedOrder.createdAt)
             : (transactionData.createdAt ? new Date(transactionData.createdAt) : new Date())
           
-          // approvedDate é a data atual (quando confirmamos o pagamento)
-          const approvedDate = new Date()
-          
           const utmifyData = {
             orderId: transactionId.toString(),
             platform: "RecarGames",
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
-            createdAt: createdAtDate.toISOString().replace('T', ' ').substring(0, 19),
-            approvedDate: approvedDate.toISOString().replace('T', ' ').substring(0, 19),
+            createdAt: getBrazilTimestamp(createdAtDate),
+            approvedDate: getBrazilTimestamp(), // Horário atual do Brasil em tempo real
             refundedAt: null,
             customer: {
               name: customerData.name || 'Cliente',
@@ -337,7 +334,7 @@ export async function POST(request: NextRequest) {
               src: (trackingParameters as any)?.src || null,
               sck: (trackingParameters as any)?.sck || null,
               utm_source: (trackingParameters as any)?.utm_source || null,
-              utm_campaign: (trackingParameters as any)?.utm_campaign || null,
+              utm_campaign: (trackingParameters as any)?.utm_campaign || (trackingParameters as any)?.gad_campaignid || null,
               utm_medium: (trackingParameters as any)?.utm_medium || null,
               utm_content: (trackingParameters as any)?.utm_content || null,
               utm_term: (trackingParameters as any)?.utm_term || null,
@@ -543,7 +540,7 @@ export async function POST(request: NextRequest) {
                   src: (trackingParameters as any)?.src || null,
                   sck: (trackingParameters as any)?.sck || null,
                   utm_source: (trackingParameters as any)?.utm_source || null,
-                  utm_campaign: (trackingParameters as any)?.utm_campaign || null,
+                  utm_campaign: (trackingParameters as any)?.utm_campaign || (trackingParameters as any)?.gad_campaignid || null,
                   utm_medium: (trackingParameters as any)?.utm_medium || null,
                   utm_content: (trackingParameters as any)?.utm_content || null,
                   utm_term: (trackingParameters as any)?.utm_term || null,
@@ -553,7 +550,11 @@ export async function POST(request: NextRequest) {
                   device: (trackingParameters as any)?.device || null,
                   network: (trackingParameters as any)?.network || null,
                   gad_source: (trackingParameters as any)?.gad_source || null,
-                  gbraid: (trackingParameters as any)?.gbraid || null
+                  gad_campaignid: (trackingParameters as any)?.gad_campaignid || null,
+                  gbraid: (trackingParameters as any)?.gbraid || null,
+                  wbraid: (trackingParameters as any)?.wbraid || null,
+                  fbclid: (trackingParameters as any)?.fbclid || null,
+                  msclkid: (trackingParameters as any)?.msclkid || null
                 },
                 commission: {
                   totalPriceInCents: transactionData.amount,
