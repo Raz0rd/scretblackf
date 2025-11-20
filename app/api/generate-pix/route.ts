@@ -767,6 +767,21 @@ export async function POST(request: NextRequest) {
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
     console.log("📊 [STORAGE] UTMs recebidos do frontend:", JSON.stringify(body.trackingParams || {}, null, 2))
     
+    // Garantir que trackingParams seja um objeto válido
+    let trackingParameters: any = {}
+    if (body.trackingParams) {
+      if (typeof body.trackingParams === 'object' && !Array.isArray(body.trackingParams)) {
+        trackingParameters = body.trackingParams
+      } else if (typeof body.trackingParams === 'string') {
+        try {
+          trackingParameters = JSON.parse(body.trackingParams)
+        } catch {
+          console.error("❌ [STORAGE] trackingParams é string mas não é JSON válido")
+          trackingParameters = {}
+        }
+      }
+    }
+    
     try {
       // Gerar nome de produto para UTMify
       const generateProductName = (itemValue: string): string => {
@@ -788,7 +803,7 @@ export async function POST(request: NextRequest) {
           phone: body.customer?.phone || '',
           document: body.customer?.document?.number || ''
         },
-        trackingParameters: body.trackingParams || {},
+        trackingParameters: trackingParameters,
         productName: generateProductName(body.itemValue), // Gerar nome para UTMify
         gateway: gateway, // SALVAR QUAL GATEWAY FOI USADO! 🎯
         createdAt: new Date().toISOString(),
