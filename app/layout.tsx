@@ -1,9 +1,9 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import Script from "next/script"
 import "./globals.css"
 import HeadManager from "@/components/HeadManager"
+import UtmifyScripts from "@/components/UtmifyScripts"
 import ClickTracker from "@/components/ClickTracker"
 import DynamicTheme from "@/components/DynamicTheme"
 import VerificationWrapper from "@/components/VerificationWrapper"
@@ -100,38 +100,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const utmifyPixelId = process.env.NEXT_PUBLIC_PIXELID_UTMFY || '691cd3b3b92ea77f371e882b';
-  
   return (
     <html lang="pt-BR" className="dark">
       <head />
       <body className="font-sans">
-        {/* UTMify Pixel - Google Ads Tracking */}
-        <Script
-          id="utmify-pixel"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.googlePixelId = "${utmifyPixelId}";
-              (function() {
-                var a = document.createElement("script");
-                a.setAttribute("async", "");
-                a.setAttribute("defer", "");
-                a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-google.js");
-                document.head.appendChild(a);
-              })();
-            `
-          }}
-        />
-        
-        {/* UTMify UTMs Script - Captura e salva UTMs em cookies */}
-        <Script
-          src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-          strategy="beforeInteractive"
-          data-utmify-prevent-xcod-sck=""
-          data-utmify-prevent-subids=""
-        />
-        
+        <UtmifyScripts />
         <HeadManager />
         <DynamicTheme />
         <DevToolsBlocker />
