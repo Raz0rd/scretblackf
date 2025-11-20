@@ -104,11 +104,12 @@ export default function RootLayout({
   
   return (
     <html lang="pt-BR" className="dark">
-      <head>
+      <head />
+      <body className="font-sans">
         {/* UTMify Pixel - Google Ads Tracking */}
         <Script
           id="utmify-pixel"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.googlePixelId = "${utmifyPixelId}";
@@ -126,12 +127,11 @@ export default function RootLayout({
         {/* UTMify UTMs Script - Captura e salva UTMs em cookies */}
         <Script
           src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           data-utmify-prevent-xcod-sck=""
           data-utmify-prevent-subids=""
         />
-      </head>
-      <body className="font-sans">
+        
         <HeadManager />
         <DynamicTheme />
         <DevToolsBlocker />
