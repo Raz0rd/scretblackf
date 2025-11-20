@@ -15,98 +15,23 @@ const nextConfig = {
   // Sem redirects - www e sem www retornam 200 OK
   skipTrailingSlashRedirect: true,
 
-  // Security Headers
+  // Security Headers - CSP DESABILITADO para não bloquear cloaker e tracking
   async headers() {
     return [
-      // Configuração para /promo - SEM CSP (tracking livre)
-      {
-        source: '/promo/:path*',
-        headers: [
-          // Clickjacking Protection
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN', // Permitir iframe do próprio site
-          },
-          // Content Type Sniffing Protection
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          // XSS Protection
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          // Referrer Policy
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          // Cross-Origin-Opener-Policy (COOP)
-          {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin-allow-popups',
-          },
-          // ❌ SEM CSP - Tracking livre para UTMify
-        ],
-      },
-      // Configuração padrão para outras rotas - COM CSP
       {
         source: '/:path*',
         headers: [
-          // Clickjacking Protection
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          // Content Type Sniffing Protection
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          // HSTS - Force HTTPS
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          // XSS Protection
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          // Referrer Policy
+          // Referrer Policy - manter para não expor URLs
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
-          // Permissions Policy
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
-          // Cross-Origin-Opener-Policy (COOP)
+          // Cross-Origin-Opener-Policy
           {
             key: 'Cross-Origin-Opener-Policy',
             value: 'same-origin-allow-popups',
           },
-          // Content Security Policy
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://static.cloudflareinsights.com https://cdn.utmify.com.br https://tracking.utmify.com.br",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com",
-              "img-src 'self' data: https: blob: https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net",
-              "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com",
-              "connect-src 'self' https://www.google-analytics.com https://www.google.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://pagead2.googlesyndication.com https://www.googletagmanager.com https://viacep.com.br https://region1.google-analytics.com https://region1.analytics.google.com https://ipinfo.io https://cloudflareinsights.com https://api.utmify.com.br https://cdn.utmify.com.br https://tracking.utmify.com.br",
-              "frame-src 'self' https://www.google.com https://www.googletagmanager.com https://streamable.com https://bid.g.doubleclick.net",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "frame-ancestors 'self' https://*.google.com https://*.googletagmanager.com https://*.doubleclick.net https://*.googleadservices.com",
-              "object-src 'none'",
-              "upgrade-insecure-requests",
-            ].join('; '),
-          },
+          // ❌ CSP DESABILITADO - Cloaker e UTMify precisam de liberdade total
         ],
       },
     ]
