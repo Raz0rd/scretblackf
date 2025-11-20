@@ -12,6 +12,19 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
   
+  // 🚫 IGNORAR requisições de assets, APIs e arquivos estáticos
+  const shouldIgnore = 
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') ||
+    pathname.includes('.') && !pathname.endsWith('/') || // Arquivos com extensão (exceto rotas)
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml'
+  
+  if (shouldIgnore) {
+    return NextResponse.next()
+  }
+  
   // Pegar base URL do .env
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
   
@@ -95,8 +108,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem cookie válido, deixar passar
-    console.log('✅ [Cloaker] Acesso a /promo permitido (cookie válido)')
+    // Se tem cookie válido, deixar passar (sem log para não poluir)
     return NextResponse.next()
   }
 
@@ -177,7 +189,7 @@ export async function middleware(request: NextRequest) {
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
   
   if (hasValidCookie) {
-    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /promo')
+    // Redirecionar silenciosamente (sem log para não poluir)
     return NextResponse.redirect(new URL('/promo', request.url))
   }
 
