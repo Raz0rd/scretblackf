@@ -376,8 +376,8 @@ export default function HomePage() {
       520: { price: 14.9, bonus: 104 },
       1060: { price: 19.99, bonus: 1060 },   // DOBRO
       2180: { price: 24.8, bonus: 2180 },    // DOBRO
-      5600: { price: 34.9, bonus: 5600 },    // DOBRO
-      15600: { price: 87.8, bonus: 15600 },  // DOBRO
+      5600: { price: 46.40, bonus: 5600 },    // DOBRO
+      15600: { price: 110.85, bonus: 15600 },  // DOBRO
     }
 
     return priceMap[diamondCount] || { price: 0, bonus: 0 }
@@ -2369,16 +2369,6 @@ export default function HomePage() {
         <footer className="bg-[#1B1B25] text-white/70">
           <div className="container mx-auto max-w-5xl px-4">
             <div className="flex flex-col items-center gap-3 p-4 text-center text-xs md:items-start max-md:pb-5">
-              {/* Disclaimer */}
-              <div className="w-full border border-yellow-600/30 bg-yellow-600/10 rounded-md p-3 mb-2">
-                <p className="text-yellow-200 text-xs leading-relaxed">
-                  <strong>⚠️ AVISO IMPORTANTE:</strong> Este site é uma plataforma independente de recarga. 
-                  Não somos afiliados, associados ou patrocinados pela Garena, Free Fire, Delta Force, Haikyu ou qualquer outra empresa de jogos. 
-                  Todos os nomes de jogos, marcas e logotipos são propriedade de seus respectivos donos. 
-                  Atuamos apenas como intermediários para facilitar recargas de jogos.
-                </p>
-              </div>
-              
               <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
                 <div className="md:text-start">© 2025 Garena Online. Todos os direitos reservados.</div>
                 <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
