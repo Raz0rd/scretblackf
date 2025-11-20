@@ -5,6 +5,8 @@
  * - new: Novo lead (usuário acessou a página)
  * - approve: Lead aprovado (pagamento confirmado)
  * - cancel: Lead cancelado (pagamento expirado/falhou)
+ * 
+ * IMPORTANTE: Usa API route (/api/cloaker-postback) para manter configurações no backend
  */
 
 type CloakerStatus = 'new' | 'approve' | 'cancel'
@@ -14,30 +16,12 @@ interface CloakerPostbackOptions {
   payout?: number // Valor em reais (opcional, apenas para approve)
 }
 
-// Extrair configurações do Filter ID (formato: 969-8f076e082dbcb1d080037ec2c216d589-15311)
-const CLOAKER_FILTER_ID = process.env.CLOAKER_FILTER_ID
-if (!CLOAKER_FILTER_ID) {
-  throw new Error('❌ CLOAKER_FILTER_ID não configurado no .env')
-}
-
-// Separar o UID (último elemento) do Campaign ID (todo o resto)
-const parts = CLOAKER_FILTER_ID.split('-')
-const uid = parts[parts.length - 1] // Último elemento = UID
-const campaignId = parts.slice(0, -1).join('-') // Todo o resto = Campaign ID
-
-const CLOAKER_CONFIG = {
-  apiUrl: 'https://www.altercpa.one/api/filter/postback.json',
-  campaignId: campaignId, // 969-8f076e082dbcb1d080037ec2c216d589
-  uid: uid // 15311
-}
-
 /**
  * Verifica se o tracking do cloaker está habilitado
  */
 export function isCloakerTrackingEnabled(): boolean {
   // Não enviar postbacks em modo desenvolvimento
   if (process.env.NODE_ENV === 'development') {
-    console.log('[Cloaker] Tracking desabilitado em modo desenvolvimento')
     return false
   }
   
@@ -45,49 +29,27 @@ export function isCloakerTrackingEnabled(): boolean {
 }
 
 /**
- * Envia postback para o sistema de cloaker
+ * Envia postback para o sistema de cloaker via API route
  */
 export async function sendCloakerPostback(options: CloakerPostbackOptions): Promise<boolean> {
   // Verificar se está habilitado
   if (!isCloakerTrackingEnabled()) {
-    console.log('[Cloaker] Tracking desabilitado')
     return false
   }
 
   try {
-    // Construir URL do postback
-    const url = new URL(CLOAKER_CONFIG.apiUrl)
-    url.searchParams.set('id', CLOAKER_CONFIG.campaignId)
-    url.searchParams.set('uid', CLOAKER_CONFIG.uid)
-    url.searchParams.set('status', options.status)
-
-    // Adicionar payout se fornecido (apenas para approve)
-    if (options.status === 'approve' && options.payout) {
-      url.searchParams.set('payout', options.payout.toFixed(2))
-    }
-
-    console.log(`[Cloaker] Enviando postback: ${options.status}`, {
-      url: url.toString(),
-      payout: options.payout
-    })
-
-    // Enviar postback
-    const response = await fetch(url.toString(), {
-      method: 'GET',
+    // Chamar API route (backend) para enviar postback
+    const response = await fetch('/api/cloaker-postback', {
+      method: 'POST',
       headers: {
-        'User-Agent': 'CloakerTracking/1.0'
-      }
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(options)
     })
 
-    if (response.ok) {
-      console.log(`[Cloaker] ✅ Postback enviado com sucesso: ${options.status}`)
-      return true
-    } else {
-      console.error(`[Cloaker] ❌ Erro ao enviar postback: ${response.status}`)
-      return false
-    }
+    return response.ok
   } catch (error) {
-    console.error('[Cloaker] ❌ Erro ao enviar postback:', error)
+    // Silencioso - não mostrar erro no console do client
     return false
   }
 }
