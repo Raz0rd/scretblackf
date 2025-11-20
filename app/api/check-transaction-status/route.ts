@@ -388,6 +388,11 @@ export async function POST(request: NextRequest) {
           console.log(`      • sck: ${utmifyData.trackingParameters.sck || 'N/A'}`)
           console.log(`      • xcod: ${utmifyData.trackingParameters.xcod || 'N/A'}`)
           console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+          
+          // 🔍 LOG DO PAYLOAD COMPLETO ANTES DE ENVIAR
+          console.log(`📦 [CHECK-STATUS] PAYLOAD COMPLETO ENVIADO PARA UTMIFY:`)
+          console.log(JSON.stringify(utmifyData, null, 2))
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
 
           // Enviar diretamente para API do UTMify
           const utmifyResponse = await fetch("https://api.utmify.com.br/api-credentials/orders", {
@@ -399,10 +404,18 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify(utmifyData),
           })
 
+          // 🔍 LOG DETALHADO DA RESPOSTA
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+          console.log(`📥 [CHECK-STATUS] RESPOSTA DO UTMIFY:`)
+          console.log(`   - Status HTTP: ${utmifyResponse.status}`)
+          console.log(`   - Status Text: ${utmifyResponse.statusText}`)
+          console.log(`   - OK: ${utmifyResponse.ok}`)
+          
           if (utmifyResponse.ok) {
             const utmifyResult = await utmifyResponse.json()
-            console.log(`[CHECK-STATUS] ✅ UTMify notificado com sucesso (PAID)`)
-            console.log(`[CHECK-STATUS] 📊 Resposta UTMify:`, JSON.stringify(utmifyResult, null, 2))
+            console.log(`[CHECK-STATUS] ✅ UTMify respondeu com sucesso (HTTP ${utmifyResponse.status})`)
+            console.log(`[CHECK-STATUS] 📊 Resposta UTMify:`)
+            console.log(JSON.stringify(utmifyResult, null, 2))
             utmifySuccess = true
             
             // Log especial para Google Ads - APENAS para status PAID com gclid
@@ -447,8 +460,13 @@ export async function POST(request: NextRequest) {
             }
           } else {
             const errorText = await utmifyResponse.text()
-            console.error(`[CHECK-STATUS] ❌ Erro ao notificar UTMify:`, utmifyResponse.status)
-            console.error(`[CHECK-STATUS] 📄 Detalhes do erro:`, errorText)
+            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
+            console.error(`[CHECK-STATUS] ❌ ERRO AO NOTIFICAR UTMIFY`)
+            console.error(`   - Status HTTP: ${utmifyResponse.status}`)
+            console.error(`   - Status Text: ${utmifyResponse.statusText}`)
+            console.error(`   - Resposta do servidor:`)
+            console.error(errorText)
+            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
           }
         } catch (error) {
           console.error(`[CHECK-STATUS] Erro ao enviar para UTMify:`, error)
