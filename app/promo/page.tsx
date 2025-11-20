@@ -137,32 +137,8 @@ export default function HomePage() {
     
     setMounted(true)
     
-    // 🎯 UTMify: Carregar script de captura de UTMs
-    const utmifyPixelId = process.env.NEXT_PUBLIC_PIXELID_UTMFY
-    if (utmifyPixelId && process.env.NODE_ENV === 'production') {
-      // 1. Script de Pixel Google
-      const pixelScript = document.createElement('script')
-      pixelScript.innerHTML = `
-        window.googlePixelId = "${utmifyPixelId}";
-        var a = document.createElement("script");
-        a.setAttribute("async", "");
-        a.setAttribute("defer", "");
-        a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel-google.js");
-        document.head.appendChild(a);
-      `
-      document.head.appendChild(pixelScript)
-      
-      // 2. Script de UTMs (captura e salva em cookies)
-      const utmsScript = document.createElement('script')
-      utmsScript.src = 'https://cdn.utmify.com.br/scripts/utms/latest.js'
-      utmsScript.setAttribute('data-utmify-prevent-xcod-sck', '')
-      utmsScript.setAttribute('data-utmify-prevent-subids', '')
-      utmsScript.async = true
-      utmsScript.defer = true
-      document.head.appendChild(utmsScript)
-      
-      console.log('✅ [PROMO] Scripts UTMify carregados')
-    }
+    // 🎯 Scripts UTMify agora estão no layout principal (app/layout.tsx)
+    // Não precisa mais injetar aqui para evitar duplicação
     
     // 🎯 Cloaker: Rastrear novo lead ao acessar a página
     trackNewLead().catch(err => {
