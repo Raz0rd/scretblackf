@@ -347,8 +347,11 @@ export async function POST(request: NextRequest) {
               device: (trackingParameters as any)?.device || null,
               network: (trackingParameters as any)?.network || null,
               gad_source: (trackingParameters as any)?.gad_source || null,
+              gad_campaignid: (trackingParameters as any)?.gad_campaignid || null,
               gbraid: (trackingParameters as any)?.gbraid || null,
-              wbraid: (trackingParameters as any)?.wbraid || null
+              wbraid: (trackingParameters as any)?.wbraid || null,
+              fbclid: (trackingParameters as any)?.fbclid || null,
+              msclkid: (trackingParameters as any)?.msclkid || null
             },
             commission: {
               totalPriceInCents: transactionData.amount,

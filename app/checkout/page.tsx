@@ -230,7 +230,7 @@ export default function CheckoutPage() {
     const paramsToCapture = [
       'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
       'gclid', 'fbclid', 'src', 'sck', 'xcod', 'keyword', 'device', 'network', 
-      'gad_source', 'gbraid', 'wbraid', 'msclkid'
+      'gad_source', 'gad_campaignid', 'gbraid', 'wbraid', 'msclkid'
     ]
     
     // 1. PRIORIDADE MÁXIMA: Cookies da UTMify (salvos quando usuário chegou no site)
@@ -410,6 +410,7 @@ export default function CheckoutPage() {
       console.log('📊 Google Ads:')
       console.log('   - gclid:', utmParameters.gclid || '❌ VAZIO')
       console.log('   - gad_source:', utmParameters.gad_source || '❌ VAZIO')
+      console.log('   - gad_campaignid:', utmParameters.gad_campaignid || '❌ VAZIO')
       console.log('   - gbraid:', utmParameters.gbraid || '❌ VAZIO')
       console.log('   - wbraid:', utmParameters.wbraid || '❌ VAZIO')
       console.log('📊 UTMs Padrão:')
@@ -785,6 +786,7 @@ export default function CheckoutPage() {
           device: utmParameters.device || null,
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
+          gad_campaignid: utmParameters.gad_campaignid || null,
           gbraid: utmParameters.gbraid || null,
           wbraid: utmParameters.wbraid || null,
           fbclid: utmParameters.fbclid || null,
@@ -882,6 +884,7 @@ export default function CheckoutPage() {
           device: utmParameters.device || null,
           network: utmParameters.network || null,
           gad_source: utmParameters.gad_source || null,
+          gad_campaignid: utmParameters.gad_campaignid || null,
           gbraid: utmParameters.gbraid || null,
           wbraid: utmParameters.wbraid || null,
           fbclid: utmParameters.fbclid || null,

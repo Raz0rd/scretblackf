@@ -52,13 +52,13 @@ export default function HeadManager() {
   useEffect(() => {
     if (!mounted || typeof window === 'undefined') return;
     
-    // Desabilitar no desenvolvimento
-    if (isDevelopment) {
-      return;
-    }
+    console.log('🔍 [HeadManager] Verificando UTMify...')
+    console.log('   - Pixel ID:', utmifyPixelId ? '✅ Configurado' : '❌ NÃO CONFIGURADO')
+    console.log('   - Ambiente:', isDevelopment ? 'Development' : 'Production')
     
     // Verificar se Pixel ID está configurado
     if (!utmifyPixelId) {
+      console.error('❌ [HeadManager] NEXT_PUBLIC_PIXELID_UTMFY não está configurado!')
       return;
     }
 
@@ -70,6 +70,8 @@ export default function HeadManager() {
     if (oldPixelScript) oldPixelScript.remove();
     if (oldGoogleScript) oldGoogleScript.remove();
     if (oldUtmsScript) oldUtmsScript.remove();
+
+    console.log('📦 [HeadManager] Injetando scripts UTMify...')
 
     // 1. Injetar script de inicialização do Pixel Google
     const pixelInitScript = document.createElement('script');
@@ -94,6 +96,10 @@ export default function HeadManager() {
     utmsScript.async = true;
     utmsScript.defer = true;
     document.head.appendChild(utmsScript);
+    
+    console.log('✅ [HeadManager] Scripts UTMify injetados com sucesso!')
+    console.log('   - Pixel Script: utmify-pixel-init')
+    console.log('   - UTMs Script: utmify-utms-script')
 
     // Cleanup: remover scripts ao desmontar
     return () => {
