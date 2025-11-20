@@ -13,6 +13,10 @@ const CLOAKER_CONFIG = {
   offerPagePath: '/promo'  // Página de oferta
 }
 
+// Cache para evitar múltiplas verificações do mesmo usuário
+const cloakerCache = new Map<string, { type: string; timestamp: number }>()
+const CACHE_DURATION = 60 * 1000 // 1 minuto
+
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
@@ -198,6 +202,31 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/promo', request.url))
   }
 
+  // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
+  const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || 'unknown'
+  const userAgent = request.headers.get('user-agent') || ''
+  const cacheKey = `${clientIp}-${userAgent.substring(0, 50)}` // Limitar tamanho
+  
+  const cached = cloakerCache.get(cacheKey)
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    // Usar resultado do cache
+    if (cached.type === 'white') {
+      return NextResponse.next() // Mostrar white page
+    } else {
+      // Redirecionar para /promo
+      const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
+      redirectUrl.search = request.nextUrl.search
+      const response = NextResponse.redirect(redirectUrl)
+      response.cookies.set('cloaker_verified', 'true', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24
+      })
+      return response
+    }
+  }
+
   try {
     // Preparar dados do servidor EXATAMENTE como o PHP faz
     const serverData = {
@@ -269,6 +298,19 @@ export async function middleware(request: NextRequest) {
       result = {
         type: 'white',
         url: baseUrl + '/'
+      }
+    }
+
+    // Salvar no cache
+    cloakerCache.set(cacheKey, {
+      type: result.type,
+      timestamp: Date.now()
+    })
+
+    // Limpar cache antigo (mais de 5 minutos)
+    for (const [key, value] of cloakerCache.entries()) {
+      if (Date.now() - value.timestamp > 5 * 60 * 1000) {
+        cloakerCache.delete(key)
       }
     }
 
