@@ -226,31 +226,30 @@ export default function CheckoutPage() {
     const urlParams = new URLSearchParams(window.location.search)
     const utmData: Record<string, string> = {}
     
-    // Lista de parâmetros para capturar
-    const paramsToCapture = [
+    // Lista de parâmetros conhecidos (para priorizar cookies)
+    const knownParams = [
       'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
       'gclid', 'fbclid', 'src', 'sck', 'xcod', 'keyword', 'device', 'network', 
       'gad_source', 'gad_campaignid', 'gbraid', 'wbraid', 'msclkid'
     ]
     
     // 1. PRIORIDADE MÁXIMA: Cookies da UTMify (salvos quando usuário chegou no site)
-    paramsToCapture.forEach(param => {
+    knownParams.forEach(param => {
       const cookieValue = getCookie(`utmify_${param}`) || getCookie(param)
       if (cookieValue) {
         utmData[param] = cookieValue
       }
     })
     
-    // 2. Capturar da URL atual (sobrescreve se existir)
-    paramsToCapture.forEach(param => {
-      const value = urlParams.get(param)
+    // 2. Capturar TODOS os parâmetros da URL (não apenas os conhecidos)
+    urlParams.forEach((value, key) => {
       if (value) {
-        utmData[param] = value
+        utmData[key] = value
       }
     })
     
     // 3. Capturar do sessionStorage (persistência entre páginas)
-    paramsToCapture.forEach(param => {
+    knownParams.forEach(param => {
       if (!utmData[param]) {
         const storedValue = sessionStorage.getItem(`utm_${param}`)
         if (storedValue) {
@@ -271,11 +270,9 @@ export default function CheckoutPage() {
       sessionStorage.setItem(`utm_${key}`, value)
     })
     
-    // 5. Adicionar timestamp e página atual
+    // 6. Adicionar timestamp e página atual
     utmData.timestamp = new Date().toISOString()
     utmData.current_page = 'checkout'
-    
-    // UTM Parameters capturados
     
     setUtmParameters(utmData)
   }, [playerId, utmParams])
@@ -772,26 +769,12 @@ export default function CheckoutPage() {
           ip: clientIp
         },
         products: products,
-        trackingParameters: {
-          src: utmParameters.src || null,
-          sck: utmParameters.sck || null,
-          utm_source: utmParameters.utm_source || null,
-          utm_campaign: utmParameters.utm_campaign || null,
-          utm_medium: utmParameters.utm_medium || null,
-          utm_content: utmParameters.utm_content || null,
-          utm_term: utmParameters.utm_term || null,
-          gclid: utmParameters.gclid || null,
-          xcod: utmParameters.xcod || null,
-          keyword: utmParameters.keyword || null,
-          device: utmParameters.device || null,
-          network: utmParameters.network || null,
-          gad_source: utmParameters.gad_source || null,
-          gad_campaignid: utmParameters.gad_campaignid || null,
-          gbraid: utmParameters.gbraid || null,
-          wbraid: utmParameters.wbraid || null,
-          fbclid: utmParameters.fbclid || null,
-          msclkid: utmParameters.msclkid || null,
-        },
+        trackingParameters: Object.keys(utmParameters)
+          .filter(key => !['timestamp', 'current_page'].includes(key))
+          .reduce((acc, key) => {
+            acc[key] = utmParameters[key] || null;
+            return acc;
+          }, {} as Record<string, string | null>),
         commission: commission,
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
       }
@@ -870,26 +853,12 @@ export default function CheckoutPage() {
           ip: clientIp
         },
         products: products,
-        trackingParameters: {
-          src: utmParameters.src || null,
-          sck: utmParameters.sck || null,
-          utm_source: utmParameters.utm_source || null,
-          utm_campaign: utmParameters.utm_campaign || null,
-          utm_medium: utmParameters.utm_medium || null,
-          utm_content: utmParameters.utm_content || null,
-          utm_term: utmParameters.utm_term || null,
-          gclid: utmParameters.gclid || null,
-          xcod: utmParameters.xcod || null,
-          keyword: utmParameters.keyword || null,
-          device: utmParameters.device || null,
-          network: utmParameters.network || null,
-          gad_source: utmParameters.gad_source || null,
-          gad_campaignid: utmParameters.gad_campaignid || null,
-          gbraid: utmParameters.gbraid || null,
-          wbraid: utmParameters.wbraid || null,
-          fbclid: utmParameters.fbclid || null,
-          msclkid: utmParameters.msclkid || null
-      },
+        trackingParameters: Object.keys(utmParameters)
+          .filter(key => !['timestamp', 'current_page'].includes(key))
+          .reduce((acc, key) => {
+            acc[key] = utmParameters[key] || null;
+            return acc;
+          }, {} as Record<string, string | null>),
       commission: commission,
       isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
     }
