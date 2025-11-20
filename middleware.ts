@@ -279,6 +279,37 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24 // 24 horas
     })
     
+    // 🎯 SALVAR UTMs em cookie para NUNCA perder os parâmetros
+    console.log('💾 [Cloaker] Salvando UTMs em cookies...')
+    console.log('   Query String:', request.nextUrl.search)
+    
+    // Lista de parâmetros importantes para salvar
+    const utmParams = [
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'gclid', 'fbclid', 'msclkid', 'ttclid',
+      'gad_source', 'gad_campaignid', 'gbraid', 'wbraid',
+      'src', 'sck', 'xcod', 'keyword', 'device', 'network', 'cuponeria'
+    ]
+    
+    // Salvar cada parâmetro em cookie individual
+    const searchParams = request.nextUrl.searchParams
+    let savedCount = 0
+    utmParams.forEach(param => {
+      const value = searchParams.get(param)
+      if (value) {
+        response.cookies.set(`utmify_${param}`, value, {
+          httpOnly: false, // Precisa ser acessível via JavaScript
+          secure: true,
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30 // 30 dias (padrão UTMify)
+        })
+        console.log(`   💾 [UTM Cookie] ${param}: ${value.substring(0, 50)}`)
+        savedCount++
+      }
+    })
+    
+    console.log(`✅ [Cloaker] ${savedCount} cookies UTM salvos`)
+    
     return response
 
   } catch (error) {
