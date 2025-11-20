@@ -23,7 +23,7 @@ const products: Product[] = [
     name: 'Calça Angelical',
     game: 'freefire',
     amount: 'Calça Angelical',
-    price: 69.90,
+    price: 54.90,
     image: '/images/products/ANGELICAL.png'
   },
   {
@@ -31,7 +31,7 @@ const products: Product[] = [
     name: '1060 Diamantes',
     game: 'freefire',
     amount: '1060',
-    price: 18.70,
+    price: 22.70,
     bonus: '+30% Bônus',
     image: '/images/products/1060-min.png'
   },
@@ -40,7 +40,7 @@ const products: Product[] = [
     name: '2180 Diamantes',
     game: 'freefire',
     amount: '2180',
-    price: 32.40,
+    price: 34.20,
     popular: true,
     bonus: '+30% Bônus',
     image: '/images/products/2180-min.png'
@@ -50,7 +50,7 @@ const products: Product[] = [
     name: '5600 Diamantes',
     game: 'freefire',
     amount: '5600',
-    price: 69.80,
+    price: 49.80,
     bonus: '+30% Bônus = 7280 💎',
     image: '/images/products/5600-min.png'
   },
@@ -84,7 +84,7 @@ const products: Product[] = [
     name: '4500 Robux',
     game: 'robux',
     amount: '4500',
-    price: 55.90,
+    price: 40.90,
     originalPrice: 69.90,
     popular: true,
     bonus: '-20%',
@@ -95,7 +95,7 @@ const products: Product[] = [
     name: '10000 Robux',
     game: 'robux',
     amount: '10000',
-    price: 92.90,
+    price: 75.90,
     originalPrice: 119.90,
     bonus: '-23%',
     image: '/images/products/robux-10000-DH0988eb.webp'
@@ -105,7 +105,7 @@ const products: Product[] = [
     name: '10.000 ROBUX + BÔNUS 5.000',
     game: 'robux',
     amount: '15000',
-    price: 177.50,
+    price: 99.50,
     originalPrice: 299.90,
     popular: true,
     bonus: '-33% | 2.847 vendidos hoje',
