@@ -246,6 +246,8 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    console.log(`[POLLING-SERVER] 🔍 Verificando status da transação: ${transactionId}`)
+
     // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
@@ -332,8 +334,11 @@ export async function POST(request: NextRequest) {
     const isNowPaid = currentStatus === 'paid' || currentStatus === 'approved' || currentStatus === 'PAID'
     const isWaitingPayment = currentStatus === 'waiting_payment' || currentStatus === 'WAITING_PAYMENT'
 
+    console.log(`[POLLING-SERVER] 📊 Status recebido do gateway: ${currentStatus}`)
+
     // Se status é paid, verificar se já foi processado pelo webhook
     if (isNowPaid) {
+      console.log(`[POLLING-SERVER] ✅ PAGAMENTO CONFIRMADO! Processando...`)
       console.log(`[CHECK-STATUS] Status é PAID!`)
       
       // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar cache em memória

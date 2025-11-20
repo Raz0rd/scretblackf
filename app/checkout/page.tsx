@@ -297,7 +297,7 @@ export default function CheckoutPage() {
   ]
 
   const togglePromoItem = (itemId: string) => {
-    setSelectedPromos(prev => 
+    setSelectedPromos((prev: string[]) => 
       prev.includes(itemId) 
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
@@ -580,7 +580,7 @@ export default function CheckoutPage() {
 
   // Timer de 15 minutos
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    let interval: ReturnType<typeof setInterval>
     
     if (timerActive && timeLeft > 0) {
       interval = setInterval(() => {
@@ -601,49 +601,79 @@ export default function CheckoutPage() {
   }, [timerActive, timeLeft])
 
   // Polling para verificar status do pagamento a cada 10 segundos
+  // Com suporte para Page Visibility API (continua mesmo em background)
   useEffect(() => {
-    let statusInterval: NodeJS.Timeout
+    let statusInterval: ReturnType<typeof setInterval>
+    let lastCheckTime = Date.now()
+    
+    const checkPaymentStatus = async () => {
+      if (!pixData || paymentStatus !== 'pending' || !timerActive) return
+      
+      try {
+        const response = await fetch('/api/check-transaction-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transactionId: pixData.transactionId })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          
+          if (data.success && data.status === 'paid') {
+            setPaymentStatus('paid')
+            setTimerActive(false)
+            
+            // Calcular valor total da compra
+            const totalValue = getFinalPrice() + getPromoTotal()
+            
+            // Redirecionar para a página de sucesso
+            router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
+          }
+        } else if (response.status === 404) {
+          // Erro 404 - transação não encontrada, mostrar modal para atualizar
+          setTimerActive(false)
+          setErrorModalMessage('Transação não encontrada no sistema.')
+          setErrorModalType('404')
+          setShowErrorModal(true)
+        }
+      } catch (error) {
+        // Erro silencioso no polling
+      }
+      
+      lastCheckTime = Date.now()
+    }
     
     if (pixData && paymentStatus === 'pending' && timerActive) {
-      statusInterval = setInterval(async () => {
-        try {
-          const response = await fetch('/api/check-transaction-status', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ transactionId: pixData.transactionId })
-          })
+      // Verificar imediatamente
+      checkPaymentStatus()
+      
+      // Configurar intervalo
+      statusInterval = setInterval(checkPaymentStatus, 10000) // Verificar a cada 10 segundos
+      
+      // Page Visibility API - verificar quando a aba volta a ficar visível
+      const handleVisibilityChange = () => {
+        if (!document.hidden) {
+          const timeSinceLastCheck = Date.now() - lastCheckTime
           
-          if (response.ok) {
-            const data = await response.json()
-            
-            if (data.success && data.status === 'paid') {
-              setPaymentStatus('paid')
-              setTimerActive(false)
-              
-              // Calcular valor total da compra
-              const totalValue = getFinalPrice() + getPromoTotal()
-              
-              // Redirecionar para a página de sucesso
-              // O webhook já enviou UTMify PAID - aqui apenas redirecionamos
-              router.push(`/success?transactionId=${pixData.transactionId}&amount=${totalValue * 100}&playerName=${playerName}&itemType=${itemType}&itemValue=${itemValue}&game=${currentGame}`)
-            }
-          } else if (response.status === 404) {
-            // Erro 404 - transação não encontrada, mostrar modal para atualizar
-            setTimerActive(false)
-            setErrorModalMessage('Transação não encontrada no sistema.')
-            setErrorModalType('404')
-            setShowErrorModal(true)
+          // Se passou mais de 10 segundos, verificar imediatamente
+          if (timeSinceLastCheck > 10000) {
+            checkPaymentStatus()
           }
-        } catch (error) {
-          // Erro silencioso no polling
         }
-      }, 10000) // Verificar a cada 10 segundos
+      }
+      
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+      
+      return () => {
+        if (statusInterval) clearInterval(statusInterval)
+        document.removeEventListener('visibilitychange', handleVisibilityChange)
+      }
     }
     
     return () => {
       if (statusInterval) clearInterval(statusInterval)
     }
-  }, [pixData, paymentStatus, timerActive])
+  }, [pixData, paymentStatus, timerActive, router, playerName, itemType, itemValue, currentGame])
 
 
   // Formatar tempo para exibição (MM:SS)
