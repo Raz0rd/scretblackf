@@ -214,7 +214,15 @@ export default function CheckoutPage() {
       }
     }
     
-    // Capturar parâmetros UTM da URL atual e do sessionStorage
+    // Função para ler cookies
+    const getCookie = (name: string): string | null => {
+      const value = `; ${document.cookie}`
+      const parts = value.split(`; ${name}=`)
+      if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+      return null
+    }
+    
+    // Capturar parâmetros UTM de múltiplas fontes
     const urlParams = new URLSearchParams(window.location.search)
     const utmData: Record<string, string> = {}
     
@@ -225,7 +233,15 @@ export default function CheckoutPage() {
       'gad_source', 'gbraid', 'wbraid', 'msclkid'
     ]
     
-    // 1. Capturar da URL atual
+    // 1. PRIORIDADE MÁXIMA: Cookies da UTMify (salvos quando usuário chegou no site)
+    paramsToCapture.forEach(param => {
+      const cookieValue = getCookie(`utmify_${param}`) || getCookie(param)
+      if (cookieValue) {
+        utmData[param] = cookieValue
+      }
+    })
+    
+    // 2. Capturar da URL atual (sobrescreve se existir)
     paramsToCapture.forEach(param => {
       const value = urlParams.get(param)
       if (value) {
@@ -233,7 +249,7 @@ export default function CheckoutPage() {
       }
     })
     
-    // 2. Capturar do sessionStorage (persistência entre páginas)
+    // 3. Capturar do sessionStorage (persistência entre páginas)
     paramsToCapture.forEach(param => {
       if (!utmData[param]) {
         const storedValue = sessionStorage.getItem(`utm_${param}`)
@@ -243,13 +259,14 @@ export default function CheckoutPage() {
       }
     })
     
-    // 3. Usar parâmetros do hook como fallback
+    // 4. Usar parâmetros do hook como fallback
     Object.entries(utmParams).forEach(([key, value]) => {
       if (value && !utmData[key]) {
         utmData[key] = value
       }
     })
-    // 4. Salvar no sessionStorage para próximas páginas
+    
+    // 5. Salvar no sessionStorage para próximas páginas
     Object.entries(utmData).forEach(([key, value]) => {
       sessionStorage.setItem(`utm_${key}`, value)
     })
@@ -385,6 +402,25 @@ export default function CheckoutPage() {
       const basePrice = getFinalPrice()
       const promoTotal = getPromoTotal()
       const totalPrice = basePrice + promoTotal
+      
+      // DEBUG: Verificar UTMs antes de enviar
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🔍 [CHECKOUT] UTMs ANTES DE GERAR PIX:')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📊 Google Ads:')
+      console.log('   - gclid:', utmParameters.gclid || '❌ VAZIO')
+      console.log('   - gad_source:', utmParameters.gad_source || '❌ VAZIO')
+      console.log('   - gbraid:', utmParameters.gbraid || '❌ VAZIO')
+      console.log('   - wbraid:', utmParameters.wbraid || '❌ VAZIO')
+      console.log('📊 UTMs Padrão:')
+      console.log('   - utm_source:', utmParameters.utm_source || '❌ VAZIO')
+      console.log('   - utm_campaign:', utmParameters.utm_campaign || '❌ VAZIO')
+      console.log('   - utm_medium:', utmParameters.utm_medium || '❌ VAZIO')
+      console.log('📊 Outros:')
+      console.log('   - fbclid:', utmParameters.fbclid || '❌ VAZIO')
+      console.log('   - msclkid:', utmParameters.msclkid || '❌ VAZIO')
+      console.log('📈 Total de parâmetros:', Object.keys(utmParameters).filter(k => !['timestamp', 'current_page'].includes(k)).length)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       
       // Gerar PIX
       const response = await fetch('/api/generate-pix', {
