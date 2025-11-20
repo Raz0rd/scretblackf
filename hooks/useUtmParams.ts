@@ -26,7 +26,10 @@ export const useUtmParams = () => {
         'device',
         'network',
         'gad_source',
-        'gbraid'
+        'gad_campaignid',
+        'gbraid',
+        'wbraid',
+        'msclkid'
       ]
 
       const params = new URLSearchParams()

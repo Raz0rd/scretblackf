@@ -259,11 +259,15 @@ export default function CheckoutPage() {
     })
     
     // 4. Usar parâmetros do hook como fallback
-    Object.entries(utmParams).forEach(([key, value]) => {
-      if (value && !utmData[key]) {
-        utmData[key] = value
-      }
-    })
+    // utmParams é uma string (ex: "gclid=xxx&gad_source=1"), converter para objeto
+    if (utmParams && typeof utmParams === 'string') {
+      const hookParams = new URLSearchParams(utmParams)
+      hookParams.forEach((value, key) => {
+        if (value && !utmData[key]) {
+          utmData[key] = value
+        }
+      })
+    }
     
     // 5. Salvar no sessionStorage para próximas páginas
     Object.entries(utmData).forEach(([key, value]) => {
