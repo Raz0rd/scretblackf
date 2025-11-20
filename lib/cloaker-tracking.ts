@@ -14,11 +14,21 @@ interface CloakerPostbackOptions {
   payout?: number // Valor em reais (opcional, apenas para approve)
 }
 
-// Configurações hardcoded do cloaker
+// Extrair configurações do Filter ID (formato: 969-8f076e082dbcb1d080037ec2c216d589-15311)
+const CLOAKER_FILTER_ID = process.env.CLOAKER_FILTER_ID
+if (!CLOAKER_FILTER_ID) {
+  throw new Error('❌ CLOAKER_FILTER_ID não configurado no .env')
+}
+
+// Separar o UID (último elemento) do Campaign ID (todo o resto)
+const parts = CLOAKER_FILTER_ID.split('-')
+const uid = parts[parts.length - 1] // Último elemento = UID
+const campaignId = parts.slice(0, -1).join('-') // Todo o resto = Campaign ID
+
 const CLOAKER_CONFIG = {
   apiUrl: 'https://www.altercpa.one/api/filter/postback.json',
-  campaignId: '969-8f076e082dbcb1d080037ec2c216d589',
-  uid: '15093'
+  campaignId: campaignId, // 969-8f076e082dbcb1d080037ec2c216d589
+  uid: uid // 15311
 }
 
 /**
