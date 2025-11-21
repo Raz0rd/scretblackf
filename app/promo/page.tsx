@@ -1623,22 +1623,27 @@ export default function HomePage() {
                     </div>
                   )}
                   
-                  <div className={`flex flex-1 items-center justify-center p-1 ${hasDoubleCoins ? 'pt-4' : ''}`}>
-                    <img
-                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
-                      data-ai-hint="coin"
-                      loading="lazy"
-                      width="16"
-                      height="16"
-                      decoding="async"
-                      data-nimg="1"
-                      className="coin-icon"
-                      src={currentConfig.coinIcon}
-                      style={{ color: "transparent" }}
-                    />
-                    <span className="coin-value-text text-white">
-                      {value}
-                    </span>
+                  <div className={`flex flex-1 flex-col items-center justify-center p-1 gap-1 ${hasDoubleCoins ? 'pt-4' : ''}`}>
+                    <div className="flex items-center justify-center">
+                      <img
+                        alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                        data-ai-hint="coin"
+                        loading="lazy"
+                        width="16"
+                        height="16"
+                        decoding="async"
+                        data-nimg="1"
+                        className="coin-icon"
+                        src={currentConfig.coinIcon}
+                        style={{ color: "transparent" }}
+                      />
+                      <span className="coin-value-text text-white">
+                        {value}
+                      </span>
+                    </div>
+                    <div className="text-[#F79F00] text-xs sm:text-sm font-bold">
+                      R$ {calculatePrice(value).price.toFixed(2).replace('.', ',')}
+                    </div>
                   </div>
                 </div>
               )

@@ -100,6 +100,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
   
+  // ✅ VERIFICAR COOKIE PRIMEIRO - Se tem cookie válido, libera TUDO
+  const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+  
+  if (hasValidCookie) {
+    // Usuário verificado - pode acessar qualquer rota
+    return NextResponse.next()
+  }
+
   // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
   if (isWhitePageRoute) {
     console.log(`✅ [Whitepage] Rota "${pathname}" sempre acessível - sem cloaker`)
@@ -109,16 +117,9 @@ export async function middleware(request: NextRequest) {
   // Proteger rota /promo - APENAS acessível com cookie do cloaker
   // Usuários que tentarem acessar direto (mesmo com gclid) serão bloqueados
   if (pathname === '/promo' || pathname === '/promo/') {
-    const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-    
-    // Se não tem cookie do cloaker, bloquear SEMPRE
-    if (!hasValidCookie) {
-      console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-    
-    // Se tem cookie válido, deixar passar (sem log para não poluir)
-    return NextResponse.next()
+    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
+    console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // Proteger rota /success - mas permitir Google Ads Bot
@@ -127,7 +128,6 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
-    const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
     
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
@@ -144,15 +144,16 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se não tem cookie do cloaker, bloquear (usuário tentando acessar direto)
-    if (!hasValidCookie) {
-      console.log('🚫 [Success] Acesso sem cookie do cloaker - redirecionando para /')
-      return NextResponse.redirect(new URL('/', request.url))
-    }
-    
-    // Se tem parâmetros válidos E cookie do cloaker, deixar passar
-    console.log('✅ [Success] Acesso permitido (cookie válido + parâmetros)')
-    return NextResponse.next()
+    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
+    console.log('🚫 [Success] Acesso sem cookie do cloaker - redirecionando para /')
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  // Proteger rota /checkout - APENAS acessível com cookie (vem do /promo)
+  if (pathname.startsWith('/checkout')) {
+    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
+    console.log('🚫 [Cloaker] Acesso a /checkout sem cookie do cloaker - redirecionando para /')
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // Não aplicar cloaker nas rotas internas e arquivos estáticos (deixar passar)
@@ -161,7 +162,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/images') ||
     // pathname.startsWith('/success') || // REMOVIDO - /success tem verificação própria acima
-    pathname.startsWith('/checkout') ||
+    // pathname.startsWith('/checkout') || // REMOVIDO - /checkout tem verificação própria acima
     pathname.startsWith('/x9f2w8k5') ||
     pathname.startsWith('/analytics') ||
     pathname.startsWith('/fonts') ||
@@ -193,16 +194,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /promo
-  // Usuário real NUNCA deve ver white page novamente
-  const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-  
-  if (hasValidCookie) {
-    // Redirecionar silenciosamente (sem log para não poluir)
-    return NextResponse.redirect(new URL('/promo', request.url))
-  }
+  // ===== APENAS ROTA / (raiz) chega aqui =====
+  // Cookie já foi verificado no início - se chegou aqui, não tem cookie
 
-  // 🛡️ FILTRO DE REFERER: Verificar se vem do Google
+  // 🛡️ FILTRO DE REFERER: Verificar se vem do Google (APENAS para rota /)
   const referer = request.headers.get('referer') || ''
   const isFromGoogle = referer === 'https://www.google.com/'
   
