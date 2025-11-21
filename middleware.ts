@@ -104,6 +104,15 @@ export async function middleware(request: NextRequest) {
   const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
   
   if (hasValidCookie) {
+    // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /promo
+    if (pathname === '/' || pathname === '') {
+      const referer = request.headers.get('referer') || ''
+      if (!referer) {
+        console.log('🔄 [Cloaker] Usuário com cookie acessando raiz sem referer - redirecionando para /promo')
+        return NextResponse.redirect(new URL('/promo', request.url))
+      }
+    }
+    
     // Usuário verificado - pode acessar qualquer rota
     return NextResponse.next()
   }
