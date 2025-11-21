@@ -206,10 +206,10 @@ export async function middleware(request: NextRequest) {
   const referer = request.headers.get('referer') || ''
   const isFromGoogle = referer === 'https://www.google.com/'
   
-  // Se NÃO vem do Google E NÃO tem cookie do cloaker = BOT!
-  if (!isFromGoogle && !hasValidCookie) {
+  // Se NÃO vem do Google = BOT! (cookie já foi verificado acima)
+  if (!isFromGoogle) {
     console.log('🚫 [Cloaker] BOT detectado - referer inválido:', referer || 'direct')
-    console.log('   ❌ Não é do Google e não tem cookie - mostrando white page')
+    console.log('   ❌ Não é do Google - mostrando white page')
     return NextResponse.next() // Mostrar white page sem chamar cloaker
   }
 
