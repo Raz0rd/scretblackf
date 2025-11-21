@@ -122,9 +122,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /success - mas permitir Google Ads Bot
+  // Proteger rota /success - mas permitir Google Ads Bot e requisições internas
   if (pathname.startsWith('/success')) {
     const userAgent = request.headers.get('user-agent') || ''
+    const referer = request.headers.get('referer') || ''
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
@@ -132,13 +133,21 @@ export async function middleware(request: NextRequest) {
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
     
+    // Detectar requisições internas (UTMify, scripts do próprio site)
+    const isInternalRequest = referer.includes(request.headers.get('host') || '')
+    
     // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
     if (isGoogleBot) {
       console.log('🤖 [Success] Google Bot detectado - permitindo acesso')
       return NextResponse.next()
     }
     
-    // Se não é bot e não tem parâmetros, redirecionar para white page
+    // Se é requisição interna (UTMify), deixar passar
+    if (isInternalRequest) {
+      return NextResponse.next()
+    }
+    
+    // Se não é bot/interno e não tem parâmetros, redirecionar para white page
     if (!hasTransactionId || !hasAmount) {
       console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
