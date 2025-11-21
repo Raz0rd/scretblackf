@@ -202,6 +202,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/promo', request.url))
   }
 
+  // 🛡️ FILTRO DE REFERER: Verificar se vem do Google
+  const referer = request.headers.get('referer') || ''
+  const isFromGoogle = referer === 'https://www.google.com/'
+  
+  // Se NÃO vem do Google E NÃO tem cookie do cloaker = BOT!
+  if (!isFromGoogle && !hasValidCookie) {
+    console.log('🚫 [Cloaker] BOT detectado - referer inválido:', referer || 'direct')
+    console.log('   ❌ Não é do Google e não tem cookie - mostrando white page')
+    return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+
   // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
   const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || 'unknown'
   const userAgent = request.headers.get('user-agent') || ''
