@@ -101,7 +101,18 @@ export async function middleware(request: NextRequest) {
   }
   
   // ✅ VERIFICAR COOKIE PRIMEIRO - Se tem cookie válido, libera TUDO
-  const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+  const cloakerCookie = request.cookies.get('cloaker_verified')
+  const hasValidCookie = cloakerCookie?.value === 'true'
+  
+  // DEBUG: Log do cookie
+  if (!hasValidCookie && pathname === '/') {
+    console.log('⚠️ [DEBUG] Cookie não encontrado ou inválido:', {
+      hasCookie: !!cloakerCookie,
+      cookieValue: cloakerCookie?.value,
+      pathname,
+      referer: request.headers.get('referer') || 'none'
+    })
+  }
   
   if (hasValidCookie) {
     // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /promo
@@ -111,6 +122,9 @@ export async function middleware(request: NextRequest) {
         console.log('🔄 [Cloaker] Usuário com cookie acessando raiz sem referer - redirecionando para /promo')
         return NextResponse.redirect(new URL('/promo', request.url))
       }
+      // Se tem referer (navegação interna), redirecionar para /promo também
+      console.log('🔄 [Cloaker] Usuário com cookie navegando para raiz - redirecionando para /promo')
+      return NextResponse.redirect(new URL('/promo', request.url))
     }
     
     // Usuário verificado - pode acessar qualquer rota
