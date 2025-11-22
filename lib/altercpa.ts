@@ -4,10 +4,26 @@
  * Envia postbacks para o AlterCPA para rastreamento de conversões
  */
 
+// Configurações do AlterCPA vindas do .env
+// NEXT_PUBLIC_CLOAKER_TRACKING_ID formato: 969-8f076e082dbcb1d080037ec2c216d589-16317
+const CLOAKER_TRACKING_ID = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID || ''
+
+// Extrair campaign ID e UID do tracking ID
+// Formato: {campaignId}-{uid}
+const parts = CLOAKER_TRACKING_ID.split('-')
+const campaignId = parts.length >= 2 ? `${parts[0]}-${parts[1]}` : ''
+const uid = parts.length >= 3 ? parts[2] : ''
+
 const ALTERCPA_CONFIG = {
-  id: '969-8f076e082dbcb1d080037ec2c216d589',
-  uid: '15296',
+  id: campaignId,
+  uid: uid,
   baseUrl: 'https://www.altercpa.one/api/filter/postback.json'
+}
+
+// Validar configurações
+if (!ALTERCPA_CONFIG.id || !ALTERCPA_CONFIG.uid) {
+  console.warn('⚠️ [AlterCPA] NEXT_PUBLIC_CLOAKER_TRACKING_ID não configurado corretamente no .env')
+  console.warn('   Formato esperado: 969-8f076e082dbcb1d080037ec2c216d589-16317')
 }
 
 /**

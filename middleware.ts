@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
-const CLOAKER_FILTER_ID = process.env.CLOAKER_FILTER_ID
-if (!CLOAKER_FILTER_ID) {
-  throw new Error('❌ CLOAKER_FILTER_ID não configurado no .env')
+const CLOAKER_TRACKING_ID = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID
+if (!CLOAKER_TRACKING_ID) {
+  throw new Error('❌ NEXT_PUBLIC_CLOAKER_TRACKING_ID não configurado no .env')
 }
 
 const CLOAKER_CONFIG = {
-  url: `https://www.altercpa.one/fltr/${CLOAKER_FILTER_ID}`,
+  url: `https://www.altercpa.one/fltr/${CLOAKER_TRACKING_ID}`,
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/recargajogo'  // Página de oferta
 }
@@ -63,7 +63,8 @@ export async function middleware(request: NextRequest) {
     '/blog',
     '/politica-privacidade',
     '/termos',
-    '/privacidade'
+    '/privacidade',
+    '/success'
   ]
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/') || pathname.startsWith('/blog/')
   
@@ -145,13 +146,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /checkout - APENAS acessível com cookie (vem do /recargajogo)
-  if (pathname.startsWith('/checkout')) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-
-  // Proteger rota /recargajogo - APENAS acessível com cookie do cloaker
-  if (pathname.startsWith('/recargajogo')) {
+  // Proteger rotas /checkout e /recargajogo - APENAS acessíveis com cookie do cloaker
+  // NOTA: Se chegou aqui, significa que NÃO tem cookie válido (verificado nas linhas 89-103)
+  if (pathname.startsWith('/checkout') || pathname.startsWith('/recargajogo')) {
+    console.log(`🚫 [Cloaker] Acesso bloqueado sem cookie: ${pathname}`)
     return NextResponse.redirect(new URL('/', request.url))
   }
 
