@@ -6,9 +6,10 @@ import { ArrowLeft } from "lucide-react"
 import Toast from "../../components/toast"
 import { useUtmParams } from "@/hooks/useUtmParams"
 import QRCode from "qrcode"
-import { getBrazilTimestamp } from "@/lib/brazil-time"
+import { getUTCTimestamp } from '@/lib/brazil-time'
 import { trackPurchase } from "@/lib/google-ads"
 import { fetchWithRetry, saveFailedRequest } from "@/lib/retry-fetch"
+import { orderStorageService } from "@/lib/order-storage"
 
 // Importar lista completa de CPFs e nomes
 import { FAKE_DATA } from "@/lib/fake-data"
@@ -822,7 +823,8 @@ export default function CheckoutPage() {
     return {
       totalPriceInCents,
       gatewayFeeInCents,
-      userCommissionInCents
+      userCommissionInCents,
+      currency: "BRL"
     }
   }
 
@@ -875,13 +877,16 @@ export default function CheckoutPage() {
       }
     ]
     
+    // Criar timestamp UTC no formato UTMify (YYYY-MM-DD HH:MM:SS)
+    const createdAtTimestamp = getUTCTimestamp()
+    
     // Criar dados no formato do UTMify
     const utmifyData = {
         orderId: transactionData.transactionId,
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "waiting_payment",
-        createdAt: new Date().toISOString(),
+        createdAt: createdAtTimestamp,
         approvedDate: null,
         refundedAt: null,
         customer: {
@@ -968,14 +973,18 @@ export default function CheckoutPage() {
       }
     ]
     
+    // Recuperar createdAt original do storage (mesma data do pedido)
+    const storedOrder = orderStorageService.getOrder(transactionId)
+    const originalCreatedAt = storedOrder?.createdAt || getUTCTimestamp()
+    
     // Criar dados no formato do UTMify
     const utmifyData = {
         orderId: transactionId,
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "paid",
-        createdAt: new Date().toISOString(),
-        approvedDate: new Date().toISOString(),
+        createdAt: originalCreatedAt, // ✅ Mesma data do pedido original
+        approvedDate: getUTCTimestamp(), // ✅ Data atual (pagamento aprovado)
         refundedAt: null,
         customer: {
           name: fullName,

@@ -79,8 +79,9 @@ export async function POST(request: Request) {
       },
       commission: {
         totalPriceInCents: amountInCents,
-        gatewayFeeInCents: amountInCents,
-        userCommissionInCents: amountInCents
+        gatewayFeeInCents: 0,
+        userCommissionInCents: amountInCents,
+        currency: "BRL"
       },
       isTest: process.env.UTMIFY_TEST_MODE === 'true'
     }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
+import { getUTCTimestamp } from "@/lib/brazil-time"
 
 // Cache para evitar processamento duplicado (em memória)
 const processedConversions = new Map<string, number>()
@@ -298,18 +299,16 @@ export async function POST(request: NextRequest) {
           const customerData = transactionData.customer || {}
           const documentNumber = customerData.document?.number || customerData.document || 'N/A'
           
-          // Usar createdAt do storage ou data atual
-          const createdAtDate = storedOrder?.createdAt 
-            ? new Date(storedOrder.createdAt)
-            : (transactionData.createdAt ? new Date(transactionData.createdAt) : new Date())
+          // Usar createdAt original do storage (mesma data do pedido)
+          const originalCreatedAt = storedOrder?.createdAt || getUTCTimestamp()
           
           const utmifyData = {
             orderId: transactionId.toString(),
             platform: "RecarGames",
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
-            createdAt: createdAtDate.toISOString(),
-            approvedDate: new Date().toISOString(), // Horário atual UTC ISO 8601
+            createdAt: originalCreatedAt, // ✅ Mesma data do pedido original
+            approvedDate: getUTCTimestamp(), // ✅ Data atual (pagamento aprovado)
             refundedAt: null,
             customer: {
               name: customerData.name || 'Cliente',
@@ -351,8 +350,9 @@ export async function POST(request: NextRequest) {
             },
             commission: {
               totalPriceInCents: transactionData.amount,
-              gatewayFeeInCents: transactionData.amount,
-              userCommissionInCents: transactionData.amount
+              gatewayFeeInCents: 0,
+              userCommissionInCents: transactionData.amount,
+              currency: "BRL"
             },
             isTest: process.env.UTMIFY_TEST_MODE === 'true'
           }
@@ -534,17 +534,15 @@ export async function POST(request: NextRequest) {
               const customerData = transactionData.customer || {}
               const documentNumber = customerData.document?.number || customerData.document || '00000000000'
               
-              // Usar createdAt do storage ou data atual se não houver
-              const createdAtDate = storedOrder?.createdAt 
-                ? new Date(storedOrder.createdAt)
-                : (transactionData.createdAt ? new Date(transactionData.createdAt) : new Date())
+              // Usar createdAt original do storage (mesma data do pedido)
+              const originalCreatedAt = storedOrder?.createdAt || getUTCTimestamp()
               
               const utmifyData = {
                 orderId: transactionId.toString(),
                 platform: "RecarGames",
                 paymentMethod: "pix",
                 status: "waiting_payment",
-                createdAt: createdAtDate.toISOString(),
+                createdAt: originalCreatedAt, // ✅ Mesma data do pedido original
                 approvedDate: null,
                 refundedAt: null,
                 customer: {
@@ -587,8 +585,9 @@ export async function POST(request: NextRequest) {
                 },
                 commission: {
                   totalPriceInCents: transactionData.amount,
-                  gatewayFeeInCents: transactionData.amount,
-                  userCommissionInCents: transactionData.amount
+                  gatewayFeeInCents: 0,
+                  userCommissionInCents: transactionData.amount,
+                  currency: "BRL"
                 },
                 isTest: process.env.UTMIFY_TEST_MODE === 'true'
               }

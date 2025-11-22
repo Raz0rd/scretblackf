@@ -52,6 +52,7 @@ export interface OrderData {
     totalPriceInCents: number
     gatewayFeeInCents: number
     userCommissionInCents: number
+    currency: string
   }
   isTest: boolean
 }

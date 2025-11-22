@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { ArrowLeft, ShoppingCart, Check, Star, Clock, Shield, Zap, MessageCircle } from 'lucide-react'
 import Footer from '@/components/Footer'
 import { DevToolsBlocker } from '@/components/DevToolsBlocker'
+import { getUTCTimestamp } from '@/lib/brazil-time'
+import { orderStorageService } from '@/lib/order-storage'
 
 // Dados dos produtos
 const products = {
@@ -354,8 +356,8 @@ export default function ProductPage() {
         const gatewayFeeInCents = 0
         const userCommissionInCents = totalPriceInCents
         
-        // Formatar data no formato UTC ISO 8601 completo (YYYY-MM-DDTHH:mm:ss.sssZ)
-        const createdAtFormatted = new Date().toISOString()
+        // Formatar data no formato UTC para UTMify (YYYY-MM-DD HH:MM:SS)
+        const createdAtFormatted = getUTCTimestamp()
         
         const utmifyData = {
           orderId: data.transactionId,
@@ -385,7 +387,8 @@ export default function ProductPage() {
           commission: {
             totalPriceInCents: totalPriceInCents,
             gatewayFeeInCents: gatewayFeeInCents,
-            userCommissionInCents: userCommissionInCents
+            userCommissionInCents: userCommissionInCents,
+            currency: "BRL"
           },
           isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
         }
@@ -478,9 +481,10 @@ export default function ProductPage() {
             const gatewayFeeInCents = 0
             const userCommissionInCents = totalPriceInCents
             
-            // Formatar datas no formato UTC ISO 8601 completo (YYYY-MM-DDTHH:mm:ss.sssZ)
-            const createdAtPaid = new Date().toISOString()
-            const approvedDatePaid = new Date().toISOString()
+            // Recuperar createdAt original do storage (mesma data do pedido)
+            const storedOrder = orderStorageService.getOrder(transactionId)
+            const createdAtPaid = storedOrder?.createdAt || getUTCTimestamp()
+            const approvedDatePaid = getUTCTimestamp()
             
             const utmifyDataPaid = {
               orderId: transactionId,
@@ -510,7 +514,8 @@ export default function ProductPage() {
               commission: {
                 totalPriceInCents: totalPriceInCents,
                 gatewayFeeInCents: gatewayFeeInCents,
-                userCommissionInCents: userCommissionInCents
+                userCommissionInCents: userCommissionInCents,
+                currency: "BRL"
               },
               isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
             }

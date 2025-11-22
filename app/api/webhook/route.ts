@@ -316,8 +316,9 @@ export async function POST(request: NextRequest) {
         },
         commission: {
           totalPriceInCents: transaction.amount,
-          gatewayFeeInCents: transaction.amount,
-          userCommissionInCents: transaction.amount
+          gatewayFeeInCents: 0,
+          userCommissionInCents: transaction.amount,
+          currency: "BRL"
         },
         isTest: process.env.UTMIFY_TEST_MODE === 'true'
       }
