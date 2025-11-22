@@ -881,7 +881,7 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "waiting_payment",
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        createdAt: new Date().toISOString(),
         approvedDate: null,
         refundedAt: null,
         customer: {
@@ -974,8 +974,8 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "paid",
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        approvedDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        createdAt: new Date().toISOString(),
+        approvedDate: new Date().toISOString(),
         refundedAt: null,
         customer: {
           name: fullName,

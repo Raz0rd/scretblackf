@@ -354,9 +354,8 @@ export default function ProductPage() {
         const gatewayFeeInCents = 0
         const userCommissionInCents = totalPriceInCents
         
-        // Formatar data no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
-        const now = new Date()
-        const createdAtFormatted = now.toISOString().slice(0, 19).replace('T', ' ')
+        // Formatar data no formato UTC ISO 8601 completo (YYYY-MM-DDTHH:mm:ss.sssZ)
+        const createdAtFormatted = new Date().toISOString()
         
         const utmifyData = {
           orderId: data.transactionId,
@@ -479,10 +478,9 @@ export default function ProductPage() {
             const gatewayFeeInCents = 0
             const userCommissionInCents = totalPriceInCents
             
-            // Formatar datas no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
-            const nowPaid = new Date()
-            const createdAtPaid = nowPaid.toISOString().slice(0, 19).replace('T', ' ')
-            const approvedDatePaid = nowPaid.toISOString().slice(0, 19).replace('T', ' ')
+            // Formatar datas no formato UTC ISO 8601 completo (YYYY-MM-DDTHH:mm:ss.sssZ)
+            const createdAtPaid = new Date().toISOString()
+            const approvedDatePaid = new Date().toISOString()
             
             const utmifyDataPaid = {
               orderId: transactionId,

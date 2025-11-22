@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { orderStorageService } from "@/lib/order-storage"
-import { getBrazilTimestamp } from "@/lib/brazil-time"
 
 // Cache para evitar processamento duplicado (em memória)
 const processedConversions = new Map<string, number>()
@@ -309,8 +308,8 @@ export async function POST(request: NextRequest) {
             platform: "RecarGames",
             paymentMethod: "pix",
             status: "paid", // Status UTMify para paid
-            createdAt: getBrazilTimestamp(createdAtDate),
-            approvedDate: getBrazilTimestamp(), // Horário atual do Brasil em tempo real
+            createdAt: createdAtDate.toISOString(),
+            approvedDate: new Date().toISOString(), // Horário atual UTC ISO 8601
             refundedAt: null,
             customer: {
               name: customerData.name || 'Cliente',
@@ -545,7 +544,7 @@ export async function POST(request: NextRequest) {
                 platform: "RecarGames",
                 paymentMethod: "pix",
                 status: "waiting_payment",
-                createdAt: getBrazilTimestamp(createdAtDate),
+                createdAt: createdAtDate.toISOString(),
                 approvedDate: null,
                 refundedAt: null,
                 customer: {
