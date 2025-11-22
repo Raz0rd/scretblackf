@@ -358,8 +358,8 @@ export default function CheckoutPage() {
       sessionStorage.setItem(`utm_${key}`, value)
     })
     
-    // 6. Adicionar timestamp e página atual (horário de Brasília GMT-3)
-    utmData.timestamp = getBrazilTimestamp()
+    // 6. Adicionar timestamp e página atual (UTC ISO 8601)
+    utmData.timestamp = new Date().toISOString()
     utmData.current_page = 'checkout'
     
     setUtmParameters(utmData)
@@ -883,7 +883,7 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "waiting_payment",
-        createdAt: getBrazilTimestamp(),
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
         approvedDate: null,
         refundedAt: null,
         customer: {
@@ -976,8 +976,8 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "paid",
-        createdAt: getBrazilTimestamp(),
-        approvedDate: getBrazilTimestamp(),
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        approvedDate: new Date().toISOString().slice(0, 19).replace('T', ' '),
         refundedAt: null,
         customer: {
           name: fullName,

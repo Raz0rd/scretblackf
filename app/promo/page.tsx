@@ -10,7 +10,6 @@ import { useUtmParams } from '@/hooks/useUtmParams';
 import HeadManager from '@/components/HeadManager';
 import LoginModal from '@/components/login-modal';
 import { useAuth } from '@/hooks/useAuth';
-import { getBrazilTimestamp } from '@/lib/brazil-time';
 
 export default function HomePage() {
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
@@ -519,7 +518,7 @@ export default function HomePage() {
     const leadData = {
       playerId: playerId || "anonymous",
       nickname: userData?.nickname || "unknown",
-      timestamp: getBrazilTimestamp(),
+      timestamp: new Date().toISOString(),
       reason: reason,
       utm: getUtmObject()
     }

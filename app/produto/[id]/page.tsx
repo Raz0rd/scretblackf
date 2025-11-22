@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { ArrowLeft, ShoppingCart, Check, Star, Clock, Shield, Zap, MessageCircle } from 'lucide-react'
 import Footer from '@/components/Footer'
 import { DevToolsBlocker } from '@/components/DevToolsBlocker'
-import { getBrazilTimestamp } from '@/lib/brazil-time'
 
 // Dados dos produtos
 const products = {
@@ -357,8 +356,9 @@ export default function ProductPage() {
         const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
         const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
         
-        // Formatar data no formato de Brasília (GMT-3) (YYYY-MM-DD HH:mm:ss)
-        const createdAtFormatted = getBrazilTimestamp()
+        // Formatar data no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
+        const now = new Date()
+        const createdAtFormatted = now.toISOString().slice(0, 19).replace('T', ' ')
         
         const utmifyData = {
           orderId: data.transactionId,
@@ -483,9 +483,10 @@ export default function ProductPage() {
             const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
             const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
             
-            // Formatar datas no formato de Brasília (GMT-3) (YYYY-MM-DD HH:mm:ss)
-            const createdAtPaid = getBrazilTimestamp()
-            const approvedDatePaid = getBrazilTimestamp()
+            // Formatar datas no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
+            const nowPaid = new Date()
+            const createdAtPaid = nowPaid.toISOString().slice(0, 19).replace('T', ' ')
+            const approvedDatePaid = nowPaid.toISOString().slice(0, 19).replace('T', ' ')
             
             const utmifyDataPaid = {
               orderId: transactionId,

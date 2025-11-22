@@ -88,6 +88,15 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('   - Endpoint: https://api.utmify.com.br/api-credentials/orders')
+    console.log('')
+    console.log('📦 [PAYLOAD COMPLETO ENVIADO AO UTMIFY]:')
+    console.log(JSON.stringify(utmifyData, null, 2))
+    console.log('')
+    console.log('⏰ [TIMESTAMPS]:')
+    console.log('   - createdAt:', utmifyData.createdAt)
+    console.log('   - approvedDate:', utmifyData.approvedDate || 'null')
+    console.log('   - refundedAt:', utmifyData.refundedAt || 'null')
+    console.log('')
 
     // Enviar para UTMify usando o mesmo endpoint do webhook
     const utmifyResponse = await fetch('https://api.utmify.com.br/api-credentials/orders', {
