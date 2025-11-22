@@ -27,7 +27,6 @@ export default function robots(): MetadataRoute.Robots {
           '/admin-simple/',
           '/debug/',
           '/analytics',
-          '/x9f2w8k5',
           '/testxxadsantihack',
           '/test-ads',
         ],

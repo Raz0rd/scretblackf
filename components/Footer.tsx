@@ -10,25 +10,18 @@ export default function Footer() {
   return (
     <>
     <footer 
-      className="relative text-white py-12 border-t border-white/10 overflow-hidden"
-      style={{
-        backgroundImage: 'url(/images/products/backgroundFOOTER.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
+      className="relative bg-white text-gray-800 py-12 border-t border-gray-200 overflow-hidden"
     >
-      {/* Overlay escuro para melhor legibilidade */}
-      <div className="absolute inset-0 bg-slate-900/80"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* Aviso de Segurança */}
-          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 mb-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
             <div className="flex items-start gap-4">
-              <Shield className="w-8 h-8 text-blue-400 flex-shrink-0" />
+              <Shield className="w-8 h-8 text-blue-600 flex-shrink-0" />
               <div>
-                <h4 className="text-lg font-bold mb-2">Segurança e Autenticidade</h4>
-                <p className="text-slate-300 text-sm">
+                <h4 className="text-lg font-bold mb-2 text-gray-900">Segurança e Autenticidade</h4>
+                <p className="text-gray-600 text-sm">
                   Preços e condições exclusivos para este site oficial. Evite comprar em outras lojas, pois você pode ser enganado por golpistas.
                 </p>
               </div>
@@ -37,7 +30,7 @@ export default function Footer() {
 
           {/* Formas de Pagamento */}
           <div className="mb-8">
-            <h4 className="text-lg font-bold mb-4 flex items-center gap-2">
+            <h4 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-900">
               <CreditCard className="w-5 h-5" />
               Formas de Pagamento
             </h4>
@@ -52,7 +45,7 @@ export default function Footer() {
 
           {/* Selos de Confiança */}
           <div className="mb-8">
-            <h4 className="text-lg font-bold mb-4">Segurança e Confiança</h4>
+            <h4 className="text-lg font-bold mb-4 text-gray-900">Segurança e Confiança</h4>
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <div className="bg-white rounded-lg p-3">
                 <img 
@@ -80,23 +73,27 @@ export default function Footer() {
 
           {/* Links de Políticas */}
           <div className="flex justify-center gap-6 mb-6 text-sm">
-            <button
-              onClick={() => setShowPrivacyModal(true)}
-              className="text-slate-300 hover:text-white underline"
+            <a
+              href="/politica-privacidade-recargajogo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 underline"
             >
               Política de Privacidade
-            </button>
-            <button
-              onClick={() => setShowTermsModal(true)}
-              className="text-slate-300 hover:text-white underline"
+            </a>
+            <a
+              href="/termos-recargajogo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 underline"
             >
               Termos de Uso
-            </button>
+            </a>
           </div>
 
           {/* Copyright */}
-          <div className="text-center text-slate-400 text-sm">
-            <p className="font-bold text-white mb-1">Dimbux - Mais Dimas, mais Robux, mais diversão!</p>
+          <div className="text-center text-gray-500 text-sm">
+            <p className="font-bold text-gray-900 mb-1">Dimbux - Mais Dimas, mais Robux, mais diversão!</p>
             <p>© 2021-2025 Dimbux - Todos os direitos reservados</p>
           </div>
         </div>

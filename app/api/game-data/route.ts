@@ -45,6 +45,11 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
     
+    // Log do nickname do usuário no console do backend com cores
+    if (data?.basicInfo?.nickname) {
+      console.log(`\x1b[36m[Game Data]\x1b[0m UID: \x1b[33m${uid}\x1b[0m | Nickname: \x1b[32m${data.basicInfo.nickname}\x1b[0m`)
+    }
+    
     // Retornar apenas os dados necessários (filtrar se necessário)
     return NextResponse.json({ 
       success: true, 

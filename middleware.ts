@@ -52,34 +52,19 @@ export async function middleware(request: NextRequest) {
     })
   }
   
-  // Registrar acesso no analytics (não-bloqueante)
-  if (!pathname.startsWith('/_next') && !pathname.startsWith('/api/s7k2m9p4') && pathname !== '/x9f2w8k5') {
-    try {
-      const userAgent = request.headers.get('user-agent') || ''
-      const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
-      const referer = request.headers.get('referer') || ''
-      const query = request.nextUrl.search
-      
-      // Fazer requisição assíncrona sem aguardar
-      fetch(`${request.nextUrl.origin}/api/s7k2m9p4`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: pathname,
-          userAgent,
-          ip,
-          referer,
-          query
-        })
-      }).catch(() => {}) // Ignorar erros silenciosamente
-    } catch (error) {
-      // Ignorar erros de analytics
-    }
-  }
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
-  const whitePageRoutes = ['/loja', '/unsubscribe', '/ativar-conversao-google', '/meus-pedidos', '/blog']
+  const whitePageRoutes = [
+    '/loja', 
+    '/unsubscribe', 
+    '/ativar-conversao-google', 
+    '/meus-pedidos', 
+    '/blog',
+    '/politica-privacidade',
+    '/termos',
+    '/privacidade'
+  ]
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/') || pathname.startsWith('/blog/')
   
   // Verificar domínio - ativar cloaker para o domínio configurado
@@ -104,26 +89,12 @@ export async function middleware(request: NextRequest) {
   const cloakerCookie = request.cookies.get('cloaker_verified')
   const hasValidCookie = cloakerCookie?.value === 'true'
   
-  // DEBUG: Log do cookie
-  if (!hasValidCookie && pathname === '/') {
-    console.log('⚠️ [DEBUG] Cookie não encontrado ou inválido:', {
-      hasCookie: !!cloakerCookie,
-      cookieValue: cloakerCookie?.value,
-      pathname,
-      referer: request.headers.get('referer') || 'none'
-    })
-  }
+  // Cookie já verificado - sem logs de debug
   
   if (hasValidCookie) {
     // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /promo
     if (pathname === '/' || pathname === '') {
       const referer = request.headers.get('referer') || ''
-      if (!referer) {
-        console.log('🔄 [Cloaker] Usuário com cookie acessando raiz sem referer - redirecionando para /promo')
-        return NextResponse.redirect(new URL('/promo', request.url))
-      }
-      // Se tem referer (navegação interna), redirecionar para /promo também
-      console.log('🔄 [Cloaker] Usuário com cookie navegando para raiz - redirecionando para /promo')
       return NextResponse.redirect(new URL('/promo', request.url))
     }
     
@@ -133,15 +104,11 @@ export async function middleware(request: NextRequest) {
 
   // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
   if (isWhitePageRoute) {
-    console.log(`✅ [Whitepage] Rota "${pathname}" sempre acessível - sem cloaker`)
     return NextResponse.next()
   }
 
   // Proteger rota /promo - APENAS acessível com cookie do cloaker
-  // Usuários que tentarem acessar direto (mesmo com gclid) serão bloqueados
   if (pathname === '/promo' || pathname === '/promo/') {
-    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
-    console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -161,7 +128,6 @@ export async function middleware(request: NextRequest) {
     
     // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
     if (isGoogleBot) {
-      console.log('🤖 [Success] Google Bot detectado - permitindo acesso')
       return NextResponse.next()
     }
     
@@ -172,19 +138,20 @@ export async function middleware(request: NextRequest) {
     
     // Se não é bot/interno e não tem parâmetros, redirecionar para white page
     if (!hasTransactionId || !hasAmount) {
-      console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
-    console.log('🚫 [Success] Acesso sem cookie do cloaker - redirecionando para /')
+    // Se chegou aqui sem cookie, bloquear
     return NextResponse.redirect(new URL('/', request.url))
   }
 
   // Proteger rota /checkout - APENAS acessível com cookie (vem do /promo)
   if (pathname.startsWith('/checkout')) {
-    // Se chegou aqui sem cookie, bloquear (cookie já foi verificado acima)
-    console.log('🚫 [Cloaker] Acesso a /checkout sem cookie do cloaker - redirecionando para /')
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  // Proteger rota /recargajogo - APENAS acessível com cookie do cloaker
+  if (pathname.startsWith('/recargajogo')) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -195,7 +162,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/images') ||
     // pathname.startsWith('/success') || // REMOVIDO - /success tem verificação própria acima
     // pathname.startsWith('/checkout') || // REMOVIDO - /checkout tem verificação própria acima
-    pathname.startsWith('/x9f2w8k5') ||
     pathname.startsWith('/analytics') ||
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
@@ -220,9 +186,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Se não for rota raiz (/), redirecionar para / (white page)
-  // Isso captura TODAS as rotas inválidas
   if (pathname !== '/') {
-    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para / (white page)`)
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -233,10 +197,8 @@ export async function middleware(request: NextRequest) {
   const referer = request.headers.get('referer') || ''
   const isFromGoogle = referer === 'https://www.google.com/'
   
-  // Se NÃO vem do Google = BOT! (cookie já foi verificado acima)
+  // Se NÃO vem do Google = BOT!
   if (!isFromGoogle) {
-    console.log('🚫 [Cloaker] BOT detectado - referer inválido:', referer || 'direct')
-    console.log('   ❌ Não é do Google - mostrando white page')
     return NextResponse.next() // Mostrar white page sem chamar cloaker
   }
 
@@ -287,13 +249,7 @@ export async function middleware(request: NextRequest) {
       HTTP_SEC_CH_UA_PLATFORM: request.headers.get('sec-ch-ua-platform') || '',
     }
 
-    console.log('🔍 [Cloaker] Verificando acesso:', {
-      ip: serverData.HTTP_CF_CONNECTING_IP || serverData.REMOTE_ADDR,
-      userAgent: serverData.HTTP_USER_AGENT,
-      referer: serverData.HTTP_REFERER || 'direct',
-      queryString: serverData.QUERY_STRING,
-      url: request.nextUrl.pathname + request.nextUrl.search
-    })
+    // Verificando acesso no cloaker
 
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
@@ -315,24 +271,14 @@ export async function middleware(request: NextRequest) {
     if (responseText && responseText.trim()) {
       try {
         result = JSON.parse(responseText)
-        console.log('📥 [Cloaker] Resposta:', {
-          type: result.type,
-          result: result.result,
-          action: result.action,
-          reason: result.reason,
-          url: result.url,
-          referer: serverData.HTTP_REFERER || 'direct'
-        })
       } catch (e) {
-        console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
           url: baseUrl + '/'
         }
       }
     } else {
-      console.log('⚠️ [Cloaker] Resposta vazia - usando fallback (white)')
-      // Fallback IGUAL ao PHP: se vazio, mostrar white page
+      // Fallback: se vazio, mostrar white page
       result = {
         type: 'white',
         url: baseUrl + '/'
@@ -354,13 +300,10 @@ export async function middleware(request: NextRequest) {
 
     // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
-      console.log('🤖 [Cloaker] BOT detectado - mostrando white page (/)')
-      // Deixar passar normalmente - a rota / já é a white page
       return NextResponse.next()
     }
 
     // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
-    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /promo')
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
@@ -376,11 +319,7 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24 // 24 horas
     })
     
-    // 🎯 SALVAR UTMs em cookie para NUNCA perder os parâmetros
-    console.log('💾 [Cloaker] Salvando UTMs em cookies...')
-    console.log('   Query String:', request.nextUrl.search)
-    
-    // Lista de parâmetros importantes para salvar
+    // Salvar UTMs em cookie
     const utmParams = [
       'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
       'gclid', 'fbclid', 'msclkid', 'ttclid',
@@ -388,24 +327,18 @@ export async function middleware(request: NextRequest) {
       'src', 'sck', 'xcod', 'keyword', 'device', 'network', 'cuponeria'
     ]
     
-    // Salvar cada parâmetro em cookie individual
     const searchParams = request.nextUrl.searchParams
-    let savedCount = 0
     utmParams.forEach(param => {
       const value = searchParams.get(param)
       if (value) {
         response.cookies.set(`utmify_${param}`, value, {
-          httpOnly: false, // Precisa ser acessível via JavaScript
+          httpOnly: false,
           secure: true,
           sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 30 // 30 dias (padrão UTMify)
+          maxAge: 60 * 60 * 24 * 30
         })
-        console.log(`   💾 [UTM Cookie] ${param}: ${value.substring(0, 50)}`)
-        savedCount++
       }
     })
-    
-    console.log(`✅ [Cloaker] ${savedCount} cookies UTM salvos`)
     
     return response
 

@@ -98,8 +98,12 @@ export default function CheckoutPage() {
   const [timeLeft, setTimeLeft] = useState(15 * 60) // 15 minutos em segundos
   const [timerActive, setTimerActive] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'expired'>('pending')
+  const [checkingPayment, setCheckingPayment] = useState(false)
+  const [lastCheckTime, setLastCheckTime] = useState(0)
+  const [checkCooldown, setCheckCooldown] = useState(0)
   const [showPromoModal, setShowPromoModal] = useState(false)
   const [selectedPromos, setSelectedPromos] = useState<string[]>([])
+  const [orderBumpCompleted, setOrderBumpCompleted] = useState(false)
   const [showErrorModal, setShowErrorModal] = useState(false)
   const [errorModalType, setErrorModalType] = useState<'404' | 'validation' | 'generic'>('generic')
   const [errorModalMessage, setErrorModalMessage] = useState('')
@@ -108,10 +112,32 @@ export default function CheckoutPage() {
   const itemType = searchParams.get("type") || searchParams.get("itemType") || "recharge"
   const itemValue = searchParams.get("value") || searchParams.get("itemValue") || "1.060"
   const itemBonus = searchParams.get("bonus") || "0"
-  const playerId = searchParams.get("playerId") || ""
+  const playerIdFromUrl = searchParams.get("playerId") || ""
   const price = searchParams.get("price") || "14.24"
   const paymentMethod = searchParams.get("paymentMethod") || "PIX"
   const gameApp = searchParams.get("app") || "100067" // Detectar qual jogo
+  
+  // Estado para playerId (busca do localStorage se não vier na URL)
+  const [playerId, setPlayerId] = useState(playerIdFromUrl)
+  
+  // Carregar playerId do localStorage se não vier na URL
+  useEffect(() => {
+    if (!playerIdFromUrl && typeof window !== 'undefined') {
+      const storedUserData = localStorage.getItem(`userData_${gameApp}`)
+      if (storedUserData) {
+        try {
+          const userData = JSON.parse(storedUserData)
+          // Buscar accountId (Free Fire) ou playerId
+          const id = userData.accountId || userData.playerId
+          if (id) {
+            setPlayerId(id)
+          }
+        } catch (e) {
+          console.error('Erro ao carregar playerId do localStorage:', e)
+        }
+      }
+    }
+  }, [playerIdFromUrl, gameApp])
   
   // Determinar qual jogo baseado no app
   const currentGame = gameApp === "100157" ? "deltaforce" : gameApp === "haikyu" ? "haikyu" : "freefire"
@@ -137,7 +163,7 @@ export default function CheckoutPage() {
   const gameConfig = {
     freefire: {
       banner: "/images/checkout-banner.webp",
-      icon: "/images/icon.webp",
+      icon: "/images/icon.png",
       coinIcon: "/images/point.png",
       name: "Free Fire",
       coinName: "Diamantes",
@@ -197,6 +223,54 @@ export default function CheckoutPage() {
     
     checkUserLoggedIn()
   }, [])
+
+  // Recuperar pagamento pendente do localStorage ao carregar
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const pendingPaymentStr = localStorage.getItem('pendingPayment')
+    if (pendingPaymentStr) {
+      try {
+        const pendingPayment = JSON.parse(pendingPaymentStr)
+        
+        // Verificar se não expirou (15 minutos)
+        const now = Date.now()
+        if (now < pendingPayment.expiresAt) {
+          // Ainda válido, restaurar dados
+          setPixData({
+            code: pendingPayment.code,
+            qrCode: pendingPayment.qrCode,
+            transactionId: pendingPayment.transactionId
+          })
+          setQrCodeImage(pendingPayment.qrCode)
+          
+          // Calcular tempo restante
+          const timeRemaining = Math.floor((pendingPayment.expiresAt - now) / 1000)
+          setTimeLeft(timeRemaining)
+          setTimerActive(true)
+          
+          console.log('🔄 Pagamento pendente recuperado do localStorage')
+        } else {
+          // Expirado, limpar
+          localStorage.removeItem('pendingPayment')
+          console.log('⏰ Pagamento pendente expirado, removido do localStorage')
+        }
+      } catch (e) {
+        console.error('Erro ao recuperar pagamento pendente:', e)
+        localStorage.removeItem('pendingPayment')
+      }
+    }
+  }, [])
+
+  // Countdown do cooldown do botão de verificar pagamento
+  useEffect(() => {
+    if (checkCooldown > 0) {
+      const timer = setTimeout(() => {
+        setCheckCooldown(prev => prev - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [checkCooldown])
 
   useEffect(() => {
     setPlayerName(playerId)
@@ -370,6 +444,8 @@ export default function CheckoutPage() {
 
     // Mostrar modal de promoção apenas para Free Fire
     if (config.showOrderBump) {
+      // Marcar no localStorage que o OrderBump foi aberto
+      localStorage.setItem('orderBumpShown', 'true')
       setShowPromoModal(true)
     } else {
       // Para Delta Force e Haikyu, ir direto para finalizar
@@ -450,34 +526,52 @@ export default function CheckoutPage() {
       if (response.ok) {
         const data = await response.json()
         
-        // Gerar QR Code em base64
+        // Gerar QR Code em base64 a partir do pixCode
         let qrCodeImageData = ""
-        try {
-          const qrCodeDataURL = await QRCode.toDataURL(data.pixCode, {
-            width: 150,
-            margin: 1,
-            color: {
-              dark: '#000000',
-              light: '#FFFFFF'
-            },
-            errorCorrectionLevel: 'M'
-          })
-          qrCodeImageData = qrCodeDataURL
-        } catch (qrError) {
-          // Erro silencioso no QR Code
-          // Fallback: usar a imagem do servidor se disponível
-          if (data.qrCode) {
-            qrCodeImageData = data.qrCode
+        if (data.pixCode) {
+          try {
+            const qrCodeDataURL = await QRCode.toDataURL(data.pixCode, {
+              width: 200,
+              margin: 2,
+              color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+              },
+              errorCorrectionLevel: 'M'
+            })
+            qrCodeImageData = qrCodeDataURL
+            console.log('✅ QR Code gerado com sucesso')
+          } catch (qrError) {
+            console.error('❌ Erro ao gerar QR Code:', qrError)
           }
+        }
+        
+        const paymentData = {
+          code: data.pixCode,
+          qrCode: qrCodeImageData || data.qrCode || '',
+          transactionId: data.transactionId,
+          createdAt: Date.now(),
+          expiresAt: Date.now() + (15 * 60 * 1000), // 15 minutos
+          itemType,
+          itemValue,
+          itemBonus,
+          price,
+          playerId,
+          gameApp,
+          status: 'pending'
         }
         
         setPixData({
           code: data.pixCode,
-          qrCode: data.qrCode,
+          qrCode: qrCodeImageData || data.qrCode || '',
           transactionId: data.transactionId
         })
         
         setQrCodeImage(qrCodeImageData)
+        
+        // Salvar no localStorage
+        localStorage.setItem('pendingPayment', JSON.stringify(paymentData))
+        console.log('💾 Dados do pagamento salvos no localStorage')
         
         // Iniciar timer de 15 minutos
         setTimeLeft(15 * 60)
@@ -675,7 +769,7 @@ export default function CheckoutPage() {
         } catch (error) {
           // Erro silencioso no polling
         }
-      }, 10000) // Verificar a cada 10 segundos
+      }, 20000) // Verificar a cada 20 segundos
     }
     
     return () => {
@@ -1035,15 +1129,30 @@ export default function CheckoutPage() {
                   const item = promoItems.find(p => p.id === promoId)
                   return item ? (
                     <React.Fragment key={promoId}>
-                      <dt className="py-2 text-sm/none text-gray-600 md:text-base/none">
-                        <div className="flex items-center gap-2">
-                          <img src={item.image} alt={item.name} className="w-8 h-8 rounded object-cover" />
-                          {item.name}
+                      <dt className="py-2 text-sm/none text-gray-600 md:text-base/none col-span-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <img src={item.image} alt={item.name} className="w-8 h-8 rounded object-cover" />
+                            <span>{item.name}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-gray-800">{formatPrice(item.price.toString())}</span>
+                            {orderBumpCompleted && (
+                              <button
+                                onClick={() => {
+                                  setSelectedPromos(prev => prev.filter(id => id !== promoId))
+                                }}
+                                className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+                                title="Remover item"
+                              >
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </dt>
-                      <dd className="flex items-center justify-end gap-1 py-2 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-                        {formatPrice(item.price.toString())}
-                      </dd>
                     </React.Fragment>
                   ) : null
                 })}
@@ -1062,14 +1171,15 @@ export default function CheckoutPage() {
               PIX
             </dd>
             
-            {/* Nome do Jogador */}
-            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Nome do Jogador</dt>
+            {/* ID do Jogador */}
+            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">ID do Jogador</dt>
             <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
-              {config.showNickname ? (playerNickname || playerId || 'N/A') : (playerId || 'N/A')}
+              {playerId || 'N/A'}
             </dd>
           </dl>
         </div>
 
+        {!orderBumpCompleted && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
           {!pixData ? (
             <div className="space-y-4">
@@ -1080,7 +1190,7 @@ export default function CheckoutPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
                   placeholder="Seu nome completo"
                 />
               </div>
@@ -1092,7 +1202,7 @@ export default function CheckoutPage() {
                   value={cpf}
                   onChange={handleCpfChange}
                   disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
                   placeholder="000.000.000-00"
                   maxLength={14}
                 />
@@ -1105,7 +1215,7 @@ export default function CheckoutPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isProcessingPayment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
                   placeholder="seu@email.com"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -1212,9 +1322,70 @@ export default function CheckoutPage() {
                             setTimeout(() => setIsCopied(false), 2000)
                           }
                         }}
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-6 h-11 text-base font-bold w-full"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors bg-red-500 text-white hover:bg-red-600 px-4 py-2 mb-3 h-11 text-base font-bold w-full"
                       >
                         {isCopied ? 'Copiado!' : 'Copiar Código'}
+                      </button>
+
+                      {/* Botão Verificar Pagamento */}
+                      <button
+                        onClick={async () => {
+                          const now = Date.now()
+                          const timeSinceLastCheck = (now - lastCheckTime) / 1000
+                          
+                          if (timeSinceLastCheck < 10) {
+                            setCheckCooldown(Math.ceil(10 - timeSinceLastCheck))
+                            return
+                          }
+                          
+                          // Desabilitar imediatamente
+                          setCheckingPayment(true)
+                          setLastCheckTime(now)
+                          setCheckCooldown(10) // Iniciar cooldown de 10s
+                          
+                          try {
+                            const response = await fetch('/api/check-transaction-status', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                transactionId: pixData.transactionId
+                              })
+                            })
+                            
+                            if (!response.ok) {
+                              console.error('Erro na resposta da API:', response.status)
+                              return
+                            }
+                            
+                            const data = await response.json()
+                            
+                            if (data.status === 'paid') {
+                              setPaymentStatus('paid')
+                              // Limpar pagamento pendente do localStorage
+                              localStorage.removeItem('pendingPayment')
+                              console.log('✅ Pagamento confirmado, dados removidos do localStorage')
+                              setToastMessage('Pagamento confirmado!')
+                              setToastType('success')
+                              setShowToast(true)
+                            } else {
+                              console.log('⏳ Pagamento ainda pendente')
+                            }
+                          } catch (error) {
+                            console.error('Erro ao verificar pagamento:', error)
+                          } finally {
+                            setCheckingPayment(false)
+                          }
+                        }}
+                        disabled={checkingPayment || checkCooldown > 0}
+                        className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md transition-colors px-4 py-2 mb-6 h-11 text-base font-bold w-full ${
+                          checkingPayment || checkCooldown > 0
+                            ? 'bg-gray-400 cursor-not-allowed text-white'
+                            : 'bg-red-500 text-white hover:bg-red-600'
+                        }`}
+                      >
+                        {checkingPayment ? 'Verificando...' : checkCooldown > 0 ? `Aguarde ${checkCooldown}s` : 'Verificar Pagamento'}
                       </button>
 
                       {/* Timer/Alerta */}
@@ -1310,6 +1481,7 @@ export default function CheckoutPage() {
             </div>
           )}
         </div>
+        )}
 
         {!pixData && (
           <>
@@ -1317,7 +1489,7 @@ export default function CheckoutPage() {
               Ao clicar em "Prosseguir para Pagamento", atesto que li e concordo com os termos de uso e com a política de privacidade.
             </div>
             <button
-              onClick={handleProceedToPayment}
+              onClick={orderBumpCompleted ? handleFinalizeOrder : handleProceedToPayment}
               disabled={isProcessingPayment}
               className={`w-full font-bold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg ${
                 isProcessingPayment 
@@ -1325,7 +1497,7 @@ export default function CheckoutPage() {
                   : 'bg-red-500 hover:bg-red-600 text-white'
               }`}
             >
-              {isProcessingPayment ? 'Processando...' : 'Prosseguir para Pagamento'}
+              {isProcessingPayment ? 'Processando...' : (orderBumpCompleted ? 'Finalizar Pedido' : 'Prosseguir para Pagamento')}
             </button>
           </>
         )}
@@ -1387,13 +1559,18 @@ export default function CheckoutPage() {
             </div>
 
             {/* Footer */}
-            <div className="p-6 pt-4 flex flex-col gap-4 border-t border-[#3C3E65] flex-shrink-0 bg-[#1B1B25]">
-              <div className="flex justify-between items-center font-bold text-lg text-white">
+            <div className="p-6 pt-4 flex flex-col gap-4 border-t border-gray-200 flex-shrink-0 bg-white">
+              <div className="flex justify-between items-center font-bold text-lg text-gray-900">
                 <span>Total:</span>
                 <span>R$ {(getFinalPrice() + getPromoTotal()).toFixed(2).replace('.', ',')}</span>
               </div>
               <button
-                onClick={handleFinalizeOrder}
+                onClick={() => {
+                  setShowPromoModal(false)
+                  setOrderBumpCompleted(true)
+                  // Salvar no localStorage que o usuário finalizou o OrderBump
+                  localStorage.setItem('orderBumpCompleted', 'true')
+                }}
                 className="w-full h-12 text-lg font-bold bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
               >
                 Finalizar Pedido
@@ -1402,9 +1579,12 @@ export default function CheckoutPage() {
                 onClick={() => {
                   setShowPromoModal(false)
                   setSelectedPromos([])
-                  handleFinalizeOrder()
+                  setOrderBumpCompleted(true)
+                  // Salvar no localStorage que o usuário recusou o OrderBump
+                  localStorage.setItem('orderBumpCompleted', 'true')
+                  localStorage.setItem('orderBumpDeclined', 'true')
                 }}
-                className="w-full h-10 text-sm font-medium text-white/70 hover:bg-[#353542] rounded-md transition-colors"
+                className="w-full h-10 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
               >
                 Não, obrigado
               </button>
@@ -1414,17 +1594,17 @@ export default function CheckoutPage() {
       )}
 
       {/* Footer */}
-      <footer className="bg-[#1B1B25] text-white/70">
+      <footer className="bg-white text-gray-600 border-t border-gray-200">
         <div className="container mx-auto max-w-5xl px-4">
           <div className="flex flex-col items-center gap-3 p-4 text-center text-xs md:items-start max-md:pb-5">
             <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
-              <div className="md:text-start">© 2025 Garena Online. Todos os direitos reservados.</div>
+              <div className="md:text-start text-gray-800">© 2025 Garena Online. Todos os direitos reservados.</div>
               <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
-                <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
-                <div className="h-3 w-px bg-white/30"></div>
-                <a href="https://www.recargajogo.eu/legal/tos?utm_source=organicjLj68e076949be15d3367c027e6&utm_campaign=&utm_medium=&utm_content=&utm_term=" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
-                <div className="h-3 w-px bg-white/30"></div>
-                <a href={addUtmsToUrl('/politica-privacidade')} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
+                <a href="#" className="transition-opacity hover:opacity-100 hover:text-gray-900">FAQ</a>
+                <div className="h-3 w-px bg-gray-300"></div>
+                <a href="/termos-recargajogo" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-gray-900">Termos e Condições</a>
+                <div className="h-3 w-px bg-gray-300"></div>
+                <a href="/politica-privacidade-recargajogo" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-gray-900">Política de Privacidade</a>
               </div>
             </div>
           </div>

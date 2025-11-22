@@ -15,6 +15,24 @@ export default function HomePage() {
   const { isAuthenticated, userData: authUserData, loading: authLoading, login } = useAuth();
   const [mounted, setMounted] = useState(false)
   const [showLeadMessage, setShowLeadMessage] = useState(false)
+  
+  // Forçar light mode removendo classe dark
+  useEffect(() => {
+    const html = document.documentElement
+    html.classList.remove('dark')
+    html.removeAttribute('data-theme')
+    html.style.colorScheme = 'light'
+  }, [])
+
+  // Mudar título se tiver cookie do cloaker
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const hasCloakerCookie = document.cookie.includes('cloaker_verified=true')
+    if (hasCloakerCookie) {
+      document.title = 'Centro de Recarga Free Fire - Diamantes Oficiais'
+    }
+  }, [])
   const [leadMessageType, setLeadMessageType] = useState<"default" | "nao_quer_agora" | "nao_tem_interesse">("default")
   const [loginError, setLoginError] = useState("")
   const [showSocialError, setShowSocialError] = useState(false)
@@ -33,22 +51,22 @@ export default function HomePage() {
   const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
-  const [showBlurOverlay, setShowBlurOverlay] = useState(true) // Modal ativado no início para verificação
+  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Modal desabilitado no início
   const [showFreeItemModal, setShowFreeItemModal] = useState(false)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null)
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("PIX")
   const [showExitMessage, setShowExitMessage] = useState(false)
   const [exitMessage, setExitMessage] = useState("")
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [pendingDisqualifyAnswer, setPendingDisqualifyAnswer] = useState<string | null>(null)
   const [selectedGame, setSelectedGame] = useState<'freefire' | 'deltaforce' | 'haikyu'>('freefire')
-  const [showSummaryDetails, setShowSummaryDetails] = useState(false)
+  const [showSummary, setShowSummary] = useState(false)
   
   // Função para navegar preservando UTM params
   const navigateToGame = (appId: string) => {
     if (typeof window !== 'undefined') {
       const searchParams = new URLSearchParams(window.location.search)
       searchParams.set('app', appId)
-      router.push(`/?${searchParams.toString()}`)
+      router.push(`/recargajogo?${searchParams.toString()}`)
     }
   }
 
@@ -74,9 +92,9 @@ export default function HomePage() {
     freefire: {
       name: 'Free Fire',
       banner: '/images/checkout-banner.webp',
-      icon: '/images/profile-icon.webp',
+      icon: '/images/icon.png',
       coinIcon: '/images/point.webp',
-      userIcon: '/images/profile-icon.webp',
+      userIcon: '/images/icon.png',
       rechargeValues: ["100", "310", "520", "1.060", "2.180", "5.600", "15.600"],
       promotionalValues: ["1.060", "2.180", "5.600", "15.600"],
       specialOffers: [
@@ -125,17 +143,7 @@ export default function HomePage() {
   
   // Evitar problemas de hidratação
   useEffect(() => {
-    // 🛡️ Verificar se o cloaker redirecionou para cupons (detectar pelo conteúdo)
-    if (typeof window !== 'undefined') {
-      const isCuponsPage = document.querySelector('meta[name="page-type"]')?.getAttribute('content') === 'cupons'
-      if (isCuponsPage) {
-        console.log('[HomePage] Página de cupons detectada - não renderizar')
-        return
-      }
-    }
-    
     setMounted(true)
-    // Cloaker funciona apenas no middleware - sem postback necessário
   }, [])
 
   // Detectar se é desktop
@@ -155,47 +163,121 @@ export default function HomePage() {
     if (typeof window === 'undefined') return
     
     const checkUserLogin = async () => {
-      const storedUserData = localStorage.getItem('userData')
-      const userAuthenticated = localStorage.getItem('user_authenticated')
-      const user_data = localStorage.getItem('user_data')
-      const verificationData = localStorage.getItem('verificationData')
+      // Pegar app atual da URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const currentApp = urlParams.get('app') || '100067'
       
-      // Se tem qualquer dado de autenticação, considerar como logado
-      if ((storedUserData && userAuthenticated === 'true') || user_data || verificationData) {
+      const storedUserData = localStorage.getItem(`userData_${currentApp}`)
+      const userAuthenticated = localStorage.getItem(`user_authenticated_${currentApp}`)
+      
+      if (storedUserData && userAuthenticated === 'true') {
         try {
-          const userData = JSON.parse(storedUserData || user_data || '{}')
+          const userData = JSON.parse(storedUserData)
           
+          // Aceitar qualquer nickname como válido
           if (userData.nickname) {
             setIsLoggedIn(true)
             setUserData(userData)
-            setShowBlurOverlay(false) // Fechar modal se usuário já está logado
             
             // Carregar avatar se existir
             if (userData.headPic) {
               await fetchAvatarInfo(userData.headPic)
             }
           } else {
-            // Limpar dados inválidos
-            localStorage.removeItem('userData')
-            localStorage.removeItem('user_authenticated')
+            // Limpar dados sem nickname
+            localStorage.removeItem(`userData_${currentApp}`)
+            localStorage.removeItem(`user_authenticated_${currentApp}`)
             setIsLoggedIn(false)
             setUserData(null)
-            // Modal permanece aberto para login
           }
         } catch (error) {
           console.error('[HomePage] Erro ao carregar dados do usuário:', error)
           setIsLoggedIn(false)
           setUserData(null)
-          // Modal permanece aberto para login
         }
       } else {
         setIsLoggedIn(false)
         setUserData(null)
-        // Modal permanece aberto para login
       }
     }
     
     checkUserLogin()
+    
+    // Listener para mudanças na URL (quando trocar de jogo)
+    const handleUrlChange = () => {
+      checkUserLogin()
+    }
+    
+    window.addEventListener('popstate', handleUrlChange)
+    
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange)
+    }
+  }, [mounted])
+
+  // Detectar mudanças no parâmetro app da URL e recarregar login
+  useEffect(() => {
+    if (typeof window === 'undefined' || !mounted) return
+    
+    const loadGameLogin = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const currentApp = urlParams.get('app') || '100067'
+      
+      const storedUserData = localStorage.getItem(`userData_${currentApp}`)
+      const userAuthenticated = localStorage.getItem(`user_authenticated_${currentApp}`)
+      
+      if (storedUserData && userAuthenticated === 'true') {
+        try {
+          const userData = JSON.parse(storedUserData)
+          if (userData.nickname) {
+            setIsLoggedIn(true)
+            setUserData(userData)
+            setPlayerId("")
+            if (userData.headPic) {
+              fetchAvatarInfo(userData.headPic)
+            }
+          }
+        } catch (error) {
+          console.error('[HomePage] Erro ao carregar dados:', error)
+        }
+      } else {
+        setIsLoggedIn(false)
+        setUserData(null)
+        setPlayerId("")
+      }
+    }
+    
+    // Carregar login inicial
+    loadGameLogin()
+    
+    // Escutar mudanças de rota do Next.js
+    const handleRouteChange = () => {
+      setTimeout(() => {
+        loadGameLogin()
+      }, 100)
+    }
+    
+    // Interceptar pushState e replaceState para detectar mudanças de rota
+    const originalPushState = window.history.pushState
+    const originalReplaceState = window.history.replaceState
+    
+    window.history.pushState = function(...args) {
+      originalPushState.apply(this, args)
+      handleRouteChange()
+    }
+    
+    window.history.replaceState = function(...args) {
+      originalReplaceState.apply(this, args)
+      handleRouteChange()
+    }
+    
+    window.addEventListener('popstate', handleRouteChange)
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange)
+      window.history.pushState = originalPushState
+      window.history.replaceState = originalReplaceState
+    }
   }, [mounted])
 
   // Verificar consentimento de cookies
@@ -215,14 +297,14 @@ export default function HomePage() {
     setShowCookieBanner(false)
   }
   
-  // Array de banners para carousel (4 banners diferentes)
+  // Array de banners para carousel (5 banners diferentes)
   const banners = [
     {
       src: "/images/banner1.png",
       alt: "Banner 1 - Promoção Especial de Recarga"
     },
     {
-      src: "/images/banner2.png",
+      src: "/images/banner2.jpg",
       alt: "Banner 2 - Ofertas Exclusivas"
     },
     {
@@ -230,8 +312,12 @@ export default function HomePage() {
       alt: "Banner 3 - Recarga Segura e Rápida"
     },
     {
-      src: "/images/carouselHaikyu.jpg",
-      alt: "Banner Haikyu - Promoção Especial"
+      src: "/images/banner4.png",
+      alt: "Banner 4 - Promoção Especial"
+    },
+    {
+      src: "/images/banner5.jpg",
+      alt: "Banner 5 - Promoção Especial"
     }
   ]
 
@@ -373,8 +459,8 @@ export default function HomePage() {
       520: { price: 14.9, bonus: 104 },
       1060: { price: 19.99, bonus: 1060 },   // DOBRO
       2180: { price: 24.8, bonus: 2180 },    // DOBRO
-      5600: { price: 34.9, bonus: 5600 },    // DOBRO
-      15600: { price: 87.8, bonus: 15600 },  // DOBRO
+      5600: { price: 46.40, bonus: 5600 },    // DOBRO
+      15600: { price: 110.85, bonus: 15600 },  // DOBRO
     }
 
     return priceMap[diamondCount] || { price: 0, bonus: 0 }
@@ -456,12 +542,23 @@ export default function HomePage() {
       
       // Simular loading de 1.5 segundos
       setTimeout(() => {
+        const userData = {
+          nickname: playerId,
+          accountId: playerId
+        }
+        
         setIsLoggedIn(true)
-        setUserData(null)
+        setUserData(userData)
         setLoginError("")
         setIsLoading(false)
         setShowIllusoryLoading(false)
         setShowBlurOverlay(false) // Fecha o modal após login
+        
+        // Salvar por jogo (app)
+        const urlParams = new URLSearchParams(window.location.search)
+        const currentApp = urlParams.get('app') || (selectedGame === 'deltaforce' ? '100157' : '100153')
+        localStorage.setItem(`userData_${currentApp}`, JSON.stringify(userData))
+        localStorage.setItem(`user_authenticated_${currentApp}`, 'true')
       }, 1500)
       return
     }
@@ -474,19 +571,20 @@ export default function HomePage() {
 
       if (response.ok && data.success) {
         if (data.data && data.data.basicInfo && data.data.basicInfo.nickname) {
-          if (response.status !== 200) {
-            setIsLoggedIn(false)
-            setLoginError("Login inválido. Verifique seu ID de jogador.")
-          } else {
-            setIsLoggedIn(true)
-            setUserData(data.data.basicInfo)
-            setLoginError("")
-            setShowBlurOverlay(false) // Fecha o modal após login
-            localStorage.setItem('userData', JSON.stringify(data.data.basicInfo))
-            
-            if (data.data.basicInfo.headPic) {
-              await fetchAvatarInfo(data.data.basicInfo.headPic)
-            }
+          // Aceitar qualquer nickname como válido
+          setIsLoggedIn(true)
+          setUserData(data.data.basicInfo)
+          setLoginError("")
+          setShowBlurOverlay(false) // Fecha o modal após login
+          
+          // Salvar por jogo (app)
+          const urlParams = new URLSearchParams(window.location.search)
+          const currentApp = urlParams.get('app') || '100067'
+          localStorage.setItem(`userData_${currentApp}`, JSON.stringify(data.data.basicInfo))
+          localStorage.setItem(`user_authenticated_${currentApp}`, 'true')
+          
+          if (data.data.basicInfo.headPic) {
+            await fetchAvatarInfo(data.data.basicInfo.headPic)
           }
         } else {
           setIsLoggedIn(false)
@@ -688,7 +786,7 @@ export default function HomePage() {
 
           {/* Footer */}
           <div className="pb-4">
-            <p className="text-center text-sm text-gray-600">© Garena Online. Todos os direitos reservados.</p>
+            <p className="text-center text-sm text-gray-500">© Garena Online. Todos os direitos reservados.</p>
           </div>
         </div>
       </div>
@@ -752,7 +850,7 @@ export default function HomePage() {
                   <div className="relative">
                     <img 
                       className="absolute -top-2 left-4 md:left-6 h-14 w-14 rounded-xl bg-white outline outline-4 outline-white" 
-                      src="/images/icon.webp" 
+                      src="/images/icon.png" 
                       alt="Free Fire"
                     />
                     <div className="ml-24 md:ml-[104px] pr-4 md:pr-6 pt-3" >
@@ -776,10 +874,15 @@ export default function HomePage() {
                       <div className="flex">
                         <input
                           type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           className="w-full bg-gray-100 px-3 py-2.5 rounded-l-md border border-gray-200 border-r-0 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                           placeholder="Insira o ID de jogador aqui"
                           value={playerId}
-                          onChange={(e) => setPlayerId(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^0-9]/g, '')
+                            setPlayerId(value)
+                          }}
                           disabled={isLoading}
                         />
                         <button
@@ -893,10 +996,13 @@ export default function HomePage() {
         <div className="flex-1 pt-20 pb-32 overflow-y-auto">
 
         {/* Hero Banner com Carousel */}
-        <div className="md:bg-[#151515] md:py-2.5 lg:py-5">
+        <div className="md:bg-[#151515]">
+          {/* Linha preta acima do carousel - apenas mobile */}
+          <div className="h-2 bg-black md:hidden"></div>
+          
           <div className="group mx-auto w-full md:max-w-[1366px] md:px-8 lg:px-10">
             {/* Mobile: Carousel normal */}
-            <div className="relative overflow-hidden bg-[#151515] md:hidden">
+            <div className="relative overflow-hidden md:hidden">
               <div 
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
@@ -910,7 +1016,11 @@ export default function HomePage() {
                       src={banner.src}
                       alt={banner.alt}
                       className="w-full h-auto"
-                      style={{ maxHeight: '255px', objectFit: 'cover' }}
+                      style={{ 
+                        maxHeight: '255px', 
+                        objectFit: banner.src.includes('digimon') ? 'cover' : 'cover',
+                        objectPosition: 'center'
+                      }}
                     />
                   </div>
                 ))}
@@ -931,6 +1041,9 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
+            
+            {/* Linha preta abaixo do carousel - apenas mobile */}
+            <div className="h-2 bg-black md:hidden"></div>
 
             {/* Desktop: Múltiplas imagens visíveis */}
             <div className="relative hidden md:flex justify-center" style={{ paddingTop: '23%' }}>
@@ -1011,12 +1124,11 @@ export default function HomePage() {
         </div>
 
         {/* Background decorativo abaixo do carousel */}
-        <div className="relative bg-[#ECECEC]">
-          <div className="absolute inset-0 bg-[#ECECEC] rtl:-scale-x-100 dark:bg-[linear-gradient(180deg,#16162B_0%,#242443_76.1%,#333356_100%)]" role="none">
+        <div className="relative bg-black">
+          <div className="absolute inset-0 bg-black rtl:-scale-x-100 dark:bg-[linear-gradient(180deg,#16162B_0%,#242443_76.1%,#333356_100%)]" role="none">
             <div className="absolute inset-0 bg-cover bg-center bg-no-repeat dark:opacity-[0.06] md:bg-contain" role="none" style={{ backgroundImage: 'url("/images/abaixodobannercarousel.png")' }}></div>
           </div>
           <div className="pointer-events-none absolute inset-0 flex rtl:-scale-x-100 rtl:flex-row-reverse" role="none">
-            <div className="h-[7px] flex-1 bg-[#F2B13E] dark:bg-[#2D337D]/50" role="none"></div>
             <svg width="390" height="27" viewBox="0 0 390 27" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-[27px] dark:hidden md:hidden" preserveAspectRatio="xMidYMin" role="none">
               <path d="M390 0H0V7H285L301 27H390V0Z" fill="url(#paint0_linear_2330_34259)" role="none"></path>
               <mask id="mask0_2330_34259" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="27" role="none" style={{ maskType: 'alpha' }}>
@@ -1165,12 +1277,12 @@ export default function HomePage() {
                   </linearGradient>
                 </defs>
               </svg>
-              <div className="h-[1px] w-full bg-[#3C3E65]/30" role="none"></div>
+              <div className="h-[27px] flex-1 bg-[#FDD373]/[0.63] dark:bg-[#3C3E65]/50" role="none"></div>
             </div>
             
             {/* Conteúdo da Seleção de Jogos */}
             <div className="relative mx-auto flex max-w-5xl flex-col px-[22px] pb-8 pt-5 md:px-8 md:pb-8 md:pt-[27px]" role="none">
-              <h2 className="relative -ms-1.5 mb-4 text-lg/none font-bold text-white md:mb-5 md:ms-0 md:text-xl/none" role="none">
+              <h2 className="relative -ms-1.5 mb-4 text-lg/none font-bold text-gray-800 md:mb-5 md:ms-0 md:text-xl/none" role="none">
                 Seleção de jogos
               </h2>
               <div className="grid grid-cols-4 gap-x-[22px] gap-y-4 sm:grid-cols-6 lg:grid-cols-8" role="none">
@@ -1182,9 +1294,6 @@ export default function HomePage() {
               tabIndex={0}
               onClick={() => {
                 setSelectedGame('freefire')
-                setIsLoggedIn(false)
-                setPlayerId("")
-                setUserData(null)
                 navigateToGame('100067')
               }}
             >
@@ -1192,7 +1301,7 @@ export default function HomePage() {
                 <div className="mb-1 px-[2px] sm:px-[3px] md:mb-2 md:px-2">
                   <div className="relative">
                     <div className={`relative overflow-hidden rounded-[25%] border-[3px] sm:border-4 md:border-[6px] transition-colors ${
-                      selectedGame === 'freefire' ? 'border-[rgb(216,26,13)]' : 'border-[#3C3E65]'
+                      selectedGame === 'freefire' ? 'border-[rgb(216,26,13)]' : 'border-gray-300'
                     }`}>
                       <div className="relative pt-[100%]">
                         <img
@@ -1202,7 +1311,7 @@ export default function HomePage() {
                           decoding="async"
                           className="pointer-events-none absolute inset-0 h-full w-full bg-white object-cover"
                           sizes="(max-width: 640px) 60px, (max-width: 768px) 70px, 105px"
-                          src="/images/profile-icon.webp"
+                          src="/images/icon.png"
                         />
                       </div>
                     </div>
@@ -1222,9 +1331,6 @@ export default function HomePage() {
               tabIndex={0}
               onClick={() => {
                 setSelectedGame('deltaforce')
-                setIsLoggedIn(false)
-                setPlayerId("")
-                setUserData(null)
                 navigateToGame('100157')
               }}
             >
@@ -1232,7 +1338,7 @@ export default function HomePage() {
                 <div className="mb-1 px-[2px] sm:px-[3px] md:mb-2 md:px-2">
                   <div className="relative">
                     <div className={`relative overflow-hidden rounded-[25%] border-[3px] sm:border-4 md:border-[5px] transition-colors ${
-                      selectedGame === 'deltaforce' ? 'border-[rgb(216,26,13)]' : 'border-[#3C3E65]'
+                      selectedGame === 'deltaforce' ? 'border-[rgb(216,26,13)]' : 'border-gray-300'
                     }`}>
                       <div className="relative pt-[100%]">
                         <img
@@ -1264,9 +1370,6 @@ export default function HomePage() {
               tabIndex={0}
               onClick={() => {
                 setSelectedGame('haikyu')
-                setIsLoggedIn(false)
-                setPlayerId("")
-                setUserData(null)
                 navigateToGame('100153')
               }}
             >
@@ -1274,7 +1377,7 @@ export default function HomePage() {
                 <div className="mb-1 px-[2px] sm:px-[3px] md:mb-2 md:px-2">
                   <div className="relative">
                     <div className={`relative overflow-hidden rounded-[25%] border-[3px] sm:border-4 md:border-[5px] transition-colors ${
-                      selectedGame === 'haikyu' ? 'border-[rgb(216,26,13)]' : 'border-[#3C3E65]'
+                      selectedGame === 'haikyu' ? 'border-[rgb(216,26,13)]' : 'border-gray-300'
                     }`}>
                       <div className="relative pt-[100%]">
                         <img
@@ -1302,13 +1405,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Seção com Background Escuro */}
-        <div className="bg-[#1B1B25]">
-        
         {/* Banner Fixo */}
         <div className="relative mx-auto max-w-5xl px-0 sm:px-0 md:px-8 pb-4 sm:pb-6 -mt-4">
           <div className="mb-5 lg:mb-[28px]">
-            <div className="relative flex items-center overflow-hidden transition-all border-[7px] border-[#1B1B25] border-b-0 rounded-t-2xl" id="app-banner">
+            <div className="relative flex items-center overflow-hidden transition-all border-[7px] border-white border-b-0 rounded-t-2xl" id="app-banner">
               <div 
                 className="absolute h-full w-full bg-[#BDBDC5] bg-cover bg-center rounded-t-2xl rtl:-scale-x-100" 
                 style={{ backgroundImage: `url("${currentConfig.banner}")` }}
@@ -1341,10 +1441,92 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Item Grátis Section - Apenas para Free Fire */}
+        {selectedGame === 'freefire' && (
+          <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
+            
+            <div className="relative mb-4 md:mb-6 md:max-w-[464px] lg:mb-[28px]">
+            <img src="/images/fundopgtoseguro.png" alt="Pagamento Seguro" className="absolute inset-0 w-full h-full object-cover object-center payment-secure-img" />
+              <div 
+                className="absolute h-full w-full rounded-md bg-gradient-to-r imgItemGratis"
+              ></div>
+              
+              <div className="relative flex h-full w-full justify-between px-[18px] py-4">
+                <div className="flex flex-col items-start justify-center">
+                  
+                  <div className="mb-0.5 text-base/none font-bold text-gray-800">Item Grátis</div>
+                  <div className="mb-3 text-xs text-gray-600">Resgate aqui seus itens exclusivos grátis</div>
+                  <button 
+                    onClick={() => setShowFreeItemModal(true)}
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-destructive/90 py-2 h-7 px-3 text-xs font-medium"
+                  >
+                    Resgatar
+                  </button>
+                  
+                </div>
+                <button 
+                  onClick={() => setShowFreeItemModal(true)}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <div className="mb-2 flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-white">
+                    <img 
+                      alt="Pacote de Armas Gabarola" 
+                      loading="lazy" 
+                      width="60" 
+                      height="60" 
+                      decoding="async" 
+                      className="pointer-events-none h-full w-full object-cover" 
+                      src="/images/itemgratisNovo.png"
+                    />
+                  </div>
+                  <div className="flex items-center text-xs">
+                    <div className="max-w-20 truncate font-medium text-gray-700">Pacote de Armas Gabarola</div>
+                    <svg width="1em" height="1em" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clipPath="url(#recharge_clip0_489_1601)">
+                        <path d="M4.8999 5.39848C4.89981 4.44579 5.67209 3.67344 6.62478 3.67344H7.37471C8.33038 3.67344 9.09977 4.45392 9.09971 5.40371C9.09967 6.05546 8.73195 6.65677 8.14619 6.94967L7.57416 7.23571C7.49793 7.27382 7.44978 7.35173 7.44978 7.43695V7.49844C7.44978 7.78839 7.21473 8.02344 6.92478 8.02344C6.63483 8.02344 6.39978 7.78839 6.39978 7.49844V7.43695C6.39978 6.95403 6.67262 6.51255 7.10456 6.29657L7.6766 6.01053C7.90385 5.8969 8.0497 5.66087 8.04971 5.40365C8.04973 5.0279 7.74459 4.72344 7.37471 4.72344H6.62478C6.25203 4.72344 5.94987 5.02563 5.9499 5.39838C5.94993 5.68833 5.7149 5.9234 5.42495 5.92343C5.135 5.92346 4.89993 5.68843 4.8999 5.39848Z" fill="currentColor"></path>
+                        <path d="M6.9999 10.1484C7.3865 10.1484 7.6999 9.83504 7.6999 9.44844C7.6999 9.06184 7.3865 8.74844 6.9999 8.74844C6.6133 8.74844 6.2999 9.06184 6.2999 9.44844C6.2999 9.83504 6.6133 10.1484 6.9999 10.1484Z" fill="currentColor"></path>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M0.524902 6.99844C0.524902 3.42239 3.42386 0.523438 6.9999 0.523438C10.5759 0.523438 13.4749 3.42239 13.4749 6.99844C13.4749 10.5745 10.5759 13.4734 6.9999 13.4734C3.42386 13.4734 0.524902 10.5745 0.524902 6.99844ZM6.9999 1.57344C4.00376 1.57344 1.5749 4.00229 1.5749 6.99844C1.5749 9.99458 4.00376 12.4234 6.9999 12.4234C9.99605 12.4234 12.4249 9.99458 12.4249 6.99844C12.4249 4.00229 9.99605 1.57344 6.9999 1.57344Z" fill="currentColor"></path>
+                      </g>
+                      <defs>
+                        <clipPath id="recharge_clip0_489_1601">
+                          <rect width="14" height="14" fill="currentColor"></rect>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Eventos especiais Section - Apenas Free Fire */}
+        {selectedGame === 'freefire' && (
+          <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
+            <div className="flex flex-col gap-6">
+              <div>
+                <div className="mb-3 text-xl font-bold text-gray-800 md:text-2xl">Eventos especiais</div>
+                <div className="relative grid gap-4 md:grid-cols-2">
+                  <a href="" >
+                    <div className="relative mb-3 w-full pt-[28.048%]">
+                      <img 
+                        className="pointer-events-none absolute inset-0 block h-full w-full rounded-md object-cover" 
+                        src="/images/eventosEspeciais.png"
+                        alt="Eventos Especiais"
+                      />
+                    </div>
+                    <div class="text-sm/[22px] font-medium md:text-base/[22px]">PALPITEIROS FFWS 2025: DÊ SEU PALPITE!</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Login Section */}
         <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
           <div id="login-section" className="group md:max-w-[464px]">
-            <div className="mb-2 sm:mb-3 flex items-center justify-between text-lg sm:text-xl text-white md:text-2xl">
+            <div className="mb-2 sm:mb-3 flex items-center justify-between text-lg sm:text-xl text-gray-800 md:text-2xl">
               <div className="flex items-center gap-2">
                 <div className="grid items-center">
                   <svg
@@ -1370,25 +1552,10 @@ export default function HomePage() {
               {isLoggedIn && (
                 <button
                   onClick={() => {
-                    // Limpar todos os dados do usuário do localStorage
-                    localStorage.removeItem('userData')
-                    localStorage.removeItem('user_authenticated')
-                    localStorage.removeItem('user_data')
-                    localStorage.removeItem('verificationData')
-                    localStorage.removeItem('userVerified')
-                    localStorage.removeItem('userPlayerId')
-                    localStorage.removeItem('verificationExpiry')
-                    localStorage.removeItem('terms_accepted')
-                    localStorage.removeItem('terms_accepted_at')
-                    
-                    // Limpar estados
                     setIsLoggedIn(false)
                     setUserData(null)
                     setAvatarInfo(null)
                     setPlayerId("")
-                    
-                    // Mostrar modal de login novamente
-                    setShowBlurOverlay(true)
                   }}
                   className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
                 >
@@ -1400,11 +1567,11 @@ export default function HomePage() {
               )}
             </div>
             <div
-              className="relative p-4 rounded-md transition-all bg-[#272731] outline outline-1 -outline-offset-1 outline-line dark:outline-none"
+              className="relative p-3 sm:p-4 border rounded-md transition-all bg-[#f4f4f4] border-gray-200"
             >
               {isLoggedIn && (
                 <div className="mb-3 sm:mb-4">
-                  <div className="relative flex items-center rounded-md p-3">
+                  <div className="relative flex items-center rounded-md p-3 bg-[#f4f4f4]">
                     <div className="me-3 h-9 w-9 shrink-0 overflow-hidden rounded-full">
                       <img 
                         alt={`${currentConfig.name} Icon`}
@@ -1414,16 +1581,16 @@ export default function HomePage() {
                         height="36" 
                         decoding="async" 
                         data-nimg="1" 
-                        className="block h-full w-full object-cover" 
-                        src={avatarInfo?.imageUrl || currentConfig.icon}
+                        className="block h-full w-full object-contain" 
+                        src={currentConfig.icon}
                         style={{ color: "transparent" }}
                       />
                     </div>
-                    <div className="flex-1 text-sm/none text-white">
+                    <div className="flex-1 text-sm/none text-gray-800">
                       {userData && userData.nickname ? (
                         <div>
                           <div className="font-medium">Usuário: {userData.nickname}</div>
-                          <div className="text-xs text-white/70 mt-1">ID do jogador: {userData.accountId || playerId}</div>
+                          <div className="text-xs text-gray-600 mt-1">ID do jogador: {userData.accountId || playerId}</div>
                         </div>
                       ) : (
                         <div>ID do jogador: {playerId}</div>
@@ -1436,7 +1603,7 @@ export default function HomePage() {
 {!isLoggedIn && (
                 <form className="mb-3 sm:mb-4" onSubmit={handleLogin}>
                   <label
-                    className="mb-2 flex items-center gap-1 text-[15px]/4 font-medium text-text-title"
+                    className="mb-2 flex items-center gap-1 text-sm sm:text-[15px] font-medium text-gray-800"
                     htmlFor="player-id"
                   >
                     ID do jogador
@@ -1470,19 +1637,28 @@ export default function HomePage() {
                       </svg>
                     </button>
                   </label>
-                  <div className="flex">
+                  <div className="flex gap-2">
                     <input
-                      className="form-input w-full bg-[#353542] px-4 ltr:rounded-r-none ltr:border-r-0 rtl:rounded-l-none rtl:border-l-0"
+                      className="flex-1 rounded border px-2.5 sm:px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 transition-all border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                       id="player-id"
                       name="player-id"
                       placeholder="Insira o ID de jogador aqui"
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       autoComplete="off"
                       value={playerId}
-                      onChange={(e) => setPlayerId(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/[^0-9]/g, '')
+                        setPlayerId(value)
+                      }}
                     />
                     <button
-                      className="shrink-0 rounded-md bg-primary-red px-5 py-[15px] text-sm/none font-bold text-white transition-colors hover:bg-primary-red-hover focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 disabled:grayscale rounded-s-none"
+                      className={`rounded px-3 sm:px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
+                        isLoading
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600 focus:ring-red-500"
+                      }`}
                       type="submit"
                       disabled={isLoading}
                     >
@@ -1524,8 +1700,7 @@ export default function HomePage() {
                   </button>
                   <button 
                     onClick={() => handleSocialLogin("Google")}
-                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200"
-                    style={{ backgroundColor: '#FFFFFF' }}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200 bg-white"
                   >
                     <img 
                       src="/images/gg.svg" 
@@ -1537,8 +1712,7 @@ export default function HomePage() {
                   </button>
                   <button 
                     onClick={() => handleSocialLogin("Twitter")}
-                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200"
-                    style={{ backgroundColor: '#FFFFFF' }}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200 bg-white"
                   >
                     <img 
                       src="/images/ic-twitter-92527e61.svg" 
@@ -1569,7 +1743,7 @@ export default function HomePage() {
 
         {/* Valor de Recarga Section */}
         <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
-          <div className="mb-2 sm:mb-3 flex items-center gap-2 text-lg sm:text-xl text-white md:text-2xl">
+          <div className="mb-2 sm:mb-3 flex items-center gap-2 text-lg sm:text-xl text-gray-800 md:text-2xl">
             <div className="grid items-center">
               <svg
                 width="1em"
@@ -1589,6 +1763,19 @@ export default function HomePage() {
             <span className="font-bold">Valor de Recarga</span>
           </div>
           
+          {/* Texto Promocional - Apenas após login */}
+          {isLoggedIn && (
+            <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-lg">
+              <div className="text-center">
+                <h3 className="text-base sm:text-lg font-bold text-red-600 mb-1">
+                  🎉 80% OFF na primeira recarga!
+                </h3>
+                <p className="text-xs sm:text-sm text-red-500 font-medium">
+                  Válido para valores destacados
+                </p>
+              </div>
+            </div>
+          )}
           <div className="grid grid-cols-3 gap-2 sm:gap-2.5 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
             {currentConfig.rechargeValues.map((value) => {
               const isPromotional = currentConfig.promotionalValues.includes(value)
@@ -1597,21 +1784,20 @@ export default function HomePage() {
                                  (selectedGame === 'haikyu' && !isPromotional)
               const hasDoubleCoins = (selectedGame === 'deltaforce' || selectedGame === 'haikyu') && isPromotional
               
-              // Não renderizar cards desabilitados
-              if (isDisabled) return null
-              
               return (
                 <div
                   key={value}
                   role="radio"
                   aria-checked={selectedRechargeValue === value}
-                  tabIndex={0}
-                  className={`group relative flex flex-col min-h-[60px] sm:min-h-[70px] overflow-hidden rounded-md p-0 sm:min-h-[80px] md:min-h-[90px] outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring ${
-                    selectedRechargeValue === value
-                      ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542] cursor-pointer"
-                      : "bg-[#353542] border border-[#3C3E65] cursor-pointer hover:border-[#E4372E]/50"
+                  tabIndex={isDisabled ? -1 : 0}
+                  className={`group relative flex flex-col min-h-[60px] sm:min-h-[70px] overflow-hidden rounded-md p-0 sm:min-h-[80px] md:min-h-[90px] border outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring ${
+                    isDisabled
+                      ? "bg-gray-100 border-gray-300 cursor-not-allowed opacity-50"
+                      : selectedRechargeValue === value
+                      ? "border-red-500 bg-red-50 text-red-700 cursor-pointer"
+                      : "bg-white border-gray-200 cursor-pointer hover:border-red-300"
                   }`}
-                  onClick={() => handleRechargeValueSelect(value)}
+                  onClick={() => !isDisabled && handleRechargeValueSelect(value)}
                 >
                   {/* Badge de Promoção - Coins em Dobro para Delta Force */}
                   {hasDoubleCoins && (
@@ -1629,14 +1815,21 @@ export default function HomePage() {
                       height="16"
                       decoding="async"
                       data-nimg="1"
-                      className="coin-icon"
+                      className={`coin-icon ${isDisabled ? "grayscale" : ""}`}
                       src={currentConfig.coinIcon}
                       style={{ color: "transparent" }}
                     />
-                    <span className="coin-value-text text-white">
+                    <span className={`coin-value-text ${isDisabled ? "text-gray-400" : ""}`}>
                       {value}
                     </span>
                   </div>
+                  
+                  {/* Overlay para valores desabilitados */}
+                  {isDisabled && (
+                    <div className="absolute inset-0 bg-gray-200 bg-opacity-50 flex items-center justify-center">
+                    
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -1645,7 +1838,7 @@ export default function HomePage() {
 
         {/* Ofertas especiais Section */}
         <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
-          <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-medium text-white">Ofertas especiais</h3>
+          <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-medium text-gray-600">Ofertas especiais</h3>
           <div className="grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-4 md:gap-4">
             {currentConfig.specialOffers.map((offer) => (
               <div
@@ -1656,34 +1849,24 @@ export default function HomePage() {
                   role="radio"
                   aria-checked={selectedSpecialOffer === offer.name}
                   tabIndex={0}
-                  className={`group peer relative flex h-full cursor-pointer flex-col items-center rounded-md overflow-hidden transition-all focus-visible:ring-2 focus-visible:ring-ring bg-[#353542] ${
-                    selectedSpecialOffer === offer.name 
-                      ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)]" 
-                      : "border border-[#3C3E65]"
+                  className={`group peer relative flex h-full cursor-pointer flex-col items-center rounded-md bg-white p-1 sm:p-1.5 pb-1.5 sm:pb-2 border transition-all focus-visible:ring-2 focus-visible:ring-ring ${
+                    selectedSpecialOffer === offer.name ? "border-red-500 bg-red-50" : "border-gray-200"
                   }`}
                   onClick={() => handleSpecialOfferSelect(offer.name)}
                 >
-                  <div className="relative mb-1.5 sm:mb-2 w-full pt-[56.25%]">
-                    <div className="absolute inset-0 p-1">
-                      <img
-                        alt={offer.name}
-                        data-ai-hint="game offer"
-                        loading="lazy"
-                        decoding="async"
-                        className="pointer-events-none h-full w-full object-cover rounded-sm"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        src={offer.image}
-                      />
-                    </div>
-                    {/* Badge Hot - apenas para Passe de Nível e Assinatura Mensal */}
-                    {(offer.name === 'Passe de Nível' || offer.name === 'Assinatura Mensal') && (
-                      <div className="absolute top-2 right-2 bg-primary-red text-white text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded">
-                        Hot
-                      </div>
-                    )}
+                  <div className="relative mb-1.5 sm:mb-2 w-full overflow-hidden rounded-sm pt-[56.25%]">
+                    <img
+                      alt={offer.name}
+                      data-ai-hint="game offer"
+                      loading="lazy"
+                      decoding="async"
+                      className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      src={offer.image}
+                    />
                   </div>
-                  <div className="flex items-center justify-center gap-1 px-1.5 pb-1">
-                    <div className="text-center text-sm sm:text-base leading-[20px] font-medium text-white line-clamp-2">
+                  <div className="flex items-center gap-1">
+                    <div className="text-center text-base leading-[20px] font-medium text-gray-700 line-clamp-2">
                       {offer.name}
                     </div>
                     {(selectedGame === 'haikyu' || selectedGame === 'freefire' || selectedGame === 'deltaforce') && offer.description && (
@@ -1697,9 +1880,9 @@ export default function HomePage() {
                           })
                           setShowOfferInfoModal(true)
                         }}
-                        className="shrink-0 flex cursor-pointer relative"
+                        className="shrink-0 flex cursor-pointer relative z-10"
                       >
-                        <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-sm text-white/70 hover:text-white transition-colors">
+                        <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 text-sm text-gray-500 hover:text-gray-700 transition-colors">
                           <path d="M44 26C44 23.7909 42.2091 22 40 22C37.7909 22 36 23.7909 36 26C36 28.2091 37.7909 30 40 30C42.2091 30 44 28.2091 44 26Z" fill="currentColor"></path>
                           <path d="M43 54C43 55.6569 41.6569 57 40 57C38.3431 57 37 55.6569 37 54V37C37 35.3431 38.3431 34 40 34C41.6569 34 43 35.3431 43 37V54Z" fill="currentColor"></path>
                           <path fillRule="evenodd" clipRule="evenodd" d="M5 25C5 13.9543 13.9543 5 25 5H55C66.0457 5 75 13.9543 75 25V55C75 66.0457 66.0457 75 55 75H25C13.9543 75 5 66.0457 5 55V25ZM25 11H55C62.732 11 69 17.268 69 25V55C69 62.732 62.732 69 55 69H25C17.268 69 11 62.732 11 55V25C11 17.268 17.268 11 25 11Z" fill="currentColor"></path>
@@ -1740,7 +1923,7 @@ export default function HomePage() {
 
         {/* Método de pagamento Section */}
         <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
-          <div className="mb-2 sm:mb-3 flex items-center gap-2 text-base sm:text-lg text-white md:text-xl">
+          <div className="mb-2 sm:mb-3 flex items-center gap-2 text-base sm:text-lg text-gray-800 md:text-xl">
             <div className="grid items-center">
               <svg
                 width="1em"
@@ -1768,14 +1951,10 @@ export default function HomePage() {
               onClick={() => setSelectedPaymentMethod("PIX")}
               className={`group relative flex h-full min-h-[70px] sm:min-h-[80px] cursor-pointer items-start gap-1.5 sm:gap-2 rounded-md p-2 sm:p-2.5 transition-all focus-visible:ring-2 focus-visible:ring-ring max-md:flex-col max-md:justify-between md:items-center md:gap-3 md:p-3 ${
                 selectedPaymentMethod === "PIX" 
-                  ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542]" 
-                  : "border border-[#3C3E65] bg-[#353542] hover:border-[#E4372E]/50"
+                  ? "border-2 border-red-500 bg-red-50" 
+                  : "border border-gray-200 bg-white hover:border-red-300"
               }`}
             >
-              {/* Badge HOT */}
-              <div className="absolute top-2 right-2 bg-[#FFD700] text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded uppercase" style={{ color: '#000000' }}>
-                Hot
-              </div>
               <div className="shrink-0">
                 <img
                   alt="PIX"
@@ -1792,14 +1971,14 @@ export default function HomePage() {
               </div>
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
-                  <span className="items-center inline-flex font-bold text-white">
+                  <span className="items-center inline-flex font-bold text-gray-800">
                     R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
                          selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -1819,7 +1998,7 @@ export default function HomePage() {
                 )}
                 {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -1838,6 +2017,25 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+              <div className="absolute end-[2px] top-[2px] sm:end-[3px] sm:top-[3px] overflow-hidden rounded-[3px]">
+                <div className="flex text-[9px] sm:text-[11px] font-bold uppercase leading-none">
+                  <div className="flex items-center gap-0.5 sm:gap-1 bg-destructive p-0.5 pr-0.5 sm:pr-1 text-white">
+                    <img
+                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                      data-ai-hint="coin"
+                      loading="lazy"
+                      width="12"
+                      height="12"
+                      decoding="async"
+                      data-nimg="1"
+                      className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 rounded-sm bg-white object-contain p-0.5"
+                      src={currentConfig.coinIcon}
+                      style={{ color: "transparent" }}
+                    />
+                    <span>Promo</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Cartões de Crédito */}
@@ -1848,8 +2046,8 @@ export default function HomePage() {
               onClick={() => setSelectedPaymentMethod("Cartão de Crédito")}
               className={`group relative flex h-full min-h-[70px] sm:min-h-[80px] cursor-pointer items-start gap-1.5 sm:gap-2 rounded-md p-2 sm:p-2.5 transition-all focus-visible:ring-2 focus-visible:ring-ring max-md:flex-col max-md:justify-between md:items-center md:gap-3 md:p-3 ${
                 selectedPaymentMethod === "Cartão de Crédito" 
-                  ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542]" 
-                  : "border border-[#3C3E65] bg-[#353542] hover:border-[#E4372E]/50"
+                  ? "border-2 border-red-500 bg-red-50" 
+                  : "border border-gray-200 bg-white hover:border-red-300"
               }`}
             >
               <div className="shrink-0">
@@ -1868,14 +2066,14 @@ export default function HomePage() {
               </div>
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
-                  <span className="items-center inline-flex font-bold text-white">
+                  <span className="items-center inline-flex font-bold text-gray-800">
                     R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
                          selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -1895,7 +2093,7 @@ export default function HomePage() {
                 )}
                 {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -1914,6 +2112,25 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+              <div className="absolute end-[2px] top-[2px] sm:end-[3px] sm:top-[3px] overflow-hidden rounded-[3px]">
+                <div className="flex text-[9px] sm:text-[11px] font-bold uppercase leading-none">
+                  <div className="flex items-center gap-0.5 sm:gap-1 bg-destructive p-0.5 pr-0.5 sm:pr-1 text-white">
+                    <img
+                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                      data-ai-hint="coin"
+                      loading="lazy"
+                      width="12"
+                      height="12"
+                      decoding="async"
+                      data-nimg="1"
+                      className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 rounded-sm bg-white object-contain p-0.5"
+                      src={currentConfig.coinIcon}
+                      style={{ color: "transparent" }}
+                    />
+                    <span>Promo</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* PicPay */}
@@ -1924,8 +2141,8 @@ export default function HomePage() {
               onClick={() => setSelectedPaymentMethod("PicPay")}
               className={`group relative flex h-full min-h-[70px] sm:min-h-[80px] cursor-pointer items-start gap-1.5 sm:gap-2 rounded-md p-2 sm:p-2.5 transition-all focus-visible:ring-2 focus-visible:ring-ring max-md:flex-col max-md:justify-between md:items-center md:gap-3 md:p-3 ${
                 selectedPaymentMethod === "PicPay" 
-                  ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542]" 
-                  : "border border-[#3C3E65] bg-[#353542] hover:border-[#E4372E]/50"
+                  ? "border-2 border-red-500 bg-red-50" 
+                  : "border border-gray-200 bg-white hover:border-red-300"
               }`}
             >
               <div className="shrink-0">
@@ -1944,14 +2161,14 @@ export default function HomePage() {
               </div>
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
-                  <span className="items-center inline-flex font-bold text-white">
+                  <span className="items-center inline-flex font-bold text-gray-800">
                     R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
                          selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -1971,7 +2188,7 @@ export default function HomePage() {
                 )}
                 {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -1990,6 +2207,25 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+              <div className="absolute end-[2px] top-[2px] sm:end-[3px] sm:top-[3px] overflow-hidden rounded-[3px]">
+                <div className="flex text-[9px] sm:text-[11px] font-bold uppercase leading-none">
+                  <div className="flex items-center gap-0.5 sm:gap-1 bg-destructive p-0.5 pr-0.5 sm:pr-1 text-white">
+                    <img
+                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                      data-ai-hint="coin"
+                      loading="lazy"
+                      width="12"
+                      height="12"
+                      decoding="async"
+                      data-nimg="1"
+                      className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 rounded-sm bg-white object-contain p-0.5"
+                      src={currentConfig.coinIcon}
+                      style={{ color: "transparent" }}
+                    />
+                    <span>Promo</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* NUPay */}
@@ -2000,8 +2236,8 @@ export default function HomePage() {
               onClick={() => setSelectedPaymentMethod("NUPay")}
               className={`group relative flex h-full min-h-[70px] sm:min-h-[80px] cursor-pointer items-start gap-1.5 sm:gap-2 rounded-md p-2 sm:p-2.5 transition-all focus-visible:ring-2 focus-visible:ring-ring max-md:flex-col max-md:justify-between md:items-center md:gap-3 md:p-3 ${
                 selectedPaymentMethod === "NUPay" 
-                  ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542]" 
-                  : "border border-[#3C3E65] bg-[#353542] hover:border-[#E4372E]/50"
+                  ? "border-2 border-red-500 bg-red-50" 
+                  : "border border-gray-200 bg-white hover:border-red-300"
               }`}
             >
               <div className="shrink-0">
@@ -2020,14 +2256,14 @@ export default function HomePage() {
               </div>
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
-                  <span className="items-center inline-flex font-bold text-white">
+                  <span className="items-center inline-flex font-bold text-gray-800">
                     R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
                          selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -2047,7 +2283,7 @@ export default function HomePage() {
                 )}
                 {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -2066,6 +2302,25 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+              <div className="absolute end-[2px] top-[2px] sm:end-[3px] sm:top-[3px] overflow-hidden rounded-[3px]">
+                <div className="flex text-[9px] sm:text-[11px] font-bold uppercase leading-none">
+                  <div className="flex items-center gap-0.5 sm:gap-1 bg-destructive p-0.5 pr-0.5 sm:pr-1 text-white">
+                    <img
+                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                      data-ai-hint="coin"
+                      loading="lazy"
+                      width="12"
+                      height="12"
+                      decoding="async"
+                      data-nimg="1"
+                      className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 rounded-sm bg-white object-contain p-0.5"
+                      src={currentConfig.coinIcon}
+                      style={{ color: "transparent" }}
+                    />
+                    <span>Promo</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Mercado Pago */}
@@ -2076,8 +2331,8 @@ export default function HomePage() {
               onClick={() => setSelectedPaymentMethod("Mercado Pago")}
               className={`group relative flex h-full min-h-[70px] sm:min-h-[80px] cursor-pointer items-start gap-1.5 sm:gap-2 rounded-md p-2 sm:p-2.5 transition-all focus-visible:ring-2 focus-visible:ring-ring max-md:flex-col max-md:justify-between md:items-center md:gap-3 md:p-3 ${
                 selectedPaymentMethod === "Mercado Pago" 
-                  ? "border-2 border-[#E4372E] shadow-[0_0_8px_rgba(228,55,46,0.6)] bg-[#353542]" 
-                  : "border border-[#3C3E65] bg-[#353542] hover:border-[#E4372E]/50"
+                  ? "border-2 border-red-500 bg-red-50" 
+                  : "border border-gray-200 bg-white hover:border-red-300"
               }`}
             >
               <div className="shrink-0">
@@ -2096,14 +2351,14 @@ export default function HomePage() {
               </div>
               <div className="flex w-full flex-col flex-wrap gap-y-1 font-medium md:gap-y-2 text-sm/none md:text-base/none">
                 <div className="flex flex-wrap gap-x-0.5 gap-y-1 whitespace-nowrap md:flex-col">
-                  <span className="items-center inline-flex font-bold text-white">
+                  <span className="items-center inline-flex font-bold text-gray-800">
                     R$ {selectedRechargeValue ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace('.', ',') : 
                          selectedSpecialOffer ? getSpecialOfferPrice(selectedSpecialOffer).toFixed(2).replace('.', ',') : '0,00'}
                   </span>
                 </div>
                 {selectedRechargeValue && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
@@ -2123,7 +2378,7 @@ export default function HomePage() {
                 )}
                 {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
                   <div className="flex flex-wrap gap-y-1 empty:hidden md:gap-y-2">
-                    <span className="inline-flex items-center text-xs/none text-red-500 md:text-sm/none">
+                    <span className="inline-flex items-center text-xs/none text-orange-500 md:text-sm/none">
                       + Bônus 
                       <img 
                         alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -2142,72 +2397,61 @@ export default function HomePage() {
                   </div>
                 )}
               </div>
+              <div className="absolute end-[2px] top-[2px] sm:end-[3px] sm:top-[3px] overflow-hidden rounded-[3px]">
+                <div className="flex text-[9px] sm:text-[11px] font-bold uppercase leading-none">
+                  <div className="flex items-center gap-0.5 sm:gap-1 bg-destructive p-0.5 pr-0.5 sm:pr-1 text-white">
+                    <img
+                      alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
+                      data-ai-hint="coin"
+                      loading="lazy"
+                      width="12"
+                      height="12"
+                      decoding="async"
+                      data-nimg="1"
+                      className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 rounded-sm bg-white object-contain p-0.5"
+                      src={currentConfig.coinIcon}
+                      style={{ color: "transparent" }}
+                    />
+                    <span>Promo</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {(selectedRechargeValue || selectedSpecialOffer) && (
-          <div className="fixed bottom-0 left-0 right-0 bg-[#1B1B25] border-t border-[#3C3E65] shadow-lg z-[5] safe-area-bottom">
-            {/* Painel de Resumo Detalhado - Colapsável */}
-            {showSummaryDetails && (
-              <div className="absolute bottom-full left-0 right-0 md:left-auto md:right-0 md:w-[390px] md:mx-10 mb-0 animate-in slide-in-from-bottom-2">
-                <div className="bg-[#272731] border border-[#3C3E65] border-b-0 md:rounded-t-lg shadow-lg p-4 flex flex-col gap-3">
-                  {/* Total Amount */}
-                  <div className="flex justify-between items-center text-base font-bold text-white">
+          <>
+            {/* Barra de Resumo Expansível */}
+            {showSummary && (
+              <div className="fixed bottom-[76px] left-0 right-0 md:left-auto md:right-0 md:w-[390px] md:mx-10 z-[100] animate-in slide-in-from-bottom-2">
+                <div className="bg-white border border-gray-200 border-b-0 md:rounded-t-lg shadow-lg p-4 flex flex-col gap-3">
+                  <div className="flex justify-between items-center text-base font-bold text-gray-900">
                     <span>Total</span>
                     <span className="inline-flex items-center gap-1.5">
-                      {selectedRechargeValue && (
-                        <img 
-                          className="h-4 w-4 object-contain" 
-                          src={currentConfig.coinIcon}
-                          alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
-                        />
+                      {selectedRechargeValue ? (
+                        <span>{selectedRechargeValue}</span>
+                      ) : (
+                        <span>{selectedSpecialOffer}</span>
                       )}
-                      <span>
-                        {selectedRechargeValue 
-                          ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue).bonus
-                          : selectedSpecialOffer
-                        }
-                      </span>
                     </span>
                   </div>
-                  
-                  {/* Detalhamento */}
-                  <div className="rounded-md border border-[#3C3E65] bg-[#353542] p-3 text-sm">
+                  <div className="rounded-md border border-gray-200 bg-gray-50 p-3 text-sm">
                     <ul className="flex flex-col gap-2.5">
-                      {/* Preço Original */}
                       <li className="flex items-center justify-between gap-12">
-                        <div className="text-white/70">Preço Original</div>
+                        <div className="text-gray-600">Preço Original</div>
                         <div className="flex shrink-0 items-center gap-1">
-                          {selectedRechargeValue && (
-                            <img 
-                              className="h-3 w-3 object-contain" 
-                              src={currentConfig.coinIcon}
-                              alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
-                            />
-                          )}
-                          <div className="font-medium text-white">
-                            {selectedRechargeValue || selectedSpecialOffer || '0'}
+                          <div className="font-medium text-gray-900">
+                            {selectedRechargeValue ? selectedRechargeValue : selectedSpecialOffer}
                           </div>
                         </div>
                       </li>
-                      
-                      {/* Bônus Geral */}
                       <li className="flex items-center justify-between gap-12">
-                        <div className="text-white/70">+ Bônus Geral</div>
+                        <div className="text-gray-600">+ Bônus Geral</div>
                         <div className="flex shrink-0 items-center gap-1">
-                          <img 
-                            className="h-3 w-3 object-contain" 
-                            src={currentConfig.coinIcon}
-                            alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
-                          />
-                          <div className="font-medium text-white">
-                            {selectedRechargeValue 
-                              ? calculatePrice(selectedRechargeValue).bonus
-                              : selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce')
-                                ? getSpecialOfferBonus(selectedSpecialOffer)
-                                : 0
-                            }
+                          <img className="h-3 w-3 object-contain" src={currentConfig.coinIcon} alt="Moeda" />
+                          <div className="font-medium text-gray-900">
+                            {selectedRechargeValue ? calculatePrice(selectedRechargeValue).bonus : getSpecialOfferBonus(selectedSpecialOffer!)}
                           </div>
                         </div>
                       </li>
@@ -2216,51 +2460,47 @@ export default function HomePage() {
                 </div>
               </div>
             )}
-            
+
+            {/* Botão Fixo */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-[100] safe-area-bottom">
             <div className="pointer-events-auto relative mx-auto flex w-full max-w-5xl items-center justify-between gap-4 p-4 md:justify-end md:gap-10 lg:px-10">
-              {/* Resumo mobile - versão simplificada */}
+              {/* Mobile: Info + Botão Seta */}
               <div className="flex items-center gap-2 md:hidden flex-1">
                 <div className="flex flex-col flex-1">
-                  <div className="flex items-center gap-1.5 text-sm font-bold text-white mb-1">
-                    {selectedRechargeValue && (
-                      <img 
-                        className="h-4 w-4 object-contain" 
-                        src={currentConfig.coinIcon}
-                        alt="Coin"
-                      />
-                    )}
-                    <span>
-                      {selectedRechargeValue 
-                        ? parseInt(selectedRechargeValue) + calculatePrice(selectedRechargeValue).bonus
-                        : selectedSpecialOffer
-                      }
-                    </span>
-                    {selectedRechargeValue && (
-                      <span className="text-white/50 text-xs">+ {calculatePrice(selectedRechargeValue).bonus}</span>
-                    )}
-                    {selectedSpecialOffer && (selectedGame === 'haikyu' || selectedGame === 'deltaforce') && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
-                      <span className="text-white/50 text-xs">+ {getSpecialOfferBonus(selectedSpecialOffer)}</span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1 text-xs">
-                    <span className="font-medium text-white/70">Total:</span>
-                    <span className="font-bold text-destructive">
-                      R$ {selectedRechargeValue 
-                        ? calculatePrice(selectedRechargeValue).price.toFixed(2).replace(".", ",")
-                        : getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace(".", ",")
-                      }
-                    </span>
-                  </div>
+                  {selectedRechargeValue ? (
+                    <>
+                      <div className="flex items-center gap-1.5 text-sm font-bold text-gray-900 mb-1">
+                        <img 
+                          className="h-3 w-3 object-contain" 
+                          src={currentConfig.coinIcon}
+                          alt="Moeda"
+                        />
+                        <span>{selectedRechargeValue} + {calculatePrice(selectedRechargeValue).bonus}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs">
+                        <span className="font-medium text-gray-600">Total:</span>
+                        <span className="font-bold text-destructive">R$ {calculatePrice(selectedRechargeValue).price.toFixed(2).replace(".", ",")}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-1.5 text-sm font-bold text-gray-900 mb-1">
+                        <span>{selectedSpecialOffer}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs">
+                        <span className="font-medium text-gray-600">Total:</span>
+                        <span className="font-bold text-destructive">R$ {getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace(".", ",")}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
-                
-                {/* Botão toggle resumo */}
                 <button
-                  onClick={() => setShowSummaryDetails(!showSummaryDetails)}
-                  className="p-2 text-white/70 hover:text-white transition-colors"
+                  onClick={() => setShowSummary(!showSummary)}
+                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
                   aria-label="Ver detalhes"
                 >
                   <svg 
-                    className={`w-5 h-5 transition-transform duration-200 ${showSummaryDetails ? 'rotate-180' : ''}`} 
+                    className={`w-5 h-5 transition-transform duration-200 ${showSummary ? 'rotate-180' : ''}`}
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
@@ -2269,13 +2509,13 @@ export default function HomePage() {
                   </svg>
                 </button>
               </div>
-              
-              {/* Versão desktop */}
+
+              {/* Desktop: Info + Botão Seta */}
               <div className="hidden md:flex items-center gap-4">
                 <div className="flex flex-col md:items-end">
                 {selectedRechargeValue ? (
                   <>
-                    <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none text-white">
+                    <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none">
                       <img 
                         alt={selectedGame === 'freefire' ? 'Diamante' : selectedGame === 'deltaforce' ? 'Delta Coin' : 'Haikyu Coin'}
                         data-ai-hint="coin" 
@@ -2291,17 +2531,17 @@ export default function HomePage() {
                       <span dir="ltr">{selectedRechargeValue} + {calculatePrice(selectedRechargeValue).bonus}</span>
                     </div>
                     <div className="mt-2 flex items-center gap-1 text-base/none md:text-end md:text-lg/none">
-                      <span className="font-medium text-white/70">Total:</span>
+                      <span className="font-medium text-gray-600">Total:</span>
                       <span className="font-bold text-destructive">R$ {calculatePrice(selectedRechargeValue).price.toFixed(2).replace(".", ",")}</span>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none text-white">
+                    <div className="flex items-center gap-1 text-base/none font-bold md:text-end md:text-lg/none">
                       <span dir="ltr">{selectedSpecialOffer}</span>
                     </div>
                     {(selectedGame === 'haikyu' || selectedGame === 'deltaforce') && selectedSpecialOffer && getSpecialOfferBonus(selectedSpecialOffer) > 0 && (
-                      <div className="mt-1 flex items-center gap-1 text-sm/none md:text-base/none text-red-500">
+                      <div className="mt-1 flex items-center gap-1 text-sm/none md:text-base/none text-orange-500">
                         <span>+ Bônus</span>
                         <img 
                           alt={selectedGame === 'deltaforce' ? 'Coins' : 'Diamantes Estelares'}
@@ -2319,21 +2559,19 @@ export default function HomePage() {
                       </div>
                     )}
                     <div className="mt-2 flex items-center gap-1 text-base/none md:text-end md:text-lg/none">
-                      <span className="font-medium text-white/70">Total:</span>
+                      <span className="font-medium text-gray-600">Total:</span>
                       <span className="font-bold text-destructive">R$ {getSpecialOfferPrice(selectedSpecialOffer!).toFixed(2).replace(".", ",")}</span>
                     </div>
                   </>
                 )}
               </div>
-              
-              {/* Botão toggle desktop */}
               <button
-                onClick={() => setShowSummaryDetails(!showSummaryDetails)}
-                className="p-2 text-white/70 hover:text-white transition-colors"
+                onClick={() => setShowSummary(!showSummary)}
+                className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
                 aria-label="Ver detalhes"
               >
                 <svg 
-                  className={`w-5 h-5 transition-transform duration-200 ${showSummaryDetails ? 'rotate-180' : ''}`} 
+                  className={`w-5 h-5 transition-transform duration-200 ${showSummary ? 'rotate-180' : ''}`}
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -2342,7 +2580,6 @@ export default function HomePage() {
                 </svg>
               </button>
               </div>
-              
               <button 
                 className="inline-flex items-center justify-center gap-1.5 rounded-md border border-[rgb(216,26,13)] py-1 px-5 text-center leading-none transition-colors bg-[rgb(216,26,13)] hover:bg-[rgb(205,18,20)] hover:border-[rgb(205,18,20)] text-white text-base font-bold h-11"
                 onClick={isLoggedIn ? handleBuyNow : () => setShowBlurOverlay(true)}
@@ -2356,34 +2593,24 @@ export default function HomePage() {
                 Compre agora
               </button>
             </div>
-          </div>
+            </div>
+          </>
         )}
 
         </div>
-        </div>
 
         {/* Footer */}
-        <footer className="bg-[#1B1B25] text-white/70">
+        <footer className="bg-white text-gray-600 border-t border-gray-200">
           <div className="container mx-auto max-w-5xl px-4">
             <div className="flex flex-col items-center gap-3 p-4 text-center text-xs md:items-start max-md:pb-5">
-              {/* Disclaimer */}
-              <div className="w-full border border-yellow-600/30 bg-yellow-600/10 rounded-md p-3 mb-2">
-                <p className="text-yellow-200 text-xs leading-relaxed">
-                  <strong>⚠️ AVISO IMPORTANTE:</strong> Este site é uma plataforma independente de recarga. 
-                  Não somos afiliados, associados ou patrocinados pela Garena, Free Fire, Delta Force, Haikyu ou qualquer outra empresa de jogos. 
-                  Todos os nomes de jogos, marcas e logotipos são propriedade de seus respectivos donos. 
-                  Atuamos apenas como intermediários para facilitar recargas de jogos.
-                </p>
-              </div>
-              
               <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
-                <div className="md:text-start">© 2025 Garena Online. Todos os direitos reservados.</div>
+                <div className="md:text-start text-gray-800">© 2025 Garena Online. Todos os direitos reservados.</div>
                 <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
-                  <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
-                  <div className="h-3 w-px bg-white/30"></div>
-                  <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
-                  <div className="h-3 w-px bg-white/30"></div>
-                  <a href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
+                  <a href="#" className="transition-opacity hover:opacity-100 hover:text-gray-900">FAQ</a>
+                  <div className="h-3 w-px bg-gray-300"></div>
+                  <a href="/termos-recargajogo" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-gray-900">Termos e Condições</a>
+                  <div className="h-3 w-px bg-gray-300"></div>
+                  <a href="/politica-privacidade-recargajogo" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-gray-900">Política de Privacidade</a>
                 </div>
               </div>
             </div>
