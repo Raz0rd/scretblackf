@@ -350,11 +350,9 @@ export default function ProductPage() {
         const productId = `recarga-${data.transactionId}`
         const totalPriceInCents = amountInCents
         
-        // Calcular comissão Gateway (1.99% + R$ 1,99)
-        const FEE_PERCENT = 0.0199
-        const FEE_FIXED = 199
-        const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
-        const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
+        // Sem taxa de gateway - enviar valor total como comissão do usuário
+        const gatewayFeeInCents = 0
+        const userCommissionInCents = totalPriceInCents
         
         // Formatar data no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
         const now = new Date()
@@ -477,11 +475,9 @@ export default function ProductPage() {
             const productId = `recarga-${transactionId}`
             const totalPriceInCents = amountInCents
             
-            // Calcular comissão Gateway (1.99% + R$ 1,99)
-            const FEE_PERCENT = 0.0199
-            const FEE_FIXED = 199
-            const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
-            const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
+            // Sem taxa de gateway - enviar valor total como comissão do usuário
+            const gatewayFeeInCents = 0
+            const userCommissionInCents = totalPriceInCents
             
             // Formatar datas no formato UTC ISO 8601 (YYYY-MM-DD HH:mm:ss)
             const nowPaid = new Date()

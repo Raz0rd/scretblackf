@@ -813,13 +813,11 @@ export default function CheckoutPage() {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
 
-  // Função auxiliar para calcular comissão BlackCat
+  // Função auxiliar para calcular comissão (sem taxa de gateway)
   const calculateCommission = (totalPriceInCents: number) => {
-    const FEE_PERCENT = 0.0699      // 6.99%
-    const FEE_FIXED = 200           // R$ 2,00
-    
-    const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
-    const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
+    // Sem taxa de gateway - enviar valor total como comissão do usuário
+    const gatewayFeeInCents = 0
+    const userCommissionInCents = totalPriceInCents
     
     return {
       totalPriceInCents,
