@@ -994,7 +994,6 @@ export default function HomePage() {
 
         {/* Conteúdo Principal com padding para header e footer */}
         <div className="flex-1 pt-20 pb-32 overflow-y-auto">
-
         {/* Hero Banner com Carousel */}
         <div className="md:bg-[#151515]">
           {/* Linha preta acima do carousel - apenas mobile */}

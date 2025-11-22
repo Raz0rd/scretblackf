@@ -87,7 +87,6 @@ export async function POST(request: NextRequest) {
       headers['Referer'] = whitepageUrl
     }
 
-    console.log('🚀 [UTMIFY] Enviando para API...')
     console.log('   - Endpoint: https://api.utmify.com.br/api-credentials/orders')
 
     // Enviar para UTMify usando o mesmo endpoint do webhook

@@ -265,7 +265,6 @@ export default function CheckoutPage() {
 
   // Debug do qrCodeImage
   useEffect(() => {
-    console.log('🔍 qrCodeImage mudou:', qrCodeImage ? `Tamanho: ${qrCodeImage.length}` : 'VAZIO')
   }, [qrCodeImage])
 
   // Countdown do cooldown do botão de verificar pagamento
@@ -281,17 +280,22 @@ export default function CheckoutPage() {
   useEffect(() => {
     setPlayerName(playerId)
     
-    // Buscar nickname do jogador do localStorage
-    const storedUserData = localStorage.getItem('userData')
+    // Buscar nickname do jogador do localStorage usando gameApp
+    const storedUserData = localStorage.getItem(`userData_${gameApp}`)
     if (storedUserData) {
       try {
         const userData = JSON.parse(storedUserData)
         if (userData.nickname) {
-          setPlayerNickname(userData.nickname)
+          // Se nickname for "LOGADO", não mostrar (usar vazio)
+          if (userData.nickname === 'LOGADO') {
+            setPlayerNickname('')
+          } else {
+            setPlayerNickname(userData.nickname)
+          }
         }
       } catch (error) {
-        // Erro ao recuperar nickname
       }
+    } else {
     }
     
     // Função para ler cookies
@@ -359,7 +363,7 @@ export default function CheckoutPage() {
     utmData.current_page = 'checkout'
     
     setUtmParameters(utmData)
-  }, [playerId, utmParams])
+  }, [playerId, utmParams, gameApp])
 
   const showToastMessage = (message: string, type: "success" | "error" | "info") => {
     setToastMessage(message)
@@ -1204,6 +1208,12 @@ export default function CheckoutPage() {
             <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
               {playerId || 'N/A'}
             </dd>
+            
+            {/* Nickname do Jogador */}
+            <dt className="py-3 text-sm/none text-gray-600 md:text-base/none">Nickname</dt>
+            <dd className="flex items-center justify-end gap-1 py-3 text-end text-sm/none font-medium text-gray-800 md:text-base/none">
+              {playerNickname || '-'}
+            </dd>
           </dl>
         </div>
 
@@ -1246,8 +1256,8 @@ export default function CheckoutPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900"
                   placeholder="seu@email.com"
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Você receberá o comprovante da recarga neste email
+                <p className="text-xs text-gray-600 mt-1 leading-tight">
+                  Use um email válido pois enviamos o código por email também, então se seu nickname não estiver sendo exibido, não se preocupe que você receberá por email.
                 </p>
               </div>
             </div>
