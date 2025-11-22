@@ -241,7 +241,7 @@ const ALLOWED_IPS = ['SEU_IP_AQUI', '127.0.0.1', 'localhost']
 ### 2. Acessar painel
 
 ```
-https://seudominio.com/x9f2w8k5
+https://seudominio.com/analytics
 ```
 
 ---
@@ -261,7 +261,7 @@ https://seudominio.com/x9f2w8k5
 - [ ] Cloaker configurado
 - [ ] IP adicionado na whitelist
 - [ ] Testar site: https://seudominio.com/
-- [ ] Testar analytics: https://seudominio.com/x9f2w8k5
+- [ ] Testar analytics: https://seudominio.com/analytics
 - [ ] Testar com ?gclid=test
 - [ ] Configurar Google Ads
 

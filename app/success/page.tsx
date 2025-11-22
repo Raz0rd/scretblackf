@@ -109,8 +109,8 @@ export default function SuccessPage() {
   }, [transactionId, amount, router])
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full bg-white rounded-xl p-8 border border-gray-200 shadow-lg">
         <div className="text-center">
           {/* Ícone de sucesso */}
           <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-500/20 mb-6">
@@ -123,39 +123,59 @@ export default function SuccessPage() {
           <h1 className="text-3xl font-bold mb-2">Compra Confirmada com Sucesso!</h1>
           
           {/* Subtítulo */}
-          <p className="text-gray-300 mb-8 text-lg">
+          <p className="text-gray-600 mb-4 text-lg">
             Parabéns {playerName}! Seu pagamento foi processado e está sendo validado.
           </p>
           
+          {/* Aviso sobre Email */}
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-300 rounded-lg p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold mb-2 text-green-700">📧 Verifique seu Email!</h3>
+                <p className="text-gray-700 mb-3">
+                  Enviamos um email com o <strong className="text-gray-900">código da sua compra</strong> e um <strong className="text-gray-900">vídeo tutorial</strong> explicando como resgatar seus itens no jogo.
+                </p>
+                <p className="text-sm text-gray-600">
+                  ⚠️ Não esqueça de verificar a caixa de <strong>spam/lixo eletrônico</strong> caso não encontre o email na caixa de entrada.
+                </p>
+              </div>
+            </div>
+          </div>
+          
           {/* Detalhes da transação */}
-          <div className="bg-gray-900/50 rounded-lg p-6 mb-8 text-left border border-gray-700">
-            <h2 className="font-semibold text-xl mb-4 text-center text-white">Detalhes da Compra</h2>
+          <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left border border-gray-200">
+            <h2 className="font-semibold text-xl mb-4 text-center text-gray-900">Detalhes da Compra</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400 font-medium">ID da Transação:</span>
-                <span className="font-mono text-gray-300">{transactionId}</span>
+              <div className="flex justify-between items-center py-2 border-b border-gray-200">
+                <span className="text-gray-600 font-medium">ID da Transação:</span>
+                <span className="font-mono text-gray-800">{transactionId}</span>
               </div>
               
               {amount && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                  <span className="text-gray-400 font-medium">Valor Pago:</span>
-                  <span className="text-green-400 font-semibold text-lg">
+                <div className="flex justify-between items-center py-2 border-b border-gray-200">
+                  <span className="text-gray-600 font-medium">Valor Pago:</span>
+                  <span className="text-green-600 font-semibold text-lg">
                     R$ {(parseFloat(amount) / 100).toFixed(2).replace('.', ',')}
                   </span>
                 </div>
               )}
               
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400 font-medium">Produto:</span>
-                <span className="text-blue-400 font-medium">
+              <div className="flex justify-between items-center py-2 border-b border-gray-200">
+                <span className="text-gray-600 font-medium">Produto:</span>
+                <span className="text-blue-600 font-medium">
                   {itemValue ? `${itemValue} ${game === 'freefire' ? 'Diamantes' : game === 'deltaforce' ? 'Coins' : 'Itens'}` : 'Recarga de Jogo'}
                 </span>
               </div>
               
-              <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                <span className="text-gray-400 font-medium">Jogo:</span>
-                <span className="text-purple-400 font-medium">
+              <div className="flex justify-between items-center py-2 border-b border-gray-200">
+                <span className="text-gray-600 font-medium">Jogo:</span>
+                <span className="text-purple-600 font-medium">
                   {game === 'freefire' ? 'Free Fire' : game === 'deltaforce' ? 'Delta Force' : game === 'haikyu' ? 'Haikyu' : game.toUpperCase()}
                 </span>
               </div>
@@ -163,10 +183,10 @@ export default function SuccessPage() {
           </div>
           
           {/* Timer de processamento */}
-          <div className="bg-blue-900/30 border border-blue-800 rounded-lg p-6 mb-8">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
             <div className="flex flex-col items-center">
-              <h3 className="text-xl font-bold mb-4 text-blue-300">Processamento da Compra</h3>
-              <p className="text-blue-200 mb-4 text-center">
+              <h3 className="text-xl font-bold mb-4 text-blue-700">Processamento da Compra</h3>
+              <p className="text-blue-800 mb-4 text-center">
                 Seus créditos serão creditados em até 12 horas após a confirmação do pagamento.
               </p>
               
@@ -176,20 +196,20 @@ export default function SuccessPage() {
                 </div>
               </div>
               
-              <p className="text-blue-300 text-sm text-center">
+              <p className="text-blue-600 text-sm text-center">
                 Tempo restante para processamento automático
               </p>
             </div>
           </div>
           
           {/* FAQ Section */}
-          <div className="bg-gray-900/30 border border-gray-700 rounded-lg p-6 mb-8 text-left">
-            <h3 className="text-xl font-bold mb-4 text-center text-white">Perguntas Frequentes</h3>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-left">
+            <h3 className="text-xl font-bold mb-4 text-center text-gray-900">Perguntas Frequentes</h3>
             
             <div className="space-y-4">
               <div>
-                <h4 className="font-bold text-gray-200 mb-2">Recebo somente após 12 horas?</h4>
-                <p className="text-gray-400 text-sm">
+                <h4 className="font-bold text-gray-900 mb-2">Recebo somente após 12 horas?</h4>
+                <p className="text-gray-700 text-sm">
                   Não. O prazo máximo para processamento é de 12 horas, mas na maioria dos casos os créditos 
                   são creditados em até 30 minutos após a confirmação do pagamento. Este prazo é apenas 
                   uma referência de tempo máximo para garantir que todas as transações sejam processadas 
@@ -198,16 +218,16 @@ export default function SuccessPage() {
               </div>
               
               <div>
-                <h4 className="font-bold text-gray-200 mb-2">Como saberei quando os créditos forem creditados?</h4>
-                <p className="text-gray-400 text-sm">
+                <h4 className="font-bold text-gray-900 mb-2">Como saberei quando os créditos forem creditados?</h4>
+                <p className="text-gray-700 text-sm">
                   Você receberá uma notificação por e-mail e dentro do jogo quando os créditos forem 
                   creditados na sua conta. Além disso, pode verificar o status da sua conta a qualquer momento.
                 </p>
               </div>
               
               <div>
-                <h4 className="font-bold text-gray-200 mb-2">O que acontece se não receber após 12 horas?</h4>
-                <p className="text-gray-400 text-sm">
+                <h4 className="font-bold text-gray-900 mb-2">O que acontece se não receber após 12 horas?</h4>
+                <p className="text-gray-700 text-sm">
                   Caso seus créditos não sejam creditados após o prazo máximo, nossa equipe de suporte 
                   será automaticamente notificada e entrará em contato com você para resolver a situação 
                   o mais rapidamente possível.
@@ -217,8 +237,8 @@ export default function SuccessPage() {
           </div>
           
           {/* Mensagem final */}
-          <div className="mb-8 p-4 bg-green-900/20 border border-green-800 rounded-lg">
-            <p className="text-green-300 text-center">
+          <div className="mb-8 p-4 bg-green-50 border border-green-300 rounded-lg">
+            <p className="text-green-700 text-center">
               Obrigado por sua compra! Aproveite seus créditos e continue desfrutando de nossos serviços.
             </p>
           </div>

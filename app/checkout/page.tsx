@@ -137,7 +137,7 @@ export default function CheckoutPage() {
   const gameConfig = {
     freefire: {
       banner: "/images/checkout-banner.webp",
-      icon: "/images/icon.webp",
+      icon: "/images/icon.png",
       coinIcon: "/images/point.png",
       name: "Free Fire",
       coinName: "Diamantes",
@@ -201,8 +201,9 @@ export default function CheckoutPage() {
   useEffect(() => {
     setPlayerName(playerId)
     
-    // Buscar nickname do jogador do localStorage
-    const storedUserData = localStorage.getItem('userData')
+    // Buscar nickname do jogador do localStorage usando a chave correta por jogo
+    const userDataKey = `userData_${gameApp}`
+    const storedUserData = localStorage.getItem(userDataKey)
     if (storedUserData) {
       try {
         const userData = JSON.parse(storedUserData)
@@ -210,7 +211,7 @@ export default function CheckoutPage() {
           setPlayerNickname(userData.nickname)
         }
       } catch (error) {
-        // Erro ao recuperar nickname
+        console.error('[Checkout] Erro ao recuperar nickname:', error)
       }
     }
     
@@ -386,13 +387,27 @@ export default function CheckoutPage() {
       const promoTotal = getPromoTotal()
       const totalPrice = basePrice + promoTotal
       
+      // Limpar UTMs para garantir que seja um objeto limpo (sem índices de array)
+      const cleanUtmParams: Record<string, string> = {}
+      const utmKeys = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+        'gclid', 'fbclid', 'src', 'sck', 'xcod', 'keyword', 'device', 'network',
+        'gad_source', 'gbraid', 'wbraid', 'msclkid', 'timestamp', 'current_page'
+      ]
+      
+      utmKeys.forEach(key => {
+        if (utmParameters[key] && typeof utmParameters[key] === 'string') {
+          cleanUtmParams[key] = utmParameters[key]
+        }
+      })
+      
       // Gerar PIX
       const response = await fetch('/api/generate-pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: Math.round(totalPrice * 100),
-          trackingParams: utmParameters,
+          trackingParams: cleanUtmParams,
           playerId: playerId,
           itemType: itemType,
           itemValue: itemValue,
@@ -755,6 +770,28 @@ export default function CheckoutPage() {
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
       }
 
+    // 🔍 LOG DETALHADO DO PAYLOAD UTMIFY
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('📊 [CHECKOUT] PAYLOAD UTMIFY (PENDING)')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('🆔 Order ID:', utmifyData.orderId)
+    console.log('💰 Valor Total:', `R$ ${(totalPriceInCents / 100).toFixed(2)}`)
+    console.log('📅 Data/Hora:', utmifyData.createdAt)
+    console.log('👤 Cliente:', {
+      nome: utmifyData.customer.name,
+      email: utmifyData.customer.email,
+      cpf: utmifyData.customer.document,
+      ip: utmifyData.customer.ip
+    })
+    console.log('📦 Produto:', utmifyData.products[0])
+    console.log('💵 Comissão:', {
+      total: `R$ ${(commission.totalPriceInCents / 100).toFixed(2)}`,
+      gateway: `R$ ${(commission.gatewayFeeInCents / 100).toFixed(2)}`,
+      usuario: `R$ ${(commission.userCommissionInCents / 100).toFixed(2)}`
+    })
+    console.log('🎯 UTMs Capturados:', utmifyData.trackingParameters)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
     try {
       // Usar fetchWithRetry para tentar até 3 vezes
       const response = await fetchWithRetry('/api/utmify-track', {
@@ -768,18 +805,22 @@ export default function CheckoutPage() {
         delayMs: 2000,
         timeout: 30000,
         onRetry: (attempt, error) => {
+          console.log(`⚠️ [CHECKOUT] Tentativa ${attempt} de envio para UTMify`)
         }
       })
       
       if (response.ok) {
         const result = await response.json()
+        console.log('✅ [CHECKOUT] UTMify PENDING enviado com sucesso:', result)
       } else {
         const errorText = await response.text()
+        console.error('❌ [CHECKOUT] Erro ao enviar para UTMify:', errorText)
         
         // Salvar para retry posterior
         saveFailedRequest('/api/utmify-track', utmifyData)
       }
     } catch (error) {
+      console.error('❌ [CHECKOUT] Exceção ao enviar para UTMify:', error)
       
       // Salvar para retry posterior
       saveFailedRequest('/api/utmify-track', utmifyData)
@@ -883,7 +924,8 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      <div className="bg-white border-b border-gray-200 p-3 sm:p-4">
+      {/* Header Fixo */}
+      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 p-3 sm:p-4 z-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10">
@@ -897,6 +939,9 @@ export default function CheckoutPage() {
         </div>
       </div>
 
+      {/* Espaçamento para compensar o header fixo */}
+      <div className="h-16 sm:h-20"></div>
+
       {/* Background Banner */}
       <div className="relative w-full" style={{ height: '180px' }}>
         <img 
@@ -907,7 +952,7 @@ export default function CheckoutPage() {
         
         <button
           onClick={handleBack}
-          className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
         >
           <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -1386,9 +1431,9 @@ export default function CheckoutPage() {
               <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-1">
                 <a href="#" className="transition-opacity hover:opacity-100 hover:text-white">FAQ</a>
                 <div className="h-3 w-px bg-white/30"></div>
-                <a href="https://www.recargajogo.eu/legal/tos?utm_source=organicjLj68e076949be15d3367c027e6&utm_campaign=&utm_medium=&utm_content=&utm_term=" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
+                <a href={addUtmsToUrl('/termos-recargajogo')} target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-100 hover:text-white">Termos e Condições</a>
                 <div className="h-3 w-px bg-white/30"></div>
-                <a href={addUtmsToUrl('/politica-privacidade')} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
+                <a href={addUtmsToUrl('/politica-privacidade-recargajogo')} target="_blank" className="transition-opacity hover:opacity-100 hover:text-white">Política de Privacidade</a>
               </div>
             </div>
           </div>

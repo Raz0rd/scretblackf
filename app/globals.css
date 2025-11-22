@@ -29,26 +29,22 @@
 
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
   
-  html,
-  body,
-  #__next,
-  #root,
-  main,
-  [id*="root"] {
+  /* Fundo escuro APENAS para rotas que não são /recargajogo, /checkout ou /success */
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) {
     background: linear-gradient(180deg, #13141F 0%, #191A23 76.1%, #1E1F2A 100%) !important;
     background-attachment: fixed !important;
-    color: white !important;
     min-height: 100vh;
   }
   
-  /* Força background escuro em containers e divs principais */
-  div:not([class*="bg-"]):not([style*="background"]),
-  section:not([class*="bg-"]):not([style*="background"]),
-  article:not([class*="bg-"]):not([style*="background"]) {
-    background-color: transparent;
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) body {
+    background: transparent !important;
+    color: white !important;
   }
 }
 
@@ -116,39 +112,24 @@
 
 /* Customizações específicas do projeto */
 @layer utilities {
-  /* FORÇA BACKGROUND ESCURO mais escuro */
-  [class*="bg-white"],
-  [class*="bg-gray-"],
-  [class*="bg-slate-"],
-  [class*="bg-zinc-"],
-  .bg-white,
-  .bg-gray-50,
-  .bg-gray-100,
-  .bg-slate-50,
-  .bg-slate-100 {
+  
+  /* Força fundo escuro e texto branco APENAS em rotas dark (não /recargajogo, /checkout ou /success) */
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) [class*="bg-white"],
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) [class*="bg-gray-"],
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) [class*="bg-slate-"],
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .bg-white,
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .bg-gray-50,
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .bg-gray-100 {
     background: linear-gradient(180deg, #13141F 0%, #191A23 76.1%, #1E1F2A 100%) !important;
   }
   
-  /* Sobrescreve backgrounds claros inline */
-  [style*="background: white"],
-  [style*="background: #fff"],
-  [style*="background: #FFF"],
-  [style*="background: rgb(255"],
-  [style*="background-color: white"],
-  [style*="background-color: #fff"],
-  [style*="background-color: #FFF"],
-  [style*="background-color: rgb(255"] {
-    background: linear-gradient(180deg, #13141F 0%, #191A23 76.1%, #1E1F2A 100%) !important;
-  }
-  
-  /* Força textos escuros para branco */
-  [class*="text-gray-"],
-  [class*="text-slate-"],
-  [class*="text-black"],
-  .text-gray-900,
-  .text-gray-800,
-  .text-gray-700,
-  .text-black {
+  /* Força textos escuros para branco APENAS em rotas dark */
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) [class*="text-gray-"],
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) [class*="text-black"],
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .text-gray-900,
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .text-gray-800,
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .text-gray-700,
+  html.dark:not(:has([data-route="recargajogo"])):not(:has([data-route="checkout"])):not(:has([data-route="success"])) .text-black {
     color: white !important;
   }
   

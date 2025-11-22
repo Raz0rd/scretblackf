@@ -17,7 +17,6 @@ Disallow: /success
 Disallow: /cupons
 Disallow: /termos
 Disallow: /privacidade
-Disallow: /x9f2w8k5
 Disallow: /analytics
 
 # Sitemap

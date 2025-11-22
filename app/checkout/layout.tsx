@@ -1,13 +1,14 @@
 "use client"
 
-import { Metadata } from 'next'
-import { useEffect } from 'react'
+import type React from "react"
+import { useEffect } from "react"
+import "./globals.css"
 
-export default function SuccessLayout({
+export default function CheckoutLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   // Forçar light mode removendo classe dark
   useEffect(() => {
     const html = document.documentElement
@@ -17,7 +18,7 @@ export default function SuccessLayout({
   }, [])
 
   return (
-    <div data-route="success">
+    <div data-route="checkout">
       {children}
     </div>
   )
