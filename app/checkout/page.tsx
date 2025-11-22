@@ -243,6 +243,7 @@ export default function CheckoutPage() {
             transactionId: pendingPayment.transactionId
           })
           setQrCodeImage(pendingPayment.qrCode)
+          setShowPixInline(true)
           
           // Calcular tempo restante
           const timeRemaining = Math.floor((pendingPayment.expiresAt - now) / 1000)
@@ -261,6 +262,11 @@ export default function CheckoutPage() {
       }
     }
   }, [])
+
+  // Debug do qrCodeImage
+  useEffect(() => {
+    console.log('🔍 qrCodeImage mudou:', qrCodeImage ? `Tamanho: ${qrCodeImage.length}` : 'VAZIO')
+  }, [qrCodeImage])
 
   // Countdown do cooldown do botão de verificar pagamento
   useEffect(() => {
@@ -381,11 +387,13 @@ export default function CheckoutPage() {
   }
 
   const promoItems = [
-    { id: 'sombra-roxa', name: 'Sombra Roxa', image: '/images/sombraRoxa.png', oldPrice: 99.75, price: 9.99 },
+    { id: 'jimg-ambicioso', name: 'JIMG Ambicioso', image: '/images/jimg_ambicioso.png', oldPrice: 97.20, price: 34.10 },
+    { id: 'jimg-pisico', name: 'JIMG Pisico', image: '/images/jimg_pisico.png', oldPrice: 97.20, price: 34.10 },
+    { id: 'jimg-violento', name: 'JIMG Violento', image: '/images/jimg_violento.png', oldPrice: 97.20, price: 34.10 },
     { id: 'barba-velho', name: 'Barba do Velho', image: '/images/Barba do Velho.png', oldPrice: 89.99, price: 10.99 },
-    { id: 'pacote-coelhao', name: 'Pacote Coelhão', image: '/images/Pacote Coelhão.png', oldPrice: 49.29, price: 9.99 },
     { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', oldPrice: 129.90, price: 15.80 },
-    { id: 'dunk-master', name: 'Dunk Master', image: '/images/Dunk Master.png', oldPrice: 75.90, price: 9.99 }
+    { id: 'mochila-dino', name: 'Mochila Dino', image: '/images/MochilaDino.png', oldPrice: 99.99, price: 12.99 },
+    { id: 'mochila-panda', name: 'Mochila Panda', image: '/images/MochilaPanda.png', oldPrice: 99.99, price: 12.99 }
   ]
 
   const togglePromoItem = (itemId: string) => {
@@ -529,6 +537,7 @@ export default function CheckoutPage() {
         // Gerar QR Code em base64 a partir do pixCode
         let qrCodeImageData = ""
         if (data.pixCode) {
+          console.log('📝 pixCode recebido:', data.pixCode.substring(0, 50) + '...')
           try {
             const qrCodeDataURL = await QRCode.toDataURL(data.pixCode, {
               width: 200,
@@ -540,15 +549,25 @@ export default function CheckoutPage() {
               errorCorrectionLevel: 'M'
             })
             qrCodeImageData = qrCodeDataURL
-            console.log('✅ QR Code gerado com sucesso')
+            console.log('✅ QR Code gerado com sucesso! Tamanho:', qrCodeImageData.length)
           } catch (qrError) {
             console.error('❌ Erro ao gerar QR Code:', qrError)
           }
+        } else {
+          console.error('❌ pixCode não recebido da API!')
         }
+        
+        // Garantir que sempre temos um QR Code
+        if (!qrCodeImageData && data.qrCode) {
+          qrCodeImageData = data.qrCode
+          console.log('📥 Usando QR Code do servidor')
+        }
+        
+        console.log('🖼️ QR Code final:', qrCodeImageData ? 'OK' : 'VAZIO')
         
         const paymentData = {
           code: data.pixCode,
-          qrCode: qrCodeImageData || data.qrCode || '',
+          qrCode: qrCodeImageData,
           transactionId: data.transactionId,
           createdAt: Date.now(),
           expiresAt: Date.now() + (15 * 60 * 1000), // 15 minutos
@@ -563,11 +582,16 @@ export default function CheckoutPage() {
         
         setPixData({
           code: data.pixCode,
-          qrCode: qrCodeImageData || data.qrCode || '',
+          qrCode: qrCodeImageData,
           transactionId: data.transactionId
         })
         
         setQrCodeImage(qrCodeImageData)
+        console.log('💾 qrCodeImage setado:', qrCodeImageData ? 'SIM' : 'NÃO')
+        
+        // Mostrar o PIX inline
+        setShowPixInline(true)
+        console.log('👁️ showPixInline setado para TRUE')
         
         // Salvar no localStorage
         localStorage.setItem('pendingPayment', JSON.stringify(paymentData))
@@ -1132,7 +1156,11 @@ export default function CheckoutPage() {
                       <dt className="py-2 text-sm/none text-gray-600 md:text-base/none col-span-2">
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <img src={item.image} alt={item.name} className="w-8 h-8 rounded object-cover" />
+                            <img 
+                              src={item.image} 
+                              alt={item.name} 
+                              className={`w-8 h-8 rounded ${item.id.startsWith('jimg-') ? 'object-contain' : 'object-cover'}`} 
+                            />
                             <span>{item.name}</span>
                           </div>
                           <div className="flex items-center gap-2">
@@ -1179,9 +1207,9 @@ export default function CheckoutPage() {
           </dl>
         </div>
 
-        {!orderBumpCompleted && (
+        {/* Formulário de dados OU seção do PIX */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
-          {!pixData ? (
+          {!pixData && !orderBumpCompleted ? (
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo *</label>
@@ -1481,7 +1509,6 @@ export default function CheckoutPage() {
             </div>
           )}
         </div>
-        )}
 
         {!pixData && (
           <>
@@ -1528,11 +1555,11 @@ export default function CheckoutPage() {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full ${item.id.startsWith('jimg-') ? 'object-contain' : 'object-cover'}`}
                       />
                     </div>
                     <div>
-                      <p className="font-semibold text-sm">{item.name}</p>
+                      <p className="font-semibold text-sm text-gray-900">{item.name}</p>
                       <p className="text-xs text-gray-500">
                         <span className="line-through">R$ {item.oldPrice.toFixed(2).replace('.', ',')}</span>
                         <span className="text-red-600 font-bold ml-1.5">

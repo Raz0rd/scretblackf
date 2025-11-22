@@ -766,7 +766,6 @@ export async function POST(request: NextRequest) {
     
     console.log("💾 [STORAGE] Salvando pedido no order storage...")
     console.log("💰 [STORAGE] Valor TOTAL (com promoções): R$", (body.amount / 100).toFixed(2))
-    console.log("📊 [STORAGE] UTMs recebidos do frontend:", JSON.stringify(body.trackingParams || {}, null, 2))
     
     // Garantir que trackingParams seja um objeto válido
     let trackingParameters: any = {}
