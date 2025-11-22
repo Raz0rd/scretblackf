@@ -358,8 +358,8 @@ export default function CheckoutPage() {
       sessionStorage.setItem(`utm_${key}`, value)
     })
     
-    // 6. Adicionar timestamp e página atual
-    utmData.timestamp = new Date().toISOString()
+    // 6. Adicionar timestamp e página atual (horário de Brasília GMT-3)
+    utmData.timestamp = getBrazilTimestamp()
     utmData.current_page = 'checkout'
     
     setUtmParameters(utmData)
