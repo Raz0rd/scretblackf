@@ -56,7 +56,6 @@ export async function middleware(request: NextRequest) {
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
   const whitePageRoutes = [
-    '/presell',
     '/politica-de-privacidade',
     '/politica-de-reembolso',
     '/quem-somos',
