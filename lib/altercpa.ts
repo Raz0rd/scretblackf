@@ -5,7 +5,7 @@
  */
 
 const ALTERCPA_CONFIG = {
-  id: '969-8f076e082dbcb1d080037ec2c216d589',
+  id: process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID || '',
   uid: '15296',
   baseUrl: 'https://www.altercpa.one/api/filter/postback.json'
 }

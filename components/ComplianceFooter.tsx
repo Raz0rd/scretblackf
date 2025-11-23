@@ -12,7 +12,7 @@ export default function ComplianceFooter() {
         {/* Aviso Obrigatório - SEMPRE VISÍVEL */}
         <div className="bg-yellow-900/20 border border-yellow-600/30 rounded-lg p-4 mb-6">
           <p className="text-yellow-200 text-xs leading-relaxed text-center">
-            <strong>⚠️ AVISO IMPORTANTE:</strong> Este site é independente e não é afiliado, administrado ou patrocinado por Garena, Free Fire, Roblox ou qualquer desenvolvedora de jogos. 
+            <strong>⚠️ AVISO IMPORTANTE:</strong> Este site é independente e não é afiliado, administrado ou patrocinado por Garena, Free Fire ou qualquer desenvolvedora de jogos. 
             Vendemos apenas créditos digitais, itens virtuais e serviços complementares. 
             <strong> Nunca solicitamos senha, login ou informações sigilosas.</strong>
           </p>
@@ -79,7 +79,7 @@ export default function ComplianceFooter() {
             © {companyConfig.foundedYear} {companyConfig.tradeName} - {companyConfig.legalName}. Todos os direitos reservados.
           </p>
           <p className="text-slate-600 text-xs mt-2">
-            Plataforma independente. Sem afiliação com Garena, Roblox ou desenvolvedoras de jogos.
+            Plataforma independente. Sem afiliação com Garena ou desenvolvedoras de jogos.
           </p>
         </div>
       </div>

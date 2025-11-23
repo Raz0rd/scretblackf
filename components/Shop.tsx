@@ -54,57 +54,11 @@ const products: Product[] = [
     bonus: '+30% Bônus = 7280 💎',
     image: '/images/products/5600-min.png'
   },
-  // Robux - Nomes corretos das imagens
   {
-    id: 'rbx-1500',
-    name: '1500 Robux',
-    game: 'robux',
-    amount: '1500',
-    price: 22.90,
-    image: '/images/products/robux_1500.webp'
-  },
-  {
-    id: 'rbx-2700',
-    name: '2700 Robux',
-    game: 'robux',
-    amount: '2700',
-    price: 29.90,
-    image: '/images/products/robux_2700.webp'
-  },
-  {
-    id: 'rbx-3600',
-    name: '3600 Robux',
-    game: 'robux',
-    amount: '3600',
-    price: 47.90,
-    image: '/images/products/robux-3600-o6_PR7Lu.webp'
-  },
-  {
-    id: 'rbx-4500',
-    name: '4500 Robux',
-    game: 'robux',
-    amount: '4500',
-    price: 40.90,
-    originalPrice: 69.90,
-    popular: true,
-    bonus: '-20%',
-    image: '/images/products/robux-4500-CBGtdrYT.webp'
-  },
-  {
-    id: 'rbx-10000',
-    name: '10000 Robux',
-    game: 'robux',
-    amount: '10000',
-    price: 75.90,
-    originalPrice: 119.90,
-    bonus: '-23%',
-    image: '/images/products/robux-10000-DH0988eb.webp'
-  },
-  {
-    id: 'rbx-15000-bonus',
-    name: '10.000 ROBUX + BÔNUS 5.000',
-    game: 'robux',
-    amount: '15000',
+    id: 'ff-15600-bonus',
+    name: '15.600 Diamantes + BÔNUS',
+    game: 'freefire',
+    amount: '15600',
     price: 99.50,
     originalPrice: 299.90,
     popular: true,
@@ -161,7 +115,7 @@ export default function Shop() {
             Recargas Instantâneas
           </h2>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-8">
-            Compre diamantes Free Fire e Robux com entrega automática em minutos
+            Compre diamantes Free Fire com entrega automática em minutos
           </p>
 
           {/* Filtros */}
@@ -185,16 +139,6 @@ export default function Shop() {
               }`}
             >
               💎 Free Fire
-            </button>
-            <button
-              onClick={() => setSelectedGame('robux')}
-              className={`px-6 py-2 rounded-lg font-semibold transition-all ${
-                selectedGame === 'robux'
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white'
-                  : 'bg-white/10 text-slate-300 hover:bg-white/20'
-              }`}
-            >
-              🎮 Robux
             </button>
           </div>
         </div>
