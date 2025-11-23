@@ -21,6 +21,8 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
   
+  console.log('🔥 [MIDDLEWARE] Executando - Path:', pathname, 'Host:', hostname)
+  
   // 🚫 IGNORAR requisições de assets, APIs e arquivos estáticos
   const shouldIgnore = 
     pathname.startsWith('/_next/') ||
