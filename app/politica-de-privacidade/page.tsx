@@ -1,4 +1,5 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
+import { companyConfig } from '@/lib/company-config'
 
 export const metadata = {
   title: `Política de Privacidade - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`,
@@ -100,10 +101,10 @@ export default function PoliticaDePrivacidade() {
             <div className="bg-slate-100 rounded-lg p-4 text-slate-700">
               <p className="mb-2"><strong>VALTER OPITZ JUNIOR</strong></p>
               <p className="mb-1">CNPJ: 42.047.382/0001-51</p>
-              <p className="mb-1">Email: contato@booyahstrikeforce.store</p>
-              <p className="mb-1">Telefone: (11) 94562-2020</p>
-              <p className="mb-1">Endereço: R. Edson Luiz Favarin, 885 - Universitário</p>
-              <p>Cascavel - PR, CEP: 85.819-130</p>
+              <p className="mb-1">Email: {companyConfig.email}</p>
+              <p className="mb-1">Telefone: {companyConfig.phone}</p>
+              <p className="mb-1">Endereço: {companyConfig.address.street} - {companyConfig.address.neighborhood}</p>
+              <p>{companyConfig.address.city} - {companyConfig.address.state}, CEP: {companyConfig.address.zipCode}</p>
             </div>
           </div>
 

