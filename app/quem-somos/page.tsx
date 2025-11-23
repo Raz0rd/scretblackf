@@ -2,8 +2,8 @@ import ComplianceFooter from '@/components/ComplianceFooter'
 import { companyConfig } from '@/lib/company-config'
 
 export const metadata = {
-  title: `Quem Somos - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'BooyahStrike'}`,
-  description: `Conheça a ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'BooyahStrike'} - Plataforma de créditos digitais`
+  title: `Quem Somos - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`,
+  description: `Conheça a ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'} - Plataforma de créditos digitais`
 }
 
 export default function QuemSomos() {

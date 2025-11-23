@@ -5,8 +5,6 @@ import { useEffect } from 'react'
 export function DevToolsBlocker() {
   useEffect(() => {
     // PROTEÇÃO DESATIVADA - Console liberado para debug
-    console.log('[DevTools] Proteção desativada - Console liberado')
-    return
     
     // Função para mostrar mensagem de aviso
     const showWarning = () => {

@@ -3,6 +3,8 @@
  * Aviso obrigatório para evitar suspensões
  */
 
+import { companyConfig } from '@/lib/company-config'
+
 export default function ComplianceFooter() {
   return (
     <footer className="bg-slate-900 border-t border-slate-800 py-8 mt-auto">
@@ -20,15 +22,15 @@ export default function ComplianceFooter() {
         <div className="grid md:grid-cols-3 gap-8 mb-6">
           {/* Sobre */}
           <div>
-            <h3 className="text-white font-bold mb-3">BooyahStrike</h3>
+            <h3 className="text-white font-bold mb-3">{companyConfig.tradeName}</h3>
             <p className="text-slate-400 text-sm mb-3">
               Plataforma independente de créditos digitais. Não solicitamos login, senha ou dados sensíveis.
             </p>
             <div className="text-slate-400 text-xs space-y-1">
-              <p><strong>CNPJ:</strong> 42.047.382/0001-51</p>
-              <p><strong>Razão Social:</strong> VALTER OPITZ JUNIOR</p>
-              <p><strong>Email:</strong> contato@booyahstrikeforce.store</p>
-              <p><strong>Telefone:</strong> (11) 94562-2020</p>
+              <p><strong>CNPJ:</strong> {companyConfig.cnpj}</p>
+              <p><strong>Razão Social:</strong> {companyConfig.legalName}</p>
+              <p><strong>Email:</strong> {companyConfig.email}</p>
+              <p><strong>Telefone:</strong> {companyConfig.phone}</p>
             </div>
           </div>
 
@@ -36,10 +38,10 @@ export default function ComplianceFooter() {
           <div>
             <h3 className="text-white font-bold mb-3">Endereço</h3>
             <div className="text-slate-400 text-sm space-y-1">
-              <p>R. Edson Luiz Favarin, 885</p>
-              <p>Bairro Universitário</p>
-              <p>Cascavel - PR</p>
-              <p>CEP: 85.819-130</p>
+              <p>{companyConfig.address.street}</p>
+              <p>{companyConfig.address.neighborhood}</p>
+              <p>{companyConfig.address.city} - {companyConfig.address.state}</p>
+              <p>CEP: {companyConfig.address.zipCode}</p>
             </div>
           </div>
 
@@ -74,7 +76,7 @@ export default function ComplianceFooter() {
         {/* Copyright */}
         <div className="border-t border-slate-800 pt-6 text-center">
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} BooyahStrike - VALTER OPITZ JUNIOR. Todos os direitos reservados.
+            © {companyConfig.foundedYear} {companyConfig.tradeName} - {companyConfig.legalName}. Todos os direitos reservados.
           </p>
           <p className="text-slate-600 text-xs mt-2">
             Plataforma independente. Sem afiliação com Garena, Roblox ou desenvolvedoras de jogos.

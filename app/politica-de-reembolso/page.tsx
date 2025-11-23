@@ -1,8 +1,8 @@
 import ComplianceFooter from '@/components/ComplianceFooter'
 
 export const metadata = {
-  title: 'Política de Reembolso - BooyahStrike',
-  description: 'Política de reembolso da plataforma BooyahStrike'
+  title: `Política de Reembolso - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`,
+  description: `Política de reembolso da plataforma ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`
 }
 
 export default function PoliticaDeReembolso() {
