@@ -56,6 +56,10 @@ export async function middleware(request: NextRequest) {
   // Rotas da whitepage que NUNCA devem passar pelo cloaker
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
   const whitePageRoutes = [
+    '/presell',
+    '/politica-de-privacidade',
+    '/politica-de-reembolso',
+    '/quem-somos',
     '/loja', 
     '/unsubscribe', 
     '/ativar-conversao-google', 
@@ -92,12 +96,6 @@ export async function middleware(request: NextRequest) {
   // Cookie já verificado - sem logs de debug
   
   if (hasValidCookie) {
-    // Se tem cookie mas está acessando a raiz (/) sem referer, redirecionar para /recargajogo
-    if (pathname === '/' || pathname === '') {
-      const referer = request.headers.get('referer') || ''
-      return NextResponse.redirect(new URL('/recargajogo', request.url))
-    }
-    
     // Usuário verificado - pode acessar qualquer rota
     return NextResponse.next()
   }

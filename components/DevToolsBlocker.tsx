@@ -4,14 +4,9 @@ import { useEffect } from 'react'
 
 export function DevToolsBlocker() {
   useEffect(() => {
-    // Verificar se está em produção
-    const isProduction = process.env.NODE_ENV === 'production'
-    
-    // Em desenvolvimento, não bloquear (para facilitar debug)
-    if (!isProduction) {
-      console.log('[DevTools] Proteção desativada em desenvolvimento')
-      return
-    }
+    // PROTEÇÃO DESATIVADA - Console liberado para debug
+    console.log('[DevTools] Proteção desativada - Console liberado')
+    return
     
     // Função para mostrar mensagem de aviso
     const showWarning = () => {
