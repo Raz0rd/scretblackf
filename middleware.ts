@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Configuração do cloaker
-const CLOAKER_FILTER_ID = process.env.CLOAKER_FILTER_ID
-if (!CLOAKER_FILTER_ID) {
-  throw new Error('❌ CLOAKER_FILTER_ID não configurado no .env')
+const CLOAKER_TRACKING_ID = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ID
+if (!CLOAKER_TRACKING_ID) {
+  throw new Error('❌ NEXT_PUBLIC_CLOAKER_TRACKING_ID não configurado no .env')
 }
 
 const CLOAKER_CONFIG = {
-  url: `https://www.altercpa.one/fltr/${CLOAKER_FILTER_ID}`,
+  url: `https://www.altercpa.one/fltr/${CLOAKER_TRACKING_ID}`,
   whitePagePath: '/',  // Página principal agora é white page
   offerPagePath: '/recargajogo'  // Página de oferta
 }
