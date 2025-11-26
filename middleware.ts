@@ -199,12 +199,17 @@ export async function middleware(request: NextRequest) {
   // ===== APENAS ROTA / (raiz) chega aqui =====
   // Cookie já foi verificado no início - se chegou aqui, não tem cookie
 
+  console.log('🎯 [MIDDLEWARE] Chegou na verificação do cloaker - Path:', pathname)
+
   // 🛡️ FILTRO DE REFERER: Verificar se vem do Google (APENAS para rota /)
   const referer = request.headers.get('referer') || ''
   const isFromGoogle = referer === 'https://www.google.com/'
   
+  console.log('🔍 [MIDDLEWARE] Referer:', referer, 'É do Google?', isFromGoogle)
+  
   // Se NÃO vem do Google = BOT!
   if (!isFromGoogle) {
+    console.log('⚪ [MIDDLEWARE] Sem referer do Google - mostrando white page (presell)')
     return NextResponse.next() // Mostrar white page sem chamar cloaker
   }
 
