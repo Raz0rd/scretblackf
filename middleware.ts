@@ -76,14 +76,18 @@ export async function middleware(request: NextRequest) {
   const targetDomain = baseUrl.replace('https://', '').replace('http://', '')
   const isTargetDomain = hostname.includes(targetDomain)
   
+  console.log('🌐 [MIDDLEWARE] Verificando domínio:', { hostname, targetDomain, isTargetDomain })
+  
   // CLOAKER ATIVADO apenas para o domínio configurado
   if (!isTargetDomain) {
-    console.log(` [Cloaker] Domínio não é ${targetDomain} - desativado`)
+    console.log(`❌ [Cloaker] Domínio não é ${targetDomain} - desativado`)
     return NextResponse.next()
   }
   
   // Verificar se o cloaker está habilitado
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
+  
+  console.log('⚙️ [MIDDLEWARE] Cloaker enabled:', cloakerEnabled, 'ENV:', process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)
   
   if (!cloakerEnabled) {
     console.log('🔓 [Cloaker] Desativado via env (NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)')
@@ -94,15 +98,18 @@ export async function middleware(request: NextRequest) {
   const cloakerCookie = request.cookies.get('cloaker_verified')
   const hasValidCookie = cloakerCookie?.value === 'true'
   
-  // Cookie já verificado - sem logs de debug
+  console.log('🍪 [MIDDLEWARE] Cookie verificado:', hasValidCookie)
   
   if (hasValidCookie) {
-    // Usuário verificado - pode acessar qualquer rota
+    console.log('✅ [MIDDLEWARE] Cookie válido - liberando acesso')
     return NextResponse.next()
   }
 
   // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
+  console.log('📄 [MIDDLEWARE] É white page route?', isWhitePageRoute, 'Path:', pathname)
+  
   if (isWhitePageRoute) {
+    console.log('⚪ [MIDDLEWARE] White page route - liberando sem cloaker')
     return NextResponse.next()
   }
 
