@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react"
 import Toast from "../../components/toast"
 import { useUtmParams } from "@/hooks/useUtmParams"
 import QRCode from "qrcode"
-import { getBrazilTimestamp } from "@/lib/brazil-time"
 import { trackPurchase } from "@/lib/google-ads"
 import { fetchWithRetry, saveFailedRequest } from "@/lib/retry-fetch"
 
@@ -290,11 +289,13 @@ export default function CheckoutPage() {
   }
 
   const promoItems = [
-    { id: 'sombra-roxa', name: 'Sombra Roxa', image: '/images/sombraRoxa.png', oldPrice: 99.75, price: 9.99 },
+    { id: 'jimg-ambicioso', name: 'JIMG Ambicioso', image: '/images/jimg_ambicioso.png', oldPrice: 97.20, price: 34.10 },
+    { id: 'jimg-pisico', name: 'JIMG Pisico', image: '/images/jimg_pisico.png', oldPrice: 97.20, price: 34.10 },
+    { id: 'jimg-violento', name: 'JIMG Violento', image: '/images/jimg_violento.png', oldPrice: 97.20, price: 34.10 },
     { id: 'barba-velho', name: 'Barba do Velho', image: '/images/Barba do Velho.png', oldPrice: 89.99, price: 10.99 },
-    { id: 'pacote-coelhao', name: 'Pacote Coelhão', image: '/images/Pacote Coelhão.png', oldPrice: 49.29, price: 9.99 },
-    { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', oldPrice: 129.90, price: 15.80 },
-    { id: 'dunk-master', name: 'Dunk Master', image: '/images/Dunk Master.png', oldPrice: 75.90, price: 9.99 }
+    { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', oldPrice: 129.90, price: 39.80 },
+    { id: 'mochila-dino', name: 'Mochila Dino', image: '/images/MochilaDino.png', oldPrice: 99.99, price: 12.99 },
+    { id: 'mochila-panda', name: 'Mochila Panda', image: '/images/MochilaPanda.png', oldPrice: 99.99, price: 12.99 }
   ]
 
   const togglePromoItem = (itemId: string) => {
@@ -373,6 +374,41 @@ export default function CheckoutPage() {
       setIsProcessingPayment(false)
       setShowPixInline(false)
       return
+    }
+    
+    // Verificar se já existe um pedido pendente no localStorage
+    const pendingOrderKey = `pending_order_${email}_${playerId}`
+    const existingOrder = localStorage.getItem(pendingOrderKey)
+    
+    if (existingOrder) {
+      try {
+        const orderData = JSON.parse(existingOrder)
+        const orderTime = new Date(orderData.timestamp).getTime()
+        const now = new Date().getTime()
+        const minutesElapsed = (now - orderTime) / (1000 * 60)
+        
+        // Se o pedido tem menos de 15 minutos, mostrar o pedido existente
+        if (minutesElapsed < 15) {
+          setPixData({
+            code: orderData.pixCode,
+            qrCode: orderData.qrCode,
+            transactionId: orderData.transactionId
+          })
+          setQrCodeImage(orderData.qrCodeImage)
+          setTimeLeft(Math.max(0, Math.floor((15 * 60) - (minutesElapsed * 60))))
+          setTimerActive(true)
+          setIsProcessingPayment(false)
+          
+          console.log("✅ Pedido pendente encontrado - mostrando PIX existente")
+          return
+        } else {
+          // Pedido expirado, remover do localStorage
+          localStorage.removeItem(pendingOrderKey)
+        }
+      } catch (e) {
+        // Se houver erro ao parsear, remover o item corrompido
+        localStorage.removeItem(pendingOrderKey)
+      }
     }
     
     // Garantir que o telefone foi gerado
@@ -459,6 +495,20 @@ export default function CheckoutPage() {
         // Iniciar timer de 15 minutos
         setTimeLeft(15 * 60)
         setTimerActive(true)
+        
+        // Salvar pedido no localStorage para evitar duplicatas
+        const pendingOrderKey = `pending_order_${email}_${playerId}`
+        const orderToSave = {
+          pixCode: data.pixCode,
+          qrCode: data.qrCode,
+          qrCodeImage: qrCodeImageData,
+          transactionId: data.transactionId,
+          timestamp: new Date().toISOString(),
+          email: email,
+          playerId: playerId
+        }
+        localStorage.setItem(pendingOrderKey, JSON.stringify(orderToSave))
+        console.log("💾 Pedido salvo no localStorage para evitar duplicatas")
         
         // ✅ Enviar para UTMify com status PENDING (waiting_payment)
         sendToUtmify('pending', data).catch(err => {
@@ -635,6 +685,11 @@ export default function CheckoutPage() {
               setPaymentStatus('paid')
               setTimerActive(false)
               
+              // Limpar pedido pendente do localStorage
+              const pendingOrderKey = `pending_order_${email}_${playerId}`
+              localStorage.removeItem(pendingOrderKey)
+              console.log("🗑️ Pedido pendente removido do localStorage (pagamento confirmado)")
+              
               // Calcular valor total da compra
               const totalValue = getFinalPrice() + getPromoTotal()
               
@@ -668,19 +723,25 @@ export default function CheckoutPage() {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
 
-  // Função auxiliar para calcular comissão BlackCat
+  // Função auxiliar para calcular comissão (sem fee, apenas total)
   const calculateCommission = (totalPriceInCents: number) => {
-    const FEE_PERCENT = 0.0699      // 6.99%
-    const FEE_FIXED = 200           // R$ 2,00
-    
-    const gatewayFeeInCents = Math.round(totalPriceInCents * FEE_PERCENT) + FEE_FIXED
-    const userCommissionInCents = totalPriceInCents - gatewayFeeInCents
-    
     return {
       totalPriceInCents,
-      gatewayFeeInCents,
-      userCommissionInCents
+      gatewayFeeInCents: totalPriceInCents,  // Mesmo valor do total
+      userCommissionInCents: totalPriceInCents  // Mesmo valor do total
     }
+  }
+
+  // Função para gerar timestamp UTC (GMT 0) no formato correto
+  const getUTCTimestamp = (): string => {
+    const now = new Date()
+    const year = now.getUTCFullYear()
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(now.getUTCDate()).padStart(2, '0')
+    const hours = String(now.getUTCHours()).padStart(2, '0')
+    const minutes = String(now.getUTCMinutes()).padStart(2, '0')
+    const seconds = String(now.getUTCSeconds()).padStart(2, '0')
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
   }
 
   // Função para capturar IP real do cliente
@@ -738,7 +799,7 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "waiting_payment",
-        createdAt: getBrazilTimestamp(),
+        createdAt: getUTCTimestamp(),
         approvedDate: null,
         refundedAt: null,
         customer: {
@@ -769,28 +830,6 @@ export default function CheckoutPage() {
         commission: commission,
         isTest: process.env.NEXT_PUBLIC_UTMIFY_TEST_MODE === 'true'
       }
-
-    // 🔍 LOG DETALHADO DO PAYLOAD UTMIFY
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('📊 [CHECKOUT] PAYLOAD UTMIFY (PENDING)')
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('🆔 Order ID:', utmifyData.orderId)
-    console.log('💰 Valor Total:', `R$ ${(totalPriceInCents / 100).toFixed(2)}`)
-    console.log('📅 Data/Hora:', utmifyData.createdAt)
-    console.log('👤 Cliente:', {
-      nome: utmifyData.customer.name,
-      email: utmifyData.customer.email,
-      cpf: utmifyData.customer.document,
-      ip: utmifyData.customer.ip
-    })
-    console.log('📦 Produto:', utmifyData.products[0])
-    console.log('💵 Comissão:', {
-      total: `R$ ${(commission.totalPriceInCents / 100).toFixed(2)}`,
-      gateway: `R$ ${(commission.gatewayFeeInCents / 100).toFixed(2)}`,
-      usuario: `R$ ${(commission.userCommissionInCents / 100).toFixed(2)}`
-    })
-    console.log('🎯 UTMs Capturados:', utmifyData.trackingParameters)
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
     try {
       // Usar fetchWithRetry para tentar até 3 vezes
@@ -858,8 +897,8 @@ export default function CheckoutPage() {
         platform: "RecarGames",
         paymentMethod: "pix",
         status: "paid",
-        createdAt: getBrazilTimestamp(),
-        approvedDate: getBrazilTimestamp(),
+        createdAt: getUTCTimestamp(),
+        approvedDate: getUTCTimestamp(),
         refundedAt: null,
         customer: {
           name: fullName,
@@ -1510,14 +1549,14 @@ export default function CheckoutPage() {
                 {errorModalType === '404' ? (
                   <button
                     onClick={() => window.location.reload()}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50"
                   >
                     Atualizar Página
                   </button>
                 ) : (
                   <button
                     onClick={() => setShowErrorModal(false)}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/50"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-red-500/50"
                   >
                     Entendi
                   </button>

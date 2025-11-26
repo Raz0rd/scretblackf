@@ -301,7 +301,7 @@ export default function HomePage() {
   const banners = [
     {
       src: "/images/banner1.png",
-      alt: "Banner 1 - PromoÃƒÂ§ÃƒÂ£o Especial de Recarga"
+      alt: "Banner 1 - Promoção Especial de Recarga"
     },
     {
       src: "/images/banner2.jpg",
@@ -309,15 +309,15 @@ export default function HomePage() {
     },
     {
       src: "/images/banner3.png",
-      alt: "Banner 3 - Recarga Segura e RÃƒÂ¡pida"
+      alt: "Banner 3 - Recarga Segura e Rápida"
     },
     {
       src: "/images/banner4.png",
-      alt: "Banner 4 - PromoÃƒÂ§ÃƒÂ£o Especial"
+      alt: "Banner 4 - Promoção Especial"
     },
     {
       src: "/images/banner5.jpg",
-      alt: "Banner 5 - PromoÃƒÂ§ÃƒÂ£o Especial"
+      alt: "Banner 5 - Promoção Especial"
     }
   ]
 
@@ -570,12 +570,19 @@ export default function HomePage() {
       const data = await response.json()
 
       if (response.ok && data.success) {
+        // Verificar se é o caso de instabilidade (nickname = "LOGADO")
+        if (data.warning === 'instability' && data.data?.basicInfo?.nickname === 'LOGADO') {
+          setIsLoggedIn(false)
+          setLoginError("⚠️ Devido ao grande volume de acessos, estamos com instabilidade na verificação. Não se preocupe! Você pode continuar e garantir o recebimento por email. Basta preencher seu email no checkout!")
+          return
+        }
+        
         if (data.data && data.data.basicInfo && data.data.basicInfo.nickname) {
-          // Aceitar qualquer nickname como vÃƒÂ¡lido
+          // Aceitar qualquer nickname como válido
           setIsLoggedIn(true)
           setUserData(data.data.basicInfo)
           setLoginError("")
-          setShowBlurOverlay(false) // Fecha o modal apÃƒÂ³s login
+          setShowBlurOverlay(false) // Fecha o modal após login
           
           // Salvar por jogo (app)
           const urlParams = new URLSearchParams(window.location.search)
@@ -588,7 +595,7 @@ export default function HomePage() {
           }
         } else {
           setIsLoggedIn(false)
-          setLoginError("Resposta invÃƒÂ¡lida do servidor. Tente novamente.")
+          setLoginError("Resposta inválida do servidor. Tente novamente.")
         }
       } else {
         setIsLoggedIn(false)
@@ -1330,7 +1337,7 @@ export default function HomePage() {
               tabIndex={0}
               onClick={() => {
                 setSelectedGame('deltaforce')
-                navigateToGame('100157')
+                // Não navegar, apenas mudar estado para evitar flash
               }}
             >
               <div className="mx-auto max-w-[70px] sm:max-w-[80px] md:max-w-[115px]">
@@ -1369,7 +1376,7 @@ export default function HomePage() {
               tabIndex={0}
               onClick={() => {
                 setSelectedGame('haikyu')
-                navigateToGame('100153')
+                // Não navegar, apenas mudar estado para evitar flash
               }}
             >
               <div className="mx-auto max-w-[70px] sm:max-w-[80px] md:max-w-[115px]">
@@ -1736,19 +1743,6 @@ export default function HomePage() {
             <span className="font-bold">Valor de Recarga</span>
           </div>
           
-          {/* Texto Promocional - Apenas após login */}
-          {isLoggedIn && (
-            <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-lg">
-              <div className="text-center">
-                <h3 className="text-base sm:text-lg font-bold text-red-600 mb-1">
-                  80% OFF na primeira recarga!
-                </h3>
-                <p className="text-xs sm:text-sm text-red-500 font-medium">
-                  Válido para valores destacados
-                </p>
-              </div>
-            </div>
-          )}
           <div className="grid grid-cols-3 gap-2 sm:gap-2.5 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
             {currentConfig.rechargeValues.map((value) => {
               const isPromotional = currentConfig.promotionalValues.includes(value)
@@ -2412,7 +2406,7 @@ export default function HomePage() {
                   <div className="rounded-md border border-gray-200 bg-gray-50 p-3 text-sm">
                     <ul className="flex flex-col gap-2.5">
                       <li className="flex items-center justify-between gap-12">
-                        <div className="text-gray-600">PreÃƒÂ§o Original</div>
+                        <div className="text-gray-600">Preço Original</div>
                         <div className="flex shrink-0 items-center gap-1">
                           <div className="font-medium text-gray-900">
                             {selectedRechargeValue ? selectedRechargeValue : selectedSpecialOffer}
@@ -2705,14 +2699,14 @@ export default function HomePage() {
                   <div className="mb-1 text-base">Consentimento de Cookie</div>
                   <div className="text-sm">
                     <span className="text-white/70">
-                      A gente usa cookies para melhorar a sua experiÃƒÂªncia no site. Ao continuar navegando, vocÃƒÂª concorda com a nossa
+                      A gente usa cookies para melhorar a sua experiência no site. Ao continuar navegando, você concorda com a nossa
                     </span>{' '}
                     <a 
                       href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} 
                       target="_blank"
                       className="underline hover:text-white/80"
                     >
-                      PolÃƒÂ­tica de Privacidade.
+                      Política de Privacidade.
                     </a>
                   </div>
                 </div>

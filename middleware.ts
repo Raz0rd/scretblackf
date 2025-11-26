@@ -57,6 +57,7 @@ export async function middleware(request: NextRequest) {
   // IMPORTANTE: "/" NÃO está aqui - deve passar pelo cloaker!
   const whitePageRoutes = [
     '/loja', 
+    '/checkout-loja',
     '/unsubscribe', 
     '/ativar-conversao-google', 
     '/meus-pedidos', 

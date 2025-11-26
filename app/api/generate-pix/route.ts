@@ -618,7 +618,11 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     ip: "0.0.0.0"
   }
   
-  // Payload enviado para Umbrela
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log("📤 [Umbrela] PAYLOAD COMPLETO:")
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+  console.log(JSON.stringify(umbrelaPayload, null, 2))
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
   
   // Salvar debug em storage para Netlify
   const debugInfo = {
@@ -665,6 +669,13 @@ async function generatePixUmbrela(body: any, baseUrl: string) {
     }
 
     const data = await response.json()
+
+    console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("📥 [Umbrela] RESPOSTA DA API:")
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("Status:", response.status)
+    console.log("Response Body:", JSON.stringify(data, null, 2))
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
 
     // Extrair informações da resposta Umbrela
     const transactionId = data.data?.id

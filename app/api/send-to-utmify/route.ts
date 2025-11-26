@@ -88,6 +88,11 @@ export async function POST(request: Request) {
     console.log("🎯 [UTMify API] Enviando dados para UTMify...")
     console.log("📊 [UTMify API] Status:", utmifyPayload.status)
     console.log("💰 [UTMify API] Valor em centavos:", utmifyPayload.commission.totalPriceInCents)
+    console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("📤 [UTMify API] PAYLOAD COMPLETO:")
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log(JSON.stringify(utmifyPayload, null, 2))
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
 
     // Verificar se o token existe
     if (!process.env.UTMIFY_API_TOKEN) {
@@ -119,6 +124,13 @@ export async function POST(request: Request) {
     })
 
     const data = await utmifyResponse.json()
+    
+    console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("📥 [UTMify API] RESPOSTA DA API:")
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    console.log("Status:", utmifyResponse.status)
+    console.log("Response Body:", JSON.stringify(data, null, 2))
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
     
     if (utmifyResponse.ok) {
       console.log("✅ [UTMify API] Dados enviados com sucesso")
