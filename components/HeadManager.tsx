@@ -52,7 +52,11 @@ export default function HeadManager() {
   useEffect(() => {
     if (!mounted || typeof window === 'undefined') return;
     
-  
+    // Desabilitar UTMify no modo de desenvolvimento
+    if (isDevelopment) {
+      console.log('🔧 [HeadManager] Modo desenvolvimento: Scripts UTMify desabilitados');
+      return;
+    }
     
     // Verificar se Pixel ID está configurado
     if (!utmifyPixelId) {

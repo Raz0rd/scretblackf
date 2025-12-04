@@ -28,7 +28,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
 
   console.log('[LoginModal] Render - isOpen:', isOpen, 'mounted:', mounted);
 
-  if (!mounted) return null;
+  if (!mounted || !isOpen) return null;
 
   const validateLogin = () => {
     const newErrors: Record<string, string> = {};
@@ -148,14 +148,14 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
         >
           
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
             <div className="flex items-center gap-3">
               <Shield className="w-8 h-8" />
               <div>
                 <h2 className="text-2xl font-bold">
                   {step === 'login' ? 'Acesso Seguro' : 'Termos de Uso'}
                 </h2>
-                <p className="text-sm text-purple-100">
+                <p className="text-sm text-blue-100">
                   {step === 'login' ? 'Faça login para continuar' : 'Leia e aceite para prosseguir'}
                 </p>
               </div>
@@ -184,7 +184,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                       setErrors({ ...errors, name: '' });
                     }}
                     placeholder="Seu nome completo"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition ${
                       errors.name ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -207,7 +207,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                       setErrors({ ...errors, email: '' });
                     }}
                     placeholder="seu@email.com"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition ${
                       errors.email ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -232,7 +232,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                     }}
                     placeholder="(00) 00000-0000"
                     maxLength={15}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition ${
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition ${
                       errors.phone ? 'border-red-500' : 'border-gray-300'
                     }`}
                   />
@@ -242,12 +242,12 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                 </div>
 
                 {/* Info de segurança */}
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <div className="flex gap-3">
-                    <Shield className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-purple-900">
+                    <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-blue-900">
                       <p className="font-semibold mb-1">Seus dados estão seguros</p>
-                      <p className="text-xs text-purple-700">
+                      <p className="text-xs text-blue-700">
                         Utilizamos criptografia para proteger suas informações pessoais.
                       </p>
                     </div>
@@ -258,7 +258,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                 <button
                   onClick={handleLogin}
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
@@ -310,7 +310,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                     type="checkbox"
                     checked={termsAccepted}
                     onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="w-5 h-5 text-purple-600 rounded focus:ring-2 focus:ring-purple-500 mt-0.5"
+                    className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 mt-0.5"
                   />
                   <span className="text-sm text-gray-700">
                     Eu li e aceito os <strong>Termos de Uso</strong> e estou ciente da{' '}
@@ -322,7 +322,7 @@ export default function LoginModal({ isOpen, onSuccess }: LoginModalProps) {
                 <button
                   onClick={handleAcceptTerms}
                   disabled={loading || !termsAccepted}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>

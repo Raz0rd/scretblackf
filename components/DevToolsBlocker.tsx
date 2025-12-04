@@ -4,7 +4,21 @@ import { useEffect } from 'react'
 
 export function DevToolsBlocker() {
   useEffect(() => {
-    // PROTEÇÃO DESATIVADA - Console liberado para debug
+    // Verificar se está em modo de desenvolvimento
+    const isDevelopment = process.env.NODE_ENV === 'development'
+    
+    // Log para debug
+    console.log('🔍 [DevToolsBlocker] NODE_ENV:', process.env.NODE_ENV)
+    console.log('🔍 [DevToolsBlocker] isDevelopment:', isDevelopment)
+    
+    if (isDevelopment) {
+      console.log('🔧 [DevToolsBlocker] Modo desenvolvimento: Proteção do console desabilitada')
+      return // Não aplicar nenhuma proteção em desenvolvimento
+    }
+    
+    console.log('🔒 [DevToolsBlocker] Modo produção: Proteção ATIVA')
+    
+    // PROTEÇÃO ATIVA APENAS EM PRODUÇÃO
     
     // Função para mostrar mensagem de aviso
     const showWarning = () => {

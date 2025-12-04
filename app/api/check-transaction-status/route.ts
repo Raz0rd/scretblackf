@@ -16,8 +16,6 @@ async function checkStatusEzzpag(transactionId: string) {
     throw new Error("EZZPAG_API_AUTH não configurado")
   }
 
-  console.log(`[Ezzpag] Consultando: ${ezzpagUrl}`)
-
   const response = await fetch(ezzpagUrl, {
     method: "GET",
     headers: {
@@ -27,12 +25,11 @@ async function checkStatusEzzpag(transactionId: string) {
   })
 
   if (!response.ok) {
-    console.error(`[Ezzpag] Erro na API: ${response.status}`)
     throw new Error(`Erro na API Ezzpag: ${response.status}`)
   }
 
   const transactionData = await response.json()
-  console.log(`[Ezzpag] Status atual: ${transactionData.status}`)
+  console.log(`🔍 Status: ${transactionData.status}`)
   
   return transactionData
 }
@@ -46,7 +43,7 @@ async function checkStatusGhostPay(transactionId: string) {
     throw new Error("GHOSTPAY_API_KEY não configurado")
   }
 
-  console.log(`[GhostPay] Consultando: ${ghostpayUrl}`)
+  // Consultar GhostPay
 
   // Criar auth Basic com base64
   const authString = Buffer.from(`${secretKey}:x`).toString('base64')
@@ -60,12 +57,11 @@ async function checkStatusGhostPay(transactionId: string) {
   })
 
   if (!response.ok) {
-    console.error(`[GhostPay] Erro na API: ${response.status}`)
     throw new Error(`Erro na API GhostPay: ${response.status}`)
   }
 
   const transactionData = await response.json()
-  console.log(`[GhostPay] Status atual: ${transactionData.status}`)
+  console.log(`🔍 Status: ${transactionData.status}`)
   
   return transactionData
 }
@@ -145,31 +141,23 @@ export async function POST(request: NextRequest) {
     // PRIMEIRO: Verificar se existe no orderStorage para pegar o gateway correto
     const storedOrder = orderStorageService.getOrder(transactionId.toString())
     
+    console.log(`🔄 Pedido ${transactionId.substring(0, 8)}... - Verificando status`)
+    
     // Usar gateway do storage OU da variável de ambiente
     let gateway = process.env.PAYMENT_GATEWAY || 'ezzpag'
     
     if (storedOrder && storedOrder.gateway) {
       gateway = storedOrder.gateway
-      console.log(`[CHECK-STATUS] ✅ Gateway recuperado do storage: ${gateway.toUpperCase()}`)
     } else {
-      // Se não tem no storage, usar da env (mas pode estar errado)
       const gateways = gateway.split(',').map(g => g.trim()).filter(g => g.length > 0)
       gateway = gateways[0] || 'ezzpag'
-      console.log(`[CHECK-STATUS] ⚠️ Gateway não encontrado no storage, usando padrão: ${gateway.toUpperCase()}`)
     }
-    
-    console.log(`[CHECK-STATUS] Gateway final: ${gateway.toUpperCase()}`)
-    console.log(`[CHECK-STATUS] Verificando status da transação: ${transactionId}`)
     
     // Se encontrou no storage E já está pago, NÃO retornar ainda
     // Precisamos verificar o gateway e processar o PAID
     if (storedOrder && storedOrder.status === 'paid') {
-      console.log(`[CHECK-STATUS] ✅ Transação ${transactionId} já está PAID no storage`)
-      
-      // Verificar se já enviou PAID para UTMify
       if (storedOrder.utmifyPaidSent) {
-        console.log(`[CHECK-STATUS] ✅ PAID já foi enviado para UTMify anteriormente`)
-        console.log(`[CHECK-STATUS] Retornando status paid para o frontend`)
+        console.log(`✅ Status: PAID (já processado)`)
         return NextResponse.json({
           success: true,
           status: 'paid',
@@ -177,10 +165,6 @@ export async function POST(request: NextRequest) {
           alreadyProcessed: true
         })
       }
-      
-      // Se NÃO enviou ainda, continuar para consultar gateway e enviar PAID
-      console.log(`[CHECK-STATUS] ⚠️ PAID ainda não foi enviado para UTMify`)
-      console.log(`[CHECK-STATUS] Continuando para enviar PAID...`)
     }
 
     // Se NÃO encontrou no storage OU status não é paid, consultar gateway
@@ -198,7 +182,7 @@ export async function POST(request: NextRequest) {
         transactionData = await checkStatusEzzpag(transactionId)
       }
     } catch (error) {
-      console.error(`[CHECK-STATUS] Erro ao consultar gateway:`, error)
+      console.error(`❌ Erro:`, error instanceof Error ? error.message : 'Erro desconhecido')
       return NextResponse.json({
         success: false,
         error: error instanceof Error ? error.message : 'Erro ao consultar gateway',
@@ -224,7 +208,7 @@ export async function POST(request: NextRequest) {
 
     // Se status é paid, verificar se já foi processado pelo webhook
     if (isNowPaid) {
-      console.log(`[CHECK-STATUS] Status é PAID!`)
+      console.log("💰 Status: PAID - Processando conversão")
       
       // PROTEÇÃO ANTI-DUPLICAÇÃO: Verificar cache em memória
       const conversionKey = `${transactionId}-paid`

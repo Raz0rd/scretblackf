@@ -16,22 +16,23 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "DeltaForce - Recarga de Diamantes Free Fire | Entrega Rápida",
-  description: "Compre diamantes para Free Fire com segurança e entrega em até 5 minutos. Pagamento via PIX, preços promocionais e suporte 24/7. Loja oficial de recargas.",
+  title: "Diamantes Free Fire Baratos - Recarga Rápida via PIX | Entrega Imediata",
+  description: "Compre diamantes Free Fire com os melhores preços do Brasil! Entrega imediata, pagamento via PIX, 100% seguro. Promoção especial de diamantes FF com desconto. Recarga rápida e confiável.",
   keywords: [
+    "diamantes free fire baratos",
     "comprar diamantes free fire",
     "recarga diamantes ff",
-    "DeltaForce",
-    "portal digital",
-    "tecnologia",
-    "serviços online",
-    "conteúdo digital",
-    "informações tecnologia",
-    "dicas tecnologia",
-    "produtos digitais",
-    "site confiável",
-    "pagamento pix",
-    "serviços digitais"
+    "diamantes ff promoção",
+    "free fire diamantes pix",
+    "recarga free fire barata",
+    "diamantes free fire desconto",
+    "comprar diamantes ff",
+    "loja diamantes free fire",
+    "recarga ff rapida",
+    "diamantes free fire entrega imediata",
+    "free fire recarga segura",
+    "pagamento pix diamantes",
+    "promoção diamantes ff"
   ],
   authors: [{ name: "SpeedRepair" }],
   generator: "Next.js",

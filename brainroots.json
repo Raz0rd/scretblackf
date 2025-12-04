@@ -1,0 +1,2390 @@
+{
+    "pageIndex": 1,
+    "totalPages": 1985,
+    "recordCount": 47623,
+    "pageSize": 24,
+    "results": [
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Brainrot Deus",
+                        "name": "Raridade",
+                        "id": "0-5",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Pakrahmatmamat",
+                        "name": "Brainrot",
+                        "id": "0-5-13",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "✨Pakrahmatmamat✨",
+                "offerTitleOriginal": "✨Pakrahmatmamat✨",
+                "mainOfferImage": {
+                    "smallImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251125162631_5377903Small.png",
+                    "largeImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251125162631_3333792Large.png",
+                    "originalSizeImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251125162631_8595623Original.png"
+                },
+                "offerImages": [],
+                "isTrending": true,
+                "description": "The original price applies to the purchase of 1 quantity. What you get will depend on the quantity purchased\n\nPlease make sure your Roblox username is correct. There is no warranty if the username is wrong. Trades are done through the server link or via friend add ✅",
+                "id": "a434d314-4fe0-4048-92ee-3ec10c07b507",
+                "userId": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 8,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 11.00122,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "9352843e-7a5e-413f-a943-92ddbfa84263",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 2.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "username": "Faxs_Store",
+                "picture": {
+                    "smallPicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_5864073Small.png",
+                    "mediumPicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_3070841Medium.png",
+                    "largePicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_743353Large.png"
+                },
+                "description": "🟦 Faxs_Store – Trusted Roblox Item Store! 🎮🛍️\n\nWelcome to Faxs_Store – your go-to shop for fast, safe, and affordable Roblox in-game items!\n\n🔥 We offer:\n✔️ Rare items & accessories\n✔️ Gamepasses & in-game tools\n✔️ Custom orders available\n✔️ Fast and secure transactions\n\n🎯 Perfect for Roblox players who want to stand out without wasting time grinding!\n🛡️ 100% Safe, Scam-Free, Quick Response, Friendly Seller!\n\n💬 Message us anytime for orders or questions.\n📦 Power up your Roblox experience ",
+                "createdDate": "2025-07-10T18:58:58.3113751Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "positiveCount": 3534,
+                "negativeCount": 5,
+                "ratingCount": 3539,
+                "feedbackScore": 99.85871715173777903362531789,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Los Primos",
+                        "name": "Brainrot",
+                        "id": "0-6-47",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "500-749 M/s",
+                        "name": "M/s",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Los Primos 744M/s",
+                "offerTitleOriginal": "Los Primos 744M/s",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201032953_4862052Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201032953_1801398Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201032953_3084228Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nLos Primos ⚡️ Fast & Easy Delivery!\nLos Primos ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\n\n\nLos\nPrimos\nlos primos\nLos Primos\nLosPrimos\nlos primos\nlosprimos\nl0s primos\nloz primos\nlos prmos\nlos prioms\nlos primoz\nlos prim0s\nlos primoss\nloos primos\nloss primos\nloss primoss\nlos primoss\nlos primoss\nl0sprim0s\nlos prim0z\nlos pr1mos\nlos pr!mos\nlos pprimos\nllos primos\nlos priimos\nlos prrimos\nlos priimos\nlos prymos\nlos prumos\nlos prinos\nlos prjmoss\nlos primmos\nlos primosz\nlos primows\nlos prmois\nlos prumos\nlos prlmios\nlos pirimos\nlos prmios\nl0sprimos\nlospirmos\nlos primso\nlos prmois\nlos porimos\nlosprimos\nlos-primos\nlos_primos",
+                "id": "7b2f7147-de74-4032-a388-6f5c4c3412be",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 467.55167,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "78fb4099-0d4c-4e56-ac87-6ef9c994dce7",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 85.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Outro",
+                        "name": "Brainrot",
+                        "id": "0-6-36",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Quesadilla Crocodila",
+                "offerTitleOriginal": "Quesadilla Crocodila",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251101052745_9593294Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251101052745_7415751Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251101052745_2936219Original.png"
+                },
+                "offerImages": [],
+                "isTrending": true,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nQuesadilla Crocodila ⚡️ Fast & Easy Delivery!\nQuesadilla Crocodila ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\nquesadilla crocodila\nquesadilla crocodila\nquesadilla crocodila\nquesadilla crocodila\nquesadilla crocodila\nquesadilla crocodila\nquesadilla crocodila\nquesadila crocodila\nquesadila crocdila\nquesadilaa crocodila\nquesaddilla crocodilla\nquesadillla crocodila\nquesadiilla croccodila\nquesadilra crocdilla\nquesadlila crocoodila\nquesadi1la croc0dila\nques4dilla crocodi1a\nqesadilla crocdila\nqesadila crocdlla\nqesaddilla croccodila\nquesdilla croccodila\nquesadila crocodilaa\nquesadilla crocdilaa\nquesadilla crocoddila\nquesadilla croocodila\nquesadilla crocoodila\nquesadilla crocdla\nquesadilla crocodiila\nquesadilla crocodi1a\nquesadilla crocodiila\nquesadilla crocoidla\nquesadilla crocoila\nquesadilla crocoila",
+                "id": "f1faceb4-a888-49b6-8a21-9946dd576cbc",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 3,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 22.00243,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "220537e3-5e03-411f-8c42-9853045f25c1",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 4.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Chillin Chili",
+                        "name": "Brainrot",
+                        "id": "0-6-55",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "100-249 M/s",
+                        "name": "M/s",
+                        "id": "0-4",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Chillin Chili 412.5M/s",
+                "offerTitleOriginal": "Chillin Chili 412.5M/s",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211910_862414Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211910_4197936Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211910_3378604Original.png"
+                },
+                "offerImages": [
+                    {
+                        "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211917_1158975Small.png",
+                        "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211917_7958213Large.png",
+                        "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130211917_1190430Original.png"
+                    }
+                ],
+                "isTrending": false,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nChilin Chili ⚡️ Fast & Easy Delivery!\nChilin Chili ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\n\n\n\n\n\nC hilin Chili \nCh ilin Chili \nChi lin Chili \nChil in Chili \nChili n Chili \nChilin C hili \nChilin Ch ili \nChilin Chi li \nChilin Chil i \nChilin Chilii \nCilin Chilis\nCillin Chili \nChin Chili \nChily Chili \nChilie Chili \nChillin\nChili \nChilin Chilia\nChilin Chili1\nchilli chillin chili cili\nchilly chily cily chill child chili",
+                "id": "ad07bcfa-0457-4563-8d31-5160e14c2f93",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 247.52735,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "69ddad9d-f490-4ac9-bbde-dffc2776a95b",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 45.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Esok Sekolah",
+                        "name": "Brainrot",
+                        "id": "0-6-19",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "50-99 M/s",
+                        "name": "M/s",
+                        "id": "0-3",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Esok Sekolah 90M",
+                "offerTitleOriginal": "Esok Sekolah 90M",
+                "mainOfferImage": {
+                    "smallImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251118161824_9385448Small.png",
+                    "largeImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251118161824_2333137Large.png",
+                    "originalSizeImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251118161824_5921418Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Esok Sekolah 150M",
+                "id": "e58abc78-9bb0-48d0-8af6-b0ab90ec789f",
+                "userId": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 3,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 82.45411,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "60161be8-2100-40eb-92d2-ca65cbb41bae",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 14.99000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "username": "HubStore45",
+                "picture": {
+                    "smallPicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_6083249Small.jpg",
+                    "mediumPicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_5375575Medium.jpg",
+                    "largePicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_7215725Large.jpg"
+                },
+                "description": "HubStore45 is your go-to hub for Roblox fans! 🎮✨\nWe specialize in two of the most exciting Roblox titles: Grow a Garden and Steal a Brainrot. From in-game items, passes, and boosts, to exclusive content that helps you level up faster — we’ve got you covered.\n\nWhy choose us?\n✅ Fast & secure transactions\n✅ Special content for Roblox players\n✅ Fun, reliable, and gamer-friendly service\n\nWith HubStore45, your garden grows faster 🌱, your brainrot steals smarter 🧠.",
+                "createdDate": "2025-07-18T15:34:21.6572562Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "positiveCount": 6529,
+                "negativeCount": 7,
+                "ratingCount": 6536,
+                "feedbackScore": 99.89290085679314565483476132,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "67",
+                        "name": "Brainrot",
+                        "id": "0-6-40",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "50-99 M/s",
+                        "name": "M/s",
+                        "id": "0-3",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "67 90M /s",
+                "offerTitleOriginal": "67 90M /s",
+                "mainOfferImage": {
+                    "smallImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20251202042125_1360153Small.png",
+                    "largeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20251202042125_5381253Large.png",
+                    "originalSizeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20251202042125_8277974Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Selling Brainrot Secret 67 90M /s",
+                "id": "250ae137-4a54-499d-b15d-0dc2da9aa757",
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 99.01094,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "29f0cbb7-d857-4693-9ec7-57d96b9a7fac",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 18.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "username": "AudreyFARM",
+                "picture": {
+                    "smallPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_8504303Small.png",
+                    "mediumPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_7578098Medium.png",
+                    "largePicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_5110687Large.png"
+                },
+                "description": "GrowSTORE – Your Ultimate Grow a Garden Game Companion!\n\nWelcome to GrowSTORE, your trusted partner for all your Grow a Garden game needs! We offer instant delivery and professional service to ensure you get what you need, right when you need it. Whether you're looking for rare items, upgrades, or exclusive content, GrowSTORE is here to help your garden thrive.\n\nFast, reliable, and dedicated to your gaming satisfaction – Grow smarter, grow faster, with GrowSTORE!",
+                "createdDate": "2025-05-07T19:03:36.284821Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "positiveCount": 7716,
+                "negativeCount": 11,
+                "ratingCount": 7727,
+                "feedbackScore": 99.85764203442474440274362625,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "67",
+                        "name": "Brainrot",
+                        "id": "0-6-40",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "25-49 M/s",
+                        "name": "M/s",
+                        "id": "0-2",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "✨Normal 67  Random M/s✨",
+                "offerTitleOriginal": "✨Normal 67  Random M/s✨",
+                "mainOfferImage": {
+                    "smallImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251031104635_8147647Small.png",
+                    "largeImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251031104635_6098598Large.png",
+                    "originalSizeImage": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Offer_20251031104635_9463585Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "The original price applies to the purchase of 1 quantity. What you get will depend on the quantity purchased\n\nPlease make sure your Roblox username is correct. There is no warranty if the username is wrong. Trades are done through the server link or via friend add ✅",
+                "id": "2c1e10d8-0ca1-4d3e-943b-0723d8ca0333",
+                "userId": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 3,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 22.00243,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "a63a9e55-57f9-45ca-ab44-aeebc9101c7b",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 4.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "username": "Faxs_Store",
+                "picture": {
+                    "smallPicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_5864073Small.png",
+                    "mediumPicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_3070841Medium.png",
+                    "largePicture": "40c9c558-72fa-44ae-9d74-01f45437c4b8_Avatar_20250710200527_743353Large.png"
+                },
+                "description": "🟦 Faxs_Store – Trusted Roblox Item Store! 🎮🛍️\n\nWelcome to Faxs_Store – your go-to shop for fast, safe, and affordable Roblox in-game items!\n\n🔥 We offer:\n✔️ Rare items & accessories\n✔️ Gamepasses & in-game tools\n✔️ Custom orders available\n✔️ Fast and secure transactions\n\n🎯 Perfect for Roblox players who want to stand out without wasting time grinding!\n🛡️ 100% Safe, Scam-Free, Quick Response, Friendly Seller!\n\n💬 Message us anytime for orders or questions.\n📦 Power up your Roblox experience ",
+                "createdDate": "2025-07-10T18:58:58.3113751Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "40c9c558-72fa-44ae-9d74-01f45437c4b8",
+                "positiveCount": 3534,
+                "negativeCount": 5,
+                "ratingCount": 3539,
+                "feedbackScore": 99.85871715173777903362531789,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Eviledon",
+                        "name": "Brainrot",
+                        "id": "0-6-52",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "25-49 M/s",
+                        "name": "M/s",
+                        "id": "0-2",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Eviledon (31.5M/s)",
+                "offerTitleOriginal": "Eviledon (31.5M/s)",
+                "mainOfferImage": {
+                    "smallImage": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Offer_20251129115209_5750039Small.png",
+                    "largeImage": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Offer_20251129115209_4255208Large.png",
+                    "originalSizeImage": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Offer_20251129115209_5425236Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Eviledon (31.5M/s)",
+                "id": "9537b136-c3f4-4121-90a2-c69d9d991d3e",
+                "userId": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 3,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 71.50790,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "c7f6361e-3b4c-45e5-b013-9dfa85866306",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 13.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9",
+                "username": "NeilensDelivery",
+                "picture": {
+                    "smallPicture": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Avatar_20251128204703_438443Small.jpg",
+                    "mediumPicture": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Avatar_20251128204703_1293696Medium.jpg",
+                    "largePicture": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9_Avatar_20251128204703_4432444Large.jpg"
+                },
+                "description": "Hello Gamers! \n\nI’m Neilen, providing essential in-game items and services that players need. I prioritize fast, reliable service to ensure the best experience for buyers.\n\nEnjoy your purchases!💖",
+                "createdDate": "2025-05-28T01:02:36.2963136Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "376c8c34-f12c-4fa9-b593-5003f4d0a8c9",
+                "positiveCount": 9528,
+                "negativeCount": 20,
+                "ratingCount": 9548,
+                "feedbackScore": 99.79053204859656472559698366,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Eviledon",
+                        "name": "Brainrot",
+                        "id": "0-6-52",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "250-499 M/s",
+                        "name": "M/s",
+                        "id": "0-5",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Eviledon 252M/s",
+                "offerTitleOriginal": "Eviledon 252M/s",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201122049_4255826Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201122049_8125187Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251201122049_5911736Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nEviledon ⚡️ Fast & Easy Delivery!\nEviledon ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\n\n\nevill\neviledon\ne viledon\nev iledon\nevi ledon\nevil edon\nevile don\neviled on\neviledo n\nevilledon\neviledoon\neviledn\neviledn\neviledno\nevildon\neviledan\nevileden\nevildonn\nevilleon\neviledonnn\nevil3don\n3viledon\nev1ledon\neviled0n\nevlledon\neviledon\neviledoonn\nevilldon\neviled0n\neviledomn\neviledin lava\nrainbow eviledon\nyinyang eviledon",
+                "id": "2f21bdce-41a0-45e4-ad71-1e4bff244d75",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 192.52128,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "ab6d7c51-4ecd-4b6d-8714-326d8e608def",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 35.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "67",
+                        "name": "Brainrot",
+                        "id": "0-6-40",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Gold",
+                        "name": "Mutations",
+                        "id": "1-1",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐67 $9.3M/s ⭐ Gold ⭐",
+                "offerTitleOriginal": "⭐67 $9.3M/s ⭐ Gold ⭐",
+                "mainOfferImage": {
+                    "smallImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251104054314_2043333Small.png",
+                    "largeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251104054314_203700Large.png",
+                    "originalSizeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251104054314_6777219Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "⭐67 $9.3M/s ⭐ Gold ⭐",
+                "id": "4fb67181-c3eb-497a-9d9a-92edb8bd5b66",
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 6,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 43.45480,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "00d2e11d-1ab0-4cbd-9a14-312be89c864c",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 7.90000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "username": "Incubater",
+                "picture": {
+                    "smallPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_5575942Small.png",
+                    "mediumPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_2691144Medium.png",
+                    "largePicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_4650154Large.png"
+                },
+                "description": "✅ Trusted and genuine account seller. We have made over 100k in sales on other websites. Fastest delivery in the market: All our accounts are delivered instantly by the Eldorado system. We generally reply to your queries instantly! If there is a delay we deeply apologize must be am sleeping. If you have trouble logging in to your account or any other issues, we will definitely help you can write to us in the Eldorado chat. We also do deliver custom orders! Just a message away! Happy Gaming!",
+                "createdDate": "2022-09-01T14:35:13.4783146Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": true
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "positiveCount": 83209,
+                "negativeCount": 108,
+                "ratingCount": 83317,
+                "feedbackScore": 99.87037459342031038083464359,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Brainrot Deus",
+                        "name": "Raridade",
+                        "id": "0-5",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Odin Din Din Dun",
+                        "name": "Brainrot",
+                        "id": "0-5-5",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Odin din din dun",
+                "offerTitleOriginal": "Odin din din dun",
+                "mainOfferImage": {
+                    "smallImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916132400_6635034Small.png",
+                    "largeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916132400_5519348Large.png",
+                    "originalSizeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916132400_6081311Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "hello do you need Odin din din dun for Rebirth. i'm ready if you want it. just purchase and send me ur username",
+                "id": "ef75a480-7857-48e3-a0f8-3ccda5b9c20a",
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 10,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 11.00122,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-21T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "97fda390-a045-455d-a55c-2daafd51bacd",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 2.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "username": "AudreyFARM",
+                "picture": {
+                    "smallPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_8504303Small.png",
+                    "mediumPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_7578098Medium.png",
+                    "largePicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_5110687Large.png"
+                },
+                "description": "GrowSTORE – Your Ultimate Grow a Garden Game Companion!\n\nWelcome to GrowSTORE, your trusted partner for all your Grow a Garden game needs! We offer instant delivery and professional service to ensure you get what you need, right when you need it. Whether you're looking for rare items, upgrades, or exclusive content, GrowSTORE is here to help your garden thrive.\n\nFast, reliable, and dedicated to your gaming satisfaction – Grow smarter, grow faster, with GrowSTORE!",
+                "createdDate": "2025-05-07T19:03:36.284821Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "positiveCount": 7716,
+                "negativeCount": 11,
+                "ratingCount": 7727,
+                "feedbackScore": 99.85764203442474440274362625,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Dul Dul Dul",
+                        "name": "Brainrot",
+                        "id": "0-6-33",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Gold",
+                        "name": "Mutations",
+                        "id": "1-1",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐Dul Dul Dul GOLD⭐",
+                "offerTitleOriginal": "⭐Dul Dul Dul GOLD⭐",
+                "mainOfferImage": {
+                    "smallImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201154843_1007284Small.png",
+                    "largeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201154843_6436352Large.png",
+                    "originalSizeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201154843_9528939Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "⭐Dul Dul Dul GOLD⭐",
+                "id": "b7a31666-65f9-4609-96d2-4a0dc06bbdc7",
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 15.95176,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "c9383048-4448-4abc-99b2-1e358be3a1d1",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 2.90000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "username": "Incubater",
+                "picture": {
+                    "smallPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_5575942Small.png",
+                    "mediumPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_2691144Medium.png",
+                    "largePicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_4650154Large.png"
+                },
+                "description": "✅ Trusted and genuine account seller. We have made over 100k in sales on other websites. Fastest delivery in the market: All our accounts are delivered instantly by the Eldorado system. We generally reply to your queries instantly! If there is a delay we deeply apologize must be am sleeping. If you have trouble logging in to your account or any other issues, we will definitely help you can write to us in the Eldorado chat. We also do deliver custom orders! Just a message away! Happy Gaming!",
+                "createdDate": "2022-09-01T14:35:13.4783146Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": true
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "positiveCount": 83209,
+                "negativeCount": 108,
+                "ratingCount": 83317,
+                "feedbackScore": 99.87037459342031038083464359,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Tralaledon",
+                        "name": "Brainrot",
+                        "id": "0-6-18",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "250-499 M/s",
+                        "name": "M/s",
+                        "id": "0-5",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Tralaledon 357,5M/s",
+                "offerTitleOriginal": "Tralaledon 357,5M/s",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130010340_5225997Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130010340_1935443Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251130010340_4599626Original.png"
+                },
+                "offerImages": [],
+                "isTrending": true,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nTralaledon ⚡️ Fast & Easy Delivery!\nTralaledon ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\n\n\n\n\n\ntralaledon\nTralaledon\nT ralaledon\nTr alaledon\nTra laledon\nTral aledon\nTrala ledon\nTralal edon\nTralale don\nTralaled on\nTralaledo n\nTralaedon\nTraladon\nTralaledon1\nTralaledon2\ntraledon\ntralaleridon tralaleridon tralaledon",
+                "id": "6b0be894-f85e-4fac-a071-bf424f6e8e90",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 412.54559,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "3e763279-dd8a-4ce8-99a0-a67b371b9e37",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 75.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Spaghetti Tualetti",
+                        "name": "Brainrot",
+                        "id": "0-6-25",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "50-99 M/s",
+                        "name": "M/s",
+                        "id": "0-3",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐Spaghetti Tualetti 60M/S",
+                "offerTitleOriginal": "⭐Spaghetti Tualetti 60M/S",
+                "mainOfferImage": {
+                    "smallImage": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Offer_20251127064241_6453682Small.png",
+                    "largeImage": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Offer_20251127064241_3964245Large.png",
+                    "originalSizeImage": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Offer_20251127064241_8625975Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "⭐Spaghetti Tualetti 60M/S",
+                "id": "27c2b4c9-7cdb-4987-90fa-db7e49fa5c55",
+                "userId": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 21,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 49.45046,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "6b8618ba-fe11-4bc0-94fc-0cf4092f8722",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 8.99000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1",
+                "username": "QuickLoot",
+                "picture": {
+                    "smallPicture": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Avatar_20240113210125_8659805Small.jpg",
+                    "mediumPicture": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Avatar_20240113210125_6978803Medium.jpg",
+                    "largePicture": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1_Avatar_20240113210125_7756068Large.jpg"
+                },
+                "description": "Hey there, we offer fast service and great prices.\n\nWorking 24/7\n\nIf you have any issues with your order or you have any question about your purchase feel free to message us.",
+                "createdDate": "2024-01-06T12:18:30.5100095Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "bacfe012-a83d-4ffa-85b3-33cff56ef0a1",
+                "positiveCount": 34675,
+                "negativeCount": 13,
+                "ratingCount": 34688,
+                "feedbackScore": 99.96252306273062730627306273,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "67",
+                        "name": "Brainrot",
+                        "id": "0-6-40",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "67 $7.5M/S",
+                "offerTitleOriginal": "67 $7.5M/S",
+                "mainOfferImage": {
+                    "smallImage": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Offer_20251112193931_3389878Small.jpg",
+                    "largeImage": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Offer_20251112193931_97278Large.jpg",
+                    "originalSizeImage": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Offer_20251112193931_350225Original.jpg"
+                },
+                "offerImages": [],
+                "isTrending": true,
+                "description": "67⭐ $7.5M/S\n------------------------------------------------\n📦 How We Delivery\n1️⃣   After purchase, send your Roblox username in live chat.\n2️⃣   I will send you a private sever's link to join or direct add if cant join by link\n3️⃣   Once join sever I will give you Brainrot you purchased.",
+                "id": "8838d380-4cc6-427f-a0ab-43ae53c629a4",
+                "userId": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 3,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 21.45237,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "fea18d17-c8a0-4ea2-b705-1191f0075de4",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 3.90000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5",
+                "username": "Smurfstore",
+                "picture": {
+                    "smallPicture": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Avatar_20230102170250_6963499Small.png",
+                    "mediumPicture": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Avatar_20230102170250_5425790Medium.png",
+                    "largePicture": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5_Avatar_20230102170250_7496062Large.png"
+                },
+                "description": "WELCOME EVERYONE TO SMURFSTORE ..Slowly and Steadily We Have Completed more than 80000 Orders with an outstanding feedback Score.\nThank You Everyone For Supporting Us And Looking Forward To Serve you all like this in upcoming days too..\n All the orders are delivered instantly via ELDORADO delivery system ..After ordering from us If you face any issue please do not panic and dispute the order just msg us in chat  we will definitely help you.  Our team is always here to assist you with any issues.",
+                "createdDate": "2022-01-09T16:58:19.5785793Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": true
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "34035d1c-3d6e-4566-bec6-fe1cd3110bc5",
+                "positiveCount": 88091,
+                "negativeCount": 210,
+                "ratingCount": 88301,
+                "feedbackScore": 99.76217709878710320381422634,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Mítico",
+                        "name": "Raridade",
+                        "id": "0-4",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Frigo Camelo",
+                        "name": "Brainrot",
+                        "id": "0-4-0",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0",
+                        "name": "M/s",
+                        "id": "0-0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐ FRIGO CAMELO⭐  | REBIRTH 5",
+                "offerTitleOriginal": "⭐ FRIGO CAMELO⭐  | REBIRTH 5",
+                "mainOfferImage": {
+                    "smallImage": "google_105684460905435861568_Offer_20251202024216_9787619Small.png",
+                    "largeImage": "google_105684460905435861568_Offer_20251202024216_1144915Large.png",
+                    "originalSizeImage": "google_105684460905435861568_Offer_20251202024216_3871028Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "REAL STOCK!!!\n5-20 MINUTES DELIVERY!!!\n\nKindly makesure your username are correct for smooth delivery\n\nWHY A LOT OF PEOPLE CHOOSE VALSUM? \n\n1. Valsum has proven that our gold 100% hand farmed by human\n2. Most of our delivery time is 1-2 Hours \n3. Consistent successfull order : 99%\n4. We are Official distributor on TOPUP service with instant delivery",
+                "id": "30eeecf8-9366-494a-8d2e-2a15af6db1cb",
+                "userId": "google_105684460905435861568",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 2,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 5.50061,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "b81f7d3a-6501-4eea-965d-ecbb64edb874",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 1.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "google_105684460905435861568",
+                "username": "ValsumStore",
+                "picture": {
+                    "smallPicture": "google_105684460905435861568_Avatar_20240706024221_9176648Small.png",
+                    "mediumPicture": "google_105684460905435861568_Avatar_20240706024221_9077682Medium.png",
+                    "largePicture": "google_105684460905435861568_Avatar_20240706024221_8030379Large.png"
+                },
+                "description": "Welcome to ValsumStore\n\n✅ Estimate delivery under 20 minutes because we are posting a real stock!!!\n\n✅ We are profesional gold seller who selling game currency, power leveling and Accounts over different platform\n\n✅ Our gold 100% hand farmed ( Dont risk your money buying gold from BOT )\n\n",
+                "createdDate": "2022-03-01T02:24:42.7887845Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "google_105684460905435861568",
+                "positiveCount": 19061,
+                "negativeCount": 73,
+                "ratingCount": 19134,
+                "feedbackScore": 99.61848019232779345667398348,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Spaghetti Tualetti",
+                        "name": "Brainrot",
+                        "id": "0-6-25",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "750-999 M/s",
+                        "name": "M/s",
+                        "id": "0-7",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Spaghetti 900M",
+                "offerTitleOriginal": "Spaghetti 900M",
+                "mainOfferImage": {
+                    "smallImage": "c250edd6-8dd0-42c6-8a7a-671462755434_Offer_20251130104955_6590943Small.png",
+                    "largeImage": "c250edd6-8dd0-42c6-8a7a-671462755434_Offer_20251130104955_1934634Large.png",
+                    "originalSizeImage": "c250edd6-8dd0-42c6-8a7a-671462755434_Offer_20251130104955_1489348Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Spaghetti 900M",
+                "id": "260d5269-043d-4628-a445-36995dd26c07",
+                "userId": "c250edd6-8dd0-42c6-8a7a-671462755434",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 329.98147,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-21T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "272387dd-5206-4d13-8abb-0ccbe7a2e28b",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 59.99000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "c250edd6-8dd0-42c6-8a7a-671462755434",
+                "username": "Slerp",
+                "picture": {
+                    "smallPicture": "c250edd6-8dd0-42c6-8a7a-671462755434_Avatar_20241110225527_9675942Small.png",
+                    "mediumPicture": "c250edd6-8dd0-42c6-8a7a-671462755434_Avatar_20241110225527_9415065Medium.png",
+                    "largePicture": "c250edd6-8dd0-42c6-8a7a-671462755434_Avatar_20241110225527_8661661Large.png"
+                },
+                "description": "Welcome to my store! I am an experienced account seller dedicated to providing you with the best service possible. Your satisfaction is my top priority, and I strive to ensure that every transaction is smooth and seamless. Whether you're purchasing a new account or need assistance, I’m always here to help you with any questions or concerns. You can count on me for reliable service and expert guidance every step of the way. Thank you for choosing my store – I look forward doing business with you!",
+                "createdDate": "2024-11-09T10:05:44.8439826Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "c250edd6-8dd0-42c6-8a7a-671462755434",
+                "positiveCount": 13918,
+                "negativeCount": 14,
+                "ratingCount": 13932,
+                "feedbackScore": 99.89951191501579098478323285,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Los Primos",
+                        "name": "Brainrot",
+                        "id": "0-6-47",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "100-249 M/s",
+                        "name": "M/s",
+                        "id": "0-4",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐Los Primos  248M/s⭐",
+                "offerTitleOriginal": "⭐Los Primos  248M/s⭐",
+                "mainOfferImage": {
+                    "smallImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201071523_9884556Small.png",
+                    "largeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201071523_2986411Large.png",
+                    "originalSizeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251201071523_2441249Original.png"
+                },
+                "offerImages": [],
+                "isTrending": true,
+                "description": "⭐Los Primos  248M/s⭐",
+                "id": "82d52343-8b60-4e36-bc2f-ec431350a723",
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 274.48033,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "9fc9f02b-bc64-494d-bf1f-8e39aa6198fc",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 49.90000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "username": "Incubater",
+                "picture": {
+                    "smallPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_5575942Small.png",
+                    "mediumPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_2691144Medium.png",
+                    "largePicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_4650154Large.png"
+                },
+                "description": "✅ Trusted and genuine account seller. We have made over 100k in sales on other websites. Fastest delivery in the market: All our accounts are delivered instantly by the Eldorado system. We generally reply to your queries instantly! If there is a delay we deeply apologize must be am sleeping. If you have trouble logging in to your account or any other issues, we will definitely help you can write to us in the Eldorado chat. We also do deliver custom orders! Just a message away! Happy Gaming!",
+                "createdDate": "2022-09-01T14:35:13.4783146Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": true
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "positiveCount": 83209,
+                "negativeCount": 108,
+                "ratingCount": 83317,
+                "feedbackScore": 99.87037459342031038083464359,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "1x1x1x1",
+                        "name": "Brainrot",
+                        "id": "0-6-62",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "1x1x1x1",
+                "offerTitleOriginal": "1x1x1x1",
+                "mainOfferImage": {
+                    "smallImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251114162002_4881796Small.png",
+                    "largeImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251114162002_1673043Large.png",
+                    "originalSizeImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251114162002_5616284Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "1x1x1x1\n\n🛒 How to get your item ❓❓\n1. Put your username in the chat 🟢\n2. We gave link/add you into the game 🟢\n3. Take the item 🟢\n4. Done 💯\n\nWhy choose Fourbloxid?\nFast process ⚡ Safe transaction 🔒 Trusted seller ✅\nEverything you need for Roblox, all in one place!",
+                "id": "6dcad6b0-24fa-4962-a83a-df5e94929531",
+                "userId": "c068243e-cf05-4028-b80c-41436558dec0",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 11,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 22.00243,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "11c42823-cc5c-48fb-877a-4499d5bc11b2",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 4.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "c068243e-cf05-4028-b80c-41436558dec0",
+                "username": "FourBloxID",
+                "picture": {
+                    "smallPicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_3681891Small.png",
+                    "mediumPicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_118021Medium.png",
+                    "largePicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_6296297Large.png"
+                },
+                "description": "🌟 Trusted Roblox Game Store | Complete Accounts & Items! 🌟\n\nWelcome to our store! We offer a wide range of ready-to-use Roblox accounts and in-game items at friendly prices with super fast delivery.\n\n🎮 What do we sell?\n\n✔️ Ready-to-use Roblox accounts\n\n✔️ Items and game passes for various games (such as Blox Fruits, Pet Simulator, Grow a Garden, and more)\n\n✔️ In-game currency & boosts\n\n✔️ Top-up services and account upgrade assistance\n\n🚀 Why choose us?\n✅ Fast & secure process",
+                "createdDate": "2025-08-25T11:40:13.829965Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "c068243e-cf05-4028-b80c-41436558dec0",
+                "positiveCount": 27474,
+                "negativeCount": 62,
+                "ratingCount": 27536,
+                "feedbackScore": 99.77484020918070889018012783,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "67",
+                        "name": "Brainrot",
+                        "id": "0-6-40",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "67 7.5M/s",
+                "offerTitleOriginal": "67 7.5M/s",
+                "mainOfferImage": {
+                    "smallImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251025181230_5436731Small.png",
+                    "largeImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251025181230_6770757Large.png",
+                    "originalSizeImage": "1455a7c1-a7a9-43d3-b060-5c572867549a_Offer_20251025181230_8382192Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "67 7.5M/s",
+                "id": "62f6d0e6-8aed-4d9b-9550-2940ecaced58",
+                "userId": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 35.75395,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-22T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "93d54147-4ce0-42f0-b50c-ff8aefaf827b",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 6.50000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "username": "HubStore45",
+                "picture": {
+                    "smallPicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_6083249Small.jpg",
+                    "mediumPicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_5375575Medium.jpg",
+                    "largePicture": "1455a7c1-a7a9-43d3-b060-5c572867549a_Avatar_20250819180951_7215725Large.jpg"
+                },
+                "description": "HubStore45 is your go-to hub for Roblox fans! 🎮✨\nWe specialize in two of the most exciting Roblox titles: Grow a Garden and Steal a Brainrot. From in-game items, passes, and boosts, to exclusive content that helps you level up faster — we’ve got you covered.\n\nWhy choose us?\n✅ Fast & secure transactions\n✅ Special content for Roblox players\n✅ Fun, reliable, and gamer-friendly service\n\nWith HubStore45, your garden grows faster 🌱, your brainrot steals smarter 🧠.",
+                "createdDate": "2025-07-18T15:34:21.6572562Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "1455a7c1-a7a9-43d3-b060-5c572867549a",
+                "positiveCount": 6529,
+                "negativeCount": 7,
+                "ratingCount": 6536,
+                "feedbackScore": 99.89290085679314565483476132,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Karkerkar Kurkur",
+                        "name": "Brainrot",
+                        "id": "0-6-31",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "⭐Karkerkar Kurkur⭐",
+                "offerTitleOriginal": "⭐Karkerkar Kurkur⭐",
+                "mainOfferImage": {
+                    "smallImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251118085747_8834092Small.png",
+                    "largeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251118085747_3410545Large.png",
+                    "originalSizeImage": "5cf4aa32-ff23-46be-9809-22465573eefd_Offer_20251118085747_9835414Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "⭐Karkerkar Kurkur⭐",
+                "id": "1b895c0e-0d38-46e8-946f-682567f08551",
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 8,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 10.45115,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "5adae466-33a7-441e-b080-9844be972367",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 1.90000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "username": "Incubater",
+                "picture": {
+                    "smallPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_5575942Small.png",
+                    "mediumPicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_2691144Medium.png",
+                    "largePicture": "5cf4aa32-ff23-46be-9809-22465573eefd_Avatar_20250627051009_4650154Large.png"
+                },
+                "description": "✅ Trusted and genuine account seller. We have made over 100k in sales on other websites. Fastest delivery in the market: All our accounts are delivered instantly by the Eldorado system. We generally reply to your queries instantly! If there is a delay we deeply apologize must be am sleeping. If you have trouble logging in to your account or any other issues, we will definitely help you can write to us in the Eldorado chat. We also do deliver custom orders! Just a message away! Happy Gaming!",
+                "createdDate": "2022-09-01T14:35:13.4783146Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": true
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "5cf4aa32-ff23-46be-9809-22465573eefd",
+                "positiveCount": 83209,
+                "negativeCount": 108,
+                "ratingCount": 83317,
+                "feedbackScore": 99.87037459342031038083464359,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Mítico",
+                        "name": "Raridade",
+                        "id": "0-4",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Te Te Te Sahur",
+                        "name": "Brainrot",
+                        "id": "0-4-4",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "0-24 M/s",
+                        "name": "M/s",
+                        "id": "0-1",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Te Te Te Sahur",
+                "offerTitleOriginal": "Te Te Te Sahur",
+                "mainOfferImage": {
+                    "smallImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916124659_3712187Small.png",
+                    "largeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916124659_2215373Large.png",
+                    "originalSizeImage": "53f3f60f-40a5-4774-a668-1ab438b707b4_Offer_20250916124659_3309926Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Tired to find rebirth material ? hello i'm ready Te Te Te Sahur for rebirt.\n\nPlease read :  this is for Rebirth sSo the earn/s you get are random depending on stock.\nif you need it just purchase and send me ur username.",
+                "id": "b5f436af-a2db-408f-a7b0-f1f2195f55e5",
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 5.50061,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "9555bf47-3a23-4813-a336-e4546c83caa1",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 1.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "username": "AudreyFARM",
+                "picture": {
+                    "smallPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_8504303Small.png",
+                    "mediumPicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_7578098Medium.png",
+                    "largePicture": "53f3f60f-40a5-4774-a668-1ab438b707b4_Avatar_20251018191409_5110687Large.png"
+                },
+                "description": "GrowSTORE – Your Ultimate Grow a Garden Game Companion!\n\nWelcome to GrowSTORE, your trusted partner for all your Grow a Garden game needs! We offer instant delivery and professional service to ensure you get what you need, right when you need it. Whether you're looking for rare items, upgrades, or exclusive content, GrowSTORE is here to help your garden thrive.\n\nFast, reliable, and dedicated to your gaming satisfaction – Grow smarter, grow faster, with GrowSTORE!",
+                "createdDate": "2025-05-07T19:03:36.284821Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "53f3f60f-40a5-4774-a668-1ab438b707b4",
+                "positiveCount": 7716,
+                "negativeCount": 11,
+                "ratingCount": 7727,
+                "feedbackScore": 99.85764203442474440274362625,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Chipso and Queso",
+                        "name": "Brainrot",
+                        "id": "0-6-60",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "25-49 M/s",
+                        "name": "M/s",
+                        "id": "0-2",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Nenhum",
+                        "name": "Mutations",
+                        "id": "1-0",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Chipso and Queso",
+                "offerTitleOriginal": "Chipso and Queso",
+                "mainOfferImage": {
+                    "smallImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251104101521_7885855Small.png",
+                    "largeImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251104101521_2399745Large.png",
+                    "originalSizeImage": "c068243e-cf05-4028-b80c-41436558dec0_Offer_20251104101521_7014667Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "Chipso and Queso\n\nWhy choose Fourbloxid?\nFast process ⚡ Safe transaction 🔒 Trusted seller ✅\nEverything you need for Roblox, all in one place!",
+                "id": "dca1b497-2dc1-4b42-beed-2eff3d863da0",
+                "userId": "c068243e-cf05-4028-b80c-41436558dec0",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 7,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 109.95715,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "e80e23ad-6952-4f20-9a34-4f9b9c375a50",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 19.99000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "c068243e-cf05-4028-b80c-41436558dec0",
+                "username": "FourBloxID",
+                "picture": {
+                    "smallPicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_3681891Small.png",
+                    "mediumPicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_118021Medium.png",
+                    "largePicture": "c068243e-cf05-4028-b80c-41436558dec0_Avatar_20250825234143_6296297Large.png"
+                },
+                "description": "🌟 Trusted Roblox Game Store | Complete Accounts & Items! 🌟\n\nWelcome to our store! We offer a wide range of ready-to-use Roblox accounts and in-game items at friendly prices with super fast delivery.\n\n🎮 What do we sell?\n\n✔️ Ready-to-use Roblox accounts\n\n✔️ Items and game passes for various games (such as Blox Fruits, Pet Simulator, Grow a Garden, and more)\n\n✔️ In-game currency & boosts\n\n✔️ Top-up services and account upgrade assistance\n\n🚀 Why choose us?\n✅ Fast & secure process",
+                "createdDate": "2025-08-25T11:40:13.829965Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "c068243e-cf05-4028-b80c-41436558dec0",
+                "positiveCount": 27474,
+                "negativeCount": 62,
+                "ratingCount": 27536,
+                "feedbackScore": 99.77484020918070889018012783,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        },
+        {
+            "offer": {
+                "tradeEnvironmentValues": [
+                    {
+                        "value": "Brainrot",
+                        "name": "Tipo de item",
+                        "id": "0",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Secreto",
+                        "name": "Raridade",
+                        "id": "0-6",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "W or L",
+                        "name": "Brainrot",
+                        "id": "0-6-67",
+                        "imageLocation": null
+                    }
+                ],
+                "offerAttributeIdValues": [
+                    {
+                        "value": "25-49 M/s",
+                        "name": "M/s",
+                        "id": "0-2",
+                        "imageLocation": null
+                    },
+                    {
+                        "value": "Gold",
+                        "name": "Mutations",
+                        "id": "1-1",
+                        "imageLocation": null
+                    }
+                ],
+                "attributes": [],
+                "offerTitle": "Gold W or L 37,5M/s",
+                "offerTitleOriginal": "Gold W or L 37,5M/s",
+                "mainOfferImage": {
+                    "smallImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251202121815_9196285Small.png",
+                    "largeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251202121815_6855728Large.png",
+                    "originalSizeImage": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Offer_20251202121815_3900282Original.png"
+                },
+                "offerImages": [],
+                "isTrending": false,
+                "description": "🎁 How to Get Your Item – Super Easy! 🛒\n\n1️⃣ Drop your username in the chat 💬\n2️⃣ We’ll send you a link or add you to the game 🎮✨\n3️⃣ Claim your item in-game 🎁\n4️⃣ That’s it – you’re all set! ✅🎉\n\nGold W or L ⚡️ Fast & Easy Delivery!\nGold W or L ⏳ Just a few minutes and your item is ready!\n\n────────────\n🔒 Powered by BloxBazaar\n\n\n\n\n\n\n\ngold\nworl w or l\nwin or lose\nw / l\nwin / lose\nwin or loose \nw\nor \nl",
+                "id": "bca6e3c4-9b26-4731-9997-44ac90000bb0",
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "gameId": "259",
+                "category": "CustomItem",
+                "gameCategoryTitle": "Items",
+                "gameSeoAlias": "steal-a-brainrot-brainrots",
+                "quantity": 1,
+                "volumeDiscounts": [],
+                "pricePerUnit": {
+                    "amount": 110.01216,
+                    "currency": "BRL"
+                },
+                "pricePerUnitWithDiscount": null,
+                "discountPercentage": null,
+                "guaranteedDeliveryTime": "Minute20",
+                "expireDate": "2025-12-23T18:00:00+00:00",
+                "offerState": "Active",
+                "version": "5089bc22-eb98-4e5b-8b2c-d22cbd7d27b5",
+                "exchangeRate": {
+                    "currency": "BRL",
+                    "exchangeRate": 5.50060788000
+                },
+                "pricePerUnitInUSD": {
+                    "amount": 20.00000,
+                    "currency": "USD"
+                }
+            },
+            "user": {
+                "id": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "username": "BloxBazaar",
+                "picture": {
+                    "smallPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_5900924Small.jpeg",
+                    "mediumPicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_4030136Medium.jpeg",
+                    "largePicture": "a6a9878a-4122-4da0-a45c-ea8fba1123d9_Avatar_20250922135425_1749619Large.jpeg"
+                },
+                "description": "🎮✨ Welcome to BloxBazaar! ✨🎮\nYour one-stop shop for all things Roblox — rare items, limiteds, and trusted deals!\n\n🔹 Buy & sell Roblox items\n🔹 Fast response & secure transactions\n🔹 Fair prices, great service\n\nLooking for that dream item? Browse our catalog or DM us for custom requests!\n💬 Easy, fast, and hassle-free deals — always.\n\n📦 Gear up and stand out in style with BloxBazaar — because Roblox is more fun when you look your best! 😎",
+                "createdDate": "2025-09-16T04:01:05.3762655Z",
+                "isVerifiedSeller": true,
+                "sellerPrePurchaseChatsEnabled": false
+            },
+            "userOrderInfo": {
+                "gameDeliveryTimeMedians": [],
+                "userId": "a6a9878a-4122-4da0-a45c-ea8fba1123d9",
+                "positiveCount": 3203,
+                "negativeCount": 8,
+                "ratingCount": 3211,
+                "feedbackScore": 99.75085643101837433821239489,
+                "disputedAccountOrderRatio": 0.0,
+                "isEligibleForWarranty": false
+            },
+            "deliveryTime": null
+        }
+    ]
+}

@@ -698,7 +698,7 @@ export async function POST(request: NextRequest) {
     const gateways = gateway.split(',').map(g => g.trim()).filter(g => g.length > 0)
     
     console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    console.log("🚀 [GATEWAY] Iniciando geração de PIX")
+    console.log("💳 [PIX] GERANDO PIX")
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     
     if (gateways.length > 1) {
@@ -811,17 +811,22 @@ export async function POST(request: NextRequest) {
       }
       
       orderStorageService.saveOrder(orderData)
-      console.log("✅ [STORAGE] Pedido salvo com sucesso!")
-      console.log("📦 [STORAGE] Nome do produto salvo:", body.itemValue)
-      console.log("💰 [STORAGE] Valores:")
-      console.log("   - Produto base: R$", (body.trackingParams?.price || 0))
-      console.log("   - Total com promoções: R$", (body.amount / 100).toFixed(2))
-      console.log("🎯 [STORAGE] UTMs salvos no orderStorage:")
-      console.log("   - gclid:", orderData.trackingParameters.gclid || 'N/A')
-      console.log("   - gad_source:", orderData.trackingParameters.gad_source || 'N/A')
-      console.log("   - gbraid:", orderData.trackingParameters.gbraid || 'N/A')
-      console.log("   - utm_source:", orderData.trackingParameters.utm_source || 'N/A')
-      console.log("   - utm_campaign:", orderData.trackingParameters.utm_campaign || 'N/A')
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+      console.log("✅ [PIX] PIX GERADO COM SUCESSO!")
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+      console.log("📦 Pedido:", validResult.transactionId)
+      console.log("💰 Valor:", `R$ ${(body.amount / 100).toFixed(2)}`)
+      console.log("🎮 Produto:", body.itemValue)
+      console.log("👤 Cliente:", body.customer?.name || 'N/A')
+      console.log("🎯 Gateway:", gateway.toUpperCase())
+      console.log("📊 UTMs capturados:")
+      console.log("   ├─ gclid:", orderData.trackingParameters.gclid || 'N/A')
+      console.log("   ├─ gad_source:", orderData.trackingParameters.gad_source || 'N/A')
+      console.log("   ├─ gbraid:", orderData.trackingParameters.gbraid || 'N/A')
+      console.log("   ├─ utm_source:", orderData.trackingParameters.utm_source || 'N/A')
+      console.log("   └─ utm_campaign:", orderData.trackingParameters.utm_campaign || 'N/A')
+      console.log("🔄 Aguardando pagamento...")
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     } catch (storageError) {
       console.error("❌ [STORAGE] Erro ao salvar:", storageError)
     }

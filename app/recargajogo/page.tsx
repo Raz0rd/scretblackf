@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Shield } from "lucide-react"
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,8 @@ export default function HomePage() {
   const [mounted, setMounted] = useState(false)
   const [showLeadMessage, setShowLeadMessage] = useState(false)
   
+  // Página /recargajogo
+  
   // Forçar light mode removendo classe dark
   useEffect(() => {
     const html = document.documentElement
@@ -24,13 +26,13 @@ export default function HomePage() {
     html.style.colorScheme = 'light'
   }, [])
 
-  // Mudar título se tiver cookie do cloaker
+  // Mudar título se tiver cookie de sessão
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    const hasCloakerCookie = document.cookie.includes('cloaker_verified=true')
-    if (hasCloakerCookie) {
-      document.title = 'Centro de Recarga Free Fire - Diamantes Oficiais'
+    const hasSessionCookie = document.cookie.includes('_x9f2w8k5=true')
+    if (hasSessionCookie) {
+      document.title = 'Canal Oficial de Recarga - Free Fire'
     }
   }, [])
   const [leadMessageType, setLeadMessageType] = useState<"default" | "nao_quer_agora" | "nao_tem_interesse">("default")
@@ -95,8 +97,8 @@ export default function HomePage() {
       icon: '/images/icon.png',
       coinIcon: '/images/point.webp',
       userIcon: '/images/icon.png',
-      rechargeValues: ["100", "310", "520", "1.060", "2.180", "5.600", "15.600"],
-      promotionalValues: ["1.060", "2.180", "5.600", "15.600"],
+      rechargeValues: ["100", "310", "520", "1.060", "2.180", "5.600"],
+      promotionalValues: ["1.060", "2.180", "5.600"],
       specialOffers: [
         { id: 'semanal', name: 'Assinatura Semanal', image: '/images/semanal.png', description: 'Ganhe 60 diamantes agora e resgate 40 diamantes todos os dias no jogo, durante 7 dias! Você receberá 340 diamantes no total.' },
         { id: 'mensal', name: 'Assinatura Mensal', image: '/images/mensal.png', description: 'Ganhe 300 diamantes agora e resgate 50 diamantes todos os dias no jogo, durante 30 dias! Você receberá 1800 diamantes no total.' },
@@ -457,10 +459,10 @@ export default function HomePage() {
       100: { price: 6.0, bonus: 20 },
       310: { price: 10.99, bonus: 62 },
       520: { price: 14.9, bonus: 104 },
-      1060: { price: 19.99, bonus: 1060 },   // DOBRO
-      2180: { price: 24.8, bonus: 2180 },    // DOBRO
-      5600: { price: 46.40, bonus: 5600 },    // DOBRO
-      15600: { price: 110.85, bonus: 15600 },  // DOBRO
+      1060: { price: 19.99, bonus: 240 },     // 1060 + 240 bônus
+      2180: { price: 27.30, bonus: 840 },     // 2180 + 840 bônus
+      5600: { price: 46.40, bonus: 1200 },    // 5600 + 1200 bônus
+      15600: { price: 110.85, bonus: 15600 }, // DOBRO
     }
 
     return priceMap[diamondCount] || { price: 0, bonus: 0 }
@@ -508,6 +510,27 @@ export default function HomePage() {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
   const [couponCopied, setCouponCopied] = useState(false)
   const [generatedCoupon, setGeneratedCoupon] = useState("PROMO5OFF")
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  // Auto-play do carousel a cada 2 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % banners.length)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [banners.length])
+
+  // Scroll automático quando o índice muda
+  useEffect(() => {
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth
+      const itemWidth = scrollWidth / banners.length
+      carouselRef.current.scrollTo({
+        left: itemWidth * currentBannerIndex,
+        behavior: 'smooth'
+      })
+    }
+  }, [currentBannerIndex, banners.length])
 
   // Função para buscar informações do avatar
   const fetchAvatarInfo = async (headPicId: number) => {
@@ -672,7 +695,7 @@ export default function HomePage() {
         price: priceData.price.toString(),
         bonus: priceData.bonus.toString(),
         playerId: playerId,
-        payment: "PIX",
+        payment: selectedPaymentMethod,
         app: selectedGame === 'deltaforce' ? '100157' : selectedGame === 'haikyu' ? 'haikyu' : '100067'
       })
 
@@ -682,9 +705,6 @@ export default function HomePage() {
           params.set(key, value)
         }
       })
-
-      //console.log('[v0] UTM params being passed to checkout:', utmParams)
-      //console.log('[v0] Final checkout URL:', `/checkout?${params.toString()}`)
       
       router.push(`/checkout?${params.toString()}`)
     } else if (selectedSpecialOffer) {
@@ -696,7 +716,7 @@ export default function HomePage() {
         price: price.toString(),
         bonus: bonus.toString(),
         playerId: playerId,
-        payment: "PIX",
+        payment: selectedPaymentMethod,
         app: selectedGame === 'deltaforce' ? '100157' : selectedGame === 'haikyu' ? 'haikyu' : '100067'
       })
 
@@ -706,9 +726,6 @@ export default function HomePage() {
           params.set(key, value)
         }
       })
-
-      //console.log('[v0] UTM params being passed to checkout:', utmParams)
-      //console.log('[v0] Final checkout URL:', `/checkout?${params.toString()}`)
 
       router.push(`/checkout?${params.toString()}`)
     }
@@ -996,53 +1013,41 @@ export default function HomePage() {
         <div className="flex-1 pt-20 pb-32 overflow-y-auto">
         {/* Hero Banner com Carousel */}
         <div className="md:bg-[#151515]">
-          {/* Linha preta acima do carousel - apenas mobile */}
-          <div className="h-2 bg-black md:hidden"></div>
-          
           <div className="group mx-auto w-full md:max-w-[1366px] md:px-8 lg:px-10">
-            {/* Mobile: Carousel normal */}
-            <div className="relative overflow-hidden md:hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentBannerIndex * 100}%)` }}
-              >
+            {/* Mobile: Carousel com aspect ratio */}
+            <div className="relative md:hidden bg-black" style={{ paddingTop: '43.478%' }}>
+              <div ref={carouselRef} className="absolute inset-0 flex overflow-auto snap-x snap-mandatory scrollbar-hide bg-black">
                 {banners.map((banner, index) => (
                   <div 
                     key={index} 
-                    className="w-full flex-shrink-0"
+                    className="block h-full w-full shrink-0 snap-center flex items-center justify-center"
+                    data-index={index}
                   >
                     <img
                       src={banner.src}
                       alt={banner.alt}
-                      className="w-full h-auto"
-                      style={{ 
-                        maxHeight: '255px', 
-                        objectFit: banner.src.includes('digimon') ? 'cover' : 'cover',
-                        objectPosition: 'center'
-                      }}
+                      className="pointer-events-none w-full h-full object-contain"
                     />
                   </div>
                 ))}
               </div>
               
-              {/* Navigation dots - Mobile */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5 z-10">
+              {/* Navigation dots - Mobile e Desktop */}
+              <div className="absolute bottom-2.5 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-3 z-10">
                 {banners.map((_, index) => (
                   <button
                     key={index}
+                    aria-checked={index === currentBannerIndex}
                     onClick={() => setCurrentBannerIndex(index)}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    className={`h-1.5 w-1.5 cursor-pointer rounded-full transition-colors md:h-2.5 md:w-2.5 ${
                       index === currentBannerIndex 
-                        ? 'bg-red-500' 
-                        : 'bg-white/60 hover:bg-white/80'
+                        ? 'bg-red-500 md:bg-[linear-gradient(209deg,#DA1C1C_-7.14%,#8C1515_102.95%)]' 
+                        : 'bg-white/80 md:bg-white/40'
                     }`}
                   />
                 ))}
               </div>
             </div>
-            
-            {/* Linha preta abaixo do carousel - apenas mobile */}
-            <div className="h-2 bg-black md:hidden"></div>
 
             {/* Desktop: Múltiplas imagens visíveis */}
             <div className="relative hidden md:flex justify-center" style={{ paddingTop: '23%' }}>
@@ -1566,11 +1571,11 @@ export default function HomePage() {
               )}
             </div>
             <div
-              className="relative p-3 sm:p-4 border rounded-md transition-all bg-[#f4f4f4] border-gray-200"
+              className="relative p-2 sm:p-3 border rounded-md transition-all bg-[#f4f4f4] border-gray-200"
             >
               {isLoggedIn && (
-                <div className="mb-3 sm:mb-4">
-                  <div className="relative flex items-center rounded-md p-3 bg-[#f4f4f4]">
+                <div className="mb-2">
+                  <div className="relative flex items-center rounded-md p-2 bg-[#f4f4f4]">
                     <div className="me-3 h-9 w-9 shrink-0 overflow-hidden rounded-full">
                       <img 
                         alt={`${currentConfig.name} Icon`}
@@ -1636,9 +1641,9 @@ export default function HomePage() {
                       </svg>
                     </button>
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex">
                     <input
-                      className="flex-1 rounded border px-2.5 sm:px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 transition-all border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="flex-1 rounded-l border px-2.5 sm:px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 transition-all border-gray-300 focus:border-red-500 focus:ring-red-500 border-r-0"
                       id="player-id"
                       name="player-id"
                       placeholder="Insira o ID de jogador aqui"
@@ -1653,7 +1658,7 @@ export default function HomePage() {
                       }}
                     />
                     <button
-                      className={`rounded px-3 sm:px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
+                      className={`rounded-r px-3 sm:px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
                         isLoading
                           ? "bg-gray-400 cursor-not-allowed"
                           : "bg-red-500 hover:bg-red-600 focus:ring-red-500"
@@ -1793,7 +1798,7 @@ export default function HomePage() {
                     isDisabled
                       ? "bg-gray-100 border-gray-300 cursor-not-allowed opacity-50"
                       : selectedRechargeValue === value
-                      ? "border-red-500 bg-red-50 text-red-700 cursor-pointer"
+                      ? "border-[3px] border-red-500 bg-red-50/50 text-red-700 cursor-pointer"
                       : "bg-white border-gray-200 cursor-pointer hover:border-red-300"
                   }`}
                   onClick={() => !isDisabled && handleRechargeValueSelect(value)}
@@ -1849,7 +1854,7 @@ export default function HomePage() {
                   aria-checked={selectedSpecialOffer === offer.name}
                   tabIndex={0}
                   className={`group peer relative flex h-full cursor-pointer flex-col items-center rounded-md bg-white p-1 sm:p-1.5 pb-1.5 sm:pb-2 border transition-all focus-visible:ring-2 focus-visible:ring-ring ${
-                    selectedSpecialOffer === offer.name ? "border-red-500 bg-red-50" : "border-gray-200"
+                    selectedSpecialOffer === offer.name ? "border-[3px] border-red-500 bg-red-50/50" : "border-gray-200"
                   }`}
                   onClick={() => handleSpecialOfferSelect(offer.name)}
                 >
@@ -2435,7 +2440,7 @@ export default function HomePage() {
                       )}
                     </span>
                   </div>
-                  <div className="rounded-md border border-gray-200 bg-gray-50 p-3 text-sm">
+                  <div className="rounded-md border border-gray-200 p-3 text-xs leading-none" style={{ backgroundColor: 'rgb(249, 249, 249)', fontSize: '0.75rem', lineHeight: '1' }}>
                     <ul className="flex flex-col gap-2.5">
                       <li className="flex items-center justify-between gap-12">
                         <div className="text-gray-600">Preço Original</div>
@@ -2475,6 +2480,20 @@ export default function HomePage() {
                           alt="Moeda"
                         />
                         <span>{selectedRechargeValue} + {calculatePrice(selectedRechargeValue).bonus}</span>
+                        <button
+                          onClick={() => setShowSummary(!showSummary)}
+                          className="ml-1 p-1 rounded-full border border-gray-300 bg-gray-50 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                          aria-label="Ver detalhes"
+                        >
+                          <svg 
+                            className={`w-3.5 h-3.5 transition-transform duration-200 ${showSummary ? 'rotate-180' : ''}`}
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </button>
                       </div>
                       <div className="flex items-center gap-1 text-xs">
                         <span className="font-medium text-gray-600">Total:</span>
@@ -2485,6 +2504,20 @@ export default function HomePage() {
                     <>
                       <div className="flex items-center gap-1.5 text-sm font-bold text-gray-900 mb-1">
                         <span>{selectedSpecialOffer}</span>
+                        <button
+                          onClick={() => setShowSummary(!showSummary)}
+                          className="ml-1 p-1 rounded-full border border-gray-300 bg-gray-50 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                          aria-label="Ver detalhes"
+                        >
+                          <svg 
+                            className={`w-3.5 h-3.5 transition-transform duration-200 ${showSummary ? 'rotate-180' : ''}`}
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </button>
                       </div>
                       <div className="flex items-center gap-1 text-xs">
                         <span className="font-medium text-gray-600">Total:</span>
@@ -2493,20 +2526,6 @@ export default function HomePage() {
                     </>
                   )}
                 </div>
-                <button
-                  onClick={() => setShowSummary(!showSummary)}
-                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
-                  aria-label="Ver detalhes"
-                >
-                  <svg 
-                    className={`w-5 h-5 transition-transform duration-200 ${showSummary ? 'rotate-180' : ''}`}
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                  </svg>
-                </button>
               </div>
 
               {/* Desktop: Info + Botão Seta */}

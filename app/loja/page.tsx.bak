@@ -1,0 +1,1615 @@
+"use client"
+
+import { useEffect } from "react"
+import { useRouter } from 'next/navigation'
+
+export default function LojaRedirect() {
+  const router = useRouter()
+  
+  // Redirect para /loja/freefire preservando query params
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const searchParams = new URLSearchParams(window.location.search)
+    const fullPath = searchParams.toString() ? `/loja/freefire?${searchParams.toString()}` : '/loja/freefire'
+    router.replace(fullPath)
+  }, [router])
+  
+  return null
+}
+
+  // Mudar título
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    document.title = 'Loja de Diamantes - Recarga Rápida e Segura'
+  }, [])
+  const [leadMessageType, setLeadMessageType] = useState<"default" | "nao_quer_agora" | "nao_tem_interesse">("default")
+  const [loginError, setLoginError] = useState("")
+  const [showSocialError, setShowSocialError] = useState(false)
+  const [showCouponModal, setShowCouponModal] = useState(false)
+  const [showPurchasePage, setShowPurchasePage] = useState(true)
+  const [showOfferInfoModal, setShowOfferInfoModal] = useState(false)
+  const [selectedOfferInfo, setSelectedOfferInfo] = useState<{name: string, image: string, description: string} | null>(null)
+  const [textAnswer, setTextAnswer] = useState("")
+  const [selectedValue, setSelectedValue] = useState<string | null>(null)
+  const [playerId, setPlayerId] = useState("")
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [showIllusoryLoading, setShowIllusoryLoading] = useState(false)
+  const [showTutorialModal, setShowTutorialModal] = useState(false)
+  const [selectedRechargeValue, setSelectedRechargeValue] = useState<string | null>(null)
+  const [selectedSpecialOffer, setSelectedSpecialOffer] = useState<string | null>(null)
+  const [carouselIndex, setCarouselIndex] = useState(0)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
+  const [showSwipeHint, setShowSwipeHint] = useState(true)
+  const [showCookieBanner, setShowCookieBanner] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
+  const [showBlurOverlay, setShowBlurOverlay] = useState(false) // Modal desabilitado no início
+  const showFreeItemModal = false // Item grátis desabilitado
+  const selectedPaymentMethod = "PIX" // Fixo em PIX
+  const [showExitMessage, setShowExitMessage] = useState(false)
+  const [exitMessage, setExitMessage] = useState("")
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const [pendingDisqualifyAnswer, setPendingDisqualifyAnswer] = useState<string | null>(null)
+  const [selectedGame, setSelectedGame] = useState('freefire')
+  const [showSummary, setShowSummary] = useState(false)
+  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false)
+  
+  // Função para navegar preservando UTM params
+  const navigateToGame = (appId: string) => {
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search)
+      searchParams.set('app', appId)
+      router.push(`/recargajogo?${searchParams.toString()}`)
+    }
+  }
+
+  // Função para adicionar UTMs a qualquer URL interna
+  const addUtmsToUrl = (url: string): string => {
+    if (typeof window === 'undefined') return url
+    
+    const currentParams = new URLSearchParams(window.location.search)
+    const urlObj = new URL(url, window.location.origin)
+    
+    // Adicionar todos os parâmetros atuais à nova URL
+    currentParams.forEach((value, key) => {
+      if (!urlObj.searchParams.has(key)) {
+        urlObj.searchParams.set(key, value)
+      }
+    })
+    
+    return urlObj.pathname + urlObj.search
+  }
+  
+  // Configurações dinâmicas por jogo
+  const gameConfig = {
+    freefire: {
+      name: 'Free Fire',
+      banner: '/images/checkout-banner.webp',
+      icon: '/images/icon.png',
+      coinIcon: '/images/point.webp',
+      userIcon: '/images/icon.png',
+      rechargeValues: ["1.060", "2.180", "5.600"],
+      promotionalValues: ["1.060", "2.180", "5.600"],
+      specialOffers: [
+        { id: 'semanal', name: 'Assinatura Semanal', image: '/images/semanal.png', description: 'Ganhe 60 diamantes agora e resgate 40 diamantes todos os dias no jogo, durante 7 dias! Você receberá 340 diamantes no total.' },
+        { id: 'mensal', name: 'Assinatura Mensal', image: '/images/mensal.png', description: 'Ganhe 300 diamantes agora e resgate 50 diamantes todos os dias no jogo, durante 30 dias! Você receberá 1800 diamantes no total.' },
+        { id: 'booyah', name: 'Passe Booyah Premium Plus', image: '/images/boyahplus.png', description: 'Ganhe todos os privilégios e recompensas do Booyah Pass Premium + recompensas exclusivas + 50 níveis do Booyah Pass instantaneamente.' },
+        { id: 'nivel', name: 'Passe de Nível', image: '/images/passe-nivel.webp', description: 'Avance de nível e desbloqueie recompensas incríveis, incluindo skins exclusivas e diamantes.' },
+        { id: 'jimg-ambicioso', name: 'JIMG Ambicioso', image: '/images/jimg_ambicioso.png', description: 'Skin exclusiva JIMG Ambicioso para seu personagem.' },
+        { id: 'jimg-pisico', name: 'JIMG Pisico', image: '/images/jimg_pisico.png', description: 'Skin exclusiva JIMG Pisico para seu personagem.' },
+        { id: 'jimg-violento', name: 'JIMG Violento', image: '/images/jimg_violento.png', description: 'Skin exclusiva JIMG Violento para seu personagem.' },
+        { id: 'barba-velho', name: 'Barba do Velho', image: '/images/Barba do Velho.png', description: 'Acessório exclusivo Barba do Velho.' },
+        { id: 'calca-angelical', name: 'Calça Angelical Azul', image: '/images/Calça Angelical Azul.png', description: 'Calça Angelical Azul - Item raro e exclusivo.' },
+        { id: 'mochila-dino', name: 'Mochila Dino', image: '/images/MochilaDino.png', description: 'Mochila temática de dinossauro.' },
+        { id: 'mochila-panda', name: 'Mochila Panda', image: '/images/MochilaPanda.png', description: 'Mochila temática de panda.' }
+      ]
+    },
+    deltaforce: {
+      name: 'Delta Force',
+      banner: '/images/backgroundDelta.jpg',
+      icon: '/images/delta-force-icon.webp',
+      coinIcon: '/images/IconeCoinsDF.png',
+      userIcon: '/images/iconeusuarioDeltaForce.png',
+      rechargeValues: ["60", "300", "680", "1.280", "3.280", "6.480"],
+      promotionalValues: ["680", "1.280", "3.280", "6.480"], // Todos com coins em dobro
+      specialOffers: [
+        { id: 'genesis', name: 'Black Hawk Down - Gênesis', image: '/images/Black Hawk Down - Gênesis.png', description: 'Limitado a 1 compra por conta.' },
+        { id: 'reinvencao', name: 'Black Hawk Down - Reinvenção', image: '/images/Black Hawk Down - Reinvenção.png', description: 'Limitado a 1 compra por conta.' },
+        { id: 'mare', name: 'Suprimentos de Maré', image: '/images/Suprimentos de Maré.png', description: 'Limitado a 1 compra por conta.' },
+        { id: 'mare-avancado', name: 'Suprimentos de Maré - Avançado', image: '/images/Suprimentos de Maré - Avançado.png', description: 'Limitado a 1 compra por conta.' }
+      ]
+    },
+    haikyu: {
+      name: 'HAIKYU!! FLY HIGH',
+      banner: '/images/backgroundHiuki.jpg',
+      icon: '/images/HAIKIU FLY HIGH.png',
+      coinIcon: '/images/iconCoinHaikyu.png',
+      userIcon: '/images/HAIKIU FLY HIGH.png',
+      rechargeValues: ["60", "300", "680", "1.280", "3.280", "6.480"],
+      promotionalValues: ["680", "1.280", "3.280"],
+      specialOffers: [
+        { id: 'haikyu1', name: 'Especial de Recrutar Ultra I', image: '/images/haikiuEspecial1.png', description: 'Bilhete de Recrutar Ultra x1，Diamantes Estelares x200' },
+        { id: 'haikyu2', name: 'Especial de Recrutar Ultra II', image: '/images/HaikiuEspecial2.png', description: 'Bilhete de Recrutar Ultra x5，Diamantes Estelares x300' },
+        { id: 'haikyu3', name: 'Especial de Recrutar Ultra III', image: '/images/HaikiuEspecial3.png', description: 'Bilhete de Recrutar Ultra x5，Diamantes Estelares x500' },
+        { id: 'haikyu4', name: 'Especial de Recrutar Ultra IV', image: '/images/HaikiuEspecial4.png', description: 'Bilhete de Recrutar Ultra x10，Diamantes Estelares x500' }
+      ]
+    },
+    robux: {
+      name: 'Robux',
+      banner: '/images/checkout-banner.webp',
+      icon: '/images/icon.png',
+      coinIcon: '/images/point.webp',
+      userIcon: '/images/icon.png',
+      rechargeValues: ["1000", "2000", "5250", "11000", "24000"],
+      promotionalValues: [],
+      specialOffers: []
+    }
+  }
+
+  const currentConfig = gameConfig[selectedGame as keyof typeof gameConfig]
+
+  const { getUtmObject } = useUtmParams()
+  
+  // Evitar problemas de hidratação
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Detectar se é desktop
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth >= 640)
+    }
+    
+    checkIsDesktop()
+    window.addEventListener('resize', checkIsDesktop)
+    
+    return () => window.removeEventListener('resize', checkIsDesktop)
+  }, [])
+
+  // Verificar se usuário já está logado
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const checkUserLogin = async () => {
+      // Pegar app atual da URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const currentApp = urlParams.get('app') || '100067'
+      
+      const storedUserData = localStorage.getItem(`userData_${currentApp}`)
+      const userAuthenticated = localStorage.getItem(`user_authenticated_${currentApp}`)
+      
+      if (storedUserData && userAuthenticated === 'true') {
+        try {
+          const userData = JSON.parse(storedUserData)
+          
+          // Aceitar qualquer nickname como válido
+          if (userData.nickname) {
+            setIsLoggedIn(true)
+            setUserData(userData)
+            
+            // Carregar avatar se existir
+            if (userData.headPic) {
+              await fetchAvatarInfo(userData.headPic)
+            }
+          } else {
+            // Limpar dados sem nickname
+            localStorage.removeItem(`userData_${currentApp}`)
+            localStorage.removeItem(`user_authenticated_${currentApp}`)
+            setIsLoggedIn(false)
+            setUserData(null)
+          }
+        } catch (error) {
+          console.error('[HomePage] Erro ao carregar dados do usuário:', error)
+          setIsLoggedIn(false)
+          setUserData(null)
+        }
+      } else {
+        setIsLoggedIn(false)
+        setUserData(null)
+      }
+    }
+    
+    checkUserLogin()
+    
+    // Listener para mudanças na URL (quando trocar de jogo)
+    const handleUrlChange = () => {
+      checkUserLogin()
+    }
+    
+    window.addEventListener('popstate', handleUrlChange)
+    
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange)
+    }
+  }, [mounted])
+
+  // Detectar mudanças no parâmetro app da URL e recarregar login
+  useEffect(() => {
+    if (typeof window === 'undefined' || !mounted) return
+    
+    const loadGameLogin = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const currentApp = urlParams.get('app') || '100067'
+      
+      const storedUserData = localStorage.getItem(`userData_${currentApp}`)
+      const userAuthenticated = localStorage.getItem(`user_authenticated_${currentApp}`)
+      
+      if (storedUserData && userAuthenticated === 'true') {
+        try {
+          const userData = JSON.parse(storedUserData)
+          if (userData.nickname) {
+            setIsLoggedIn(true)
+            setUserData(userData)
+            setPlayerId("")
+            if (userData.headPic) {
+              fetchAvatarInfo(userData.headPic)
+            }
+          }
+        } catch (error) {
+          console.error('[HomePage] Erro ao carregar dados:', error)
+        }
+      } else {
+        setIsLoggedIn(false)
+        setUserData(null)
+        setPlayerId("")
+      }
+    }
+    
+    // Carregar login inicial
+    loadGameLogin()
+    
+    // Escutar mudanças de rota do Next.js
+    const handleRouteChange = () => {
+      setTimeout(() => {
+        loadGameLogin()
+      }, 100)
+    }
+    
+    // Interceptar pushState e replaceState para detectar mudanças de rota
+    const originalPushState = window.history.pushState
+    const originalReplaceState = window.history.replaceState
+    
+    window.history.pushState = function(...args) {
+      originalPushState.apply(this, args)
+      handleRouteChange()
+    }
+    
+    window.history.replaceState = function(...args) {
+      originalReplaceState.apply(this, args)
+      handleRouteChange()
+    }
+    
+    window.addEventListener('popstate', handleRouteChange)
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange)
+      window.history.pushState = originalPushState
+      window.history.replaceState = originalReplaceState
+    }
+  }, [mounted])
+
+  // Verificar consentimento de cookies
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const cookieConsent = localStorage.getItem('cookieConsent')
+    
+    if (!cookieConsent) {
+      setShowCookieBanner(true)
+    }
+  }, [])
+
+  // Função para aceitar cookies
+  const handleAcceptCookies = () => {
+    localStorage.setItem('cookieConsent', 'true')
+    setShowCookieBanner(false)
+  }
+  
+  // Array de banners para carousel (5 banners diferentes)
+  const banners = [
+    {
+      src: "/images/banner1.png",
+      alt: "Banner 1 - Promoção Especial de Recarga"
+    },
+    {
+      src: "/images/banner2.jpg",
+      alt: "Banner 2 - Ofertas Exclusivas"
+    },
+    {
+      src: "/images/banner3.png",
+      alt: "Banner 3 - Recarga Segura e Rápida"
+    },
+    {
+      src: "/images/banner4.png",
+      alt: "Banner 4 - Promoção Especial"
+    },
+    {
+      src: "/images/banner5.jpg",
+      alt: "Banner 5 - Promoção Especial"
+    }
+  ]
+
+
+  // Capturar e salvar parâmetros UTM no sessionStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const urlParams = new URLSearchParams(window.location.search)
+    const paramsToCapture = [
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'gclid', 'fbclid', 'src', 'sck', 'xcod', 'keyword', 'device', 'network', 
+      'gad_source', 'gbraid', 'wbraid', 'msclkid'
+    ]
+    
+    // Salvar parâmetros da URL no sessionStorage
+    paramsToCapture.forEach(param => {
+      const value = urlParams.get(param)
+      if (value) {
+        sessionStorage.setItem(`utm_${param}`, value)
+      }
+    })
+    
+    // Capturar Adspect Click ID
+    // Prioridade: gclid (Google Ads) > cid > clickid > click_id
+    const adspectCid = urlParams.get('gclid') || 
+                       urlParams.get('cid') || 
+                       urlParams.get('clickid') || 
+                       urlParams.get('click_id')
+    if (adspectCid) {
+      sessionStorage.setItem('adspect_cid', adspectCid)
+    }
+    
+    const utmParams = getUtmObject()
+  }, [])
+
+
+  // Debug dos estados do modal
+  
+
+  // Rotação automática dos banners
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prevIndex) => 
+        (prevIndex + 1) % banners.length
+      )
+    }, 6000) // Troca a cada 4 segundos
+
+    return () => clearInterval(interval)
+  }, [banners.length])
+
+  // Função para gerar cupom de desconto
+  const generateCoupon = () => {
+    const randomDigits = Math.floor(10000000 + Math.random() * 90000000) // 8 dígitos
+    return `FF${randomDigits}`
+  }
+
+  // Função para copiar texto (compatível com mobile)
+  const copyToClipboard = async (text: string) => {
+    try {
+      // Tentar usar a API moderna primeiro
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text)
+        setCouponCopied(true)
+        return
+      }
+      
+      // Fallback para dispositivos móveis/contextos não seguros
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      textArea.style.top = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      
+      const successful = document.execCommand('copy')
+      document.body.removeChild(textArea)
+      
+      if (successful) {
+        setCouponCopied(true)
+      } else {
+        throw new Error('Falha ao copiar')
+      }
+    } catch (error) {
+      // Como último recurso, mostrar um prompt para o usuário copiar manualmente
+      const userAgent = navigator.userAgent.toLowerCase()
+      const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent)
+      
+      if (isMobile) {
+        alert(`Copie este código manualmente: ${text}`)
+        setCouponCopied(true)
+      }
+    }
+  }
+
+  // Array de banners para o carrossel
+  const bannerImages = [
+    "/images/checkout-banner.webp",
+    "/images/checkout-banner.webp", // Duplicando por enquanto
+    "/images/checkout-banner.webp"  // Você pode substituir por outras imagens
+  ]
+
+  // useEffect removido - usando apenas o carousel principal dos banners
+
+  const calculatePrice = (diamonds: string): { price: number; bonus: number } => {
+    const diamondCount = Number.parseInt(diamonds.replace(".", "").replace(",", "")) // Handle both '.' and ',' as thousand separators
+
+
+
+    // Free Fire (padrão)
+    const priceMap: { [key: number]: { price: number; bonus: number } } = {
+      100: { price: 6.0, bonus: 20 },
+      310: { price: 10.99, bonus: 62 },
+      520: { price: 14.9, bonus: 104 },
+      1060: { price: 24.98, bonus: 1060 },   // PROMO
+      2180: { price: 35.19, bonus: 2180 },   // PROMO
+      5600: { price: 54.20, bonus: 5600 },   // PROMO
+      15600: { price: 110.85, bonus: 15600 },  // DOBRO
+    }
+
+    return priceMap[diamondCount] || { price: 0, bonus: 0 }
+  }
+
+  const getSpecialOfferPrice = (offer: string): number => {
+    const priceMap: { [key: string]: number } = {
+      // Free Fire
+      "Assinatura Semanal": 14.99,
+      "Assinatura Mensal": 44.99,
+      "Passe Booyah Premium Plus": 11.99,
+      "Passe de Nível": 44.99,
+      // Delta Force
+      "Black Hawk Down - Gênesis": 25.44,
+      "Black Hawk Down - Reinvenção": 18.50,
+      "Suprimentos de Maré": 13.99,
+      "Suprimentos de Maré - Avançado": 12.50,
+      // Haikyu
+      "Especial de Recrutar Ultra I": 15.99,
+      "Especial de Recrutar Ultra II": 25.50,
+      "Especial de Recrutar Ultra III": 52.11,
+      "Especial de Recrutar Ultra IV": 77.30,
+    }
+    return priceMap[offer] || 0
+  }
+
+  const getSpecialOfferBonus = (offer: string): number => {
+    const bonusMap: { [key: string]: number } = {
+      // Haikyu - Diamantes Estelares
+      "Especial de Recrutar Ultra I": 200,
+      "Especial de Recrutar Ultra II": 300,
+      "Especial de Recrutar Ultra III": 500,
+      "Especial de Recrutar Ultra IV": 500,
+      // Delta Force - Coins
+      "Black Hawk Down - Gênesis": 300,
+      "Black Hawk Down - Reinvenção": 300,
+      "Suprimentos de Maré": 300,
+      "Suprimentos de Maré - Avançado": 300,
+    }
+    return bonusMap[offer] || 0
+  }
+
+  const [userData, setUserData] = useState<any>(null)
+  const [avatarInfo, setAvatarInfo] = useState<any>(null)
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
+  const [couponCopied, setCouponCopied] = useState(false)
+  const [generatedCoupon, setGeneratedCoupon] = useState("PROMO5OFF")
+
+  // Função para buscar informações do avatar
+  const fetchAvatarInfo = async (headPicId: number) => {
+    try {
+      const response = await fetch(`/api/get-avatar?headPicId=${headPicId}`)
+      if (response.ok) {
+        const avatarData = await response.json()
+        setAvatarInfo(avatarData)
+        return avatarData
+      } else {
+        return null
+      }
+    } catch (error) {
+      return null
+    }
+  }
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!playerId.trim()) {
+      setLoginError("Por favor, insira um ID de jogador válido.")
+      return
+    }
+
+    setIsLoading(true)
+    setLoginError("")
+
+    // Login normal para Free Fire
+    try {
+      const apiUrl = `/api/game-data?uid=${playerId}`
+      const response = await fetch(apiUrl)
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        if (data.data && data.data.basicInfo && data.data.basicInfo.nickname) {
+          // Aceitar qualquer nickname como válido
+          setIsLoggedIn(true)
+          setUserData(data.data.basicInfo)
+          setLoginError("")
+          setShowBlurOverlay(false) // Fecha o modal após login
+          
+          // Salvar por jogo (app)
+          const urlParams = new URLSearchParams(window.location.search)
+          const currentApp = urlParams.get('app') || '100067'
+          localStorage.setItem(`userData_${currentApp}`, JSON.stringify(data.data.basicInfo))
+          localStorage.setItem(`user_authenticated_${currentApp}`, 'true')
+          
+          if (data.data.basicInfo.headPic) {
+            await fetchAvatarInfo(data.data.basicInfo.headPic)
+          }
+        } else {
+          setIsLoggedIn(false)
+          setLoginError("Resposta inválida do servidor. Tente novamente.")
+        }
+      } else {
+        setIsLoggedIn(false)
+        const errorMessage = data?.error || "Erro ao verificar ID do jogador. Tente novamente."
+        setLoginError(errorMessage)
+      }
+    } catch (error) {
+      setIsLoggedIn(false)
+      setLoginError("Erro de conexão. Verifique sua internet e tente novamente.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+
+  // Função para salvar lead do usuário
+  const saveUserLead = (reason: string) => {
+    const leadData = {
+      playerId: playerId || "anonymous",
+      nickname: userData?.nickname || "unknown",
+      timestamp: new Date().toISOString(),
+      reason: reason,
+      utm: getUtmObject()
+    }
+    
+    // Salvar no localStorage
+    const existingLeads = JSON.parse(localStorage.getItem("user_leads") || "[]")
+    existingLeads.push(leadData)
+    localStorage.setItem("user_leads", JSON.stringify(existingLeads))
+    
+    // Marcar que o usuário já passou pelo processo
+    localStorage.setItem("user_visited", "true")
+    
+    //console.log("Lead salvo:", leadData)
+  }
+
+
+  // Nova função para lidar com step 3
+  // Função para reiniciar (simplificada)
+  const restartQuestionnaire = () => {
+    setShowLeadMessage(false)
+    setTextAnswer("")
+    setSelectedValue(null)
+  }
+
+  // Função para lidar com login social
+  const handleSocialLogin = (platform: string) => {
+    //console.log(`Tentativa de login com ${platform}`)
+    setShowSocialError(true)
+  }
+
+  const handleValueSelect = (value: string) => {
+    setSelectedValue(value)
+    setSelectedRechargeValue(value)
+    // Ir direto para a página de recarga
+    setShowPurchasePage(true)
+  }
+
+  const handleRechargeValueSelect = (value: string) => {
+    setSelectedRechargeValue(value)
+    setSelectedSpecialOffer(null)
+  }
+
+  const handleSpecialOfferSelect = (offer: string) => {
+    setSelectedSpecialOffer(offer)
+    // Limpar valor de recarga quando selecionar oferta especial
+    setSelectedRechargeValue(null)
+  }
+
+  // Funções de swipe para o carousel
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+    setShowSwipeHint(false)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe && carouselIndex < currentConfig.specialOffers.length - 3) {
+      setCarouselIndex(carouselIndex + 1)
+    }
+    if (isRightSwipe && carouselIndex > 0) {
+      setCarouselIndex(carouselIndex - 1)
+    }
+
+    setTouchStart(0)
+    setTouchEnd(0)
+  }
+
+  // Esconder hint após 3 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSwipeHint(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handleBuyNow = () => {
+    if (!isLoggedIn) return
+
+    // Obter parâmetros UTM
+    const utmParams = getUtmObject()
+
+    if (selectedRechargeValue) {
+      const priceData = calculatePrice(selectedRechargeValue)
+      const params = new URLSearchParams({
+        type: "recharge",
+        value: selectedRechargeValue,
+        price: priceData.price.toString(),
+        bonus: priceData.bonus.toString(),
+        playerId: playerId,
+        payment: "PIX",
+      })
+
+      // Adicionar parâmetros UTM individualmente
+      Object.entries(utmParams).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value)
+        }
+      })
+
+      //console.log('[v0] UTM params being passed to checkout:', utmParams)
+      //console.log('[v0] Final checkout URL:', `/checkout?${params.toString()}`)
+      
+      router.push(`/checkout?${params.toString()}`)
+    } else if (selectedSpecialOffer) {
+      const price = getSpecialOfferPrice(selectedSpecialOffer)
+      const bonus = getSpecialOfferBonus(selectedSpecialOffer)
+      const params = new URLSearchParams({
+        type: "special",
+        value: selectedSpecialOffer,
+        price: price.toString(),
+        bonus: bonus.toString(),
+        playerId: playerId,
+        payment: "PIX",
+      })
+
+      // Adicionar parâmetros UTM individualmente
+      Object.entries(utmParams).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value)
+        }
+      })
+
+      //console.log('[v0] UTM params being passed to checkout:', utmParams)
+      //console.log('[v0] Final checkout URL:', `/checkout?${params.toString()}`)
+
+      router.push(`/checkout?${params.toString()}`)
+    }
+  }
+
+  // Modal de cupom de desconto
+  if (showCouponModal) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 relative border-4 border-red-500">
+          {/* Banner */}
+          <div className="relative p-3 pb-0">
+            <img
+              src="/images/quiznovo.png"
+              alt="Banner do jogo"
+              className="w-full h-20 object-cover rounded-xl"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="p-4">
+            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 mb-4 border-2 border-red-200">
+              <div className="text-center mb-4">
+                <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-red-600 mb-2">Parabéns! 🎉</h2>
+                <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                  Você ganhou um <span className="font-bold text-red-600">cupom de 5% de desconto</span> para usar na sua recarga!
+                </p>
+                
+                {/* Cupom */}
+                <div className="bg-white border-2 border-dashed border-red-300 rounded-lg p-4 mb-4">
+                  <p className="text-xs text-gray-500 mb-1">Seu cupom de desconto:</p>
+                  <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                    <span className="font-mono text-lg font-bold text-red-600">{generatedCoupon}</span>
+                    <button
+                      onClick={() => copyToClipboard(generatedCoupon)}
+                      className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                        couponCopied 
+                          ? "bg-green-500 text-white" 
+                          : "bg-red-500 hover:bg-red-600 text-white"
+                      }`}
+                    >
+                      {couponCopied ? "✓ Copiado" : "Copiar"}
+                    </button>
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-600 leading-relaxed mb-4">
+                  Cole este código no checkout para ganhar 5% de desconto adicional na sua recarga!
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  if (couponCopied) {
+                    setShowCouponModal(false)
+                    setShowPurchasePage(true)
+                  }
+                }}
+                disabled={!couponCopied}
+                className={`w-full font-bold py-3 px-4 rounded-xl transition-all duration-200 shadow-lg ${
+                  couponCopied
+                    ? "bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+              >
+                {couponCopied ? "Continuar para Recarga" : "Copie o cupom para continuar"}
+              </button>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="pb-4">
+            <p className="text-center text-sm text-gray-500">© Garena Online. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Conteúdo principal da página
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Fitinha Animada Infinita */}
+        <div className="relative w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 py-0.5 shadow-sm overflow-hidden">
+          <div className="animate-marquee whitespace-nowrap">
+            <span className="inline-block text-white text-[10px] md:text-xs font-semibold mx-4">
+              ⚡ PROMOÇÃO RELÂMPAGO: Até 35% de Bônus em Diamantes! ⚡ Entrega Imediata! 🔥 Aproveite Agora! ⚡ PROMOÇÃO RELÂMPAGO: Até 35% de Bônus em Diamantes! ⚡ Entrega Imediata! 🔥 Aproveite Agora! ⚡ PROMOÇÃO RELÂMPAGO: Até 35% de Bônus em Diamantes! ⚡ Entrega Imediata! 🔥 Aproveite Agora!
+            </span>
+          </div>
+        </div>
+        <style jsx>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            animation: marquee 25s linear infinite;
+          }
+        `}</style>
+
+      {/* Header Fixo */}
+      <div className="sticky top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+        <div className="mx-auto w-full max-w-5xl px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo e Nome do Site */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-sm sm:text-base font-bold text-gray-900 leading-tight">
+                  {process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DiamantesShop'}
+                </h1>
+                <p className="text-xs text-gray-500">Recarga Rápida e Segura</p>
+              </div>
+            </div>
+            
+            {/* Menu de Categorias */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowCategoriesMenu(!showCategoriesMenu)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                <span className="text-sm font-medium text-gray-700 hidden sm:inline">Categorias</span>
+                <svg className={`w-4 h-4 text-gray-700 transition-transform ${showCategoriesMenu ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showCategoriesMenu && (
+                <>
+                  {/* Overlay para fechar ao clicar fora */}
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowCategoriesMenu(false)}
+                  />
+                  
+                  {/* Menu */}
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
+                    <div className="py-2">
+                      {/* Free Fire */}
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors group"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setShowCategoriesMenu(false)
+                          router.push(addUtmsToUrl('/loja/freefire'))
+                        }}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600">Free Fire</p>
+                          <p className="text-xs text-gray-500">Diamantes e itens</p>
+                        </div>
+                      </a>
+
+                      {/* Robux */}
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors group"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setShowCategoriesMenu(false)
+                          router.push(addUtmsToUrl('/loja/robux'))
+                        }}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600">Robux</p>
+                          <p className="text-xs text-gray-500">Roblox</p>
+                        </div>
+                      </a>
+
+                      {/* Recarga Celular */}
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors group"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setShowCategoriesMenu(false)
+                          router.push(addUtmsToUrl('/loja/recarga-celular'))
+                        }}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600">Recarga Celular</p>
+                          <p className="text-xs text-gray-500">Todas as operadoras</p>
+                        </div>
+                      </a>
+
+                      {/* V-Bucks Fortnite */}
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors group"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setShowCategoriesMenu(false)
+                          router.push(addUtmsToUrl('/loja/vbucks'))
+                        }}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600">V-Bucks</p>
+                          <p className="text-xs text-gray-500">Fortnite</p>
+                        </div>
+                      </a>
+
+                      {/* Brainroots */}
+                      <a 
+                        href="#" 
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition-colors group"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setShowCategoriesMenu(false)
+                          router.push(addUtmsToUrl('/loja/brainroots'))
+                        }}
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900 group-hover:text-orange-600">Brainroots</p>
+                          <p className="text-xs text-gray-500">Moedas e itens</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo Principal */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Login Section - REMOVIDO */}
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6" style={{ display: 'none' }}>
+          <div id="login-section" className="group md:max-w-[464px]">
+            <div className="mb-2 sm:mb-3 flex items-center justify-between text-lg sm:text-xl text-gray-800 md:text-2xl">
+              <div className="flex items-center gap-2">
+                <div className="grid items-center">
+                  <svg
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`col-start-1 row-start-1 text-xl sm:text-2xl ${isLoggedIn ? "text-red-500" : "text-destructive"}`}
+                  >
+                    <path
+                      d="M0 3C0 1.34315 1.34315 0 3 0H21C22.6569 0 24 1.34315 24 3V15.7574C24 16.553 23.6839 17.3161 23.1213 17.8787L17.8787 23.1213C17.3161 23.6839 16.553 24 15.7574 24H3C1.34315 24 0 22.6569 0 21V3Z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                  <div className="col-start-1 row-start-1 text-center text-sm sm:text-base font-bold text-white">
+                    {isLoggedIn ? "✓" : "1"}
+                  </div>
+                </div>
+                <span className="font-bold ">Login</span>
+
+              </div>
+              {isLoggedIn && (
+                <button
+                  onClick={() => {
+                    setIsLoggedIn(false)
+                    setUserData(null)
+                    setAvatarInfo(null)
+                    setPlayerId("")
+                  }}
+                  className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
+                >
+                  <svg width="1em" height="1em" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M53.048 11.8069C51.8367 10.6764 49.9383 10.7418 48.8078 11.953C47.6773 13.1643 47.7428 15.0626 48.954 16.1932L58.3898 25H14.0007C12.3439 25 11.0007 26.3432 11.0007 28C11.0007 29.6569 12.3439 31 14.0007 31H66.0007C67.233 31 68.3399 30.2465 68.7917 29.1001C69.2436 27.9538 68.9485 26.6476 68.0477 25.8069L53.048 11.8069ZM26.9539 68.1932C28.1652 69.3237 30.0636 69.2582 31.1941 68.0469C32.3245 66.8356 32.259 64.9373 31.0477 63.8068L21.6114 55H66.0001C67.657 55 69.0001 53.6569 69.0001 52C69.0001 50.3432 67.657 49 66.0001 49H14.0001C12.7679 49 11.6609 49.7535 11.2091 50.8999C10.7572 52.0464 11.0524 53.3525 11.9532 54.1932L26.9539 68.1932Z" fill="currentColor"></path>
+                  </svg>
+                  Sair
+                </button>
+              )}
+            </div>
+            <div
+              className="relative p-3 sm:p-4 border rounded-md transition-all bg-[#f4f4f4] border-gray-200"
+            >
+              {isLoggedIn && (
+                <div className="mb-3 sm:mb-4">
+                  <div className="relative flex items-center rounded-md p-3 bg-[#f4f4f4]">
+                    <div className="me-3 h-9 w-9 shrink-0 overflow-hidden rounded-full">
+                      <img 
+                        alt={`${currentConfig.name} Icon`}
+                        data-ai-hint="game icon" 
+                        loading="lazy" 
+                        width="36" 
+                        height="36" 
+                        decoding="async" 
+                        data-nimg="1" 
+                        className="block h-full w-full object-contain" 
+                        src={currentConfig.icon}
+                        style={{ color: "transparent" }}
+                      />
+                    </div>
+                    <div className="flex-1 text-sm/none text-gray-800">
+                      {userData && userData.nickname ? (
+                        <div>
+                          <div className="font-medium">Usuário: {userData.nickname}</div>
+                          <div className="text-xs text-gray-600 mt-1">ID do jogador: {userData.accountId || playerId}</div>
+                        </div>
+                      ) : (
+                        <div>ID do jogador: {playerId}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+{!isLoggedIn && (
+                <form className="mb-3 sm:mb-4" onSubmit={handleLogin}>
+                  <label
+                    className="mb-2 flex items-center gap-1 text-sm sm:text-[15px] font-medium text-gray-800"
+                    htmlFor="player-id"
+                  >
+                    ID do jogador
+                    <button
+                      type="button"
+                      onClick={() => setShowTutorialModal(true)}
+                      className="rounded-full text-sm outline-current transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
+                    >
+                      <svg width="1em" height="1em" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clipPath="url(#clip0_489_1601)">
+                          <path
+                            d="M4.8999 5.39848C4.89981 4.44579 5.67209 3.67344 6.62478 3.67344H7.37471C8.33038 3.67344 9.09977 4.45392 9.09971 5.40371C9.09967 6.05546 8.73195 6.65677 8.14619 6.94967L7.57416 7.23571C7.49793 7.27382 7.44978 7.35173 7.44978 7.43695V7.49844C7.44978 7.78839 7.21473 8.02344 6.92478 8.02344C6.63483 8.02344 6.39978 7.78839 6.39978 7.49844V7.43695C6.39978 6.95403 6.67262 6.51255 7.10456 6.29657L7.6766 6.01053C7.90385 5.8969 8.0497 5.66087 8.04971 5.40365C8.04973 5.0279 7.74459 4.72344 7.37471 4.72344H6.62478C6.25203 4.72344 5.94987 5.02563 5.9499 5.39838C5.94993 5.68833 5.7149 5.9234 5.42495 5.92343C5.135 5.92346 4.89993 5.68843 4.8999 5.39848Z"
+                            fill="currentColor"
+                          ></path>
+                          <path
+                            d="M6.9999 10.1484C7.3865 10.1484 7.6999 9.83504 7.6999 9.44844C7.6999 9.06184 7.3865 8.74844 6.9999 8.74844C6.6133 8.74844 6.2999 9.06184 6.2999 9.44844C6.2999 9.83504 6.6133 10.1484 6.9999 10.1484Z"
+                            fill="currentColor"
+                          ></path>
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M0.524902 6.99844C0.524902 3.42239 3.42386 0.523438 6.9999 0.523438C10.5759 0.523438 13.4749 3.42239 13.4749 6.99844C13.4749 10.5745 10.5759 13.4734 6.9999 13.4734C3.42386 13.4734 0.524902 10.5745 0.524902 6.99844ZM6.9999 1.57344C4.00376 1.57344 1.5749 4.00229 1.5749 6.99844C1.5749 9.99458 4.00376 12.4234 6.9999 12.4234C9.99605 12.4234 12.4249 9.99458 12.4249 6.99844C12.4249 4.00229 9.99605 1.57344 6.9999 1.57344Z"
+                            fill="currentColor"
+                          ></path>
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_489_1601">
+                            <rect width="14" height="14" fill="currentColor"></rect>
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </button>
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      className="flex-1 rounded border px-2.5 sm:px-3 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 transition-all border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      id="player-id"
+                      name="player-id"
+                      placeholder="Insira o ID de jogador aqui"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      autoComplete="off"
+                      value={playerId}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/[^0-9]/g, '')
+                        setPlayerId(value)
+                      }}
+                    />
+                    <button
+                      className={`rounded px-3 sm:px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
+                        isLoading
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600 focus:ring-red-500"
+                      }`}
+                      type="submit"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Carregando..." : "Login"}
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Div de erro de login */}
+              {loginError && (
+                <div className="mb-3 sm:mb-4 p-3 bg-red-50 border border-red-300 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18L18 6M6 6l12 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <p className="text-red-800 font-medium text-xs sm:text-sm">{loginError}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Botões de login social */}
+              {!isLoggedIn && (
+                <div className="flex items-center gap-4 text-xs text-gray-500 md:text-sm">
+                  <span className="me-auto">Ou entre com sua conta de jogo</span>
+                  <button 
+                    onClick={() => handleSocialLogin("Facebook")}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 bg-[#006AFC]"
+                  >
+                    <img 
+                      src="/images/fb.svg" 
+                      alt="Facebook logo" 
+                      width="20" 
+                      height="20"
+                      className="h-5 w-5 brightness-0 invert"
+                    />
+                  </button>
+                  <button 
+                    onClick={() => handleSocialLogin("Google")}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200 bg-white"
+                  >
+                    <img 
+                      src="/images/gg.svg" 
+                      alt="Google logo" 
+                      width="20" 
+                      height="20"
+                      className="h-5 w-5"
+                    />
+                  </button>
+                  <button 
+                    onClick={() => handleSocialLogin("Twitter")}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 border border-gray-200 bg-white"
+                  >
+                    <img 
+                      src="/images/ic-twitter-92527e61.svg" 
+                      alt="Twitter logo" 
+                      width="20" 
+                      height="20"
+                      className="h-5 w-5"
+                    />
+                  </button>
+                  <button 
+                    onClick={() => handleSocialLogin("VK")}
+                    className="shrink-0 rounded-full p-1.5 transition-opacity hover:opacity-70 bg-[#0077FF]"
+                  >
+                    <img 
+                      src="/images/ic-vk-abadf989.svg" 
+                      alt="VK logo" 
+                      width="20" 
+                      height="20"
+                      className="h-5 w-5 brightness-0 invert"
+                    />
+                  </button>
+                </div>
+              )}
+
+            </div>
+          </div>
+        </div>
+
+        {/* Cards de Diamantes - Mobile First */}
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-6 pt-4">
+          {selectedGame === 'robux' ? (
+            <>
+              {/* Layout Robux - Título da Promoção */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 mb-2">
+                  Aproveite até 25% a mais de Robux
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Receba mais Robux no computador, web, com cartões-presente e em plataformas selecionadas
+                </p>
+              </div>
+
+              {/* Lista de Valores Robux */}
+              <div className="space-y-3 max-w-md mx-auto">
+                {currentConfig.rechargeValues.map((value: string) => {
+                  const isSelected = selectedRechargeValue === value
+                  const priceInfo = calculatePrice(value)
+                  
+                  return (
+                    <div
+                      key={value}
+                      role="radio"
+                      aria-checked={isSelected}
+                      tabIndex={0}
+                      className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                        isSelected
+                          ? "border-orange-500 bg-orange-50"
+                          : "border-gray-200 bg-white hover:border-gray-300"
+                      }`}
+                      onClick={() => handleRechargeValueSelect(value)}
+                    >
+                      {/* Preço em Reais */}
+                      <div className="text-lg font-semibold text-gray-900">
+                        R$ {priceInfo.price.toFixed(2).replace('.', ',')}
+                      </div>
+
+                      {/* Quantidade de Robux */}
+                      <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg">
+                        <img
+                          alt="Robux"
+                          loading="lazy"
+                          width="24"
+                          height="24"
+                          decoding="async"
+                          className="w-6 h-6 object-contain"
+                          src={currentConfig.coinIcon}
+                        />
+                        <span className="text-lg font-bold text-gray-900">
+                          {value.toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Informação sobre outras plataformas */}
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600 flex items-center justify-center gap-1">
+                  Computador, web e cartões presente
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-400 text-gray-600 hover:bg-gray-100"
+                    title="Mais informações"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.8999 5.39848C4.89981 4.44579 5.67209 3.67344 6.62478 3.67344H7.37471C8.33038 3.67344 9.09977 4.45392 9.09971 5.40371C9.09967 6.05546 8.73195 6.65677 8.14619 6.94967L7.57416 7.23571C7.49793 7.27382 7.44978 7.35173 7.44978 7.43695V7.49844C7.44978 7.78839 7.21473 8.02344 6.92478 8.02344C6.63483 8.02344 6.39978 7.78839 6.39978 7.49844V7.43695C6.39978 6.95403 6.67262 6.51255 7.10456 6.29657L7.6766 6.01053C7.90385 5.8969 8.0497 5.66087 8.04971 5.40365C8.04973 5.0279 7.74459 4.72344 7.37471 4.72344H6.62478C6.25203 4.72344 5.94987 5.02563 5.9499 5.39838C5.94993 5.68833 5.7149 5.9234 5.42495 5.92343C5.135 5.92346 4.89993 5.68843 4.8999 5.39848Z" fill="currentColor"/>
+                      <path d="M6.9999 10.1484C7.3865 10.1484 7.6999 9.83504 7.6999 9.44844C7.6999 9.06184 7.3865 8.74844 6.9999 8.74844C6.6133 8.74844 6.2999 9.06184 6.2999 9.44844C6.2999 9.83504 6.6133 10.1484 6.9999 10.1484Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M0.524902 6.99844C0.524902 3.42239 3.42386 0.523438 6.9999 0.523438C10.5759 0.523438 13.4749 3.42239 13.4749 6.99844C13.4749 10.5745 10.5759 13.4734 6.9999 13.4734C3.42386 13.4734 0.524902 10.5745 0.524902 6.99844ZM6.9999 1.57344C4.00376 1.57344 1.5749 4.00229 1.5749 6.99844C1.5749 9.99458 4.00376 12.4234 6.9999 12.4234C9.99605 12.4234 12.4249 9.99458 12.4249 6.99844C12.4249 4.00229 9.99605 1.57344 6.9999 1.57344Z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </p>
+              </div>
+            </>
+          ) : (
+            /* Layout padrão para outros jogos */
+            <div className="grid grid-cols-3 gap-2 sm:gap-2.5 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
+              {currentConfig.rechargeValues.map((value: string) => {
+                const isPromotional = currentConfig.promotionalValues.includes(value)
+                const isSelected = selectedRechargeValue === value
+                
+                return (
+                  <div
+                    key={value}
+                    role="radio"
+                    aria-checked={isSelected}
+                    tabIndex={0}
+                    className={`group relative flex flex-col min-h-[70px] sm:min-h-[80px] md:min-h-[90px] overflow-hidden rounded-lg p-2 border-2 outline-none transition-all active:scale-95 ${
+                      isSelected
+                        ? "border-orange-500 bg-orange-50 shadow-lg"
+                        : "bg-white border-gray-200 hover:border-orange-300 shadow-sm"
+                    }`}
+                    onClick={() => handleRechargeValueSelect(value)}
+                  >
+                    {/* Badge de Promoção */}
+                    {isPromotional && (
+                      <div className="absolute top-0 right-0 left-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[9px] sm:text-[10px] font-bold px-1 py-0.5 text-center">
+                        PROMO
+                      </div>
+                    )}
+                    
+                    <div className={`flex flex-1 flex-col items-center justify-center gap-1 ${isPromotional ? 'pt-3' : 'pt-1'}`}>
+                      <img
+                        alt="Diamante"
+                        loading="lazy"
+                        width="20"
+                        height="20"
+                        decoding="async"
+                        className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+                        src={currentConfig.coinIcon}
+                      />
+                      <span className="text-sm sm:text-base font-bold text-gray-900 text-center leading-tight">
+                        {value}
+                      </span>
+                      {isPromotional && (
+                        <span className="text-[9px] sm:text-[10px] text-orange-600 font-semibold">
+                          +{calculatePrice(value).bonus}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Indicador de seleção */}
+                    {isSelected && (
+                      <div className="absolute top-1 right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Itens e Skins Section - Carousel com Swipe */}
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 pb-4 sm:pb-6">
+          <div className="text-center mb-4">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">✨ Itens e Skins</h3>
+            <p className="text-xs sm:text-sm text-gray-500">Pensando em você, separamos aqui algumas novidades pro seu jogo preferido</p>
+          </div>
+          
+          <div className="relative">
+            {/* Hint de Swipe Animado */}
+            {showSwipeHint && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                <div className="flex items-center gap-3 bg-black/70 text-white px-4 py-2 rounded-full animate-bounce">
+                  <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="text-sm font-medium">Deslize para ver mais</span>
+                  <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {/* Container do Carousel com Touch */}
+            <div 
+              className="overflow-hidden touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              <div 
+                className="flex transition-transform duration-300 ease-in-out gap-3"
+                style={{ transform: `translateX(-${carouselIndex * (100 / 3)}%)` }}
+              >
+                {currentConfig.specialOffers.map((offer) => (
+                  <div
+                    key={offer.id}
+                    className="flex-shrink-0 w-[calc(33.333%-8px)]"
+                  >
+                    <div
+                      role="radio"
+                      aria-checked={selectedSpecialOffer === offer.name}
+                      tabIndex={0}
+                      className={`group relative flex flex-col cursor-pointer rounded-lg overflow-hidden border-2 transition-all bg-white h-full ${
+                        selectedSpecialOffer === offer.name 
+                          ? "border-orange-500 shadow-lg" 
+                          : "border-gray-200 hover:border-gray-300 hover:shadow-md"
+                      }`}
+                      onClick={() => handleSpecialOfferSelect(offer.name)}
+                    >
+                      <div className="relative w-full pt-[56.25%] overflow-hidden bg-gray-50">
+                        <img
+                          alt={offer.name}
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 w-full h-full object-contain"
+                          src={offer.image}
+                        />
+                      </div>
+                      <div className="p-2 flex items-center justify-between gap-1 min-h-[44px]">
+                        <p className="text-xs font-medium text-gray-800 line-clamp-2 flex-1">
+                          {offer.name}
+                        </p>
+                        {offer.description && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setSelectedOfferInfo({
+                                name: offer.name,
+                                image: offer.image,
+                                description: offer.description
+                              })
+                              setShowOfferInfoModal(true)
+                            }}
+                            className="shrink-0"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 80 80" fill="none" className="text-gray-400 hover:text-gray-600">
+                              <path d="M44 26C44 23.7909 42.2091 22 40 22C37.7909 22 36 23.7909 36 26C36 28.2091 37.7909 30 40 30C42.2091 30 44 28.2091 44 26Z" fill="currentColor"></path>
+                              <path d="M43 54C43 55.6569 41.6569 57 40 57C38.3431 57 37 55.6569 37 54V37C37 35.3431 38.3431 34 40 34C41.6569 34 43 35.3431 43 37V54Z" fill="currentColor"></path>
+                              <path fillRule="evenodd" clipRule="evenodd" d="M5 25C5 13.9543 13.9543 5 25 5H55C66.0457 5 75 13.9543 75 25V55C75 66.0457 66.0457 75 55 75H25C13.9543 75 5 66.0457 5 55V25ZM25 11H55C62.732 11 69 17.268 69 25V55C69 62.732 62.732 69 55 69H25C17.268 69 11 62.732 11 55V25C11 17.268 17.268 11 25 11Z" fill="currentColor"></path>
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Indicadores */}
+          <div className="flex justify-center gap-2 mt-4">
+            {Array.from({ length: Math.max(1, currentConfig.specialOffers.length - 2) }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCarouselIndex(index)}
+                className={`h-2 rounded-full transition-all ${
+                  carouselIndex === index 
+                    ? "w-6 bg-orange-500" 
+                    : "w-2 bg-gray-300 hover:bg-gray-400"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Modal de Informação da Oferta - Haikyu */}
+        {showOfferInfoModal && selectedOfferInfo && (
+          <div className="fixed inset-0 bg-black/50 z-[70] flex items-center justify-center p-4" onClick={() => setShowOfferInfoModal(false)}>
+            <div className="relative flex h-full w-full items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              <div className="flex w-80 flex-col items-center justify-center rounded-lg bg-white p-6 text-center">
+                <div className="mb-5 flex w-full items-center justify-center overflow-hidden rounded-[4px]">
+                  <img 
+                    className="pointer-events-none h-full w-full object-cover" 
+                    src={selectedOfferInfo.image} 
+                    alt={selectedOfferInfo.name}
+                  />
+                </div>
+                <div className="mb-3 text-base font-bold text-gray-800">{selectedOfferInfo.name}</div>
+                <div className="text-sm leading-[22px] text-gray-600">{selectedOfferInfo.description}</div>
+                <button 
+                  className="mt-5 w-full inline-flex items-center justify-center gap-1.5 rounded-md border py-1 text-center leading-none transition-colors border-orange-500 bg-orange-500 text-white hover:bg-orange-600 hover:border-orange-600 px-5 text-sm font-bold h-10"
+                  onClick={() => setShowOfferInfoModal(false)}
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+        </div>
+        )}
+
+        {/* Top 3 do Mês - Design Profissional */}
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-[22px] md:px-8 py-8">
+          <div className="text-center mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Top 3 do Mês</h3>
+            <p className="text-sm text-gray-500">Maiores compradores de {new Date().toLocaleDateString('pt-BR', { month: 'long' })}</p>
+          </div>
+          
+          <div className="flex justify-center items-end gap-2 sm:gap-4 mb-4">
+            {/* 2º Lugar */}
+            <div className="flex-1 max-w-[110px] sm:max-w-[130px] group">
+              <div className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                {/* Badge de posição */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md border-2 border-white">
+                  <span className="text-white font-bold text-lg sm:text-xl">2</span>
+                </div>
+                
+                <div className="pt-6 sm:pt-8 text-center">
+                  {/* Avatar placeholder */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-2 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                    <svg className="w-6 h-6 sm:w-7 sm:h-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  
+                  <p className="text-xs sm:text-sm font-semibold text-gray-900 truncate mb-1">Gamer***456</p>
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-base sm:text-lg font-bold text-gray-700">R$</span>
+                    <span className="text-base sm:text-lg font-bold text-gray-700">1.240</span>
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">em compras</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 1º Lugar - Maior */}
+            <div className="flex-1 max-w-[130px] sm:max-w-[150px] group">
+              <div className="relative bg-white/90 backdrop-blur-sm border-2 border-orange-200 rounded-xl p-4 sm:p-5 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                {/* Badge de posição com coroa */}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+                
+                <div className="pt-8 sm:pt-10 text-center">
+                  {/* Avatar placeholder */}
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center ring-2 ring-orange-300">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  
+                  <p className="text-sm sm:text-base font-bold text-gray-900 truncate mb-1">Player***123</p>
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">R$</span>
+                    <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">3.890</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">em compras</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 3º Lugar */}
+            <div className="flex-1 max-w-[110px] sm:max-w-[130px] group">
+              <div className="relative bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                {/* Badge de posição */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center shadow-md border-2 border-white">
+                  <span className="text-white font-bold text-lg sm:text-xl">3</span>
+                </div>
+                
+                <div className="pt-6 sm:pt-8 text-center">
+                  {/* Avatar placeholder */}
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-2 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                    <svg className="w-6 h-6 sm:w-7 sm:h-7 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  
+                  <p className="text-xs sm:text-sm font-semibold text-gray-900 truncate mb-1">Pro***789</p>
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-base sm:text-lg font-bold text-gray-700">R$</span>
+                    <span className="text-base sm:text-lg font-bold text-gray-700">890</span>
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">em compras</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <div className="container mx-auto max-w-5xl px-4">
+            <div className="flex flex-col items-center gap-3 p-6 text-center text-sm md:items-start">
+              <div className="flex flex-col items-center gap-3 leading-none md:w-full md:flex-row md:justify-between">
+                <div className="md:text-start font-medium"> 2025 {process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'Loja'}. Todos os direitos reservados.</div>
+                <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                  <a href="/quem-somos" className="transition-opacity hover:opacity-80 hover:underline">Quem Somos</a>
+                  <div className="h-3 w-px bg-blue-300"></div>
+                  <a href="/politica-de-reembolso" className="transition-opacity hover:opacity-80 hover:underline">Reembolso</a>
+                  <div className="h-3 w-px bg-blue-300"></div>
+                  <a href="/politica-de-privacidade" className="transition-opacity hover:opacity-80 hover:underline">Privacidade</a>
+                </div>
+              </div>
+              <p className="text-xs text-blue-100 text-center md:text-left">
+                Plataforma independente. Nao afiliada a Garena ou Free Fire.
+              </p>
+            </div>
+          </div>
+        </footer>
+
+        
+
+        
+
+
+        {/* Banner de Consentimento de Cookies */}
+        {showCookieBanner && (
+          <div className="fixed inset-x-0 bottom-8 z-20 flex justify-center px-3">
+            <div className="w-full max-w-5xl px-4 md:px-8 lg:px-10">
+              <div className="flex flex-col items-start rounded-md bg-black/75 px-3.5 py-4 text-white md:flex-row md:items-center">
+                <div className="grow">
+                  <div className="mb-1 text-base">Consentimento de Cookie</div>
+                  <div className="text-sm">
+                    <span className="text-white/70">
+                      A gente usa cookies para melhorar a sua experiência no site. Ao continuar navegando, você concorda com a nossa
+                    </span>{' '}
+                    <a 
+                      href={mounted ? addUtmsToUrl('/politica-privacidade') : '/politica-privacidade'} 
+                      target="_blank"
+                      className="underline hover:text-white/80"
+                    >
+                      Política de Privacidade.
+                    </a>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleAcceptCookies}
+                  className="mt-3 shrink-0 md:ms-3 md:mt-0 inline-flex items-center justify-center gap-1.5 rounded-md border py-1 text-center leading-none transition-colors border-[rgb(216,26,13)] bg-[rgb(216,26,13)] text-white hover:bg-[rgb(205,18,20)] hover:border-[rgb(205,18,20)] px-5 text-base font-bold h-11"
+                >
+                  Continuar e Fechar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* Modal de Login Obrigatório - DESABILITADO */}
+      <LoginModal 
+        isOpen={false} 
+        onSuccess={login}
+      />
+    </div>
+  )
+}

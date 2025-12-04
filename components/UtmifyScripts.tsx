@@ -4,11 +4,20 @@ import { useEffect } from 'react';
 
 export default function UtmifyScripts() {
   const utmifyPixelId = process.env.NEXT_PUBLIC_PIXELID_UTMFY || '691cd3b3b92ea77f371e882b';
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
   useEffect(() => {
-    // Log para debug
-    console.log('✅ [UTMify] Scripts carregados no client-side');
-  }, []);
+    if (isDevelopment) {
+      console.log('🔧 [UtmifyScripts] Modo desenvolvimento: Scripts UTMify desabilitados');
+    } else {
+      console.log('✅ [UTMify] Scripts carregados no client-side');
+    }
+  }, [isDevelopment]);
+
+  // Não renderizar scripts em modo de desenvolvimento
+  if (isDevelopment) {
+    return null;
+  }
 
   return (
     <>

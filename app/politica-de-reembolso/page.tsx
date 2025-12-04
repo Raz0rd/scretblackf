@@ -1,115 +1,73 @@
-import ComplianceFooter from '@/components/ComplianceFooter'
-import { companyConfig } from '@/lib/company-config'
-
 export const metadata = {
-  title: `Política de Reembolso - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`,
-  description: `Política de reembolso da plataforma ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME || 'DeltaForce'}`
+  title: `Política de Reembolso - ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME}`,
+  description: `Política de reembolso da ${process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME}`
 }
 
 export default function PoliticaDeReembolso() {
+  const companyName = process.env.NEXT_PUBLIC_COMPANY_TRADE_NAME
+  const companyEmail = process.env.NEXT_PUBLIC_COMPANY_EMAIL
+  const companyCNPJ = process.env.NEXT_PUBLIC_COMPANY_CNPJ
+  const companyLegalName = process.env.NEXT_PUBLIC_COMPANY_LEGAL_NAME
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      <div className="container mx-auto px-4 py-12 flex-1">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl p-8 md:p-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-6">Política de Reembolso</h1>
+    <div className="min-h-screen bg-slate-50 py-12">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8">
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Política de Reembolso</h1>
+          <p className="text-sm text-slate-500 mb-8">Última atualização: {new Date().toLocaleDateString('pt-BR')}</p>
           
-          <div className="prose prose-slate max-w-none">
-            <p className="text-slate-700 mb-4">
-              <strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
-            </p>
+          <div className="space-y-6 text-slate-700">
+            <section>
+              <h2 className="text-xl font-semibold text-slate-900 mb-3">1. Reembolso Antes da Entrega</h2>
+              <p className="mb-2">Pedidos podem ser reembolsados <strong>enquanto não forem entregues</strong>.</p>
+              <p>Para cancelar, entre em contato: <strong>{companyEmail}</strong></p>
+            </section>
 
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">1. Reembolso Antes da Entrega</h2>
-            <p className="text-slate-700 mb-4">
-              Pedidos podem ser reembolsados <strong>enquanto não forem entregues</strong>.
-            </p>
-            <p className="text-slate-700 mb-4">
-              Se você deseja cancelar seu pedido antes da entrega dos créditos, entre em contato imediatamente através do email: <strong>{companyConfig.email}</strong>
-            </p>
+            <section>
+              <h2 className="text-xl font-semibold text-slate-900 mb-3">2. Após a Entrega</h2>
+              <p className="mb-2">Após a entrega, <strong>não é possível solicitar reembolso</strong> devido à natureza digital do produto.</p>
+              <p>Produtos digitais são considerados consumidos imediatamente.</p>
+            </section>
 
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">2. Após a Entrega</h2>
-            <p className="text-slate-700 mb-4">
-              Após a entrega dos créditos digitais ou itens virtuais, <strong>não é possível solicitar reembolso</strong> devido à natureza digital do produto.
-            </p>
-            <p className="text-slate-700 mb-4">
-              Produtos digitais são considerados consumidos imediatamente após a entrega.
-            </p>
+            <section>
+              <h2 className="text-xl font-semibold text-slate-900 mb-3">3. ID Incorreto</h2>
+              <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                <p className="font-semibold text-yellow-800 mb-1">⚠️ Verifique o ID antes de finalizar</p>
+                <p className="text-sm text-yellow-700">Não nos responsabilizamos por créditos entregues em IDs incorretos.</p>
+              </div>
+            </section>
 
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">3. ID Incorreto</h2>
-            <div className="bg-yellow-50 border-l-4 border-yellow-600 p-4 my-6">
-              <p className="text-yellow-800 font-bold mb-2">
-                ⚠️ ATENÇÃO: Verifique o ID antes de finalizar
-              </p>
-              <p className="text-yellow-700">
-                Caso tenha inserido o ID incorreto, entre em contato <strong>imediatamente</strong> através do nosso suporte.
-              </p>
-              <p className="text-yellow-700 mt-2">
-                Não nos responsabilizamos por créditos entregues em IDs incorretos fornecidos pelo usuário.
-              </p>
-            </div>
+            <section>
+              <h2 className="text-xl font-semibold text-slate-900 mb-3">4. Prazo de Reembolso</h2>
+              <ul className="list-disc pl-5 space-y-1">
+                <li><strong>PIX:</strong> Até 24 horas</li>
+                <li><strong>Cartão:</strong> Até 7 dias úteis</li>
+              </ul>
+            </section>
 
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">4. Erro da Plataforma</h2>
-            <p className="text-slate-700 mb-4">
-              Em caso de erro da plataforma, realizaremos:
-            </p>
-            <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
-              <li>Reenvio dos créditos para o ID correto, ou</li>
-              <li>Reembolso total do valor pago</li>
-            </ul>
+            <section>
+              <h2 className="text-xl font-semibold text-slate-900 mb-3">5. Como Solicitar</h2>
+              <p className="mb-2">Envie email para <strong>{companyEmail}</strong> com:</p>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>Número do pedido</li>
+                <li>Email da compra</li>
+                <li>Motivo do reembolso</li>
+              </ul>
+            </section>
 
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">5. Prazo de Reembolso</h2>
-            <p className="text-slate-700 mb-4">
-              Reembolsos aprovados são processados em até:
-            </p>
-            <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
-              <li><strong>PIX:</strong> Até 24 horas</li>
-              <li><strong>Cartão de Crédito:</strong> Até 7 dias úteis (conforme operadora)</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">6. Como Solicitar Reembolso</h2>
-            <p className="text-slate-700 mb-4">
-              Para solicitar reembolso, envie um email para <strong>{companyConfig.email}</strong> com:
-            </p>
-            <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
-              <li>Número do pedido</li>
-              <li>Email usado na compra</li>
-              <li>Motivo do reembolso</li>
-              <li>Comprovante de pagamento (se necessário)</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">7. Situações Sem Reembolso</h2>
-            <p className="text-slate-700 mb-4">
-              Não realizamos reembolso nas seguintes situações:
-            </p>
-            <ul className="list-disc pl-6 text-slate-700 mb-4 space-y-2">
-              <li>Créditos já entregues e utilizados</li>
-              <li>ID incorreto fornecido pelo usuário (sem contato prévio)</li>
-              <li>Banimento ou suspensão aplicada pela desenvolvedora do jogo</li>
-              <li>Arrependimento após recebimento dos créditos</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">8. Contato</h2>
-            <div className="bg-slate-100 rounded-lg p-4 text-slate-700">
-              <p className="mb-2"><strong>VALTER OPITZ JUNIOR</strong></p>
-              <p className="mb-1">CNPJ: 42.047.382/0001-51</p>
-              <p className="mb-1">Email: {companyConfig.email}</p>
-              <p className="mb-1">Telefone: {companyConfig.phone}</p>
-              <p className="mb-1">Endereço: {companyConfig.address.street} - {companyConfig.address.neighborhood}</p>
-              <p>{companyConfig.address.city} - {companyConfig.address.state}, CEP: {companyConfig.address.zipCode}</p>
-            </div>
+            <section className="bg-slate-50 rounded-lg p-4 mt-8">
+              <h3 className="font-semibold text-slate-900 mb-2">Dados da Empresa</h3>
+              <p className="text-sm mb-1"><strong>{companyLegalName}</strong></p>
+              <p className="text-sm mb-1">CNPJ: {companyCNPJ}</p>
+              <p className="text-sm">Email: {companyEmail}</p>
+            </section>
           </div>
 
-          <div className="mt-8 text-center">
-            <a 
-              href="/" 
-              className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors"
-            >
-              Voltar para o Início
-            </a>
+          <div className="mt-6 text-center">
+            <a href="/" className="text-blue-600 hover:underline text-sm">← Voltar para o início</a>
           </div>
         </div>
       </div>
-
-      <ComplianceFooter />
     </div>
   )
 }

